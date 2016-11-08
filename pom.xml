@@ -2,20 +2,20 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>qcom.itlegal.ipit</groupId>
+    <groupId>com.pwc.core</groupId>
     <artifactId>core-microservice</artifactId>
     <version>2.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <properties>
 
-        <!-- Common Properties -->
         <java_code.version>1.8</java_code.version>
 
-        <!-- Microservice Versions -->
-        <qssert-service.version>1.0.3</qssert-service.version>
-        <qherkin-logging.version>1.0.3</qherkin-logging.version>
+        <!-- MS Dependency Versions -->
+        <assert-microservice.version>1.0.0-SNAPSHOT</assert-microservice.version>
+        <logging-microservice.version>1.0.0-SNAPSHOT</logging-microservice.version>
 
+        <!-- Dependency Versions -->     
         <selenium.version>3.0.1</selenium.version>
         <appium.version>4.0.0</appium.version>
         <saucelabs.version>1.0.32</saucelabs.version>
@@ -42,7 +42,7 @@
         <surefire.junit.version>2.18.1</surefire.junit.version>
         <gagawa.version>1.0.1</gagawa.version>
 
-        <!--Plugins Versions-->
+        <!-- Plugins Versions -->
         <maven-jar-plugin.version>2.4</maven-jar-plugin.version>
         <maven-surefire-plugin.version>2.14</maven-surefire-plugin.version>
         <maven-resources-plugin.version>2.7</maven-resources-plugin.version>
@@ -81,22 +81,20 @@
 
     <dependencies>
 
-        <!-- Microservice Dependencies -->
         <dependency>
-            <groupId>com.qualcomm.qherkin</groupId>
-            <artifactId>qherkin-logging-service</artifactId>
-            <version>${qherkin-logging.version}</version>
+            <groupId>com.pwc.logging</groupId>
+            <artifactId>logging-microservice</artifactId>
+            <version>${logging-microservice.version}</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
-            <groupId>com.qualcomm.qssert</groupId>
-            <artifactId>qssert-service</artifactId>
-            <version>${qssert-service.version}</version>
+            <groupId>com.pwc.assert</groupId>
+            <artifactId>assert-microservice</artifactId>
+            <version>${assert-microservice.version}</version>
             <scope>compile</scope>
         </dependency>
 
-        <!-- Testing Dependencies -->
         <dependency>
             <groupId>com.saucelabs</groupId>
             <artifactId>saucerest</artifactId>
@@ -168,7 +166,6 @@
             <version>${testng.version}</version>
         </dependency>
 
-        <!-- XML & Json Dependencies -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
@@ -206,7 +203,6 @@
             <scope>compile</scope>
         </dependency>
 
-        <!-- Spring Dependencies -->
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
@@ -275,14 +271,12 @@
             <version>${mongodb-driver.version}</version>
         </dependency>
 
-        <!-- Decompiler Dependencies -->
         <dependency>
             <groupId>org.bitbucket.mstrobel</groupId>
             <artifactId>procyon-compilertools</artifactId>
             <version>${procyon.version}</version>
         </dependency>
 
-        <!-- Unit Test Dependencies -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -296,7 +290,6 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Misc Dependencies -->
         <dependency>
             <groupId>commons-httpclient</groupId>
             <artifactId>commons-httpclient</artifactId>
@@ -310,7 +303,6 @@
             <version>${gagawa.version}</version>
         </dependency>
 
-        <!--Logging Dependencies-->
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
