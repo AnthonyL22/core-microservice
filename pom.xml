@@ -1,0 +1,498 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>qcom.itlegal.ipit</groupId>
+    <artifactId>ipit-automation-service</artifactId>
+    <version>2.0.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <properties>
+
+        <!-- Common Properties -->
+        <java_code.version>1.8</java_code.version>
+
+        <!-- Microservice Versions -->
+        <qssert-service.version>1.0.3</qssert-service.version>
+        <qherkin-logging.version>1.0.3</qherkin-logging.version>
+
+        <selenium.version>3.0.1</selenium.version>
+        <appium.version>4.0.0</appium.version>
+        <saucelabs.version>1.0.32</saucelabs.version>
+        <saucelabs-java.version>2.1.20</saucelabs-java.version>
+        <testng.version>6.9.10</testng.version>
+        <restassured.version>2.4.1</restassured.version>
+        <jackson.version>1.9.13</jackson.version>
+        <jackson.json.version>2.5.1</jackson.json.version>
+        <phantomjsdriver.version>1.2.1</phantomjsdriver.version>
+        <procyon.version>0.5.28</procyon.version>
+        <surefire-junit47.version>2.12</surefire-junit47.version>
+        <xmlapis.version>1.4.01</xmlapis.version>
+        <jacoco.version>0.7.5.201505241946</jacoco.version>
+        <jsoup.version>1.8.2</jsoup.version>
+        <opera.version>1.5</opera.version>
+        <commonsdbcp2.version>2.0</commonsdbcp2.version>
+        <spring.version>3.2.3.RELEASE</spring.version>
+        <spring-mongodb.version>1.2.0.RELEASE</spring-mongodb.version>
+        <mongodb-driver.version>3.0.2</mongodb-driver.version>
+        <junit.version>4.11</junit.version>
+        <httpclient.version>3.1</httpclient.version>
+        <mockito.version>1.10.19</mockito.version>
+        <log4j.version>1.2.17</log4j.version>
+        <surefire.junit.version>2.18.1</surefire.junit.version>
+        <gagawa.version>1.0.1</gagawa.version>
+
+        <!--Plugins Versions-->
+        <maven-jar-plugin.version>2.4</maven-jar-plugin.version>
+        <maven-surefire-plugin.version>2.14</maven-surefire-plugin.version>
+        <maven-resources-plugin.version>2.7</maven-resources-plugin.version>
+        <maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
+        <maven-dependency-plugin.version>2.10</maven-dependency-plugin.version>
+        <maven-clean-plugin.version>2.4.1</maven-clean-plugin.version>
+        <maven-release-plugin.version>2.3.2</maven-release-plugin.version>
+        <maven-scm-provider-gitxexe.version>1.9</maven-scm-provider-gitxexe.version>
+        <versions-maven-plugin.version>2.1</versions-maven-plugin.version>
+        <maven-scm-plugin.version>1.8.1</maven-scm-plugin.version>
+
+    </properties>
+
+    <scm>
+        <connection>scm:git:https://github.qualcomm.com/c-anlomb/ipit-automation-service</connection>
+        <developerConnection>scm:git:https://github.qualcomm.com/c-anlomb/ipit-automation-service</developerConnection>
+        <url>scm:git:https://github.qualcomm.com/c-anlomb/ipit-automation-service</url>
+        <tag>HEAD</tag>
+    </scm>
+
+    <developers>
+        <developer>
+            <name>Anthony Lombardo</name>
+            <email>AnthonyL22@gmail.com</email>
+        </developer>
+    </developers>
+
+    <licenses>
+        <license>
+            <name>The Clear BSD License</name>
+            <url>http://svn.openlayers.org/trunk/openlayers/license.txt</url>
+            <comments>For any parts of OpenLayers</comments>
+            <distribution>manual</distribution>
+        </license>
+    </licenses>
+
+    <dependencies>
+
+        <!-- Microservice Dependencies -->
+        <dependency>
+            <groupId>com.qualcomm.qherkin</groupId>
+            <artifactId>qherkin-logging-service</artifactId>
+            <version>${qherkin-logging.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.qualcomm.qssert</groupId>
+            <artifactId>qssert-service</artifactId>
+            <version>${qssert-service.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <!-- Testing Dependencies -->
+        <dependency>
+            <groupId>com.saucelabs</groupId>
+            <artifactId>saucerest</artifactId>
+            <version>${saucelabs.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.saucelabs</groupId>
+            <artifactId>sauce_java_common</artifactId>
+            <version>${saucelabs-java.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-api</artifactId>
+            <version>${selenium.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>${selenium.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-remote-driver</artifactId>
+            <version>${selenium.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.appium</groupId>
+            <artifactId>java-client</artifactId>
+            <version>${appium.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.uiautomation</groupId>
+            <artifactId>ios-server</artifactId>
+            <version>0.6.2</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>libimobiledevice-java</groupId>
+                    <artifactId>libimobiledevice-java</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>com.codeborne</groupId>
+            <artifactId>phantomjsdriver</artifactId>
+            <version>${phantomjsdriver.version}</version>
+            <!-- this will _always_ be behind -->
+            <exclusions>
+                <exclusion>
+                    <groupId>org.seleniumhq.selenium</groupId>
+                    <artifactId>selenium-java</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.seleniumhq.selenium</groupId>
+                    <artifactId>selenium-remote-driver</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>${testng.version}</version>
+        </dependency>
+
+        <!-- XML & Json Dependencies -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.json.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${jackson.json.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>xml-apis</groupId>
+            <artifactId>xml-apis</artifactId>
+            <version>${xmlapis.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.jayway.restassured</groupId>
+            <artifactId>json-path</artifactId>
+            <version>${restassured.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.jayway.restassured</groupId>
+            <artifactId>xml-path</artifactId>
+            <version>${restassured.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>${jsoup.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <!-- Spring Dependencies -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+            <version>${spring.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+            <version>${spring.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>${spring.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-expression</artifactId>
+            <version>${spring.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${spring.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>${spring.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${spring.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-mongodb</artifactId>
+            <version>${spring-mongodb.version}</version>
+        </dependency>
+
+        <!-- Database Connectivity -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-dbcp2</artifactId>
+            <version>${commonsdbcp2.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>mongodb-driver</artifactId>
+            <version>${mongodb-driver.version}</version>
+        </dependency>
+
+        <!-- Decompiler Dependencies -->
+        <dependency>
+            <groupId>org.bitbucket.mstrobel</groupId>
+            <artifactId>procyon-compilertools</artifactId>
+            <version>${procyon.version}</version>
+        </dependency>
+
+        <!-- Unit Test Dependencies -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>${mockito.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Misc Dependencies -->
+        <dependency>
+            <groupId>commons-httpclient</groupId>
+            <artifactId>commons-httpclient</artifactId>
+            <version>${httpclient.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.hp.gagawa</groupId>
+            <artifactId>gagawa</artifactId>
+            <version>${gagawa.version}</version>
+        </dependency>
+
+        <!--Logging Dependencies-->
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
+
+    </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.opera</groupId>
+                <artifactId>operadriver</artifactId>
+                <version>${opera.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.seleniumhq.selenium</groupId>
+                        <artifactId>selenium-remote-driver</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>${maven-clean-plugin.version}</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>${maven-release-plugin.version}</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.apache.maven.scm</groupId>
+                        <artifactId>maven-scm-provider-gitexe</artifactId>
+                        <version>${maven-scm-provider-gitxexe.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco.version}</version>
+                <executions>
+                    <execution>
+                        <id>default-prepare-agent</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>default-prepare-agent-integration</id>
+                        <goals>
+                            <goal>prepare-agent-integration</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>default-report</id>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>default-report-integration</id>
+                        <goals>
+                            <goal>report-integration</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>default-check</id>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+                <configuration>
+                    <excludes>
+                        <exclude>**/qcom/itlegal/ipit/framework/**/*Constants*.class</exclude>
+                        <exclude>**/qcom/itlegal/ipit/framework/command/**/*.class</exclude>
+                        <exclude>**/qcom/itlegal/ipit/framework/data/**/*.class</exclude>
+                        <exclude>**/qcom/itlegal/ipit/framework/driver/**/*.class</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>${maven-jar-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven-surefire-plugin.version}</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.apache.maven.surefire</groupId>
+                        <artifactId>surefire-junit47</artifactId>
+                        <version>${surefire.junit.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+                <version>${versions-maven-plugin.version}</version>
+            </plugin>
+            <plugin>
+                <artifactId>maven-scm-plugin</artifactId>
+                <version>${maven-scm-plugin.version}</version>
+                <configuration>
+                    <tag>${project.artifactId}-${project.version}</tag>
+                </configuration>
+            </plugin>
+        </plugins>
+
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>buildnumber-maven-plugin</artifactId>
+                    <version>${buildnumber.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>${maven-resources-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${maven-compiler-plugin.version}</version>
+                    <configuration>
+                        <source>${java_code.version}</source>
+                        <target>${java_code.version}</target>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+    <repositories>
+
+        <repository>
+            <id>legalIT-nexus</id>
+            <name>Legal IT Repo</name>
+            <url>http://maven/content/groups/legalit</url>
+        </repository>
+
+    </repositories>
+
+
+    <distributionManagement>
+
+        <repository>
+            <id>legalIT-nexus</id>
+            <name>Legal IT Releases</name>
+            <url>http://maven.qualcomm.com/content/repositories/legal_it_releases</url>
+            <uniqueVersion>true</uniqueVersion>
+        </repository>
+
+        <snapshotRepository>
+            <id>legalIT-nexus</id>
+            <name>Legal IT Snapshots</name>
+            <url>http://maven.qualcomm.com/content/repositories/legal_it_snapshot</url>
+            <uniqueVersion>false</uniqueVersion>
+        </snapshotRepository>
+
+    </distributionManagement>
+
+</project>
