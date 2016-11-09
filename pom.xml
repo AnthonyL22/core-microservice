@@ -90,14 +90,14 @@
     <dependencies>
 
         <dependency>
-            <groupId>com.github.anthonyl22.logging</groupId>
+            <groupId>com.pacificwebconsulting.logging</groupId>
             <artifactId>logging-microservice</artifactId>
             <version>${logging-microservice.version}</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
-            <groupId>com.github.anthonyl22.assertion</groupId>
+            <groupId>com.pacificwebconsulting.assertion</groupId>
             <artifactId>assertion-microservice</artifactId>
             <version>${assertion-microservice.version}</version>
             <scope>compile</scope>
