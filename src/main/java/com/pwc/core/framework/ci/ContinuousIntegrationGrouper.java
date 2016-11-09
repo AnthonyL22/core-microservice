@@ -47,6 +47,7 @@ public class ContinuousIntegrationGrouper {
      * Write an <code>Array</code> of strings to file
      *
      * @param commaArrayVals array of String values to write to file
+     * @throws Exception exception
      */
     public static void writeArrayToFile(String[] commaArrayVals) throws Exception {
         try {
