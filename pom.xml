@@ -14,7 +14,7 @@
         <java_code.version>1.8</java_code.version>
 
         <!-- MS Dependency Versions -->
-        <assert-microservice.version>1.0.0-SNAPSHOT</assert-microservice.version>
+        <assertion-microservice.version>1.0.0-SNAPSHOT</assertion-microservice.version>
         <logging-microservice.version>1.0.0-SNAPSHOT</logging-microservice.version>
 
         <!-- Dependency Versions -->
@@ -91,9 +91,9 @@
         </dependency>
 
         <dependency>
-            <groupId>com.pwc.assert</groupId>
-            <artifactId>assert-microservice</artifactId>
-            <version>${assert-microservice.version}</version>
+            <groupId>com.pwc.assertion</groupId>
+            <artifactId>assertion-microservice</artifactId>
+            <version>${assertion-microservice.version}</version>
             <scope>compile</scope>
         </dependency>
 
