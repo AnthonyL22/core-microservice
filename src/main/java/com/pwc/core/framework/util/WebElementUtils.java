@@ -7,7 +7,8 @@ public class WebElementUtils {
     /**
      * Utility method which returns the XPATH for a given WebElement
      *
-     * @return dateOffset date and time
+     * @param webElement WebElement to interrogate it's xPath out of
+     * @return webElement xPath of WebElement
      */
     public static String getXPathOfWebElement(final WebElement webElement) {
         StringBuilder xpath = new StringBuilder();

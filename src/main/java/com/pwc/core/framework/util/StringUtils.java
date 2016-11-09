@@ -39,6 +39,7 @@ public class StringUtils {
      * toJSON - Helper method to convert domain objects into JSON
      *
      * @param domainObject domain object
+     * @param jsonFeatures JSON configuration features
      * @return JSON representation of the Domain object
      */
     public static String toJSON(Object domainObject, List<ConfigFeature> jsonFeatures) {

@@ -20,6 +20,8 @@ public class DebuggingUtils {
 
     /**
      * Capture and store the active screen under test and store in '.../target/test-classes/screenshots' directory
+     *
+     * @param webDriver active WebDriver to take screenshot of
      */
     public static void takeScreenShot(MicroserviceWebDriver webDriver) {
 
@@ -86,6 +88,7 @@ public class DebuggingUtils {
      * Get debug information for the calling method to decorate it's LOG statement as
      * to what page the Assertion failure occurred on
      *
+     * @param webDriver WebDriver to get debugging information from
      * @return formatted debug message including the page title of failure
      */
     public static String getDebugInfo(MicroserviceWebDriver webDriver) {

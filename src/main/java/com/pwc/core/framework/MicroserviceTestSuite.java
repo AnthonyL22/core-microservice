@@ -139,6 +139,8 @@ public abstract class MicroserviceTestSuite {
 
     /**
      * Initialize a web page with no default interaction. Typically used for SiteMinder log-in page
+     *
+     * @param credentials Credentials to authenticate with
      */
     protected void webAction(final Credentials credentials) {
         if (webEventController == null) {
@@ -193,6 +195,10 @@ public abstract class MicroserviceTestSuite {
 
     /**
      * Initialize a headless page based on user defined URL.  Typically used for testing custom web page endpoints
+     *
+     * @param credentials Credentials to authenticate with
+     * @param url         web service URL
+     * @return http/web service response
      */
     protected Object httpAction(final Credentials credentials, final String url) {
         if (webServiceController == null) {
@@ -204,6 +210,10 @@ public abstract class MicroserviceTestSuite {
     /**
      * Initialize a headless page based on the web.services.url property defined in automation.properties file.
      * Typically used for testing a single page endpoint(s)
+     *
+     * @param credentials Credentials to authenticate with
+     * @param url         web service URL
+     * @return web service response
      */
     protected Object webServiceAction(final Credentials credentials, final String url) {
         if (webServiceController == null) {
@@ -216,6 +226,7 @@ public abstract class MicroserviceTestSuite {
      * Send a REST ws action to a service End Point
      *
      * @param command BaseGetCommand command type
+     * @return web service response
      */
     protected Object webServiceAction(final WebServiceCommand command) {
         return webServiceAction(command, null);
@@ -226,6 +237,7 @@ public abstract class MicroserviceTestSuite {
      *
      * @param command     BaseGetCommand command type
      * @param requestBody POST request body
+     * @return web service response
      */
     protected Object webServiceAction(final WebServiceCommand command, final Object requestBody) {
         if (requestBody instanceof HashMap || requestBody instanceof List) {
@@ -240,6 +252,7 @@ public abstract class MicroserviceTestSuite {
      *
      * @param command      BaseGetCommand command type
      * @param parameterMap Name-Value pair filled map of parameters to send in HTTP request
+     * @return web service response
      */
     protected Object webServiceAction(final WebServiceCommand command, final HashMap<String, Object> parameterMap) {
         return webServiceAction(null, command, null, parameterMap);
@@ -248,8 +261,10 @@ public abstract class MicroserviceTestSuite {
     /**
      * Send a REST ws action to a service End Point
      *
-     * @param command   BaseGetCommand command type
-     * @param parameter HashMap or simple request body arg to send in HTTP request
+     * @param command       BaseGetCommand command type
+     * @param pathParameter web service path parameter(s)
+     * @param parameter     HashMap or simple request body arg to send in HTTP request
+     * @return web service response
      */
     protected Object webServiceAction(final WebServiceCommand command, final Object pathParameter, final Object parameter) {
         return webServiceAction(null, command, pathParameter, parameter);
@@ -258,7 +273,9 @@ public abstract class MicroserviceTestSuite {
     /**
      * Send a REST ws action to a service End Point
      *
-     * @param command BaseGetCommand command type
+     * @param credentials Credentials to authenticate with
+     * @param command     BaseGetCommand command type
+     * @return web service response
      */
     protected Object webServiceAction(final Credentials credentials, final WebServiceCommand command) {
         return webServiceAction(credentials, command, null);
@@ -267,8 +284,10 @@ public abstract class MicroserviceTestSuite {
     /**
      * Send a REST ws action to a service End Point
      *
+     * @param credentials Credentials to authenticate with
      * @param command     BaseGetCommand command type
      * @param requestBody POST request body
+     * @return web service response
      */
     protected Object webServiceAction(final Credentials credentials, final WebServiceCommand command, final Object requestBody) {
         if (requestBody instanceof HashMap || requestBody instanceof List) {
@@ -281,8 +300,10 @@ public abstract class MicroserviceTestSuite {
     /**
      * Send a REST ws action to a service End Point
      *
+     * @param credentials  Credentials to authenticate with
      * @param command      BaseGetCommand command type
      * @param parameterMap Name-Value pair filled map of parameters to send in HTTP request
+     * @return web service response
      */
     protected Object webServiceAction(final Credentials credentials, final WebServiceCommand command, final HashMap<String, Object> parameterMap) {
         return webServiceAction(credentials, command, null, parameterMap);
@@ -291,8 +312,11 @@ public abstract class MicroserviceTestSuite {
     /**
      * Send a REST ws action to a service End Point
      *
-     * @param command   BaseGetCommand command type
-     * @param parameter HashMap or simple request body arg to send in HTTP request
+     * @param credentials   Credentials to authenticate with
+     * @param command       BaseGetCommand command type
+     * @param pathParameter web service path parameter(s)
+     * @param parameter     HashMap or simple request body arg to send in HTTP request
+     * @return web service response
      */
     protected Object webServiceAction(final Credentials credentials, final WebServiceCommand command, final Object pathParameter, final Object parameter) {
         if (webServiceController == null) {

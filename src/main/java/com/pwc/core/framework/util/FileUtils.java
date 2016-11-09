@@ -31,7 +31,7 @@ public class FileUtils {
     /**
      * Create new file in the specified directory in your local workspace
      *
-     * @param url      URL file location
+     * @param file     File to create
      * @param fileName file name
      * @param content  content to write to disk
      */
@@ -76,7 +76,8 @@ public class FileUtils {
     /**
      * Read any first file found in path matching the file name provided
      *
-     * @param fileName file name
+     * @param file     File to read
+     * @param fileName file name to read
      * @return ArrayList of lines read from file
      */
     public static List<String> readFile(File file, final String fileName) {
@@ -151,7 +152,8 @@ public class FileUtils {
     /**
      * Delete file from target dir
      *
-     * @param fileName file to delete
+     * @param file     file to delete
+     * @param fileName file name to delete
      */
     public static void deleteFile(File file, final String fileName) {
 

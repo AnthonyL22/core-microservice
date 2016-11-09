@@ -58,8 +58,8 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.pwc.logging.LoggerService.LOG;
 import static com.pwc.assertion.AssertService.*;
+import static com.pwc.logging.LoggerService.LOG;
 
 
 @Component
@@ -90,8 +90,10 @@ public class WebEventService extends WebEventController {
     /**
      * Authenticate using SiteMinder authentication
      *
-     * @param targetUrl   url to authenticate with
-     * @param credentials Credentials to use for authentication
+     * @param targetUrl     url to authenticate with
+     * @param credentials   Credentials to use for authentication
+     * @param siteMinderUrl Siteminder URL to authenticate with
+     * @param headless      is browser headless flag
      */
     public void authenticateSiteMinder(final String targetUrl, final Credentials credentials, final String siteMinderUrl, final boolean headless) {
 
@@ -553,6 +555,7 @@ public class WebEventService extends WebEventController {
      * Important: all index's are ZERO (0) based
      *
      * @param elementIdentifier elementIdentifier unique element identifying string
+     * @param expectedText      expected text within table
      * @param rowIndex          row number of table
      * @param columnIndex       column number of table
      * @param textExists        check for existing or not
@@ -578,6 +581,7 @@ public class WebEventService extends WebEventController {
      * Important: all index's are ZERO (0) based
      *
      * @param elementIdentifier elementIdentifier unique element identifying string
+     * @param expectedText      expected text within table
      * @param rowIndex          row number of table
      * @param columnIndex       column number of table
      * @param textExists        check for existing or not
@@ -659,6 +663,7 @@ public class WebEventService extends WebEventController {
      * Navigate directly to a particular URL
      *
      * @param url well-formed web URL or partial URL
+     * @return duration took to perform page redirect
      */
     public long redirectToUrl(String url) {
         StopWatch sw = new StopWatch();
@@ -873,6 +878,7 @@ public class WebEventService extends WebEventController {
      * Check if the current page contains a visible element
      *
      * @param elementIdentifier WebElement to find
+     * @return visible/not visible flag
      */
     public boolean isVisible(final String elementIdentifier) {
         boolean visible;
@@ -890,9 +896,10 @@ public class WebEventService extends WebEventController {
     }
 
     /**
-     * Check if the current page contains an element (visible or not)
+     * Check if the current page contains an element (exists or not).  This differs from visible checking.
      *
      * @param elementIdentifier WebElement to find
+     * @return exists/not exists flag
      */
     public boolean exists(final String elementIdentifier) {
         try {
@@ -975,8 +982,10 @@ public class WebEventService extends WebEventController {
     /**
      * Check if the current WebElement's property contains a text
      *
-     * @param elementIdentifier WebElement to find
-     * @param expectedToExist   expected flag to decide if element should exist or not
+     * @param elementIdentifier     WebElement to find
+     * @param attribute             WebElement attribute to interrogate
+     * @param expectedAttributeText expected WebElement attribute
+     * @param expectedToExist       expected flag to decide if element should exist or not
      */
     public void elementAttributeContains(final String elementIdentifier, final WebElementAttribute attribute, final String expectedAttributeText, final boolean expectedToExist) {
         WebElement webElement = findWebElement(elementIdentifier);

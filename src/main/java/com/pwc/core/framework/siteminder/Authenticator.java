@@ -31,6 +31,8 @@ public class Authenticator {
 
     /**
      * Singleton get instance of Authenticator.
+     *
+     * @return Authenticator instance of Authenticator
      */
     public static Authenticator getInstance() {
         if (instance == null) {
@@ -47,6 +49,14 @@ public class Authenticator {
         return WebServiceProcessor.buildHttpClient(url, username, password, sslcontext);
     }
 
+    /**
+     * Build custom SSLContext
+     *
+     * @return custom, secured SSLContext
+     * @throws NoSuchAlgorithmException exception
+     * @throws KeyManagementException   exception
+     * @throws KeyStoreException        exception
+     */
     protected static SSLContext buildSSLContext() throws NoSuchAlgorithmException, KeyManagementException, KeyStoreException {
         return custom()
                 .setSecureRandom(new SecureRandom())
@@ -62,6 +72,7 @@ public class Authenticator {
      * @param username the username to log into Siteminder with.
      * @param password the password to login into Siteminder with.
      * @return a List of cookies that contain the Siteminder authentication token
+     * @throws IOException authenticated cookies generation failure
      */
     public List<Cookie> getAuthenticationCookies(String url, String username, String password) throws IOException {
         List<Cookie> cookies = null;

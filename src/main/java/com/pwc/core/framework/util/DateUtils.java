@@ -35,6 +35,7 @@ public class DateUtils {
     /**
      * Utility method which returns a Date and time <code>Date</code> for a specified DATE offset
      *
+     * @param dateOffset date and time offset
      * @return dateOffset date and time
      */
     public static Date getDateByOffset(final int dateOffset) {
@@ -46,6 +47,7 @@ public class DateUtils {
     /**
      * Utility method which returns a Date and time <code>String</code> for a specified DATE offset
      *
+     * @param dateOffset date and time offset
      * @return dateOffset date and time
      */
     public static String getDateTime(final int dateOffset) {
@@ -55,6 +57,8 @@ public class DateUtils {
     /**
      * Utility method which returns a Date and time <code>String</code> for a specified DATE offset
      *
+     * @param dateOffset date and time offset
+     * @param pattern    date/time pattern
      * @return dateOffset date and time
      */
     public static String getDateTime(final int dateOffset, final String pattern) {
@@ -75,7 +79,8 @@ public class DateUtils {
      * Utility method which returns a Date and time <code>String</code> for a specified DATE offset in a
      * given date formatted pattern for a particular TimeZone <code>String</code>
      *
-     * @param pattern date/time pattern
+     * @param pattern  date/time pattern
+     * @param timeZone timezone to use for date generation
      * @return offset date and time offset
      */
     public static String getDateTime(final String pattern, final String timeZone) {
@@ -87,6 +92,7 @@ public class DateUtils {
      * given date formatted pattern for a particular TimeZone <code>String</code>
      *
      * @param pattern    date/time pattern
+     * @param timeZone   timezone to use for date generation
      * @param dateOffset date and time offset
      * @return offset date and time
      */
@@ -115,6 +121,7 @@ public class DateUtils {
      *
      * @param pattern  date/time pattern
      * @param calendar calendar instance
+     * @param timeZone timezone to use for date generation
      * @return formatted calendar time
      */
     public static String getDateTime(final String pattern, final Calendar calendar, final String timeZone) {

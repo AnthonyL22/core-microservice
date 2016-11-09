@@ -55,7 +55,9 @@ public class WebServiceProcessor {
     /**
      * Build URL based on <code>BaseGetCommand</code> and request mapping <code>String</code>
      *
-     * @param command command to execute
+     * @param url           web service URL
+     * @param command       command to execute
+     * @param pathParameter web service path parameter
      * @return web service URL
      */
     protected String constructRestUrl(final String url, final WebServiceCommand command, final Object pathParameter) {
@@ -133,6 +135,9 @@ public class WebServiceProcessor {
      * Generic REST web service Execution method for simple GET requests
      * that return a String response
      *
+     * @param url     web service URL
+     * @param user    username
+     * @param pass    user's password
      * @param command Type of command to execute
      * @return JsonPath json payload
      */
@@ -142,10 +147,13 @@ public class WebServiceProcessor {
 
     /**
      * Generic REST web service Execution method for simple GET requests
-     * that return a String response
-     * Example: http://www.mywebsite.com/rest/getAllUsers
+     * that return a String response. Example: http://www.mywebsite.com/rest/getAllUsers
      *
-     * @param command Type of command to execute
+     * @param url           web service URL
+     * @param user          username
+     * @param pass          user's password
+     * @param command       Type of command to execute
+     * @param pathParameter web service path parameter
      * @return JsonPath json payload
      */
     protected Object execute(final String url, final String user, final String pass, final WebServiceCommand command, final Object pathParameter) {
@@ -200,8 +208,12 @@ public class WebServiceProcessor {
     /**
      * Generic REST web service Execution method
      *
-     * @param command Type of command to execute
-     * @param payload Request body payload
+     * @param url           web service URL
+     * @param user          username
+     * @param pass          user's password
+     * @param command       Type of command to execute
+     * @param pathParameter web service path parameter
+     * @param payload       Request body payload
      * @return JsonPath json payload
      */
     protected Object execute(final String url, final String user, final String pass, final WebServiceCommand command, final Object pathParameter, final Object payload) {

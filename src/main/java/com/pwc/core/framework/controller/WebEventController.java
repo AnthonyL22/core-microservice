@@ -60,7 +60,7 @@ public class WebEventController {
     private String currentJobId;
 
     /**
-     * Start and configure browser & WebDriver instance
+     * Start and configure browser and WebDriver instance
      *
      * @param credentials <code>Credentials</code> user of SiteMinder testing if needed
      */
@@ -179,7 +179,7 @@ public class WebEventController {
      * Get iOS Web Driver for local or RemoteWebDriver capability
      *
      * @return MicroserviceWebDriver instance
-     * @throws MalformedURLException
+     * @throws MalformedURLException url exception
      */
     public MicroserviceWebDriver getIOSBrowser() throws Exception {
         LOG("starting iOS browser");
@@ -202,7 +202,7 @@ public class WebEventController {
      * Get Firefox Web Driver for local or RemoteWebDriver capability
      *
      * @return MicroserviceWebDriver instance
-     * @throws MalformedURLException
+     * @throws MalformedURLException url exception
      */
     public MicroserviceWebDriver getFirefoxBrowser() throws MalformedURLException {
         LOG("starting firefox browser");
@@ -232,7 +232,7 @@ public class WebEventController {
      * Get a group of SauceLabs generic Web Driver for local or RemoteWebDriver capability
      *
      * @return MicroserviceWebDriver instance
-     * @throws MalformedURLException
+     * @throws MalformedURLException url exception
      */
     public MicroserviceWebDriver getAnyBrowser() throws MalformedURLException {
         LOG("starting sauce labs browser(s)");
@@ -250,7 +250,7 @@ public class WebEventController {
      * Get Chrome Web Driver for local or RemoteWebDriver capability
      *
      * @return MicroserviceWebDriver instance
-     * @throws MalformedURLException
+     * @throws MalformedURLException url exception
      */
     public MicroserviceWebDriver getChromeBrowser() throws MalformedURLException {
         LOG("starting chrome browser");
@@ -279,7 +279,7 @@ public class WebEventController {
      * Get Android Web Driver for local or RemoteWebDriver capability
      *
      * @return MicroserviceWebDriver instance
-     * @throws MalformedURLException
+     * @throws MalformedURLException url exception
      */
     public MicroserviceWebDriver getAndroidBrowser() throws Exception {
         LOG("starting android browser");
@@ -303,7 +303,7 @@ public class WebEventController {
      * Get Microsoft Edge Web Driver for local or RemoteWebDriver capability
      *
      * @return MicroserviceWebDriver instance
-     * @throws MalformedURLException
+     * @throws MalformedURLException url exception
      */
     public MicroserviceWebDriver getEdgeBrowser() throws MalformedURLException {
         LOG("starting microsoft edge browser");
@@ -327,7 +327,7 @@ public class WebEventController {
      * Get Internet Explorer Web Driver for local or RemoteWebDriver capability
      *
      * @return MicroserviceWebDriver instance
-     * @throws MalformedURLException
+     * @throws MalformedURLException url exception
      */
     public MicroserviceWebDriver getInternetExplorerBrowser() throws MalformedURLException {
         LOG("starting internet explorer browser");
@@ -351,7 +351,7 @@ public class WebEventController {
      * Get Safari Web Driver for local or RemoteWebDriver capability
      *
      * @return MicroserviceWebDriver instance
-     * @throws MalformedURLException
+     * @throws MalformedURLException url exception
      */
     public MicroserviceWebDriver getSafariBrowser() throws MalformedURLException {
         LOG("starting safari browser");
@@ -375,7 +375,7 @@ public class WebEventController {
      * Get PhantomJS Web Driver for local or RemoteWebDriver capability
      *
      * @return MicroserviceWebDriver instance
-     * @throws MalformedURLException
+     * @throws MalformedURLException url exception
      */
     public MicroserviceWebDriver getPhantomJsBrowser() throws MalformedURLException {
         LOG("starting PhantomJS virtual browser");
@@ -405,6 +405,8 @@ public class WebEventController {
     /**
      * Set the resources path to the WebDriver executable depending on the ENV the scripts
      * are running on
+     *
+     * @return driver executable file path
      */
     public String setDriverExecutable() {
 

@@ -19,11 +19,14 @@ public class ContinuousIntegrationGrouper {
 
     /**
      * Main to be called by exec-maven-plugin Maven plugin
-     * <p>
-     * args[0] = Canonical class name to decompile
-     * args[1] = output directory location for resulting .properties file
      *
-     * @param args build parameters
+     * @param args build parameters in specific order:
+     *             <ul>
+     *             <li>1. Canonical Class Name to Decompile</li>
+     *             <li>2. Output directory location for resulting file</li>
+     *             <li>3. (Optional) Name of resulting file. Default to " + DEFAULT_OUTPUT_FILE_NAME</li>
+     *             </ul>
+     * @throws Exception class decompile failed
      */
     public static void main(String[] args) throws Exception {
         if (args.length < 2) {
