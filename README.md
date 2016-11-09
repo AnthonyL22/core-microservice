@@ -171,13 +171,13 @@ grid.hub.url=http://<YOUR PRIVATE GRID IP ADDRESS>:4444/wd/hub
 Simply leveraging the TestNG plugin in your IDE of choice you are able to run any test from IntelliJ or Eclipse
 
 ### Local GRID
-Including the [Runtime Microservice Components](https://github.qualcomm.com/c-anlomb/ipit-automation-runtime) in your 
+Including the [Runtime Microservice Components](https://github.com/AnthonyL22/runtime-microservice) in your 
 Maven project will give you all the necessary Selenium GRID components needed to build a local GRID environment.  
 Once you have included the Maven dependency in your project and have done a **mvn clean install** you will see a 
 directory labeled 'grid' in your project **.../target/test-classes**.  Be sure to define the **grid.hub.url** 
 in your grid.properties file.
 
-See the [Selenium GRID instructions](https://github.qualcomm.com/c-anlomb/ipit-automation-runtime) for more details.
+See the [Selenium GRID instructions](https://github.com/AnthonyL22/runtime-microservice) for more details.
  
 ### Shared GRID
 If you have a shared machine with a potentially static IP address follow the same instructions as the previous section
@@ -261,17 +261,17 @@ sc -u YOUR_USERNAME -k YOUR_ACCESS_KEY -i $TUNNEL_IDENTIFIER
 ###Runtime Microservice
 This is an optional dependency that you could include in your project if using the Core Automation Microservice.  
 
-[Runtime Binary Components](https://github.qualcomm.com/c-anlomb/ipit-automation-runtime)
+[Runtime Binary Components](https://github.com/AnthonyL22/runtime-microservice)
 
 ###Logging Microservice
 Gherkin-Style logger used for automated testing of TestNG-based automation solutions.
 
-[Logging Service](https://github.qualcomm.com/c-anlomb/qherkin-logging-service)
+[Logging Service](https://github.com/AnthonyL22/logging-microservice)
 
 ###Assertion Microservice
 A 100% Hamcrest and TestNG-based automated testing Assertion service.
 
-[Assertion Service](https://github.qualcomm.com/c-anlomb/qssert-service)
+[Assertion Service](https://github.com/AnthonyL22/assert-microservice)
 
 
 ## Tips and Tricks

@@ -41,11 +41,11 @@
     </bean>
 
     <!-- Invoke all Controllers -->
-    <context:component-scan base-package="com.qualcomm.qssert"/>
+    <context:component-scan base-package="com.pwc.assertion"/>
 
-    <context:component-scan base-package="qcom.itlegal.ipit.framework.controller"/>
+    <context:component-scan base-package="com.pwc.core.framework.controller"/>
 
     <!-- Invoke all Controller Services -->
-    <context:component-scan base-package="qcom.itlegal.ipit.framework.service"/>
+    <context:component-scan base-package="com.pwc.core.framework.service"/>
 
 </beans>

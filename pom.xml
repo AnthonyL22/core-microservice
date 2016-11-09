@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>qcom.itlegal.ipit</groupId>
-    <artifactId>ipit-automation-service</artifactId>
+    <groupId>com.pwc.core</groupId>
+    <artifactId>core-microservice</artifactId>
     <version>2.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
@@ -12,10 +13,11 @@
         <!-- Common Properties -->
         <java_code.version>1.8</java_code.version>
 
-        <!-- Microservice Versions -->
-        <qssert-service.version>1.0.3</qssert-service.version>
-        <qherkin-logging.version>1.0.3</qherkin-logging.version>
+        <!-- MS Dependency Versions -->
+        <assert-microservice.version>1.0.0-SNAPSHOT</assert-microservice.version>
+        <logging-microservice.version>1.0.0-SNAPSHOT</logging-microservice.version>
 
+        <!-- Dependency Versions -->
         <selenium.version>3.0.1</selenium.version>
         <appium.version>4.0.0</appium.version>
         <saucelabs.version>1.0.32</saucelabs.version>
@@ -57,9 +59,9 @@
     </properties>
 
     <scm>
-        <connection>scm:git:https://github.qualcomm.com/c-anlomb/ipit-automation-service</connection>
-        <developerConnection>scm:git:https://github.qualcomm.com/c-anlomb/ipit-automation-service</developerConnection>
-        <url>scm:git:https://github.qualcomm.com/c-anlomb/ipit-automation-service</url>
+        <connection>scm:git:https://github.com/AnthonyL22/core-microservice</connection>
+        <developerConnection>scm:git:https://github.com/AnthonyL22/core-microservice</developerConnection>
+        <url>scm:git:https://github.com/AnthonyL22/core-microservice</url>
         <tag>HEAD</tag>
     </scm>
 
@@ -81,22 +83,20 @@
 
     <dependencies>
 
-        <!-- Microservice Dependencies -->
         <dependency>
-            <groupId>com.qualcomm.qherkin</groupId>
-            <artifactId>qherkin-logging-service</artifactId>
-            <version>${qherkin-logging.version}</version>
+            <groupId>com.pwc.logging</groupId>
+            <artifactId>logging-microservice</artifactId>
+            <version>${logging-microservice.version}</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
-            <groupId>com.qualcomm.qssert</groupId>
-            <artifactId>qssert-service</artifactId>
-            <version>${qssert-service.version}</version>
+            <groupId>com.pwc.assert</groupId>
+            <artifactId>assert-microservice</artifactId>
+            <version>${assert-microservice.version}</version>
             <scope>compile</scope>
         </dependency>
 
-        <!-- Testing Dependencies -->
         <dependency>
             <groupId>com.saucelabs</groupId>
             <artifactId>saucerest</artifactId>
@@ -396,10 +396,10 @@
                 </executions>
                 <configuration>
                     <excludes>
-                        <exclude>**/qcom/itlegal/ipit/framework/**/*Constants*.class</exclude>
-                        <exclude>**/qcom/itlegal/ipit/framework/command/**/*.class</exclude>
-                        <exclude>**/qcom/itlegal/ipit/framework/data/**/*.class</exclude>
-                        <exclude>**/qcom/itlegal/ipit/framework/driver/**/*.class</exclude>
+                        <exclude>**/com/pwc/core/framework/**/*Constants*.class</exclude>
+                        <exclude>**/com/pwc/core/framework/command/**/*.class</exclude>
+                        <exclude>**/com/pwc/core/framework/data/**/*.class</exclude>
+                        <exclude>**/com/pwc/core/framework/driver/**/*.class</exclude>
                     </excludes>
                 </configuration>
             </plugin>
@@ -466,33 +466,33 @@
         </pluginManagement>
     </build>
 
-    <repositories>
+    <!--     <repositories>
 
-        <repository>
-            <id>legalIT-nexus</id>
-            <name>Legal IT Repo</name>
-            <url>http://maven/content/groups/legalit</url>
-        </repository>
+            <repository>
+                <id>legalIT-nexus</id>
+                <name>Legal IT Repo</name>
+                <url>http://maven/content/groups/legalit</url>
+            </repository>
 
-    </repositories>
+        </repositories>
 
 
-    <distributionManagement>
+        <distributionManagement>
 
-        <repository>
-            <id>legalIT-nexus</id>
-            <name>Legal IT Releases</name>
-            <url>http://maven.qualcomm.com/content/repositories/legal_it_releases</url>
-            <uniqueVersion>true</uniqueVersion>
-        </repository>
+            <repository>
+                <id>legalIT-nexus</id>
+                <name>Legal IT Releases</name>
+                <url>http://maven.qualcomm.com/content/repositories/legal_it_releases</url>
+                <uniqueVersion>true</uniqueVersion>
+            </repository>
 
-        <snapshotRepository>
-            <id>legalIT-nexus</id>
-            <name>Legal IT Snapshots</name>
-            <url>http://maven.qualcomm.com/content/repositories/legal_it_snapshot</url>
-            <uniqueVersion>false</uniqueVersion>
-        </snapshotRepository>
+            <snapshotRepository>
+                <id>legalIT-nexus</id>
+                <name>Legal IT Snapshots</name>
+                <url>http://maven.qualcomm.com/content/repositories/legal_it_snapshot</url>
+                <uniqueVersion>false</uniqueVersion>
+            </snapshotRepository>
 
-    </distributionManagement>
+        </distributionManagement> -->
 
 </project>
