@@ -20,8 +20,8 @@ Currently capabilities include:
 
 ```
 <dependency>
-    <groupId>qcom.itlegal.ipit</groupId>
-    <artifactId>ipit-automation-service</artifactId>
+    <groupId>com.pwc.core</groupId>
+    <artifactId>core-microservice</artifactId>
     <version>2.0.0-SNAPSHOT</version>
 </dependency>
 ```
