@@ -57,4 +57,22 @@ public class JsonUtilsTest {
         Assert.assertEquals(result, "[\"foobar\"]");
     }
 
+    @Test
+    public void isValidJSONTest() {
+        boolean result = JsonUtils.isJSONValid(SAMPLE_JSON);
+        Assert.assertTrue(result);
+    }
+
+    @Test
+    public void isInvalidOneCharValidJSONTest() {
+        boolean result = JsonUtils.isJSONValid("1");
+        Assert.assertFalse(result);
+    }
+
+    @Test
+    public void isInValidJSONTest() {
+        boolean result = JsonUtils.isJSONValid("[{\"os\n::owser-version=12&username=pad-jenkins&access-key=71047900-7f51-4185-a3d7-5d2b413f2efa\"}");
+        Assert.assertFalse(result);
+    }
+
 }

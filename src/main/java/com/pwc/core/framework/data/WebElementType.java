@@ -47,6 +47,7 @@ public enum WebElementType {
     TEXTAREA("textarea"),
     SELECT("select"),
     LABEL("label"),
+    IFRAME("iframe"),
     HEADER("^h\\d{1}$");
 
     public String type;

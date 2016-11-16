@@ -1,6 +1,8 @@
 package com.pwc.core.framework.util;
 
 
+import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
 import com.jayway.restassured.path.json.JsonPath;
 import org.json.simple.JSONArray;
 
@@ -49,6 +51,27 @@ public class JsonUtils {
             jsonString = JSONArray.toJSONString(new ArrayList(Arrays.asList(obj)));
         }
         return jsonString;
+    }
+
+    /**
+     * Check if Object is valid JSON
+     *
+     * @param jsonInString JSON to check
+     * @return valid JSON flag
+     */
+    public static boolean isJSONValid(Object jsonInString) {
+        try {
+            String json = jsonInString.toString();
+            if (!json.contains(":")) {
+                return false;
+            } else {
+                new JsonParser().parse(json);
+                return true;
+            }
+        } catch (JsonSyntaxException jse) {
+            return false;
+        }
+
     }
 
 }
