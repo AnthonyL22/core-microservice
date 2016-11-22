@@ -25,7 +25,7 @@ public class PropertiesUtilsTest {
     @Test
     public void readResourceFileTest() {
         List<String> lines = PropertiesUtils.readResourceFile("config/dev-env/" + PROPERTIES_FILE);
-        Assert.assertEquals(12, lines.size());
+        Assert.assertEquals(13, lines.size());
         Assert.assertEquals(lines.get(0), "web.url=http://my-web-application.mywebsite.com");
         Assert.assertEquals(lines.get(1), "web.services.url=http://my-web-services.com");
         Assert.assertEquals(lines.get(2), "web.services.user=foobar");
@@ -38,6 +38,7 @@ public class PropertiesUtilsTest {
         Assert.assertEquals(lines.get(9), "siteminder.open.url=ping");
         Assert.assertEquals(lines.get(10), "saucelabs.username=saucelabs-user");
         Assert.assertEquals(lines.get(11), "saucelabs.accesskey=12345678-7f51-4185-a3d7-5d2b413f2efa");
+        Assert.assertEquals(lines.get(12), "capture.video=false");
     }
 
     @Test
@@ -90,7 +91,7 @@ public class PropertiesUtilsTest {
         Assert.assertTrue(StringUtils.contains(file.getPath(), PROPERTIES_FILE));
         try {
             List<String> lines = FileUtils.readLines(file);
-            Assert.assertEquals(12, lines.size());
+            Assert.assertEquals(13, lines.size());
             Assert.assertEquals(lines.get(0), "web.url=http://my-web-application.mywebsite.com");
             Assert.assertEquals(lines.get(1), "web.services.url=http://my-web-services.com");
             Assert.assertEquals(lines.get(2), "web.services.user=foobar");
@@ -103,6 +104,7 @@ public class PropertiesUtilsTest {
             Assert.assertEquals(lines.get(9), "siteminder.open.url=ping");
             Assert.assertEquals(lines.get(10), "saucelabs.username=saucelabs-user");
             Assert.assertEquals(lines.get(11), "saucelabs.accesskey=12345678-7f51-4185-a3d7-5d2b413f2efa");
+            Assert.assertEquals(lines.get(12), "capture.video=false");
         } catch (IOException e) {
             Assert.fail("test failed due to exception=" + e.getMessage());
         }
@@ -129,7 +131,7 @@ public class PropertiesUtilsTest {
     @Test
     public void getPropertiesFromPropertyFileTest() {
         Properties properties = PropertiesUtils.getPropertiesFromPropertyFile("config/dev-env/" + PROPERTIES_FILE);
-        Assert.assertEquals(12, properties.size());
+        Assert.assertEquals(13, properties.size());
     }
 
     @Test

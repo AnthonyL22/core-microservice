@@ -2,7 +2,7 @@ package com.pwc.core.framework;
 
 import com.pwc.core.framework.data.PropertiesFile;
 import com.pwc.core.framework.util.PropertiesUtils;
-import com.pwc.logging.LoggerHelper;
+import com.pwc.logging.helper.LoggerHelper;
 import com.saucelabs.saucerest.SauceREST;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.*;
@@ -11,7 +11,7 @@ import org.testng.annotations.Listeners;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.pwc.logging.LoggerService.LOG;
+import static com.pwc.logging.service.LoggerService.LOG;
 
 @Listeners
 public class MicroserviceTestListener extends TestListenerAdapter implements ITestListener, IInvokedMethodListener {

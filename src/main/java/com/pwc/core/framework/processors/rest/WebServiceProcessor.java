@@ -44,7 +44,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.pwc.logging.LoggerService.LOG;
+import static com.pwc.logging.service.LoggerService.LOG;
 import static org.apache.http.ssl.SSLContexts.custom;
 
 public class WebServiceProcessor {

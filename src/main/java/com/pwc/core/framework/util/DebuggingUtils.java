@@ -2,7 +2,7 @@ package com.pwc.core.framework.util;
 
 import com.pwc.core.framework.FrameworkConstants;
 import com.pwc.core.framework.driver.MicroserviceWebDriver;
-import com.pwc.logging.LoggerHelper;
+import com.pwc.logging.helper.LoggerHelper;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.OutputType;
@@ -14,7 +14,7 @@ import java.net.InetAddress;
 import java.net.URL;
 import java.util.Collection;
 
-import static com.pwc.logging.LoggerService.LOG;
+import static com.pwc.logging.service.LoggerService.LOG;
 
 public class DebuggingUtils {
 
@@ -38,6 +38,8 @@ public class DebuggingUtils {
             remoteHostScreenCapPath.append(InetAddress.getLocalHost().getHostName());
             localHostScreenCapPath.append("screenshots/");
             remoteHostScreenCapPath.append("/screenshots/");
+            localHostScreenCapPath.append(LoggerHelper.getClassName(Reporter.getCurrentTestResult()) + "/");
+            remoteHostScreenCapPath.append(LoggerHelper.getClassName(Reporter.getCurrentTestResult()) + "/");
             localHostScreenCapPath.append(LoggerHelper.getClassName(Reporter.getCurrentTestResult()));
             remoteHostScreenCapPath.append(LoggerHelper.getClassName(Reporter.getCurrentTestResult()));
             localHostScreenCapPath.append("_");
@@ -47,12 +49,19 @@ public class DebuggingUtils {
             File targetScreenCap = new File(StringUtils.replace(localHostScreenCapPath.toString(), "%20", " "));
 
             if (!doesSimilarScreenShotExist(targetScreenCap)) {
+
                 FileUtils.copyFile(tempScreenShotFile, targetScreenCap);
+
                 if (!StringUtils.containsIgnoreCase(targetScreenCap.getAbsolutePath(), "jenkins")) {
                     LOG(false, String.format("<p><a href='file:///%s'> LOCAL <img src='%s' height='100' width='100'/></a></p>", targetScreenCap.getAbsolutePath(), targetScreenCap.getAbsolutePath()));
                 } else {
                     LOG(false, String.format("<p><a href='%s'> REMOTE <img src='%s' height='100' width='100'/></a></p>", remoteHostScreenCapPath.toString(), remoteHostScreenCapPath.toString()));
                 }
+
+                if (tempScreenShotFile.exists()) {
+                    tempScreenShotFile.delete();
+                }
+
             }
 
         } catch (Exception e) {
@@ -73,7 +82,8 @@ public class DebuggingUtils {
             File dir = new File(targetScreenShot.getParent());
             Collection<File> activeScreenShots = FileUtils.listFiles(dir, new String[]{"png"}, true);
             for (File activeScreenShot : activeScreenShots) {
-                previousScreenShotExists = activeScreenShot.getName().matches(StringUtils.substringBefore(targetScreenShot.getName(), "_") + "_screenshot.*?\\.png$");
+//                previousScreenShotExists = activeScreenShot.getName().matches(StringUtils.substringBefore(targetScreenShot.getName(), "_") + "_screenshot.*?\\.png$");
+                previousScreenShotExists = activeScreenShot.getName().equalsIgnoreCase(targetScreenShot.getName());
                 if (previousScreenShotExists) {
                     break;
                 }

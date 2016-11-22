@@ -5,7 +5,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.pwc.logging.LoggerService.LOG;
+import static com.pwc.logging.service.LoggerService.LOG;
 
 public class FileUtils {
 

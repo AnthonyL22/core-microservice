@@ -18,7 +18,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.List;
 
-import static com.pwc.logging.LoggerService.LOG;
+import static com.pwc.logging.service.LoggerService.LOG;
 import static org.apache.http.ssl.SSLContexts.custom;
 
 /**

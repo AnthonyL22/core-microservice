@@ -4,9 +4,9 @@ import com.pwc.core.framework.data.WebElementType;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.WebElement;
 
-import static com.pwc.logging.LoggerService.LOG;
 import static com.pwc.assertion.AssertService.assertEquals;
 import static com.pwc.assertion.AssertService.assertFail;
+import static com.pwc.logging.service.LoggerService.LOG;
 
 public class LegendElementImpl implements QualcommWebElement {
 

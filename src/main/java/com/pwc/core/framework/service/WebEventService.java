@@ -59,7 +59,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.pwc.assertion.AssertService.*;
-import static com.pwc.logging.LoggerService.LOG;
+import static com.pwc.logging.service.LoggerService.LOG;
 
 
 @Component

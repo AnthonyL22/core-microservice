@@ -7,6 +7,7 @@ import com.pwc.core.framework.processors.web.KeyboardActivityProcessor;
 import com.pwc.core.framework.processors.web.MouseActivityProcessor;
 import com.pwc.core.framework.processors.web.ViewActivityProcessor;
 import com.pwc.core.framework.service.WebEventService;
+import com.pwc.core.framework.util.DebuggingUtils;
 import com.pwc.core.framework.util.GridUtils;
 import com.pwc.core.framework.util.PropertiesUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -24,7 +25,8 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import static com.pwc.logging.LoggerService.LOG;
+import static com.pwc.logging.service.LoggerService.LOG;
+
 
 @Component
 public class WebEventController {
@@ -40,6 +42,9 @@ public class WebEventController {
 
     @Value("${enable.siteMinder:false}")
     private boolean siteMinderEnabled;
+
+    @Value("${capture.video}")
+    private boolean videoCaptureEnabled;
 
     @Value("${siteminder.open.url}")
     private String siteMinderOpenUrl;
@@ -466,6 +471,9 @@ public class WebEventController {
             KeyboardActivityProcessor.getInstance().webAction(webElement, webElementValue);
         } else if (ViewActivityProcessor.applies(webElement)) {
             ViewActivityProcessor.getInstance().webAction(webElement, webElementValue);
+        }
+        if (videoCaptureEnabled) {
+            DebuggingUtils.takeScreenShot(remoteWebDriver);
         }
     }
 

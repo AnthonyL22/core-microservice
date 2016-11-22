@@ -12,7 +12,7 @@ import java.sql.*;
 import java.util.*;
 import java.util.Date;
 
-import static com.pwc.logging.LoggerService.LOG;
+import static com.pwc.logging.service.LoggerService.LOG;
 
 public class DatabaseEventService {
 

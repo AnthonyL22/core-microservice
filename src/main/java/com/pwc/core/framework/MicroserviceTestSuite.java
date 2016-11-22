@@ -24,7 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import static com.pwc.assertion.AssertService.assertFail;
-import static com.pwc.logging.LoggerService.LOG;
+import static com.pwc.logging.service.LoggerService.LOG;
 
 @Category(SystemTestCategory.class)
 @Listeners(MicroserviceTestListener.class)
