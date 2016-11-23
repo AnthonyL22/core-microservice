@@ -17,7 +17,7 @@
 
         <!-- MS Dependency Versions -->
         <assertion-microservice.version>1.0.1</assertion-microservice.version>
-        <logging-microservice.version>1.0.2</logging-microservice.version>
+        <logging-microservice.version>1.0.3</logging-microservice.version>
 
         <!-- Dependency Versions -->
         <selenium.version>3.0.1</selenium.version>
