@@ -4,7 +4,7 @@
 
     <groupId>com.pacificwebconsulting.core</groupId>
     <artifactId>core-microservice</artifactId>
-    <version>2.0.2-SNAPSHOT</version>
+    <version>2.0.3-SNAPSHOT</version>
     <name>Core Automation Microservice</name>
     <description>Central automated test execution framework</description>
     <url>https://github.com/AnthonyL22/core-microservice</url>
