@@ -136,8 +136,9 @@ public class DatabaseEventService {
      */
     public int executeParameterUpdate(final String sqlTemplateQuery, final Object[] valuesToSubstitute) {
         try {
-            final PreparedStatement preparedStatement = databaseServiceConnection.prepareStatement(sqlTemplateQuery);
-            substituteQueryValues(preparedStatement, valuesToSubstitute);
+
+            PreparedStatement preparedStatement = databaseServiceConnection.prepareStatement(sqlTemplateQuery);
+            preparedStatement = substituteQueryValues(preparedStatement, sqlTemplateQuery, valuesToSubstitute);
             return preparedStatement.executeUpdate();
         } catch (final Exception e) {
             e.printStackTrace();
@@ -174,7 +175,7 @@ public class DatabaseEventService {
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = databaseServiceConnection.prepareStatement(sqlTemplateQuery);
-            substituteQueryValues(preparedStatement, valuesToSubstitute);
+            preparedStatement = substituteQueryValues(preparedStatement, sqlTemplateQuery, valuesToSubstitute);
             preparedStatement.executeQuery();
         } catch (final SQLException e) {
             e.printStackTrace();
@@ -190,11 +191,11 @@ public class DatabaseEventService {
      * @param valuesToSubstitute values to substitute in the query
      * @throws SQLException
      */
-    private void substituteQueryValues(final PreparedStatement preparedStatement, final Object[] valuesToSubstitute) throws SQLException {
+    private PreparedStatement substituteQueryValues(PreparedStatement preparedStatement, final String sqlTemplateQuery, final Object[] valuesToSubstitute) throws SQLException {
         if (valuesToSubstitute != null) {
             for (int i = 0; i < valuesToSubstitute.length; i++) {
                 if (valuesToSubstitute[i] instanceof String) {
-                    if (StringUtils.contains(preparedStatement.toString(), "like")) {
+                    if (StringUtils.contains(sqlTemplateQuery, "like")) {
                         preparedStatement.setString(1, "%" + valuesToSubstitute[i].toString() + "%");
                     } else if (StringUtils.containsIgnoreCase(valuesToSubstitute[i].toString(), "null")) {
                         int sqlType = Integer.parseInt(StringUtils.substringAfter(valuesToSubstitute[i].toString(), ":"));
@@ -225,6 +226,7 @@ public class DatabaseEventService {
                 }
             }
         }
+        return preparedStatement;
     }
 
     /**

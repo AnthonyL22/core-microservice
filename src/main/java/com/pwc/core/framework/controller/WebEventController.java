@@ -43,7 +43,7 @@ public class WebEventController {
     @Value("${enable.siteMinder:false}")
     private boolean siteMinderEnabled;
 
-    @Value("${capture.video}")
+    @Value("${capture.video:false}")
     private boolean videoCaptureEnabled;
 
     @Value("${siteminder.open.url}")
