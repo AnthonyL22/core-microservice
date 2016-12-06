@@ -13,7 +13,6 @@ import com.pwc.core.framework.util.PropertiesUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.phantomjs.PhantomJSDriverService;
 import org.openqa.selenium.remote.*;
 import org.springframework.beans.factory.annotation.Value;
@@ -213,9 +212,9 @@ public class WebEventController {
         LOG("starting firefox browser");
         setDriverExecutable();
         //ToDo: awaiting fix for Firefox 'Certificate is not secure'
-        FirefoxOptions options = new FirefoxOptions();
-        options.addPreference("log", "{level: info}");
-        capabilities.setCapability("moz:firefoxOptions", options);
+        //FirefoxOptions options = new FirefoxOptions();
+        //options.addPreference("log", "{level: info}");
+        //capabilities.setCapability("moz:firefoxOptions", options);
         capabilities.setCapability("marionette", true);
         capabilities.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
         capabilities.setCapability(CapabilityType.BROWSER_NAME, BrowserType.FIREFOX);
