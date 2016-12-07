@@ -82,18 +82,19 @@ public class Authenticator {
 
             SSLContext sslcontext = buildSSLContext();
             httpClient = generateClient(url, username, password, sslcontext);
+            LOG(true, "Authenticating User='%s'", username);
 
             HttpGet get = generateHttpGet(url);
-            LOG("Authenticating with... '" + get.getRequestLine() + "'");
+            LOG(true, "Authenticating Request='%s'", get.getRequestLine());
 
             HttpClientContext context = getHttpClientContext();
             response = httpClient.execute(get, context);
-            LOG("Status: " + response.getStatusLine().toString());
+            LOG(true, "Authentication Status = '%s'", response.getStatusLine());
 
             CookieStore cookieStore = context.getCookieStore();
             cookies = cookieStore.getCookies();
             if (cookies != null) {
-                LOG("Cookie Count: " + cookies.size());
+                LOG(true, "Authentication Cookie Count=%s", cookies.size());
             }
         } catch (Exception e) {
             Assert.fail("Failed to authenticate for cookies using url=" + url, e);
