@@ -10,6 +10,7 @@ import com.pwc.core.framework.controller.WebEventController;
 import com.pwc.core.framework.controller.WebServiceController;
 import com.pwc.core.framework.data.Credentials;
 import com.pwc.core.framework.data.PropertiesFile;
+import com.pwc.core.framework.listeners.MicroserviceTestListener;
 import com.pwc.core.framework.util.PropertiesUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -155,9 +156,10 @@ public abstract class MicroserviceTestSuite {
      * data.  Typically a button click
      *
      * @param elementIdentifier unique identifier for an element
+     * @return time in milliseconds for mouse-based action
      */
-    protected void webAction(final String elementIdentifier) {
-        webAction(elementIdentifier, null);
+    protected long webAction(final String elementIdentifier) {
+        return webAction(elementIdentifier, null);
     }
 
     /**
@@ -166,9 +168,10 @@ public abstract class MicroserviceTestSuite {
      *
      * @param elementIdentifier unique identifier for an element
      * @param attributeValue    toggled state of an element
+     * @return time in milliseconds for mouse-based action
      */
-    protected void webAction(final String elementIdentifier, final boolean attributeValue) {
-        webAction(elementIdentifier, String.valueOf(attributeValue));
+    protected long webAction(final String elementIdentifier, final boolean attributeValue) {
+        return webAction(elementIdentifier, String.valueOf(attributeValue));
     }
 
     /**
@@ -176,8 +179,9 @@ public abstract class MicroserviceTestSuite {
      *
      * @param elementIdentifier unique identifier for an element
      * @param attributeValue    element value to alter in the active DOM
+     * @return time in milliseconds for mouse-based action
      */
-    protected void webAction(final String elementIdentifier, final Object attributeValue) {
+    protected long webAction(final String elementIdentifier, final Object attributeValue) {
         if (webEventController == null) {
             webEventController = (WebEventController) ctx.getBean("webEventController");
             webEventController.initiateBrowser(null);
@@ -187,10 +191,11 @@ public abstract class MicroserviceTestSuite {
         webEventController.getWebEventService().waitForElementToDisplay(elementIdentifier);
         WebElement webElement = webEventController.getWebEventService().findWebElement(elementIdentifier);
         if (webElement != null) {
-            webEventController.webAction(webElement, attributeValue);
+            return webEventController.webAction(webElement, attributeValue);
         } else {
             assertFail(String.format("Unable to find element=%s", elementIdentifier));
         }
+        return 0L;
     }
 
     /**

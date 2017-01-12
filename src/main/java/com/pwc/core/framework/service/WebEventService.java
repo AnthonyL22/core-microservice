@@ -458,7 +458,7 @@ public class WebEventService extends WebEventController {
     }
 
     /**
-     * Find WebElement by an XPath from the current page BODY
+     * Find WebElement by an Path from the current page BODY
      *
      * @param xpathSearchList list of xpaths to search for element with
      * @return WebElement to then be used to interact with the AUT
@@ -703,7 +703,7 @@ public class WebEventService extends WebEventController {
      *
      * @param attribute name
      * @param word      name
-     * @return XPath fragment
+     * @return Path fragment
      */
     public String containingWord(String attribute, String word) {
         return "contains(concat(' ',normalize-space(@" + attribute + "),' '),' " + word + " ')";

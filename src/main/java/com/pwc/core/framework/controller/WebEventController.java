@@ -17,6 +17,7 @@ import org.openqa.selenium.phantomjs.PhantomJSDriverService;
 import org.openqa.selenium.remote.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StopWatch;
 import org.testng.Assert;
 import org.testng.Reporter;
 
@@ -462,18 +463,26 @@ public class WebEventController {
      *
      * @param webElement      DOM element to act upon
      * @param webElementValue DOM element value to alter
+     * @return time in milliseconds for Mouse-specific web event to execute
      */
-    public void webAction(final WebElement webElement, final Object webElementValue) {
+    public long webAction(final WebElement webElement, final Object webElementValue) {
         if (MouseActivityProcessor.applies(webElement)) {
+            StopWatch stopWatch = new StopWatch();
+            stopWatch.start();
             MouseActivityProcessor.getInstance().webAction(webElement, webElementValue);
+            getWebEventService().waitForBrowserToLoad();
+            stopWatch.stop();
+            return stopWatch.getTotalTimeMillis();
         } else if (KeyboardActivityProcessor.applies(webElement)) {
             KeyboardActivityProcessor.getInstance().webAction(webElement, webElementValue);
+            getWebEventService().waitForBrowserToLoad();
         } else if (ViewActivityProcessor.applies(webElement)) {
             ViewActivityProcessor.getInstance().webAction(webElement, webElementValue);
         }
         if (videoCaptureEnabled) {
             DebuggingUtils.takeScreenShot(remoteWebDriver);
         }
+        return 0L;
     }
 
     /**

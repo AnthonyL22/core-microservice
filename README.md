@@ -40,6 +40,61 @@ public abstract class MyTestCase extends WebTestCase {
 }
 ```
 
+## Special Features
+The Core Automation Service has many special features that have been born from years of necessity.  Here are just a few.  
+
+### Retry Failed Test Feature
+Using TestNG's retryAnalyzer, you can retry those Flaky tests that maybe require a quick re-run.  By default, if the
+retryAnalyzer is set your test will run 1 time.  However, you can use the OPTIONAL, custom @MaxRetryCount annotation if you'd 
+like to retry N number of times.
+
+#### Usage
+```
+@MaxRetryCount(5)
+@Test(retryAnalyzer = Retry.class, description = "My Story Info", groups = {Groups.WEB_SERVICE_TEST, Groups.REGRESSION_TEST})
+public void testSolrSearch() {
+    My Test Here
+}
+```
+
+### Performance Feature
+The Core Automation Service provides highly useful performance metrics to the end user (you).  Using the *webAction(), 
+httpAction(), webServiceAction()* methods will receive the response time of each activity.  Only mouse-based GUI, web actions
+are measured for performance and will return a response time while using *webAction()*.
+
+All web service activities are measured and the returned JSON response holds the response time as a field you can then
+interrogate.
+
+For example: A timer is started before the mouse click, next there is logic that waits for the AUT to finish all 
+ajax requests, then the timer is stopped, and finally this response time metric is returned to the calling test.
+
+#### Web UI Usage
+```
+long responseTime = webAction("//a[@id='MyAnchor']")
+// Assert if the returned response time is acceptable
+```
+
+#### Web Service Usage
+```
+JsonPath response = (JsonPath) webServiceAction(SolrWebServiceCommand.SEARCH);
+long responseTime = response.get(FrameworkConstants.HTTP_RESPONSE_TIME_KEY)
+// Assert if the returned response time is acceptable
+```
+
+### Utility Features
+This service provides a [diverse Utilities set](https://github.com/AnthonyL22/core-microservice/tree/master/src/main/java/com/pwc/core/framework/util) 
+to assist in nearly every need of a quality initiative.
+
+* DateUtils
+* DebuggingUtils 
+* FileUtils
+* GridUtils
+* JsonUtils
+* PropertiesUtils
+* RandomStringUtils
+* StringUtils
+* WebElementUtils
+ 
 ## Adjustable Settings
 The following settings can be modified at any stage of the automation execution process to run tests on the desired 
 system.  This is a necessary feature to enable users to run their tests in Sauce Labs on different browser and operating
