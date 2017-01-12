@@ -59,14 +59,14 @@ public void testSolrSearch() {
 
 ### Performance Feature
 The Core Automation Service provides highly useful performance metrics to the end user (you).  Using the *webAction(), 
-httpAction(), webServiceAction()* methods will receive the response time of each activity.  Only mouse-based GUI, web actions
+httpAction(), webServiceAction()* methods will return the execution response times of each activity.  Only mouse-based GUI, web actions
 are measured for performance and will return a response time while using *webAction()*.
-
-All web service activities are measured and the returned JSON response holds the response time as a field you can then
-interrogate.
 
 For example: A timer is started before the mouse click, next there is logic that waits for the AUT to finish all 
 ajax requests, then the timer is stopped, and finally this response time metric is returned to the calling test.
+
+All web service activities are measured and the returned JSON response holds the response time as a field you can then
+interrogate.  See example below.
 
 #### Web UI Usage
 ```
