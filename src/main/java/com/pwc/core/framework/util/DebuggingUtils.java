@@ -21,8 +21,15 @@ public class DebuggingUtils {
     /**
      * Capture and store the active screen under test and store in '.../target/test-classes/screenshots' directory
      *
-     * @param webDriver active WebDriver to take screenshot of
+     * @param webDriver           active WebDriver to take screenshot of
+     * @param videoLoggingEnabled flag to take screen shot or not
      */
+    public static void takeScreenShot(MicroserviceWebDriver webDriver, boolean videoLoggingEnabled) {
+        if (videoLoggingEnabled) {
+            takeScreenShot(webDriver);
+        }
+    }
+
     public static void takeScreenShot(MicroserviceWebDriver webDriver) {
 
         try {

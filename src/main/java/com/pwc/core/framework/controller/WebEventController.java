@@ -564,4 +564,12 @@ public class WebEventController {
         return currentJobId;
     }
 
+    public boolean isVideoCaptureEnabled() {
+        return videoCaptureEnabled;
+    }
+
+    public void setVideoCaptureEnabled(boolean videoCaptureEnabled) {
+        this.videoCaptureEnabled = videoCaptureEnabled;
+    }
+
 }

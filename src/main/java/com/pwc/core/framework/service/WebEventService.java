@@ -530,7 +530,7 @@ public class WebEventService extends WebEventController {
             actualHeaderRowCount = getTableHeaderCount(gridElement);
             actualRowCount = gridElement.findElements(By.tagName(WebElementType.TR.type)).size() - actualHeaderRowCount;
         } catch (Exception e) {
-            DebuggingUtils.takeScreenShot(this.microserviceWebDriver);
+            DebuggingUtils.takeScreenShot(this.microserviceWebDriver, isVideoCaptureEnabled());
             assertFail("tableRowCount() Failed for expected row count=%s", expectedRowCount);
         }
         assertEquals("Verify tableRowCount()", actualRowCount, expectedRowCount);
@@ -571,7 +571,7 @@ public class WebEventService extends WebEventController {
                 assertFalse("Verify tableTextContains() not contains text='%s'", StringUtils.containsIgnoreCase(StringUtils.trim(cell.getText()), expectedText), expectedText);
             }
         } catch (Exception e) {
-            DebuggingUtils.takeScreenShot(this.microserviceWebDriver);
+            DebuggingUtils.takeScreenShot(this.microserviceWebDriver, isVideoCaptureEnabled());
             assertFail("tableTextEquals() Failed for expectedText='%s'", expectedText);
         }
     }
@@ -597,7 +597,7 @@ public class WebEventService extends WebEventController {
                 assertNotEquals("Verify tableTextEquals() not exists text='%s'", StringUtils.trim(cell.getText()), expectedText, expectedText);
             }
         } catch (Exception e) {
-            DebuggingUtils.takeScreenShot(this.microserviceWebDriver);
+            DebuggingUtils.takeScreenShot(this.microserviceWebDriver, isVideoCaptureEnabled());
             assertFail("tableTextEquals() Failed for expectedText='%s'", expectedText);
         }
     }
@@ -869,7 +869,7 @@ public class WebEventService extends WebEventController {
                 assertFalse("Verify elementTextContains() for element=%s", elementContainsText(false, actualText, expectedText), elementIdentifier);
             }
         } else {
-            DebuggingUtils.takeScreenShot(this.microserviceWebDriver);
+            DebuggingUtils.takeScreenShot(this.microserviceWebDriver, isVideoCaptureEnabled());
             assertFail("elementTextContains() Failed for element=%s", elementIdentifier);
         }
     }
@@ -920,7 +920,7 @@ public class WebEventService extends WebEventController {
         if ((isVisible(elementIdentifier))) {
             assertPass("elementVisible() Passed for element=%s", elementIdentifier);
         } else {
-            DebuggingUtils.takeScreenShot(this.microserviceWebDriver);
+            DebuggingUtils.takeScreenShot(this.microserviceWebDriver, isVideoCaptureEnabled());
             assertFail("elementVisible() Failed for element=%s", elementIdentifier);
         }
     }
@@ -934,7 +934,7 @@ public class WebEventService extends WebEventController {
         if (!isVisible(elementIdentifier)) {
             assertPass("elementNotVisible() Passed for element=%s", elementIdentifier);
         } else {
-            DebuggingUtils.takeScreenShot(this.microserviceWebDriver);
+            DebuggingUtils.takeScreenShot(this.microserviceWebDriver, isVideoCaptureEnabled());
             assertFail("elementNotVisible() Failed for element=%s", elementIdentifier);
         }
     }
@@ -1007,7 +1007,7 @@ public class WebEventService extends WebEventController {
         if (webElement != null) {
             assertPass("elementExists() Passed for element=%s", elementIdentifier);
         } else {
-            DebuggingUtils.takeScreenShot(this.microserviceWebDriver);
+            DebuggingUtils.takeScreenShot(this.microserviceWebDriver, isVideoCaptureEnabled());
             assertFail("elementExists() Failed for element=%s", elementIdentifier);
         }
     }
@@ -1022,7 +1022,7 @@ public class WebEventService extends WebEventController {
         if (webElement == null) {
             assertPass("elementNotExists() Passed for element=%s", elementIdentifier);
         } else {
-            DebuggingUtils.takeScreenShot(this.microserviceWebDriver);
+            DebuggingUtils.takeScreenShot(this.microserviceWebDriver, isVideoCaptureEnabled());
             assertFail("elementNotExists() Failed for element=%s", elementIdentifier);
         }
     }
@@ -1054,7 +1054,7 @@ public class WebEventService extends WebEventController {
             }
 
         } catch (Exception e) {
-            DebuggingUtils.takeScreenShot(this.microserviceWebDriver);
+            DebuggingUtils.takeScreenShot(this.microserviceWebDriver, isVideoCaptureEnabled());
             assertFail("alertTextEquals() encountered error=%s", e.getMessage());
         }
     }
@@ -1087,7 +1087,7 @@ public class WebEventService extends WebEventController {
             }
 
         } catch (Exception e) {
-            DebuggingUtils.takeScreenShot(this.microserviceWebDriver);
+            DebuggingUtils.takeScreenShot(this.microserviceWebDriver, isVideoCaptureEnabled());
             assertFail("alertTextEquals() encountered error=%s", e.getMessage());
         }
     }
@@ -1102,12 +1102,12 @@ public class WebEventService extends WebEventController {
      */
     public boolean elementContainsText(final boolean textExists, final String actualText, final String expectedText) {
         if (textExists && !StringUtils.containsIgnoreCase(actualText, expectedText)) {
-            DebuggingUtils.takeScreenShot(this.microserviceWebDriver);
+            DebuggingUtils.takeScreenShot(this.microserviceWebDriver, isVideoCaptureEnabled());
             return false;
         } else if (textExists && StringUtils.containsIgnoreCase(actualText, expectedText)) {
             return true;
         } else if (!textExists && StringUtils.containsIgnoreCase(actualText, expectedText)) {
-            DebuggingUtils.takeScreenShot(this.microserviceWebDriver);
+            DebuggingUtils.takeScreenShot(this.microserviceWebDriver, isVideoCaptureEnabled());
             return true;
         } else {
             return false;
@@ -1169,7 +1169,7 @@ public class WebEventService extends WebEventController {
             });
 
         } catch (Exception e) {
-            DebuggingUtils.takeScreenShot(this.microserviceWebDriver);
+            DebuggingUtils.takeScreenShot(this.microserviceWebDriver, isVideoCaptureEnabled());
             Assert.fail(String.format("Element='%s', didn't disappear in allotted time.", elementIdentifier), e);
         }
     }
@@ -1199,7 +1199,7 @@ public class WebEventService extends WebEventController {
             });
 
         } catch (Exception e) {
-            DebuggingUtils.takeScreenShot(this.microserviceWebDriver);
+            DebuggingUtils.takeScreenShot(this.microserviceWebDriver, isVideoCaptureEnabled());
             Assert.fail(String.format("Element='%s', didn't exist in allotted time.", elementIdentifier), e);
         }
     }
@@ -1229,7 +1229,7 @@ public class WebEventService extends WebEventController {
             });
 
         } catch (Exception e) {
-            DebuggingUtils.takeScreenShot(this.microserviceWebDriver);
+            DebuggingUtils.takeScreenShot(this.microserviceWebDriver, isVideoCaptureEnabled());
             Assert.fail(String.format("Element='%s', didn't appear in allotted time.", elementIdentifier), e);
         }
     }
@@ -1261,7 +1261,7 @@ public class WebEventService extends WebEventController {
                     });
 
         } catch (Exception e) {
-            DebuggingUtils.takeScreenShot(this.microserviceWebDriver);
+            DebuggingUtils.takeScreenShot(this.microserviceWebDriver, isVideoCaptureEnabled());
             Assert.fail(String.format("Element='%s', didn't appear in allotted time.", elementIdentifier), e);
         }
     }
@@ -1291,7 +1291,7 @@ public class WebEventService extends WebEventController {
             });
 
         } catch (Exception e) {
-            DebuggingUtils.takeScreenShot(this.microserviceWebDriver);
+            DebuggingUtils.takeScreenShot(this.microserviceWebDriver, isVideoCaptureEnabled());
             Assert.fail(String.format("Text='%s', didn't appear in allotted time.", textToWaitToDisplay), e);
         }
     }
@@ -1320,7 +1320,7 @@ public class WebEventService extends WebEventController {
             });
 
         } catch (Exception e) {
-            DebuggingUtils.takeScreenShot(this.microserviceWebDriver);
+            DebuggingUtils.takeScreenShot(this.microserviceWebDriver, isVideoCaptureEnabled());
             Assert.fail(String.format("Text='%s', didn't disappear in allotted time.", textToWaitToDisappear), e);
         }
     }
@@ -1348,7 +1348,7 @@ public class WebEventService extends WebEventController {
                 }
             });
         } catch (Exception e) {
-            DebuggingUtils.takeScreenShot(this.microserviceWebDriver);
+            DebuggingUtils.takeScreenShot(this.microserviceWebDriver, isVideoCaptureEnabled());
             Assert.fail(String.format("Browser didn't appear READY in allotted time of %s seconds", pageTimeoutInSeconds), e);
         }
     }

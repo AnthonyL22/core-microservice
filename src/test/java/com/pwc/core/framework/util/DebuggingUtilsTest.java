@@ -49,6 +49,20 @@ public class DebuggingUtilsTest extends WebElementBaseTest {
     }
 
     @Test
+    public void takeScreenShotDisabledTest() {
+        webEventService.setVideoCaptureEnabled(false);
+        MicroserviceWebDriver mockQWebDriver = mock(MicroserviceWebDriver.class);
+        DebuggingUtils.takeScreenShot(mockQWebDriver, false);
+    }
+
+    @Test
+    public void takeScreenShotEnabledTest() {
+        webEventService.setVideoCaptureEnabled(true);
+        MicroserviceWebDriver mockQWebDriver = mock(MicroserviceWebDriver.class);
+        DebuggingUtils.takeScreenShot(mockQWebDriver, true);
+    }
+
+    @Test
     public void takeScreenShotBecauseVisibleBrowserTest() {
         DesiredCapabilities mockDesiredCapabilities = mock(DesiredCapabilities.class);
         MicroserviceWebDriver mockWebDriverService = mock(MicroserviceWebDriver.class, withSettings().extraInterfaces(TakesScreenshot.class));
