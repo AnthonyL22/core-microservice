@@ -12,6 +12,9 @@ public interface JavascriptConstants {
     // Javascript Entry
     String ENTER_VALUE_ELEMENT_BY_XPATH = "var element = document.evaluate(\"%s\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue; element.value='%s';";
 
+    // Javascript Drop Down
+    String SELECT_VALUE_ELEMENT_BY_XPATH = ENTER_VALUE_ELEMENT_BY_XPATH + " for(var i=0; i < element.options.length; i++){if(element.options[i].text === \"%s\") {element.selectedIndex = i; break;}};";
+
     // Javascript Clicks
     String CLICK_BY_XPATH = "var element = document.evaluate(\"%s\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue; element.click();";
     String CLICK_ELEMENT_BY_ID = "document.getElementById('%s').click();";
