@@ -29,7 +29,7 @@ public class MouseActivityProcessorTest extends WebElementBaseTest {
         when(mockWebElement.getAttribute(WebElementAttribute.TYPE.attribute)).thenReturn(WebElementType.SPAN.type);
         when(mockWebElement.getTagName()).thenReturn(WebElementType.SPAN.type);
         mouseActivityProcessor.webAction(mockWebElement, null);
-        verify(mockWebElement, times(14)).getTagName();
+        verify(mockWebElement, times(15)).getTagName();
     }
 
     @Test
@@ -37,7 +37,7 @@ public class MouseActivityProcessorTest extends WebElementBaseTest {
         when(mockWebElement.getAttribute(WebElementAttribute.TYPE.attribute)).thenReturn(WebElementType.LI.type);
         when(mockWebElement.getTagName()).thenReturn(WebElementType.LI.type);
         mouseActivityProcessor.webAction(mockWebElement, ATTRIBUTE);
-        verify(mockWebElement, times(12)).getTagName();
+        verify(mockWebElement, times(13)).getTagName();
     }
 
     @Test
@@ -45,7 +45,7 @@ public class MouseActivityProcessorTest extends WebElementBaseTest {
         when(mockWebElement.getAttribute(WebElementAttribute.TYPE.attribute)).thenReturn(WebElementType.COMBOBOX.type);
         when(mockWebElement.getTagName()).thenReturn(WebElementType.COMBOBOX.type);
         mouseActivityProcessor.webAction(mockWebElement, ATTRIBUTE);
-        verify(mockWebElement, times(16)).getTagName();
+        verify(mockWebElement, times(17)).getTagName();
     }
 
     @Test
@@ -72,11 +72,19 @@ public class MouseActivityProcessorTest extends WebElementBaseTest {
     }
 
     @Test
+    public void webActionButtonWithImageTest() {
+        when(mockWebElement.getAttribute(WebElementAttribute.TYPE.attribute)).thenReturn(WebElementType.IMAGE.type);
+        when(mockWebElement.getTagName()).thenReturn(WebElementType.BUTTON.type);
+        mouseActivityProcessor.webAction(mockWebElement, ATTRIBUTE);
+        verify(mockWebElement, times(3)).getTagName();
+    }
+
+    @Test
     public void webActionAnchorTest() {
         when(mockWebElement.getAttribute(WebElementAttribute.HREF.attribute)).thenReturn("http://www.mywebsite.com");
         when(mockWebElement.getTagName()).thenReturn(WebElementType.ANCHOR.type);
         mouseActivityProcessor.webAction(mockWebElement, ATTRIBUTE);
-        verify(mockWebElement, times(8)).getTagName();
+        verify(mockWebElement, times(9)).getTagName();
     }
 
     @Test
@@ -84,14 +92,14 @@ public class MouseActivityProcessorTest extends WebElementBaseTest {
         when(mockWebElement.getAttribute(WebElementAttribute.HREF.attribute)).thenReturn("http://www.mywebsite.com");
         when(mockWebElement.getTagName()).thenReturn(WebElementType.IMG.type);
         mouseActivityProcessor.webAction(mockWebElement, ATTRIBUTE);
-        verify(mockWebElement, times(8)).getTagName();
+        verify(mockWebElement, times(9)).getTagName();
     }
 
     @Test
     public void webActionHeadingTest() {
         when(mockWebElement.getTagName()).thenReturn(WebElementType.HEADER.type);
         mouseActivityProcessor.webAction(mockWebElement, null);
-        verify(mockWebElement, times(16)).getTagName();
+        verify(mockWebElement, times(17)).getTagName();
     }
 
     @Test(expected = AssertionError.class)
@@ -105,14 +113,14 @@ public class MouseActivityProcessorTest extends WebElementBaseTest {
     public void webActionIconTest() {
         when(mockWebElement.getTagName()).thenReturn(WebElementType.ICON.type);
         mouseActivityProcessor.webAction(mockWebElement, ATTRIBUTE);
-        verify(mockWebElement, times(10)).getTagName();
+        verify(mockWebElement, times(11)).getTagName();
     }
 
     @Test
     public void webActionNotAppliesTest() {
         when(mockWebElement.getTagName()).thenReturn(WebElementType.INPUT.type);
         mouseActivityProcessor.webAction(mockWebElement, ATTRIBUTE);
-        verify(mockWebElement, times(15)).getTagName();
+        verify(mockWebElement, times(16)).getTagName();
     }
 
 }
