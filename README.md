@@ -1,7 +1,3 @@
-# N.a.F.
-
-[![Build Status][travis-shield]][https://travis-ci.org/AnthonyL22/core-microservice.svg?branch=master]
-
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.pacificwebconsulting.core/core-microservice/badge.svg?style=plastic)](https://maven-badges.herokuapp.com/maven-central/com.pacificwebconsulting.core/core-microservice)
 
 ## Introduction
