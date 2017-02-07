@@ -85,19 +85,19 @@ public abstract class DeclarativeTestCase extends MicroserviceTestSuite {
         webEventController.getWebEventService().elementTextExists(notExpected, false);
     }
 
-    protected void textEquals(final String elementIdentifier, final String expected) {
+    protected void elementTextEquals(final String elementIdentifier, final String expected) {
         webEventController.getWebEventService().elementTextExists(elementIdentifier, expected, true);
     }
 
-    protected void textNotEquals(final String elementIdentifier, final String notExpected) {
+    protected void elementTextNotEquals(final String elementIdentifier, final String notExpected) {
         webEventController.getWebEventService().elementTextExists(elementIdentifier, notExpected, false);
     }
 
-    protected void textContains(final String elementIdentifier, final String expected) {
+    protected void elementTextContains(final String elementIdentifier, final String expected) {
         webEventController.getWebEventService().elementTextContains(elementIdentifier, expected, true);
     }
 
-    protected void textNotContains(final String elementIdentifier, final String notExpected) {
+    protected void elementTextNotContains(final String elementIdentifier, final String notExpected) {
         webEventController.getWebEventService().elementTextContains(elementIdentifier, notExpected, false);
     }
 

@@ -237,10 +237,6 @@ public class WebEventService extends WebEventController {
 
             try {
 
-                if (StringUtils.containsIgnoreCase(getUrl(), "jira.qualcomm.com")) {
-                    setUrl("https://jira.qualcomm.com/jira/rest/gadget/1.0/statTypes");
-                }
-
                 cookieStore = new BasicCookieStore();
                 for (Cookie cookie : cookies) {
                     cookieStore.addCookie(cookie);
@@ -816,7 +812,7 @@ public class WebEventService extends WebEventController {
     }
 
     /**
-     * Exeucte .blur() on a given element via xPath or by ID
+     * Execute blur Event on a given element via xPath or by ID
      *
      * @param elementIdentifier element identifier (xPath or explicite Element ID)
      */
@@ -1266,7 +1262,6 @@ public class WebEventService extends WebEventController {
         }
     }
 
-
     /**
      * Wait for Text to load in browser.  Will timeout after the configurable timeout and throw a failure to fail the test.
      * NOTE: be very careful with this method.  Make sure your textToWaitToDisplay to wait for to display is going to surly
@@ -1409,22 +1404,11 @@ public class WebEventService extends WebEventController {
         microserviceWebDriver.navigate().refresh();
     }
 
-    public void setMicroserviceWebDriver(MicroserviceWebDriver microserviceWebDriver) {
-        this.microserviceWebDriver = microserviceWebDriver;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public File getUniqueCookiesFile() {
-        return uniqueCookiesFile;
-    }
-
+    /**
+     * Delete a cookie from the current WebDriver
+     *
+     * @param cookieIdentifier cookie to delete from current driver
+     */
     public void deleteCookie(final String cookieIdentifier) {
         Set<org.openqa.selenium.Cookie> cookiesToDelete = findCookies(cookieIdentifier);
         for (org.openqa.selenium.Cookie cookie : cookiesToDelete) {
@@ -1433,6 +1417,16 @@ public class WebEventService extends WebEventController {
         }
     }
 
+    /**
+     * Add a cookie to the current WebDriver
+     *
+     * @param cookieName             name of cookie
+     * @param cookieValue            value of cookie
+     * @param cookieDomain           domain associated with cookie
+     * @param cookiePath             path of cookie
+     * @param cookieExpiryDateOffset expiration date
+     * @param secureCookie           is cookie secure
+     */
     public void addCookie(final String cookieName, final String cookieValue, String cookieDomain, String cookiePath, Object cookieExpiryDateOffset, boolean secureCookie) {
         org.openqa.selenium.Cookie cookieToAdd;
         if (cookieExpiryDateOffset instanceof Integer) {
@@ -1444,6 +1438,16 @@ public class WebEventService extends WebEventController {
         assertTrue("Verify addCookie() name='%s', value='%s'", findCookies(cookieName).size() > 0, cookieToAdd.getName(), cookieToAdd.getValue());
     }
 
+    /**
+     * Cookie to modify
+     *
+     * @param cookieName             name of cookie
+     * @param cookieValue            value of cookie
+     * @param cookieDomain           domain associated with cookie
+     * @param cookiePath             path of cookie
+     * @param cookieExpiryDateOffset expiration date
+     * @param secureCookie           is cookie secure
+     */
     public void modifyCookie(final String cookieName, final String cookieValue, String cookieDomain, String cookiePath, Object cookieExpiryDateOffset, boolean secureCookie) {
         deleteCookie(cookieName);
         addCookie(cookieName, cookieValue, cookieDomain, cookiePath, cookieExpiryDateOffset, secureCookie);
@@ -1504,6 +1508,10 @@ public class WebEventService extends WebEventController {
         return this.microserviceWebDriver;
     }
 
+    public void setMicroserviceWebDriver(MicroserviceWebDriver microserviceWebDriver) {
+        this.microserviceWebDriver = microserviceWebDriver;
+    }
+
     public CloseableHttpClient getCustomHttpClient() {
         return this.customHttpClient;
     }
@@ -1534,6 +1542,18 @@ public class WebEventService extends WebEventController {
 
     public void setPageTimeoutInSeconds(long pageTimeoutInSeconds) {
         this.pageTimeoutInSeconds = pageTimeoutInSeconds;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public File getUniqueCookiesFile() {
+        return uniqueCookiesFile;
     }
 
 }
