@@ -1,3 +1,8 @@
+# N.A.F.
+
+[![Build Status][travis-shield]][travis-link]
+[![Maven Release][maven-shield]][maven-link]
+
 ## Introduction
 
 The Core Automated Testing microservice is used to the perform functional system tests on any desktop or mobile browser, REST service and database endpoints.  
