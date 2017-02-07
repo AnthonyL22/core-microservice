@@ -89,10 +89,26 @@ public class ButtonInputElementTest extends WebElementBaseTest {
     }
 
     @Test
+    public void buttonInputElementWebActionImageInputTypeTest() {
+        WebElement mockSubmitInputElement = mock(WebElement.class);
+        when(mockSubmitInputElement.getAttribute(WebElementAttribute.ID.attribute)).thenReturn("777");
+        when(mockSubmitInputElement.getTagName()).thenReturn(WebElementType.INPUT.type);
+        when(mockSubmitInputElement.getAttribute(WebElementAttribute.TYPE.attribute)).thenReturn(WebElementType.IMAGE.type);
+        buttonInputElement.webAction(mockSubmitInputElement);
+    }
+
+    @Test
     public void buttonInputElementAppliesFileTypeTest() {
         when(mockWebElement.getAttribute(WebElementAttribute.TYPE.attribute)).thenReturn(WebElementType.FILE.type);
         boolean result = ButtonInputElementImpl.applies(mockWebElement);
         Assert.assertFalse(result);
+    }
+
+    @Test
+    public void buttonInputElementAppliesImageTypeTest() {
+        when(mockWebElement.getAttribute(WebElementAttribute.TYPE.attribute)).thenReturn(WebElementType.IMAGE.type);
+        boolean result = ButtonInputElementImpl.applies(mockWebElement);
+        Assert.assertTrue(result);
     }
 
     @Test

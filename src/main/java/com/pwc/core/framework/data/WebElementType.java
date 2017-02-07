@@ -15,6 +15,7 @@ public enum WebElementType {
     PASSWORD("password"),
     ICON("i"),
     IMG("img"),
+    IMAGE("image"),
     ANCHOR("a"),
     TABLE("table"),
     TBODY("tbody"),

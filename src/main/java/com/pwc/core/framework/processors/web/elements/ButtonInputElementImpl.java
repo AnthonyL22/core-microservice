@@ -14,6 +14,8 @@ public class ButtonInputElementImpl implements QualcommWebElement {
         return (StringUtils.equalsIgnoreCase(element.getTagName(), WebElementType.INPUT.type) &&
                 StringUtils.equalsIgnoreCase(element.getAttribute(WebElementAttribute.TYPE.attribute), WebElementType.BUTTON.type)) ||
                 (StringUtils.equalsIgnoreCase(element.getTagName(), WebElementType.INPUT.type) &&
+                        StringUtils.equalsIgnoreCase(element.getAttribute(WebElementAttribute.TYPE.attribute), WebElementType.IMAGE.type)) ||
+                (StringUtils.equalsIgnoreCase(element.getTagName(), WebElementType.INPUT.type) &&
                         StringUtils.equalsIgnoreCase(element.getAttribute(WebElementAttribute.TYPE.attribute), WebElementType.SUBMIT.type));
     }
 
