@@ -24,13 +24,19 @@ Currently capabilities include:
 <dependency>
     <groupId>com.pacificwebconsulting.core</groupId>
     <artifactId>core-microservice</artifactId>
-    <version>2.0.0</version>
+    <version>2.0.x</version>
 </dependency>
 ```
 
 ## Integration
 
-Simply, extend the class WebTestCase defined in this service.  For example:
+There are two classes to choose from when implementing starting project.  You can choose either of the following
+classes to extend depending on the nomenclature you would prefer in your test scripts:
+
+* *WebTestCase* - uses Selenium-like terms and expressions (Ex: webElementExists();)
+* *DeclarativeTestCase* - more direct description of the actions being performed (Ex: exists();)
+
+Simply, extend the class WebTestCase OR DeclarativeTestCase as shown below:
 
 ```
 public abstract class MyTestCase extends WebTestCase {
