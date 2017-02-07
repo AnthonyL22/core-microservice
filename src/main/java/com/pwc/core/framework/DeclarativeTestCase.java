@@ -37,7 +37,7 @@ public abstract class DeclarativeTestCase extends MicroserviceTestSuite {
         return webEventController.getWebEventService().executeJavascript(javascriptSnippet);
     }
 
-    protected long go(final String url) {
+    protected long redirect(final String url) {
         return webEventController.getWebEventService().redirectToUrl(url);
     }
 
