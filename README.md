@@ -30,7 +30,7 @@ Currently capabilities include:
 
 ## Integration
 
-There are two classes to choose from when implementing starting project.  You can choose either of the following
+There are two classes to choose from when implementing this service.  You must choose either of the following
 classes to extend depending on the nomenclature you would prefer in your test scripts:
 
 * *WebTestCase* - uses Selenium-like terms and expressions (Ex: webElementExists();)
