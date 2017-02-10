@@ -1,12 +1,12 @@
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.pacificwebconsulting.core/core-microservice/badge.svg?style=plastic)](https://maven-badges.herokuapp.com/maven-central/com.pacificwebconsulting.core/core-microservice)
 
+![alt tag](http://www.pacificwebconsulting.com/wp-content/uploads/2016/11/PWC_logo_sm.jpg)
+
 ## Introduction
 
 The Core Automated Testing microservice is used to the perform functional system tests on any desktop or mobile browser, REST service and database endpoints.   
 
 This service is an on-ramp for entire engineering teams to contribute to the functional testing of a product offering.  Also, to unify our testing teams with one automated testing solution.
-
-![alt tag](https://saucelabs.com/content/images/logo.png)
 
 Currently capabilities include:
 
