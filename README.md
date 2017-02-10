@@ -2,9 +2,11 @@
 
 ## Introduction
 
-The Core Automated Testing microservice is used to the perform functional system tests on any desktop or mobile browser, REST service and database endpoints.  
+The Core Automated Testing microservice is used to the perform functional system tests on any desktop or mobile browser, REST service and database endpoints.   
 
 This service is an on-ramp for entire engineering teams to contribute to the functional testing of a product offering.  Also, to unify our testing teams with one automated testing solution.
+
+![alt tag](https://saucelabs.com/content/images/logo.png)
 
 Currently capabilities include:
 
