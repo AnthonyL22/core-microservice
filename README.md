@@ -1,6 +1,13 @@
+<a href="http://www.pacificwebconsulting.com/">
+    <img src="http://www.pacificwebconsulting.com/wp-content/uploads/2016/11/PWC_logo_sm.jpg" alt="Automated Testing Solutions"
+         title="Automated Testing Solutions" align="right" />
+</a>
+
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.pacificwebconsulting.core/core-microservice/badge.svg?style=plastic)](https://maven-badges.herokuapp.com/maven-central/com.pacificwebconsulting.core/core-microservice)
 
-## Introduction
+Got a question?  [Email us](http://www.pacificwebconsulting.com/contact/) or reach out on [LinkedIn](https://www.linkedin.com/in/alombardo/) 
+
+# Introduction
 
 The Core Automated Testing microservice is used to the perform functional system tests on any desktop or mobile browser, REST service and database endpoints.  
 
@@ -13,12 +20,20 @@ Currently capabilities include:
 * REST Web Services (SiteMinder Authenticated) 
 * Database (Oracle, MongoDB, MS SQL, JDBC)
 
-## Prerequisites
+# Questions and issues
+
+The [github issue tracker](https://github.com/AnthonyL22/core-microservice/issues) is **_only_** for bug reports and 
+feature requests. Anything else, such as questions for help in using the library, should be posted via email to  
+[pacificwebconsulting.com](http://www.pacificwebconsulting.com/contact/).
+
+# Prerequisites
 
 1. Java 1.8
 2. Maven 3.x
 
-## Maven Dependency
+# Maven Dependency
+
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.pacificwebconsulting.core/core-microservice/badge.svg?style=plastic)](https://maven-badges.herokuapp.com/maven-central/com.pacificwebconsulting.core/core-microservice)
 
 ```
 <dependency>
@@ -28,7 +43,7 @@ Currently capabilities include:
 </dependency>
 ```
 
-## Integration
+# Integration
 
 There are two classes to choose from when implementing this service.  You must choose either of the following
 classes to extend depending on the nomenclature you would prefer in your test scripts:
@@ -48,15 +63,15 @@ public abstract class MyTestCase extends WebTestCase {
 }
 ```
 
-## Special Features
+# Special Features
 The Core Automation Service has many special features that have been born from years of necessity.  Here are just a few.  
 
-### Retry Failed Test Feature
+## Retry Failed Test Feature
 Using TestNG's retryAnalyzer, you can retry those Flaky tests that maybe require a quick re-run.  By default, if the
 retryAnalyzer is set your test will run 1 time.  However, you can use the OPTIONAL, custom @MaxRetryCount annotation if you'd 
 like to retry N number of times.
 
-#### Usage
+### Usage
 ```
 @MaxRetryCount(5)
 @Test(retryAnalyzer = Retry.class, description = "My Story Info", groups = {Groups.WEB_SERVICE_TEST, Groups.REGRESSION_TEST})
@@ -65,7 +80,7 @@ public void testSolrSearch() {
 }
 ```
 
-### Performance Feature
+## Performance Feature
 The Core Automation Service provides highly useful performance metrics to the end user (you).  Using the *webAction(), 
 httpAction(), webServiceAction()* methods will return the execution response times of each activity.  Only mouse-based GUI, web actions
 are measured for performance and will return a response time while using *webAction()*.
@@ -76,20 +91,20 @@ ajax requests, then the timer is stopped, and finally this response time metric 
 All web service activities are measured and the returned JSON response holds the response time as a field you can then
 interrogate.  See example below.
 
-#### Web UI Usage
+### Web UI Usage
 ```
 long responseTime = webAction("//a[@id='MyAnchor']")
 // Assert if the returned response time is acceptable
 ```
 
-#### Web Service Usage
+### Web Service Usage
 ```
 JsonPath response = (JsonPath) webServiceAction(SolrWebServiceCommand.SEARCH);
 long responseTime = response.get(FrameworkConstants.HTTP_RESPONSE_TIME_KEY)
 // Assert if the returned response time is acceptable
 ```
 
-### Utility Features
+## Utility Features
 This service provides a [diverse Utilities set](https://github.com/AnthonyL22/core-microservice/tree/master/src/main/java/com/pwc/core/framework/util) 
 to assist in nearly every need of a quality initiative.
 
@@ -103,7 +118,7 @@ to assist in nearly every need of a quality initiative.
 * StringUtils
 * WebElementUtils
  
-## Adjustable Settings
+# Adjustable Settings
 The following settings can be modified at any stage of the automation execution process to run tests on the desired 
 system.  This is a necessary feature to enable users to run their tests in Sauce Labs on different browser and operating
 system configurations.  
@@ -129,23 +144,23 @@ Defining any of the following variables will result in your test being executed 
 | -Dbrowser=ch -Dplatform=xp  | -Dbrowser=ch -Dplatform=linux |
 
 
-### Default Runtime Settings - Sauce Labs
+## Default Runtime Settings - Sauce Labs
 If you choose not to override ANY of the settings above the following runtime settings are used by default in Sauce Labs:
 
 * Linux
 * Chrome (latest version) 
 
-### Default Runtime Settings - non Sauce Labs
+## Default Runtime Settings - non Sauce Labs
 If you choose not to override ANY of the settings above the following runtime settings are used by default in Sauce Labs:
 
 * Your Operating System
 * Chrome (your installed version) 
 
 
-### Properties Files Settings
+## Properties Files Settings
 There are three properties files used to drive all automated tests.  The following .properties files are required to be defined in your application's config directory.
 
-#### automation.properties
+### automation.properties
 Properties used for connections to the web application and web services under test.
 
 Example:
@@ -182,7 +197,7 @@ Settings:
 | saucelabs.username            |                  | Sauce Labs username (see grid.properties)  |
 | saucelabs.accesskey           |                  | Sauce Labs key (see grid.properties)       |
 
-#### database.properties
+### database.properties
 Properties used for connections to the database under test. 
 
 Example:
@@ -202,7 +217,7 @@ mongo.username=
 mongo.password=
 ```
 
-#### grid.properties
+### grid.properties
 Properties used for connections to any grid (Sauce Labs, Selenium GRID, ect...) 
 
 Example:
@@ -220,7 +235,7 @@ Settings:
 | grid.hub.url      |                  | url to runtime GRID                        |
 
 
-## Runtime
+# Runtime
 The Core Automation Service supports the following abilities to run your tests.  The **grid.properties** file which 
 must be part of your project defines the following self-explanatory properties:
 
@@ -230,10 +245,10 @@ grid.hub.url=http://<YOUR PRIVATE GRID IP ADDRESS>:4444/wd/hub
 #grid.hub.url=http://<YOUR_SAUCELABS_USER>:<YOUR_SAUCELABS_KEY>@ondemand.saucelabs.com:80/wd/hub
 ```
 
-### IDE
+## IDE
 Simply leveraging the TestNG plugin in your IDE of choice you are able to run any test from IntelliJ or Eclipse
 
-### Local GRID
+## Local GRID
 Including the [Runtime Microservice Components](https://github.com/AnthonyL22/runtime-microservice) in your 
 Maven project will give you all the necessary Selenium GRID components needed to build a local GRID environment.  
 Once you have included the Maven dependency in your project and have done a **mvn clean install** you will see a 
@@ -242,11 +257,11 @@ in your grid.properties file.
 
 See the [Selenium GRID instructions](https://github.com/AnthonyL22/runtime-microservice) for more details.
  
-### Shared GRID
+## Shared GRID
 If you have a shared machine with a potentially static IP address follow the same instructions as the previous section
 to setup a shared GRID.  Be sure to define the **grid.hub.url** in your grid.properties file.
 
-#### PhantomJS
+### PhantomJS
 If you would like to use a headless PhantomJS browser you must use Selenium GRID with the PhantomJS drivers enabled.
 
 The following system environment variables must be set to run PhantomJS browsers in your GRID environment
@@ -259,7 +274,7 @@ The *phantomjs.binary.path* path correlates to the exact location of your Phanto
 development environment.
 
 
-### Sauce Labs
+## Sauce Labs
 If you have a Sauce Labs account, define the **grid.hub.url** in your grid.properties file according to the settings
 defined in the setup instructions provided by Sauce Labs.
 
@@ -277,7 +292,7 @@ Add the following section to your **settings.xml** in order to connect your loca
 </profile>
 ```
 
-#### Sauce Connect Plugin Step-By-Step
+### Sauce Connect Plugin Step-By-Step
 To execute your tests from your local environment to Sauce Labs you will need to configure the 
 [Sauce Connect plugin](https://docs.saucelabs.com/reference/sauce-connect/).  Follow the steps below to configure on a PC.
 
@@ -292,7 +307,7 @@ To execute your tests from your local environment to Sauce Labs you will need to
 
 YOU MUST BE ON THE YOUR COMPANIES VPN FOR THIS TO WORK
 
-##### Starting Sauce Connect - PC
+#### Starting Sauce Connect - PC
 
 Create a batch file with the following
 
@@ -305,7 +320,7 @@ cd C:\dev\tools\sc-4.3.11-win32\bin
 sc -u YOUR_USERNAME -k YOUR_ACCESS_KEY -i %tunnelId%
 ```
 
-##### Starting Sauce Connect - LINUX
+#### Starting Sauce Connect - LINUX
 
 1. Open/edit .tcshrc
 2. Add an environment variable
@@ -319,24 +334,24 @@ setenv TUNNEL_IDENTIFIER YOUR_TUNNEL_NAME
 sc -u YOUR_USERNAME -k YOUR_ACCESS_KEY -i $TUNNEL_IDENTIFIER
 ```
  
-## External Dependencies
+# External Dependencies
 
-###Runtime Microservice
+## Runtime Microservice
 This is an optional dependency that you could include in your project if using the Core Automation Microservice.  
 
 [Runtime Binary Components](https://github.com/AnthonyL22/runtime-microservice)
 
-###Logging Microservice
+## Logging Microservice
 Gherkin-Style logger used for automated testing of TestNG-based automation solutions.
 
 [Logging Service](https://github.com/AnthonyL22/logging-microservice)
 
-###Assertion Microservice
+## Assertion Microservice
 A 100% Hamcrest and TestNG-based automated testing Assertion service.
 
 [Assertion Service](https://github.com/AnthonyL22/assert-microservice)
 
 
-## Tips and Tricks
+# Tips and Tricks
 * You must close your local Sauce Labs tunnel if you are running completely locally and don't want to report Sauce Labs
 results for tests running on your local machine (ex: grid.enabled=false)
