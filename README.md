@@ -10,8 +10,7 @@ Got a question?  [Email us](http://www.pacificwebconsulting.com/contact/) or rea
 # Introduction
 
 The Core Automated Testing microservice is used to the perform functional system tests on any desktop or mobile browser, REST service and database endpoints.   
-The Core Automated Testing microservice is used to the perform functional system tests on any desktop or mobile browser, REST service and database endpoints.  This service 
-is an on-ramp for entire engineering teams to contribute to the functional testing of a product offering.  Also, to unify our testing teams with one automated testing solution.
+This service is an on-ramp for entire engineering teams to contribute to the functional testing of a product offering.  Also, to unify our testing teams with one automated testing solution.
 
 Currently capabilities include:
 
@@ -23,8 +22,7 @@ Currently capabilities include:
 # Questions and issues
 
 The [github issue tracker](https://github.com/AnthonyL22/core-microservice/issues) is **_only_** for bug reports and 
-feature requests. Anything else, such as questions for help in using the library, should be posted via email to  
-[pacificwebconsulting.com](http://www.pacificwebconsulting.com/contact/).
+feature requests. Anything else, such as questions for help in using the library, should be posted via email to [pacificwebconsulting.com](http://www.pacificwebconsulting.com/contact/).
 
 # Prerequisites
 
