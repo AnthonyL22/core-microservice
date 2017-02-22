@@ -3,9 +3,12 @@ package com.pwc.core.framework;
 public interface JavascriptConstants {
 
     // Alert Actions
+    String LIST_ACTIVE_RESOURCES = "var resourceList = []; var entries = window.performance.getEntriesByType('resource'); entries.forEach(function (resource) { resourceList.push(resource.name);}); return(resourceList);";
+
+    // Alert Actions
     String ALERT_BY_XPATH = "var element = document.evaluate(\"%s\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue; alert(element.textContent);";
 
-    // Other Actions
+    // Blur Actions
     String BLUR_ELEMENT_BY_XPATH = "(document.evaluate('%s', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;).blur();";
     String BLUR_ELEMENT_BY_ID = "document.getElementById('%s').blur();";
 
