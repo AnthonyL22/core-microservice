@@ -80,6 +80,28 @@ public class FileUtilsTest {
     }
 
     @Test
+    public void prependFileOnNewLineTest() {
+        final String FILE_NAME = RandomStringUtils.randomAlphabetic(5) + ".json";
+        FileUtils.createFile(FILE_NAME, SAMPLE_FILE_CONTENTS);
+        FileUtils.prependToFile(FILE_NAME, "New First Paragraph", true);
+        List<String> result = FileUtils.readFile(FILE_NAME);
+        Assert.assertTrue(result.size() == 2);
+        Assert.assertTrue(result.get(0).contains("New First Paragraph"));
+        Assert.assertTrue(result.get(1).contains(SAMPLE_FILE_CONTENTS));
+    }
+
+    @Test
+    public void prependFileOnOneLineTest() {
+        final String FILE_NAME = RandomStringUtils.randomAlphabetic(5) + ".json";
+        FileUtils.createFile(FILE_NAME, SAMPLE_FILE_CONTENTS);
+        FileUtils.prependToFile(FILE_NAME, "New First Words", false);
+        List<String> result = FileUtils.readFile(FILE_NAME);
+        Assert.assertTrue(result.size() == 1);
+        Assert.assertTrue(result.get(0).contains("New First Words"));
+        Assert.assertTrue(result.get(0).contains(SAMPLE_FILE_CONTENTS));
+    }
+
+    @Test
     public void appendFileTest() {
         final String FILE_NAME = RandomStringUtils.randomAlphabetic(5) + ".json";
         FileUtils.createFile(FILE_NAME, SAMPLE_FILE_CONTENTS);

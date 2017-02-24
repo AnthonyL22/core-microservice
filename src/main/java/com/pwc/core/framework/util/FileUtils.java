@@ -2,7 +2,9 @@ package com.pwc.core.framework.util;
 
 import java.io.File;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import static com.pwc.logging.service.LoggerService.LOG;
@@ -122,6 +124,35 @@ public class FileUtils {
     }
 
     /**
+     * Prepend file contents to the beginning of a file.
+     *
+     * @param fileName         file to prepend to on a new line
+     * @param prependOnNewLine add new content on new line or append to existing line
+     * @param contentToPrepend contents to prepend
+     */
+    public static void prependToFile(final String fileName, final String contentToPrepend, final boolean prependOnNewLine) {
+
+        File sourceFile = PropertiesUtils.getFileFromResources(fileName);
+        try {
+            if (sourceFile.exists()) {
+                List<String> originalFileContents = readFile(fileName);
+                if (prependOnNewLine) {
+                    List<String> prependedList = new LinkedList<>(originalFileContents);
+                    prependedList.add(0, contentToPrepend);
+                    org.apache.commons.io.FileUtils.writeLines(sourceFile, prependedList, false);
+                } else {
+                    originalFileContents.set(0, contentToPrepend + originalFileContents.get(0));
+                    org.apache.commons.io.FileUtils.writeLines(sourceFile, originalFileContents, false);
+                }
+
+                LOG(true, "File named='%s' prepend with content", sourceFile.getName());
+            }
+        } catch (Exception e) {
+            LOG(true, "Unable to prepend file named='%s'", fileName);
+        }
+    }
+
+    /**
      * Append file contents
      *
      * @param fileName        file to append to
@@ -132,7 +163,7 @@ public class FileUtils {
         File sourceFile = PropertiesUtils.getFileFromResources(fileName);
         try {
             if (sourceFile.exists()) {
-                org.apache.commons.io.FileUtils.write(sourceFile, contentToAppend, true);
+                org.apache.commons.io.FileUtils.write(sourceFile, contentToAppend, StandardCharsets.UTF_8, true);
                 LOG(true, "File named='%s' appended with content", sourceFile.getName());
             }
         } catch (Exception e) {
