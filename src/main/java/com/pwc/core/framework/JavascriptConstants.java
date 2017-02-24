@@ -3,9 +3,6 @@ package com.pwc.core.framework;
 public interface JavascriptConstants {
 
     // Alert Actions
-    String LIST_ACTIVE_RESOURCES = "var resourceList = []; var entries = window.performance.getEntriesByType('resource'); entries.forEach(function (resource) { resourceList.push(resource.name);}); return(resourceList);";
-
-    // Alert Actions
     String ALERT_BY_XPATH = "var element = document.evaluate(\"%s\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue; alert(element.textContent);";
 
     // Blur Actions
@@ -42,5 +39,8 @@ public interface JavascriptConstants {
     String IS_JQUERY_AJAX_REQUESTS_ACTIVE = "if($.active == 0){ return true;} else { return false;}";
     String IS_DOCUMENT_READY = "if(document.readyState == 'complete'){ return true;} else { return false;}";
     String IS_OPEN_HTTPS = "return window.openHTTPs";
+
+    // Http Actions
+    String LIST_HTTP_RESOURCES = "var resourceList = []; var entries = window.performance.getEntriesByType('resource'); entries.forEach(function (resource) { resourceList.push(resource.name);}); return(resourceList);";
 
 }
