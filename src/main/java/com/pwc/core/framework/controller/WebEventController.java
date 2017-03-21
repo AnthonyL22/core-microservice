@@ -261,7 +261,6 @@ public class WebEventController {
         LOG("starting chrome browser");
         setDriverExecutable();
         ChromeOptions chromeOptions = new ChromeOptions();
-        chromeOptions.addArguments("ignore-certificate-errors");
         chromeOptions.addArguments("--start-maximized");
         chromeOptions.addArguments("--disable-extensions");
         capabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
