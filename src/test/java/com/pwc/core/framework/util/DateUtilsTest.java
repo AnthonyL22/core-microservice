@@ -14,6 +14,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+
 @RunWith(MockitoJUnitRunner.class)
 public class DateUtilsTest {
 
@@ -239,5 +242,16 @@ public class DateUtilsTest {
         Assert.assertFalse(actualDate.contains(expectedDate));
     }
 
+    @Test
+    public void getFormattedDateTest() {
+        Date result = DateUtils.getFormattedDate("2017-12-01 10:45", TEST_DATETIME_PATTERN);
+        assertEquals(result, new Date(1512153900000L));
+    }
+
+    @Test
+    public void getFormattedDateInvalidDateTest() {
+        Date result = DateUtils.getFormattedDate("bad data", TEST_DATETIME_PATTERN);
+        assertNull(result);
+    }
 
 }

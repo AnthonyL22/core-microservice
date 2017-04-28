@@ -13,9 +13,6 @@ import java.util.Random;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
-/**
- * Created by Julian Jacobs on 8/19/2015.
- */
 @RunWith(MockitoJUnitRunner.class)
 public class RandomStringUtilsTest {
 
@@ -25,6 +22,7 @@ public class RandomStringUtilsTest {
     private static final int SMALLEST_LAST_NAME = 5;
     private static final int LARGEST_LAST_NAME = 7;
     private static final String[] vowels = {"a", "e", "i", "o", "u", "y"};
+    private static final String TEST_SENTENCE = "Hello my name is Anthony, how are you?";
 
 
     @Test
@@ -148,5 +146,25 @@ public class RandomStringUtilsTest {
         String secondTime = RandomStringUtils.randomXML();
         assertThat(firstTime, is(not(equalTo(secondTime))));
     }
+
+
+    @Test
+    public void getRandomBeginningSubStringTests() {
+        String result = RandomStringUtils.getRandomSubStringFromBeginning(TEST_SENTENCE);
+        Assert.assertTrue(result.length() > 0);
+    }
+
+    @Test
+    public void getRandomSubSentenceFragmentTests() {
+        String result = RandomStringUtils.getRandomSubSentenceFromBeginning("Hello my name is Anthony");
+        Assert.assertTrue(result.length() > 0);
+    }
+
+    @Test
+    public void getRandomEndingSubStringTests() {
+        String result = RandomStringUtils.getRandomEndingSubString("Hello my name is Anthony");
+        Assert.assertTrue(result.length() > 0);
+    }
+
 
 }

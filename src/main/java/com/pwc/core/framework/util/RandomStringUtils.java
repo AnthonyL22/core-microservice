@@ -6,9 +6,6 @@ import com.pwc.core.framework.data.WebElementAttribute;
 
 import java.util.*;
 
-/**
- * Created by Julian Jacobs on 8/19/2015.
- */
 public class RandomStringUtils {
 
     private static final int UPPER_BOUND = 4;
@@ -51,6 +48,12 @@ public class RandomStringUtils {
         return org.apache.commons.lang.RandomStringUtils.randomNumeric(length);
     }
 
+    /**
+     * Get random HTML body element
+     *
+     * @param numberOfElements number of body elements to return
+     * @return random element
+     */
     private static Node getRandomBodyElement(final int numberOfElements) {
         Random rand = new Random();
         int randSelector = rand.nextInt(BODY_ELEMENT_UPPER_BOUND);
@@ -365,4 +368,47 @@ public class RandomStringUtils {
         }
         return generatedLetters.toString();
     }
+
+    /**
+     * Get a random snippet of a given String from the 0 index to a random location in the given <code>String</code>
+     *
+     * @param randomString base value to get a snippet of
+     * @return sub-string of original value
+     */
+    protected static String getRandomSubStringFromBeginning(String randomString) {
+        int randomEnd = 1 + (int) (Math.random() * randomString.length() - 1);
+        randomString = org.apache.commons.lang3.StringUtils.substring(randomString, 0, randomEnd);
+        return randomString;
+    }
+
+    /**
+     * Get a random fragment of a given sentence of words
+     *
+     * @param randomString base value to get a snippet or sentence
+     * @return sub-string of original value
+     */
+    protected static String getRandomSubSentenceFromBeginning(String randomString) {
+
+        List<String> splitResult = new ArrayList<>(Arrays.asList(org.apache.commons.lang3.StringUtils.split(randomString)));
+        int randomEnd = 1 + (int) (Math.random() * splitResult.size() - 1);
+
+        String result = splitResult.get(0);
+        for (int i = 1; i < randomEnd; i++) {
+            result = result + " " + splitResult.get(i);
+        }
+        return result;
+    }
+
+    /**
+     * Get a random snippet of a given String from a random location in the given <code>String</code> to the end
+     *
+     * @param displayedColumnValue base value to get a snippet of
+     * @return sub-string of original value
+     */
+    protected static String getRandomEndingSubString(String displayedColumnValue) {
+        int randomBegin = 1 + (int) (Math.random() * displayedColumnValue.length() - 1);
+        displayedColumnValue = org.apache.commons.lang3.StringUtils.substring(displayedColumnValue, randomBegin, displayedColumnValue.length());
+        return displayedColumnValue;
+    }
+
 }

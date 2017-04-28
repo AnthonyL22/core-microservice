@@ -111,6 +111,7 @@ to assist in nearly every need of a quality initiative.
 * RandomStringUtils
 * StringUtils
 * WebElementUtils
+* CollectionUtils
  
 # Adjustable Settings
 The following settings can be modified at any stage of the automation execution process to run tests on the desired 

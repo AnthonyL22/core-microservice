@@ -3,6 +3,7 @@ package com.pwc.core.framework.util;
 import com.pwc.core.framework.FrameworkConstants;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -30,18 +31,6 @@ public class DateUtils {
             return sourceDateTime;
         }
         return result;
-    }
-
-    /**
-     * Utility method which returns a Date and time <code>Date</code> for a specified DATE offset
-     *
-     * @param dateOffset date and time offset
-     * @return dateOffset date and time
-     */
-    public static Date getDateByOffset(final int dateOffset) {
-        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone(System.getProperty(FrameworkConstants.SYSTEM_USER_TIMEZONE)));
-        cal.add(Calendar.DATE, dateOffset);
-        return cal.getTime();
     }
 
     /**
@@ -134,6 +123,38 @@ public class DateUtils {
         formatter.setCalendar(calendar);
         formatter.setTimeZone(TimeZone.getTimeZone(timeZone));
         return formatter.format(calendar.getTime());
+    }
+
+    /**
+     * Utility method which returns a Date and time <code>Date</code> for a specified DATE offset
+     *
+     * @param dateOffset date and time offset
+     * @return dateOffset date and time
+     */
+    public static Date getDateByOffset(final int dateOffset) {
+        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone(System.getProperty(FrameworkConstants.SYSTEM_USER_TIMEZONE)));
+        cal.add(Calendar.DATE, dateOffset);
+        return cal.getTime();
+    }
+
+    /**
+     * Format a given date <code>String</code> into the provided format
+     * Sample Patterns:
+     * International -            "dd-MMM-yyyy, h:mm"
+     * International extended -   "dd-MMM-yyyy, h:mm:SS aa"
+     * Database date/time -       "yyyy-MM-dd'T'HH:mm:SS.sss'Z'"
+     *
+     * @param dateToParse date to parse
+     * @param pattern     the pattern describing the date and time format
+     * @return international date format Date object
+     */
+    public static Date getFormattedDate(final String dateToParse, String pattern) {
+        try {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+            return simpleDateFormat.parse(dateToParse);
+        } catch (ParseException e) {
+            return null;
+        }
     }
 
 }
