@@ -20,7 +20,7 @@
         <logging-microservice.version>1.0.4</logging-microservice.version>
 
         <!-- Dependency Versions -->
-        <selenium.version>3.0.1</selenium.version>
+        <selenium.version>3.4.0</selenium.version>
         <appium.version>4.0.0</appium.version>
         <saucelabs.version>1.0.32</saucelabs.version>
         <saucelabs-java.version>2.1.20</saucelabs-java.version>
