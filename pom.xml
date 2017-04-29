@@ -28,7 +28,7 @@
         <restassured.version>2.4.1</restassured.version>
         <jackson.version>1.9.13</jackson.version>
         <jackson.json.version>2.5.1</jackson.json.version>
-        <phantomjsdriver.version>1.2.1</phantomjsdriver.version>
+        <phantomjsdriver.version>1.4.2</phantomjsdriver.version>
         <procyon.version>0.5.28</procyon.version>
         <surefire-junit47.version>2.12</surefire-junit47.version>
         <xmlapis.version>1.4.01</xmlapis.version>
