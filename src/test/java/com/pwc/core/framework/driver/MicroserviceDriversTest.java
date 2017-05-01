@@ -15,7 +15,7 @@ import org.openqa.selenium.safari.SafariOptions;
 import org.testng.Assert;
 
 @RunWith(MockitoJUnitRunner.class)
-public class QualcommDriversTest {
+public class MicroserviceDriversTest {
 
     private DesiredCapabilities desiredCapabilities;
     private RemoteWebDriver driver;

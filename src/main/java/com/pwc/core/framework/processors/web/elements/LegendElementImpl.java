@@ -8,7 +8,7 @@ import static com.pwc.assertion.AssertService.assertEquals;
 import static com.pwc.assertion.AssertService.assertFail;
 import static com.pwc.logging.service.LoggerService.LOG;
 
-public class LegendElementImpl implements QualcommWebElement {
+public class LegendElementImpl implements MicroserviceWebElement {
 
     public static boolean applies(WebElement element) {
         return StringUtils.equalsIgnoreCase(element.getTagName(), WebElementType.LEGEND.type);

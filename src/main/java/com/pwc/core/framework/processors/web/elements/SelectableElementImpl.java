@@ -8,7 +8,7 @@ import org.openqa.selenium.support.ui.Select;
 import static com.pwc.assertion.AssertService.assertFail;
 import static com.pwc.logging.service.LoggerService.LOG;
 
-public class SelectableElementImpl implements QualcommWebElement {
+public class SelectableElementImpl implements MicroserviceWebElement {
 
     public static boolean applies(WebElement element) {
         return StringUtils.equalsIgnoreCase(element.getTagName(), WebElementType.SELECT.type);

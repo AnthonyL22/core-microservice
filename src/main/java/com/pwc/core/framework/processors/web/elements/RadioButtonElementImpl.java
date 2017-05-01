@@ -8,7 +8,7 @@ import org.openqa.selenium.WebElement;
 import static com.pwc.assertion.AssertService.assertFail;
 import static com.pwc.logging.service.LoggerService.LOG;
 
-public class RadioButtonElementImpl implements QualcommWebElement {
+public class RadioButtonElementImpl implements MicroserviceWebElement {
 
     public static boolean applies(WebElement element) {
         return StringUtils.equalsIgnoreCase(element.getTagName(), WebElementType.INPUT.type) &&
