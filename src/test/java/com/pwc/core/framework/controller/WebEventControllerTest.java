@@ -319,7 +319,7 @@ public class WebEventControllerTest {
     public void navigateToUrlSegmentTest() {
         when(mockWebDriverService.getCurrentUrl()).thenReturn(APPLICATION_WEB_URL);
         webEventService.setMicroserviceWebDriver(mockWebDriverService);
-        long duration = webEventService.redirectToUrl("/foobar/ipit");
+        long duration = webEventService.redirectToUrl("/foobar/hello");
         Assert.assertNotNull(duration);
     }
 
