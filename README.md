@@ -13,7 +13,7 @@ Currently capabilities include:
 * Browser (Internet Explorer, Firefox, Chrome, Safari, PhantomJS)
 * Mobile Browser (Android, iOS using Appium)
 * REST Web Services (SiteMinder Authenticated) 
-* Database (Oracle, MongoDB, MS SQL, JDBC)
+* Database (Oracle, MongoDB, MS SQL, any JDBC connection)
 
 # Questions and issues
 
@@ -49,11 +49,9 @@ Simply, extend the class WebTestCase OR DeclarativeTestCase as shown below:
 
 ```
 public abstract class MyTestCase extends WebTestCase {
-
     /**
      * Product specific functionality should go in here
      */
-
 }
 ```
 
@@ -201,15 +199,10 @@ Example:
 db.driver=oracle.jdbc.OracleDriver
 db.url=jdbc:oracle:thin:@${db.host}:${db.port}/${db.name}
 db.host=myhost
-db.name=DEV_SRV
-db.port=1522
+db.name=DEV_SERVER
+db.port=1234
 db.username=me
 db.password=password
-mongo.host=
-mongo.databasename=
-mongo.port=1
-mongo.username=
-mongo.password=
 ```
 
 ### grid.properties
