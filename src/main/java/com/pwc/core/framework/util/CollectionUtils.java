@@ -10,9 +10,9 @@ public class CollectionUtils {
      * @param listValues base value to get a snippet of
      * @return sub-string of original value
      */
-    protected static List getRandomSubList(List listValues) {
-        int randomBegin = 1 + (int) (Math.random() * listValues.size() - 1);
-        return listValues.subList(0, randomBegin);
+    public static List getRandomSubList(List listValues) {
+        int randomEnd = 1 + (int) (Math.random() * listValues.size() - 1);
+        return listValues.subList(0, randomEnd);
     }
 
 }

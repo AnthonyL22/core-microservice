@@ -229,7 +229,7 @@ public class RandomStringUtils {
      * @param firstNameOnly A Boolean that determines whether a first name or last name is generated
      * @return A String that is a first name or a last name
      */
-    protected static String generateName(final int scheme, boolean firstNameOnly) {
+    public static String generateName(final int scheme, boolean firstNameOnly) {
         StringBuilder name = new StringBuilder();
         if (firstNameOnly) {
             switch (scheme) {
@@ -290,7 +290,7 @@ public class RandomStringUtils {
      * @param isConsonant A Boolean determining whether to return a consonant or a vowel
      * @return A String of randomly generated vowels or consonants
      */
-    protected static String generateLetterByProbability(final int length, boolean isConsonant) {
+    public static String generateLetterByProbability(final int length, boolean isConsonant) {
         StringBuilder generatedLetters = new StringBuilder("");
 
         LinkedHashMap<String, Double> hm = new LinkedHashMap<>();
@@ -375,7 +375,7 @@ public class RandomStringUtils {
      * @param randomString base value to get a snippet of
      * @return sub-string of original value
      */
-    protected static String getRandomSubStringFromBeginning(String randomString) {
+    public static String getRandomSubStringFromBeginning(String randomString) {
         int randomEnd = 1 + (int) (Math.random() * randomString.length() - 1);
         randomString = org.apache.commons.lang3.StringUtils.substring(randomString, 0, randomEnd);
         return randomString;
@@ -387,7 +387,7 @@ public class RandomStringUtils {
      * @param randomString base value to get a snippet or sentence
      * @return sub-string of original value
      */
-    protected static String getRandomSubSentenceFromBeginning(String randomString) {
+    public static String getRandomSubSentenceFromBeginning(String randomString) {
 
         List<String> splitResult = new ArrayList<>(Arrays.asList(org.apache.commons.lang3.StringUtils.split(randomString)));
         int randomEnd = 1 + (int) (Math.random() * splitResult.size() - 1);
@@ -405,7 +405,7 @@ public class RandomStringUtils {
      * @param displayedColumnValue base value to get a snippet of
      * @return sub-string of original value
      */
-    protected static String getRandomEndingSubString(String displayedColumnValue) {
+    public static String getRandomEndingSubString(String displayedColumnValue) {
         int randomBegin = 1 + (int) (Math.random() * displayedColumnValue.length() - 1);
         displayedColumnValue = org.apache.commons.lang3.StringUtils.substring(displayedColumnValue, randomBegin, displayedColumnValue.length());
         return displayedColumnValue;
