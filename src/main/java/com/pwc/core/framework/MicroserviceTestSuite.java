@@ -377,6 +377,10 @@ public abstract class MicroserviceTestSuite {
         this.ctx = ctx;
     }
 
+    public AbstractApplicationContext getCtx() {
+        return ctx;
+    }
+
     public String getCurrentJobId() {
         return currentJobId;
     }
