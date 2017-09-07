@@ -17,6 +17,7 @@ public interface JavascriptConstants {
 
     // CLICK Action
     String CLICK_BY_XPATH = "var element = document.evaluate(\"%s\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue; element.click();";
+    String DOUBLE_CLICK_BY_XPATH = "var element = document.evaluate(\"%s\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue; var clickEvent = document.createEvent('MouseEvents'); clickEvent.initEvent('dblclick', true, true); element.dispatchEvent (clickEvent)";
     String CLICK_ELEMENT_BY_ID = "document.getElementById('%s').click();";
     String CLICK_BY_TAG_AND_VALUE = "var elements = document.getElementsByTagName('%s'); " +
             "for (var i=0; i<elements.length; i++) " +
@@ -42,5 +43,8 @@ public interface JavascriptConstants {
 
     // Http Actions
     String LIST_HTTP_RESOURCES = "var resourceList = []; var entries = window.performance.getEntriesByType('resource'); entries.forEach(function (resource) { resourceList.push(resource.name);}); return(resourceList);";
+
+    // Navigation Actions
+    String SCROLL_TO_TOP_OF_WINDOW_ACTION = "window.scrollTo(document.body.scrollHeight,0)";
 
 }

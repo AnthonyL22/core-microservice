@@ -187,7 +187,7 @@ public class WebEventControllerTest {
     public void setPlatformWindowsTest() {
         System.setProperty(FrameworkConstants.AUTOMATION_PLATFORM_PROPERTY, "windows");
         webEventController.setDefaultDesiredCapabilities();
-        Assert.assertEquals(webEventController.getCapabilities().getCapability(CapabilityType.PLATFORM), Platform.XP);
+        Assert.assertEquals(webEventController.getCapabilities().getCapability(CapabilityType.PLATFORM), Platform.WINDOWS);
     }
 
     @Test

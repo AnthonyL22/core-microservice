@@ -270,7 +270,7 @@ public class GridUtilsTest {
     public void initPlatformTypeWindowsTest() {
         System.setProperty(FrameworkConstants.AUTOMATION_PLATFORM_PROPERTY, "windows");
         String actualPlatform = GridUtils.initPlatformType();
-        Assert.assertEquals(Platform.XP.toString(), actualPlatform);
+        Assert.assertEquals(Platform.WINDOWS.toString(), actualPlatform);
     }
 
     @Test

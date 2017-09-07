@@ -20,15 +20,16 @@
         <logging-microservice.version>1.0.4</logging-microservice.version>
 
         <!-- Dependency Versions -->
-        <selenium.version>3.4.0</selenium.version>
-        <appium.version>4.0.0</appium.version>
-        <saucelabs.version>1.0.32</saucelabs.version>
-        <saucelabs-java.version>2.1.20</saucelabs-java.version>
+        <selenium.version>3.5.3</selenium.version>
+        <appium.version>5.0.2</appium.version>
+        <phantomjsdriver.version>1.4.3</phantomjsdriver.version>
+        <saucelabs.version>1.0.35</saucelabs.version>
+        <saucelabs-java.version>2.1.23</saucelabs-java.version>
         <testng.version>6.9.10</testng.version>
-        <restassured.version>2.4.1</restassured.version>
+        <restassured.version>2.9.0</restassured.version>
+
         <jackson.version>1.9.13</jackson.version>
         <jackson.json.version>2.5.1</jackson.json.version>
-        <phantomjsdriver.version>1.4.2</phantomjsdriver.version>
         <procyon.version>0.5.28</procyon.version>
         <surefire-junit47.version>2.12</surefire-junit47.version>
         <xmlapis.version>1.4.01</xmlapis.version>

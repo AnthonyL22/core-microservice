@@ -12,8 +12,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.sql.Clob;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class StringUtils {

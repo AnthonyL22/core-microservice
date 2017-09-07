@@ -3,8 +3,12 @@ package com.pwc.core.framework.data;
 
 public enum WebElementAttribute {
 
+    ACCEPT("accept"),
+    ACCEPT_CHARSET("accept-charset"),
     ACCESS_KEY("accesskey"),
     ACTION("action"),
+    ALIGN("align"),
+    ALT("alt"),
     ARIA_ATOMIC("aria-atomic"),
     ARIA_AUTOCOMPLETE("aria-autocomplete"),
     ARIA_BUSY("aria-busy"),
@@ -37,7 +41,10 @@ public enum WebElementAttribute {
     ARIA_VALUEMIN("aria-valuemin"),
     ARIA_VALUENOW("aria-valuenow"),
     ARIA_VALUETEXT("aria-valuetext"),
+    ASYNC("async"),
     AUTOCOMPLETE("autocomplete"),
+    AUTOFOCUS("autofocus"),
+    AUTOPLAY("autoplay"),
     CELL_PADDING("cellpadding"),
     CHECKED("checked"),
     CLASS("class"),
@@ -55,6 +62,7 @@ public enum WebElementAttribute {
     ID("id"),
     LANG("lang"),
     LINKTO("linkto"),
+    ONCLICK("onclick"),
     NAME("name"),
     PLACEHOLDER("placeholder"),
     READONLY("readonly"),
