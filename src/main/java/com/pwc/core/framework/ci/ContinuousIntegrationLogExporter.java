@@ -115,21 +115,18 @@ public class ContinuousIntegrationLogExporter {
             adminLines.add(org.apache.commons.lang.StringUtils.repeat("-", 60));
             adminLines.add("MANUAL TEST CASE REPORT SUMMARY");
             adminLines.add(org.apache.commons.lang.StringUtils.repeat("-", 60));
-            adminLines.add("Found " + files.size() + " Tests to Process");
+            adminLines.add(files.size() + " Tests Processed");
             adminLines.add("Packages Processed:");
 
             Collection<String> uniquePackageNames = new LinkedHashSet<>();
 
             for (File file : files) {
-
                 List<String> readingLines = FileUtils.readLines(file, Charset.defaultCharset());
-
                 for (String readLine : readingLines) {
                     if (StringUtils.contains(readLine, "package")) {
                         uniquePackageNames.add("  " + readLine);
                     }
                 }
-
             }
 
             for (String packageName : uniquePackageNames) {
