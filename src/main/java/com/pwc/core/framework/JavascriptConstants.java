@@ -45,6 +45,7 @@ public interface JavascriptConstants {
     String LIST_HTTP_RESOURCES = "var resourceList = []; var entries = window.performance.getEntriesByType('resource'); entries.forEach(function (resource) { resourceList.push(resource.name);}); return(resourceList);";
 
     // Navigation Actions
-    String SCROLL_TO_TOP_OF_WINDOW_ACTION = "window.scrollTo(document.body.scrollHeight,0)";
+    String SCROLL_TO_TOP_OF_WINDOW_ACTION = "window.scrollTo(document.body.scrollHeight,0);";
+    String SCROLL_TO_BOTTOM_OF_WINDOW_ACTION = "window.scrollTo(0,document.body.scrollHeight);";
 
 }
