@@ -2,20 +2,22 @@ package com.pwc.core.framework;
 
 public interface JavascriptConstants {
 
-    // Alert Actions
+    // ALERT Actions
     String ALERT_BY_XPATH = "var element = document.evaluate(\"%s\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue; alert(element.textContent);";
 
-    // Blur Actions
+    // BLUR Actions
     String BLUR_ELEMENT_BY_XPATH = "(document.evaluate('%s', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;).blur();";
     String BLUR_ELEMENT_BY_ID = "document.getElementById('%s').blur();";
 
-    // Text Entry Action
+    // TEXT ENTRY Action
     String ENTER_VALUE_ELEMENT_BY_XPATH = "var element = document.evaluate(\"%s\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue; element.value='%s';";
 
-    // SELECT Action
+    // SELECT/COMBO Actions
     String SELECT_VALUE_BY_XPATH = ENTER_VALUE_ELEMENT_BY_XPATH + " for(var i=0; i < element.options.length; i++){if(element.options[i].text === \"%s\") {element.selectedIndex = i; break;}};";
+    String SELECT_VALUE_BY_IDENTIFIER_IDENTIFIER_VALUE_EXT_COMBO = "Ext.ComponentQuery.query('combo#%s')[0].setValue(Ext.ComponentQuery.query('combo#%s')[0].getStore().findRecord('name','%s'))";
+    String SELECT_VALUE_BY_IDENTIFIER_INDEX_IDENTIFIER_EXT_COMBO = "Ext.ComponentQuery.query('combo#%s')[%s].setValue(Ext.ComponentQuery.query('combo#%s')[%s].getStore().findRecord('name','%s'))";
 
-    // CLICK Action
+    // CLICK Actions
     String CLICK_BY_XPATH = "var element = document.evaluate(\"%s\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue; element.click();";
     String DOUBLE_CLICK_BY_XPATH = "var element = document.evaluate(\"%s\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue; var clickEvent = document.createEvent('MouseEvents'); clickEvent.initEvent('dblclick', true, true); element.dispatchEvent (clickEvent)";
     String CLICK_ELEMENT_BY_ID = "document.getElementById('%s').click();";
@@ -36,15 +38,13 @@ public interface JavascriptConstants {
             "{if (elements[i].firstChild.textContent.indexOf('%s') > -1) elements[i].click();}";
     String CLICK_LAST_ELEMENT_BY_CLASS_NAME = "var elements = document.getElementsByClassName('%s'); elements[elements.length - 1].click();";
 
-    // Logical Queries
+    // LOGICAL Queries
     String IS_JQUERY_AJAX_REQUESTS_ACTIVE = "if($.active == 0){ return true;} else { return false;}";
     String IS_DOCUMENT_READY = "if(document.readyState == 'complete'){ return true;} else { return false;}";
     String IS_OPEN_HTTPS = "return window.openHTTPs";
-
-    // Http Actions
     String LIST_HTTP_RESOURCES = "var resourceList = []; var entries = window.performance.getEntriesByType('resource'); entries.forEach(function (resource) { resourceList.push(resource.name);}); return(resourceList);";
 
-    // Navigation Actions
+    // NAVIGATION Actions
     String SCROLL_TO_TOP_OF_WINDOW_ACTION = "window.scrollTo(document.body.scrollHeight,0);";
     String SCROLL_TO_BOTTOM_OF_WINDOW_ACTION = "window.scrollTo(0,document.body.scrollHeight);";
 
