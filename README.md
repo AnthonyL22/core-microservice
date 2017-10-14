@@ -110,7 +110,70 @@ to assist in nearly every need of a quality initiative.
 * StringUtils
 * WebElementUtils
 * CollectionUtils
- 
+
+## Log Export Feature
+
+#### Prerequisite
+* [Logging Service](https://github.com/AnthonyL22/logging-microservice) 
+
+#### Usage
+This utility interrogates all your test classes and translates your Gherkin logging into a manual test case document that
+you can share with the rest of your team(s).  The utility also converts any variables you might have integrated into
+your logging into the 'readable' variable values.
+
+Mandatory Arguments:
+```
+"[0] = Source Test Directory (ex: com.google.automation.tests)
+"[1] = Manual Test Report Name (ex: Manual_Test_Report.txt)
+```
+
+Optional Arguments:
+Be sure to provide the optional arguments as seen below if you'd like to replace the 'readable' variable value defined
+in potentially an interface such as:  String USER_NAME = "Anthony";
+```
+"[2] = OPTIONAL - Class that contain Constant 'Name=Value' pairs
+"[3] = OPTIONAL - Class that contain Constant 'Name=Value' pairs
+"[4] = ect...
+```
+
+#### Maven Configuration
+Simply add this to a profile or goal in your POM.xml to leverage in your build process
+
+```
+<profile>
+  <id>manualTestReport</id>
+  <activation>
+    <activeByDefault>false</activeByDefault>
+  </activation>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>${exec-maven-plugin.version}</version>
+        <executions>
+          <execution>
+            <id>output-manual-tests</id>
+            <goals>
+              <goal>java</goal>
+            </goals>
+            <phase>install</phase>
+            <configuration>
+              <arguments>
+                <argument>com.qualcomm.ipcatalog.automation.tests</argument>
+                <argument>Manual_Test_Cases.txt</argument>
+                <argument>Constants.java</argument>
+              </arguments>
+              <mainClass>com.pwc.core.framework.ci.ContinuousIntegrationLogExporter</mainClass>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</profile>
+```
+
 # Adjustable Settings
 The following settings can be modified at any stage of the automation execution process to run tests on the desired 
 system.  This is a necessary feature to enable users to run their tests in Sauce Labs on different browser and operating

@@ -1,5 +1,8 @@
 package com.pwc.core.framework.ci.tests.inner;
 
+import com.pwc.core.framework.ci.parent.Data;
+import com.pwc.core.framework.ci.parent.TestConstants;
+
 import static com.pwc.logging.service.LoggerService.*;
 
 public class ComplexTest {
@@ -12,7 +15,7 @@ public class ComplexTest {
 
         WHEN("I view the page named=%s", "HOME");
 
-        THEN("Complex component=%s in page=%s are present in body of page=%s", "Submit Button", "loadit", "login");
+        THEN("Complex component=%s in page=%s are present in body of page=%s", Data.BUTTON, "loadit", TestConstants.PAGE_TITLE);
 
     }
 

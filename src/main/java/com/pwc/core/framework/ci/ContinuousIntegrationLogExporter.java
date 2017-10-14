@@ -10,29 +10,37 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedHashSet;
-import java.util.List;
+import java.util.*;
 
 import static com.pwc.logging.service.LoggerService.LOG;
 
 public class ContinuousIntegrationLogExporter {
 
     private static final String DEFAULT_TEST_DIR = "src.test.java";
+    private static Map constants;
 
     public static void main(String[] args) throws Exception {
 
         if (args.length < 2) {
             throw new Exception("Missing required arguments; " +
                     "[0] = Source Test Directory (ex: com.google.automation.tests), " +
-                    "[1] = Manual Test Report Name (ex: Manual_Test_Report.txt)");
+                    "[1] = Manual Test Report Name (ex: Manual_Test_Report.txt), " +
+                    "[2...] = OPTIONAL - Classes that contain Constant 'Name=Value' pairs");
         } else {
 
-            String sourceDirectory = getUserDefinedSourceDirectory(args[0]);
+            String sourceDirectory = getUserDefinedTestSourceDirectory(args[0]);
+
             File testReportFile = new File(args[1]);
             if (testReportFile.exists()) {
                 testReportFile.delete();
+            }
+
+            List<String> constantFiles = new ArrayList<>();
+            if (args.length > 2) {
+                for (int i = 2; i < args.length; i++) {
+                    constantFiles.add(args[i]);
+                }
+                setConstants(getConstantValues(constantFiles));
             }
 
             List<File> files = generateManualTestOutput(sourceDirectory, testReportFile);
@@ -43,13 +51,54 @@ public class ContinuousIntegrationLogExporter {
     }
 
     /**
+     * Get constant values for a given Interface file
+     *
+     * @param constantFiles list of .java files that contain name/value pairs (ex: Constants.java)
+     * @return full path to source directory
+     */
+    protected static Map getConstantValues(final List<String> constantFiles) {
+
+        StringBuilder source = getBaseJavaDirectory();
+        Map constantMap = new HashMap();
+
+        try {
+
+            for (String fileName : constantFiles) {
+
+                List<File> fileToScan = (List<File>) FileUtils.listFiles(new File(source.toString()), new SuffixFileFilter(fileName), TrueFileFilter.INSTANCE);
+
+                for (File file : fileToScan) {
+
+                    List<String> readingLines = FileUtils.readLines(file, Charset.defaultCharset());
+                    for (String readLine : readingLines) {
+                        if (StringUtils.contains(readLine, "=")) {
+                            readLine = readLine.trim();
+                            String left = StringUtils.substring(readLine, StringUtils.indexOf(readLine, " "), StringUtils.indexOf(readLine, "=")).trim();
+                            String right = StringUtils.substring(readLine, StringUtils.indexOf(readLine, "= ") + 1, StringUtils.indexOf(readLine, ";")).trim();
+                            right = StringUtils.replace(right, "\"", "");
+                            constantMap.put(left, right);
+                        }
+                    }
+                }
+
+            }
+
+        } catch (IOException e) {
+            LOG(true, "Error processing constant file(s)");
+        }
+
+        return constantMap;
+
+    }
+
+    /**
      * Generate manual test output report
      *
      * @param sourceDirectory source file directory
      * @param testReportFile  destination report File
      * @return list of files processed
      */
-    private static List<File> generateManualTestOutput(String sourceDirectory, File testReportFile) {
+    protected static List<File> generateManualTestOutput(String sourceDirectory, File testReportFile) {
 
         List<File> files = (List<File>) FileUtils.listFiles(new File(sourceDirectory), new SuffixFileFilter("Test.java"), TrueFileFilter.INSTANCE);
 
@@ -108,7 +157,7 @@ public class ContinuousIntegrationLogExporter {
      * @param outputFile report file
      * @param files      files to process
      */
-    private static void appendStatisticsToReport(final File outputFile, final List<File> files) {
+    protected static void appendStatisticsToReport(final File outputFile, final List<File> files) {
 
         try {
             List<String> adminLines = new ArrayList<>();
@@ -145,7 +194,7 @@ public class ContinuousIntegrationLogExporter {
      * @param readLine line to process
      * @return formatted line
      */
-    private static String processArguments(String readLine) {
+    protected static String processArguments(String readLine) {
 
         int start = StringUtils.indexOf(readLine, "\"") + 1;
 
@@ -162,13 +211,43 @@ public class ContinuousIntegrationLogExporter {
             for (int i = 0; i < temp.length; i++) {
                 trimmedList[i] = temp[i].trim();
             }
-            return LoggerHelper.formatMessage(readLine, trimmedList);
+
+            if (null != trimmedList) {
+                replaceAllConstantsWithMapValues(trimmedList);
+                return LoggerHelper.formatMessage(readLine, trimmedList);
+            }
+
         } else {
             int end = StringUtils.lastIndexOf(readLine, "\"");
             String format = StringUtils.substring(readLine, start, end);
             return "\"" + format + "\"";
         }
 
+        return readLine;
+
+    }
+
+    /**
+     * Updated shared Map with key/value pairs
+     *
+     * @param trimmedList items
+     */
+    protected static void replaceAllConstantsWithMapValues(String[] trimmedList) {
+        try {
+            if (null != getConstants()) {
+                for (int i = 0; i < trimmedList.length; i++) {
+                    String possibleReplacementArguments = trimmedList[i];
+                    if (possibleReplacementArguments.contains(".")) {
+                        String keyToFind = StringUtils.substringAfter(possibleReplacementArguments, ".");
+                        String value = getConstants().get(keyToFind).toString();
+                        trimmedList[i] = value;
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            LOG(true, "Failed to replace Map value(s)=" + trimmedList[0]);
+        }
     }
 
     /**
@@ -177,17 +256,9 @@ public class ContinuousIntegrationLogExporter {
      * @param arg source directory
      * @return full path to source directory
      */
-    private static String getUserDefinedSourceDirectory(String arg) {
+    protected static String getUserDefinedTestSourceDirectory(String arg) {
 
-        File currentDirectory = new File(new File(".").getAbsolutePath());
-        String base = StringUtils.replace(currentDirectory.getAbsolutePath(), "%20", " ");
-        base = StringUtils.removeStart(base, "/");
-        base = StringUtils.removeStart(base, FrameworkConstants.SEPARATOR);
-        base = StringUtils.replace(base, "/", FrameworkConstants.SEPARATOR);
-        base = StringUtils.substringBeforeLast(base, ".");
-
-        StringBuilder source = new StringBuilder(base);
-        source.append(StringUtils.replace(DEFAULT_TEST_DIR, ".", FrameworkConstants.SEPARATOR));
+        StringBuilder source = getBaseJavaDirectory();
 
         if (StringUtils.contains(arg, ".")) {
             arg = StringUtils.replace(arg, ".", FrameworkConstants.SEPARATOR);
@@ -199,6 +270,32 @@ public class ContinuousIntegrationLogExporter {
         String sourceDirectory = StringUtils.replace(source.toString(), "/", FrameworkConstants.SEPARATOR);
         sourceDirectory = StringUtils.appendIfMissing(sourceDirectory, FrameworkConstants.SEPARATOR);
         return sourceDirectory;
+    }
+
+    /**
+     * Get the base src/test/java directory location
+     *
+     * @return base test calss source code directory
+     */
+    protected static StringBuilder getBaseJavaDirectory() {
+        File currentDirectory = new File(new File(".").getAbsolutePath());
+        String base = StringUtils.replace(currentDirectory.getAbsolutePath(), "%20", " ");
+        base = StringUtils.removeStart(base, "/");
+        base = StringUtils.removeStart(base, FrameworkConstants.SEPARATOR);
+        base = StringUtils.replace(base, "/", FrameworkConstants.SEPARATOR);
+        base = StringUtils.substringBeforeLast(base, ".");
+
+        StringBuilder source = new StringBuilder(base);
+        source.append(StringUtils.replace(DEFAULT_TEST_DIR, ".", FrameworkConstants.SEPARATOR));
+        return source;
+    }
+
+    public static Map getConstants() {
+        return constants;
+    }
+
+    public static void setConstants(Map constants) {
+        ContinuousIntegrationLogExporter.constants = constants;
     }
 
 }

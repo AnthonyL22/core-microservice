@@ -1,6 +1,6 @@
 package com.pwc.core.framework.ci.tests;
 
-import com.pwc.core.framework.FrameworkConstants;
+import com.pwc.core.framework.ci.parent.Data;
 
 import static com.pwc.logging.service.LoggerService.*;
 
@@ -12,7 +12,7 @@ public class HomeTest {
         SCENARIO("Home Functionality");
         GIVEN("I am logged in page=%s and authenticated user=%s", "home", "anthony lombardo");
 
-        WHEN("I view the Home page without doing a search for env=%s", FrameworkConstants.AUTOMATION_TEST_ENVIRONMENT);
+        WHEN("I view the Home page without doing a search for env=%s", Data.ENVIRONMENT);
 
         THEN("Basic components are present");
 
