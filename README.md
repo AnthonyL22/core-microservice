@@ -160,7 +160,7 @@ Simply add this to a profile or goal in your POM.xml to leverage in your build p
             <phase>install</phase>
             <configuration>
               <arguments>
-                <argument>com.qualcomm.ipcatalog.automation.tests</argument>
+                <argument>com.google.special.automation.tests</argument>
                 <argument>Manual_Test_Cases.txt</argument>
                 <argument>Constants.java</argument>
               </arguments>
