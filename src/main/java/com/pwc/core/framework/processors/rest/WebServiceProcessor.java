@@ -10,8 +10,10 @@ import com.jayway.restassured.path.json.JsonPath;
 import com.jayway.restassured.path.json.config.JsonPathConfig;
 import com.pwc.core.framework.FrameworkConstants;
 import com.pwc.core.framework.command.WebServiceCommand;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpHeaders;
 import org.apache.http.NameValuePair;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
@@ -35,6 +37,7 @@ import org.testng.Assert;
 import javax.net.ssl.SSLContext;
 import java.io.IOException;
 import java.net.URI;
+import java.nio.charset.Charset;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -48,6 +51,8 @@ import static com.pwc.logging.service.LoggerService.LOG;
 import static org.apache.http.ssl.SSLContexts.custom;
 
 public class WebServiceProcessor {
+
+    private static final String DEFAULT_ENCODING = "ISO-8859-1";
 
     public WebServiceProcessor() {
     }
@@ -115,6 +120,7 @@ public class WebServiceProcessor {
             CloseableHttpResponse response;
             CloseableHttpClient httpclient = getAuthenticatedClient(url, user, pass);
             httpGet = new HttpGet(url);
+            httpGet = (HttpGet) setHeaderCredentials(user, pass, httpGet);
             StopWatch stopWatch = new StopWatch();
             stopWatch.start();
             response = httpclient.execute(httpGet);
@@ -173,21 +179,25 @@ public class WebServiceProcessor {
             StopWatch stopWatch = new StopWatch();
             if (StringUtils.equals(command.methodType(), FrameworkConstants.POST_REQUEST)) {
                 httpPost = new HttpPost(wsUrl);
+                httpPost = (HttpPost) setHeaderCredentials(user, pass, httpPost);
                 stopWatch.start();
                 response = httpclient.execute(httpPost);
                 stopWatch.stop();
             } else if (StringUtils.equals(command.methodType(), FrameworkConstants.GET_REQUEST)) {
                 httpGet = new HttpGet(wsUrl);
+                httpGet = (HttpGet) setHeaderCredentials(user, pass, httpGet);
                 stopWatch.start();
                 response = httpclient.execute(httpGet);
                 stopWatch.stop();
             } else if (StringUtils.equals(command.methodType(), FrameworkConstants.PUT_REQUEST)) {
                 httpPut = new HttpPut(wsUrl);
+                httpPut = (HttpPut) setHeaderCredentials(user, pass, httpPut);
                 stopWatch.start();
                 response = httpclient.execute(httpPut);
                 stopWatch.stop();
             } else if (StringUtils.equals(command.methodType(), FrameworkConstants.DELETE_REQUEST)) {
                 httpDelete = new HttpDelete(wsUrl);
+                httpDelete = (HttpDelete) setHeaderCredentials(user, pass, httpDelete);
                 stopWatch.start();
                 response = httpclient.execute(httpDelete);
                 stopWatch.stop();
@@ -203,6 +213,26 @@ public class WebServiceProcessor {
 
         return wsResponse;
 
+    }
+
+    /**
+     * Set the BasicAuth header to the user/pass provided
+     *
+     * @param user     username
+     * @param pass     password
+     * @param httpBase Http base to set header for
+     * @return decorated HttpRequestBase for use by get, post, put, ect..
+     */
+    protected HttpRequestBase setHeaderCredentials(final String user, final String pass, HttpRequestBase httpBase) {
+        try {
+            String authentication = user + ":" + pass;
+            byte[] encodedAuth = Base64.encodeBase64(authentication.getBytes(Charset.forName(DEFAULT_ENCODING)));
+            String authenticationHeader = "Basic " + new String(encodedAuth);
+            httpBase.setHeader(HttpHeaders.AUTHORIZATION, authenticationHeader);
+        } catch (Exception e) {
+            return httpBase;
+        }
+        return httpBase;
     }
 
     /**
@@ -232,13 +262,14 @@ public class WebServiceProcessor {
             if (StringUtils.equals(command.methodType(), FrameworkConstants.POST_REQUEST)) {
 
                 httpPost = new HttpPost(wsUrl);
+                httpPost = (HttpPost) setHeaderCredentials(user, pass, httpPost);
 
                 if (payload instanceof HashMap) {
 
                     URI uri = constructUriFromPayloadMap(httpPost, (HashMap<String, Object>) payload);
                     LOG(true, "POST URI='%s'", uri);
-                    httpPost.setURI(uri);
 
+                    httpPost.setURI(uri);
                     StopWatch stopWatch = new StopWatch();
                     stopWatch.start();
                     CloseableHttpResponse response = httpclient.execute(httpPost);
@@ -268,6 +299,7 @@ public class WebServiceProcessor {
             } else if (StringUtils.equals(command.methodType(), FrameworkConstants.PUT_REQUEST)) {
 
                 httpPut = new HttpPut(wsUrl);
+                httpPut = (HttpPut) setHeaderCredentials(user, pass, httpPut);
 
                 if (payload instanceof HashMap) {
 
@@ -291,6 +323,7 @@ public class WebServiceProcessor {
             } else {
 
                 httpGet = new HttpGet(wsUrl);
+                httpGet = (HttpGet) setHeaderCredentials(user, pass, httpGet);
 
                 if (payload instanceof HashMap) {
 

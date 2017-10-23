@@ -12,10 +12,6 @@ public class MicroserviceRemoteWebDriver extends RemoteWebDriver implements Micr
         super();
     }
 
-    public MicroserviceRemoteWebDriver(CommandExecutor executor, Capabilities desiredCapabilities, Capabilities requiredCapabilities) {
-        super(executor, desiredCapabilities, requiredCapabilities);
-    }
-
     public MicroserviceRemoteWebDriver(CommandExecutor executor, Capabilities desiredCapabilities) {
         super(executor, desiredCapabilities);
     }
@@ -24,11 +20,8 @@ public class MicroserviceRemoteWebDriver extends RemoteWebDriver implements Micr
         super(desiredCapabilities);
     }
 
-    public MicroserviceRemoteWebDriver(URL remoteAddress, Capabilities desiredCapabilities, Capabilities requiredCapabilities) {
-        super(remoteAddress, desiredCapabilities, requiredCapabilities);
-    }
-
     public MicroserviceRemoteWebDriver(URL remoteAddress, Capabilities desiredCapabilities) {
         super(remoteAddress, desiredCapabilities);
     }
+
 }

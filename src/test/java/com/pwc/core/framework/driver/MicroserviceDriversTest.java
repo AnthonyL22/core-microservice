@@ -63,7 +63,7 @@ public class MicroserviceDriversTest {
         Assert.assertNotNull(driver);
     }
 
-    @Test(expected = Exception.class)
+    @Test(expected = NoClassDefFoundError.class)
     public void androidDriverTest() {
         MicroserviceAndroidDriver driver = new MicroserviceAndroidDriver(desiredCapabilities);
         Assert.assertNotNull(driver);
@@ -106,12 +106,12 @@ public class MicroserviceDriversTest {
         driver = new MicroserviceChromeDriver(chromeDriverService, desiredCapabilities);
     }
 
-    @Test(expected = Exception.class)
+    @Test(expected = NoClassDefFoundError.class)
     public void internetExplorerDriverTest() {
         driver = new MicroserviceInternetExplorerDriver(desiredCapabilities);
     }
 
-    @Test(expected = Exception.class)
+    @Test(expected = NoClassDefFoundError.class)
     public void internetExplorerDriverWithPortTest() {
         driver = new MicroserviceInternetExplorerDriver(4444);
     }

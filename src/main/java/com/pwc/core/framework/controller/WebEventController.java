@@ -212,10 +212,6 @@ public class WebEventController {
     public MicroserviceWebDriver getFirefoxBrowser() throws MalformedURLException {
         LOG("starting firefox browser");
         setDriverExecutable();
-        //ToDo: awaiting fix for Firefox 'Certificate is not secure'
-        //FirefoxOptions options = new FirefoxOptions();
-        //options.addPreference("log", "{level: info}");
-        //capabilities.setCapability("moz:firefoxOptions", options);
         capabilities.setCapability("marionette", true);
         capabilities.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
         capabilities.setCapability(CapabilityType.BROWSER_NAME, BrowserType.FIREFOX);

@@ -9,6 +9,7 @@ import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.junit.Assert;
@@ -146,6 +147,20 @@ public class WebServiceProcessorTest {
         }
         when(mockHttpRequestBase.getURI()).thenReturn(expectedURI);
 
+    }
+
+    @Test()
+    public void setHeaderCredentialsAllInfoTest() {
+        HttpGet mockHttpGet = new HttpGet();
+        mockHttpGet = (HttpGet) webServiceProcessor.setHeaderCredentials(USER, PASS, mockHttpGet);
+        Assert.assertEquals(mockHttpGet.getAllHeaders().length, 1);
+        Assert.assertTrue(mockHttpGet.getHeaders("Authorization")[0].getValue().contains("Basic"));
+    }
+
+    @Test()
+    public void setHeaderCredentialsMissingUsernameTest() {
+        HttpGet httpGet = (HttpGet) webServiceProcessor.setHeaderCredentials(USER, PASS, null);
+        Assert.assertNull(httpGet);
     }
 
     @Test

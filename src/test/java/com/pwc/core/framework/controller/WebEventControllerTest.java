@@ -180,14 +180,14 @@ public class WebEventControllerTest {
     public void setPlatformNoPlatformSpecifiedTest() {
         System.setProperty(FrameworkConstants.AUTOMATION_PLATFORM_PROPERTY, "");
         webEventController.setDefaultDesiredCapabilities();
-        Assert.assertEquals(webEventController.getCapabilities().getCapability(CapabilityType.PLATFORM), Platform.ANY);
+        Assert.assertEquals(webEventController.getCapabilities().getCapability(CapabilityType.PLATFORM), Platform.ANY.name());
     }
 
     @Test
     public void setPlatformWindowsTest() {
         System.setProperty(FrameworkConstants.AUTOMATION_PLATFORM_PROPERTY, "windows");
         webEventController.setDefaultDesiredCapabilities();
-        Assert.assertEquals(webEventController.getCapabilities().getCapability(CapabilityType.PLATFORM), Platform.WINDOWS);
+        Assert.assertEquals(webEventController.getCapabilities().getCapability(CapabilityType.PLATFORM), Platform.WINDOWS.name());
     }
 
     @Test
@@ -199,7 +199,7 @@ public class WebEventControllerTest {
 
         System.setProperty(FrameworkConstants.AUTOMATION_PLATFORM_PROPERTY, "linux");
         webEventController.setDefaultDesiredCapabilities();
-        Assert.assertEquals(webEventController.getCapabilities().getCapability(CapabilityType.PLATFORM), Platform.LINUX);
+        Assert.assertEquals(webEventController.getCapabilities().getCapability(CapabilityType.PLATFORM), Platform.LINUX.name());
     }
 
     @Test
@@ -213,14 +213,14 @@ public class WebEventControllerTest {
     public void setPlatformOsxTest() {
         System.setProperty(FrameworkConstants.AUTOMATION_PLATFORM_PROPERTY, "osx");
         webEventController.setDefaultDesiredCapabilities();
-        Assert.assertEquals(webEventController.getCapabilities().getCapability(CapabilityType.PLATFORM), Platform.EL_CAPITAN);
+        Assert.assertEquals(webEventController.getCapabilities().getCapability(CapabilityType.PLATFORM), Platform.EL_CAPITAN.toString());
     }
 
     @Test
     public void setPlatformOsxWithVersionTest() {
         System.setProperty(FrameworkConstants.AUTOMATION_PLATFORM_PROPERTY, "osx 10.9");
         webEventController.setDefaultDesiredCapabilities();
-        Assert.assertEquals(webEventController.getCapabilities().getCapability(CapabilityType.PLATFORM), Platform.MAVERICKS);
+        Assert.assertEquals(webEventController.getCapabilities().getCapability(CapabilityType.PLATFORM), Platform.MAVERICKS.toString());
     }
 
     @Test
@@ -281,7 +281,7 @@ public class WebEventControllerTest {
         Assert.assertEquals(webEventController.getCapabilities().getCapability("takesScreenshot"), true);
     }
 
-    @Test(expected = AssertionError.class)
+    @Test(expected = NoClassDefFoundError.class)
     public void initiateBrowserInvalidInternetExploreBrowserDriverLocationTest() {
         System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.INTERNET_EXPLORER_BROWSER_MODE);
         webEventController.initiateBrowser(null);
@@ -348,14 +348,14 @@ public class WebEventControllerTest {
         Assert.assertNull(result);
     }
 
-    @Test(expected = org.openqa.selenium.WebDriverException.class)
+    @Test(expected = NoClassDefFoundError.class)
     public void getIOSBrowserGridNoExistingLiveRemoteDriverTest() throws Exception {
         webEventController.setGridEnabled(true);
         webEventController.setGridUrl(GRID_URL);
         webEventController.getIOSBrowser();
     }
 
-    @Test(expected = org.openqa.selenium.WebDriverException.class)
+    @Test(expected = NoClassDefFoundError.class)
     public void getFirefoxBrowserGridNoExistingLiveRemoteDriverTest() throws Exception {
         webEventController.setGridEnabled(true);
         webEventController.setGridUrl(GRID_URL);
@@ -420,7 +420,7 @@ public class WebEventControllerTest {
         Assert.assertNull(result);
     }
 
-    @Test(expected = org.openqa.selenium.WebDriverException.class)
+    @Test(expected = NoClassDefFoundError.class)
     public void getPhantomJsBrowserGridNoExistingLiveRemoteDriverTest() throws Exception {
         webEventController.setGridEnabled(true);
         webEventController.setGridUrl(GRID_URL);
@@ -445,7 +445,7 @@ public class WebEventControllerTest {
         Assert.assertNull(result);
     }
 
-    @Test(expected = org.openqa.selenium.WebDriverException.class)
+    @Test(expected = NoClassDefFoundError.class)
     public void getEdgeBrowserNoExistingLiveRemoteDriverTest() throws Exception {
         webEventController.setGridEnabled(true);
         webEventController.setGridUrl(GRID_URL);
@@ -461,7 +461,7 @@ public class WebEventControllerTest {
         Assert.assertNull(result);
     }
 
-    @Test(expected = org.openqa.selenium.WebDriverException.class)
+    @Test(expected = NoClassDefFoundError.class)
     public void getSafariGridNoExistingLiveRemoteDriverTest() throws Exception {
         webEventController.setGridEnabled(true);
         webEventController.setGridUrl(GRID_URL);
@@ -487,7 +487,7 @@ public class WebEventControllerTest {
         Assert.assertNull(result);
     }
 
-    @Test(expected = org.openqa.selenium.WebDriverException.class)
+    @Test(expected = NoClassDefFoundError.class)
     public void getInternetExplorerBrowserGridNoExistingLiveRemoteDriverTest() throws Exception {
         webEventController.setGridEnabled(true);
         webEventController.setGridUrl(GRID_URL);
