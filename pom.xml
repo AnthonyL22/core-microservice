@@ -73,7 +73,7 @@
     <restassured.version>2.9.0</restassured.version>
     <saucelabs-java.version>2.1.23</saucelabs-java.version>
     <saucelabs.version>1.0.35</saucelabs.version>
-    <selenium.version>3.6.0</selenium.version>
+    <selenium.version>3.5.3</selenium.version>
     <sortpom-maven-plugin.version>2.6.0</sortpom-maven-plugin.version>
     <spring-mongodb.version>1.2.0.RELEASE</spring-mongodb.version>
     <spring.version>3.2.3.RELEASE</spring.version>
@@ -177,7 +177,6 @@
       <artifactId>junit</artifactId>
       <version>${junit.version}</version>
     </dependency>
-    <!--Logging Dependencies-->
     <dependency>
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
@@ -216,12 +215,47 @@
     </dependency>
     <dependency>
       <groupId>org.seleniumhq.selenium</groupId>
+      <artifactId>selenium-chrome-driver</artifactId>
+      <version>${selenium.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.seleniumhq.selenium</groupId>
+      <artifactId>selenium-edge-driver</artifactId>
+      <version>${selenium.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.seleniumhq.selenium</groupId>
+      <artifactId>selenium-firefox-driver</artifactId>
+      <version>${selenium.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.seleniumhq.selenium</groupId>
+      <artifactId>selenium-ie-driver</artifactId>
+      <version>${selenium.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.seleniumhq.selenium</groupId>
       <artifactId>selenium-java</artifactId>
       <version>${selenium.version}</version>
     </dependency>
     <dependency>
       <groupId>org.seleniumhq.selenium</groupId>
+      <artifactId>selenium-opera-driver</artifactId>
+      <version>${selenium.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.seleniumhq.selenium</groupId>
       <artifactId>selenium-remote-driver</artifactId>
+      <version>${selenium.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.seleniumhq.selenium</groupId>
+      <artifactId>selenium-safari-driver</artifactId>
+      <version>${selenium.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.seleniumhq.selenium</groupId>
+      <artifactId>selenium-support</artifactId>
       <version>${selenium.version}</version>
     </dependency>
     <dependency>

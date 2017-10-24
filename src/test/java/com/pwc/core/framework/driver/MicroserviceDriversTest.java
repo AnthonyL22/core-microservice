@@ -35,7 +35,6 @@ public class MicroserviceDriversTest {
         edgeOptions.setPageLoadStrategy("fast");
 
         safariOptions = new SafariOptions();
-        safariOptions.setPort(8080);
 
     }
 
@@ -63,7 +62,7 @@ public class MicroserviceDriversTest {
         Assert.assertNotNull(driver);
     }
 
-    @Test(expected = NoClassDefFoundError.class)
+    @Test(expected = Exception.class)
     public void androidDriverTest() {
         MicroserviceAndroidDriver driver = new MicroserviceAndroidDriver(desiredCapabilities);
         Assert.assertNotNull(driver);
@@ -106,12 +105,12 @@ public class MicroserviceDriversTest {
         driver = new MicroserviceChromeDriver(chromeDriverService, desiredCapabilities);
     }
 
-    @Test(expected = NoClassDefFoundError.class)
+    @Test(expected = Exception.class)
     public void internetExplorerDriverTest() {
         driver = new MicroserviceInternetExplorerDriver(desiredCapabilities);
     }
 
-    @Test(expected = NoClassDefFoundError.class)
+    @Test(expected = Exception.class)
     public void internetExplorerDriverWithPortTest() {
         driver = new MicroserviceInternetExplorerDriver(4444);
     }

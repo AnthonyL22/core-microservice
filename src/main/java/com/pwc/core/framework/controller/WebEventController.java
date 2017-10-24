@@ -215,6 +215,8 @@ public class WebEventController {
         capabilities.setCapability("marionette", true);
         capabilities.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
         capabilities.setCapability(CapabilityType.BROWSER_NAME, BrowserType.FIREFOX);
+
+
         if (gridEnabled) {
             if (this.remoteWebDriver == null) {
                 MicroserviceRemoteWebDriver microserviceRemoteWebDriver = new MicroserviceRemoteWebDriver(new URL(gridUrl), capabilities);
@@ -223,7 +225,7 @@ public class WebEventController {
             }
         } else {
             if (this.remoteWebDriver == null) {
-                return (new MicroserviceFirefoxDriver(capabilities));
+                return (new MicroserviceFirefoxDriver());
             }
         }
         return null;
