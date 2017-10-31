@@ -2,6 +2,7 @@ package com.pwc.core.framework.listeners;
 
 import com.pwc.core.framework.FrameworkConstants;
 import com.pwc.core.framework.MicroserviceTestSuite;
+import com.pwc.core.framework.annotations.Issue;
 import com.pwc.core.framework.data.PropertiesFile;
 import com.pwc.core.framework.util.PropertiesUtils;
 import com.pwc.logging.helper.LoggerHelper;
@@ -10,6 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.testng.*;
 import org.testng.annotations.Listeners;
 
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -59,7 +61,7 @@ public class MicroserviceTestListener extends TestListenerAdapter implements ITe
     @Override
     public void onTestFailure(ITestResult tr) {
         sessionIdProvider = (MicroserviceTestSuite) tr.getInstance();
-        markJobResults(tr, sessionIdProvider.getCurrentJobId(), false);
+        logIssueAnnotationInformation(tr);
         LOG(true, "%s--Description: %s", tr.getName(), !StringUtils.isEmpty(tr.getMethod().getDescription()) ? tr.getMethod().getDescription() : "N/A");
         LOG(true, "%s--Executed on Date/Time: %s", tr.getName(), LoggerHelper.getDateTime(FrameworkConstants.DATETIME_LOGGER_DATETIME_PATTER, FrameworkConstants.SYSTEM_DEFAULT_TIMEZONE, 0));
         LOG(true, "%s--Test Failed", tr.getName());
@@ -69,6 +71,7 @@ public class MicroserviceTestListener extends TestListenerAdapter implements ITe
     public void onTestSkipped(ITestResult tr) {
         sessionIdProvider = (MicroserviceTestSuite) tr.getInstance();
         markJobResults(tr, sessionIdProvider.getCurrentJobId(), false);
+        logIssueAnnotationInformation(tr);
         LOG(true, "%s--Description: %s", tr.getName(), !StringUtils.isEmpty(tr.getMethod().getDescription()) ? tr.getMethod().getDescription() : "N/A");
         LOG(true, "%s--Executed on Date/Time: %s", tr.getName(), LoggerHelper.getDateTime(FrameworkConstants.DATETIME_LOGGER_DATETIME_PATTER, FrameworkConstants.SYSTEM_DEFAULT_TIMEZONE, 0));
         LOG(true, "%s--Test Skipped", tr.getName());
@@ -78,9 +81,27 @@ public class MicroserviceTestListener extends TestListenerAdapter implements ITe
     public void onTestSuccess(ITestResult tr) {
         sessionIdProvider = (MicroserviceTestSuite) tr.getInstance();
         markJobResults(tr, sessionIdProvider.getCurrentJobId(), true);
+        logIssueAnnotationInformation(tr);
         LOG(true, "%s--Description: %s", tr.getName(), !StringUtils.isEmpty(tr.getMethod().getDescription()) ? tr.getMethod().getDescription() : "N/A");
         LOG(true, "%s--Executed on Date/Time: %s", tr.getName(), LoggerHelper.getDateTime(FrameworkConstants.DATETIME_LOGGER_DATETIME_PATTER, FrameworkConstants.SYSTEM_DEFAULT_TIMEZONE, 0));
         LOG(true, "%s--Test Passed", tr.getName());
+    }
+
+    /**
+     * Get the issue or story information from the @Issue annotation
+     *
+     * @param tr active test result
+     */
+    protected void logIssueAnnotationInformation(ITestResult tr) {
+        try {
+            Method method = tr.getMethod().getConstructorOrMethod().getMethod();
+            Issue issueMetadata = method.getAnnotation(Issue.class);
+            if (StringUtils.isNotEmpty(issueMetadata.value())) {
+                LOG(true, "%s--Issue(s): %s", tr.getName(), issueMetadata.value());
+            }
+        } catch (Exception e) {
+            e.getMessage();
+        }
     }
 
     /**
