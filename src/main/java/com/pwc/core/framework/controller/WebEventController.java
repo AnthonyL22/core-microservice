@@ -114,8 +114,6 @@ public class WebEventController {
 
             currentJobId = ((RemoteWebDriver) this.remoteWebDriver).getSessionId().toString();
 
-            LOG(true, "Test Video: " + "http://s3-us-west-2.amazonaws.com/6ca5b6bd-816f-45ea-b0af-d33a1627f21e/d26d1fcc-04d6-05ed-0839-4944d1a015ca/play.html?" + ((RemoteWebDriver) this.remoteWebDriver).getSessionId().toString());
-
             webEventService = new WebEventService(remoteWebDriver);
             if (isSiteMinderEnabled()) {
                 webEventService.authenticateSiteMinder(webUrl, credentials, siteMinderOpenUrl, false);
