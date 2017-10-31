@@ -66,10 +66,29 @@ like to retry N number of times.
 ### Usage
 ```
 @MaxRetryCount(5)
-@Test(retryAnalyzer = Retry.class, description = "My Story Info", groups = {Groups.WEB_SERVICE_TEST, Groups.REGRESSION_TEST})
+@Test(retryAnalyzer = Retry.class, groups = {Groups.WEB_SERVICE_TEST, Groups.REGRESSION_TEST})
 public void testSolrSearch() {
     My Test Here
 }
+```
+
+## Issue Annotation
+The @Issue annotation is a customized annotation for automatically adding logging information which identify the 
+issue or story numbers relevant to your test.  Very useful for Jira integration.  
+
+```
+@Issue("STORY-1234")
+@Test(retryAnalyzer = Retry.class, groups = {Groups.WEB_SERVICE_TEST, Groups.REGRESSION_TEST})
+public void testSolrSearch() {
+    My Test Here
+}
+```
+
+### Sample Log Output
+```
+2017-10-31 15:29:55.629  BookmarkTest                        testBookmark--Issue(s): STORY-1234
+2017-10-31 15:29:55.630  BookmarkTest                        testBookmark--Executed on Date/Time: 2017-10-31 15:29:55.630
+2017-10-31 15:29:55.630  BookmarkTest                        testBookmark--Test Passed
 ```
 
 ## Performance Feature
