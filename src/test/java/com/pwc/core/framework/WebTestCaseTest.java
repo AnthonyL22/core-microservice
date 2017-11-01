@@ -10,6 +10,8 @@ import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.testng.Assert;
 
+import java.util.logging.Level;
+
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -34,7 +36,7 @@ public class WebTestCaseTest extends WebTestCase {
 
     @Test
     public void deleteCookieTest() {
-        deleteCookie("PAD-Cookie");
+        deleteCookie("MY-Cookie");
     }
 
     @Test
@@ -266,6 +268,21 @@ public class WebTestCaseTest extends WebTestCase {
     @Test
     public void refreshTest() {
         refreshBrowser();
+    }
+
+    @Test
+    public void webConsoleContainsTest() {
+        webDiagnosticsConsoleContains("IndexOutOfBounds");
+    }
+
+    @Test
+    public void webConsoleLevelAboveTest() {
+        webDiagnosticsConsoleLevelAbove(Level.SEVERE);
+    }
+
+    @Test
+    public void webNetworkRequestCountEqualsTest() {
+        webDiagnosticsRequestCountEquals("mycompany/api", 3);
     }
 
     @Override

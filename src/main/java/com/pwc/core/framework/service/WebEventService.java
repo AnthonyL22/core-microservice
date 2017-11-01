@@ -34,6 +34,9 @@ import org.jsoup.Jsoup;
 import org.jsoup.parser.Parser;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.logging.LogEntries;
+import org.openqa.selenium.logging.LogEntry;
+import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -55,6 +58,7 @@ import java.io.FileFilter;
 import java.io.StringReader;
 import java.security.SecureRandom;
 import java.util.*;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -299,7 +303,7 @@ public class WebEventService extends WebEventController {
     }
 
     /**
-     * Construct the cookie file name for PAD product
+     * Construct the cookie file name for your product
      *
      * @return well-formed cookie name
      */
@@ -1346,6 +1350,99 @@ public class WebEventService extends WebEventController {
             DebuggingUtils.takeScreenShot(this.microserviceWebDriver, isVideoCaptureEnabled());
             Assert.fail(String.format("Browser didn't appear READY in allotted time of %s seconds", pageTimeoutInSeconds), e);
         }
+    }
+
+    /**
+     * Check if the current page contains Console errors that contains a sub-string
+     *
+     * @param consoleIdentifier case-insensitive snippet of console log output to find
+     * @param expectedText      flag check for text to exist or not
+     */
+    public void webConsoleRequestContains(final String consoleIdentifier, final boolean expectedText) {
+        List<LogEntry> consoleEntries = getConsoleRequests();
+        consoleEntries.forEach(consoleEntry -> {
+            if (expectedText) {
+                if (StringUtils.containsIgnoreCase(consoleEntry.getMessage(), consoleIdentifier)) {
+                    assertPass("Verify consoleContains() Passed for errorLevel='%s' entry='%s'", consoleEntry.getLevel(), StringUtils.substringBefore(consoleEntry.getMessage(), " "));
+                } else {
+                    assertFail("Verify consoleContains() Failed for errorLevel='%s' entry='%s'", consoleEntry.getLevel(), StringUtils.substringBefore(consoleEntry.getMessage(), " "));
+                }
+            } else {
+                if (!StringUtils.containsIgnoreCase(consoleEntry.getMessage(), consoleIdentifier)) {
+                    assertPass("Verify consoleContains() Passed for errorLevel='%s' entry='%s'", consoleEntry.getLevel(), StringUtils.substringBefore(consoleEntry.getMessage(), " "));
+                } else {
+                    assertFail("Verify consoleContains() Failed for errorLevel='%s' entry='%s'", consoleEntry.getLevel(), StringUtils.substringBefore(consoleEntry.getMessage(), " "));
+                }
+            }
+
+        });
+    }
+
+    /**
+     * Check if the current page contains Console errors at a given log level or above
+     *
+     * @param targetLogLevel            target log java.util.Level
+     * @param isEqualOrGreaterThanLevel verify if log Level is greater than or equal to the target log level intValue
+     */
+    public void webConsoleRequestLevel(final Level targetLogLevel, final boolean isEqualOrGreaterThanLevel) {
+        List<LogEntry> sourceConsoleEntries = getConsoleRequests();
+        sourceConsoleEntries.forEach(sourceConsoleEntry -> {
+            if (isEqualOrGreaterThanLevel) {
+                if (sourceConsoleEntry.getLevel().intValue() >= targetLogLevel.intValue()) {
+                    assertPass("Verify consoleLevel() Passed for errorLevel='%s' entry='%s'", sourceConsoleEntry.getLevel(), StringUtils.substringBefore(sourceConsoleEntry.getMessage(), " "));
+                } else {
+                    assertFail("Verify consoleLevel() Failed for errorLevel='%s' entry='%s'", sourceConsoleEntry.getLevel(), StringUtils.substringBefore(sourceConsoleEntry.getMessage(), " "));
+                }
+            } else {
+                if (sourceConsoleEntry.getLevel().intValue() < targetLogLevel.intValue()) {
+                    assertPass("Verify consoleLevel() Passed for errorLevel='%s' entry='%s'", sourceConsoleEntry.getLevel(), StringUtils.substringBefore(sourceConsoleEntry.getMessage(), " "));
+                } else {
+                    assertFail("Verify consoleLevel() Failed for errorLevel='%s' entry='%s'", sourceConsoleEntry.getLevel(), StringUtils.substringBefore(sourceConsoleEntry.getMessage(), " "));
+                }
+            }
+
+        });
+    }
+
+    /**
+     * Get current Network requests that contain a particular request identifier and verify occurrence count
+     *
+     * @param requestIdentifier       target request identifier to do a case-insensitive match against
+     * @param matchingOccurrenceCount expected number of request occurrences
+     */
+    public void webNetworkRequestCount(final String requestIdentifier, final int matchingOccurrenceCount) {
+        List<String> sourcePageRequests = getPageRequests();
+        int occurrencesFound = 0;
+        for (String sourcePageRequest : sourcePageRequests) {
+            if (StringUtils.containsIgnoreCase(sourcePageRequest, requestIdentifier.toString())) {
+                occurrencesFound++;
+            }
+        }
+        if (occurrencesFound == matchingOccurrenceCount) {
+            assertPass("networkRequestCount() Passed for occurrence count='%s' identifier='%s'", occurrencesFound, occurrencesFound, requestIdentifier.toString());
+        } else {
+            assertFail("networkRequestCount() Failed for occurrence count='%s' identifier='%s'", occurrencesFound, occurrencesFound, requestIdentifier.toString());
+        }
+    }
+
+    /**
+     * Get all current Network requests displayed in the current browser
+     */
+    private List<String> getPageRequests() {
+        List<String> networkRequests = new ArrayList<>();
+        List<String> currentRequestList = (List<String>) executeJavascript(JavascriptConstants.LIST_HTTP_RESOURCES);
+        currentRequestList.forEach(networkRequests::add);
+        return networkRequests;
+    }
+
+    /**
+     * Get all current Console requests displayed in the current browser
+     */
+    private List<LogEntry> getConsoleRequests() {
+        List<LogEntry> consoleRequests = new ArrayList<>();
+        LogEntries entries = this.microserviceWebDriver.manage().logs().get(LogType.BROWSER);
+        entries.forEach(consoleRequests::add);
+        return consoleRequests;
     }
 
     /**

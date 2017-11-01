@@ -108,6 +108,14 @@ long responseTime = webAction("//a[@id='MyAnchor']")
 // Assert if the returned response time is acceptable
 ```
 
+#### Web Diagnostics Usage
+We also provide the ability to validate the Console & Network tab activities in your browser.  These are increasingly handy 
+if you need to monitor/test your web application at a lower level.
+```
+webDiagnosticsConsole...() - validate your browser's Console tab Activities
+webDiagnosticsRequest...() - validate your browser's Network tab Activities
+```
+
 ### Web Service Usage
 ```
 JsonPath response = (JsonPath) webServiceAction(SolrWebServiceCommand.SEARCH);

@@ -71,7 +71,7 @@ public class JsonUtilsTest {
 
     @Test
     public void isInValidJSONTest() {
-        boolean result = JsonUtils.isJSONValid("[{\"os\n::owser-version=12&username=pad-jenkins&access-key=71047900-7f51-4185-a3d7-5d2b413f2efa\"}");
+        boolean result = JsonUtils.isJSONValid("[{\"os\n::owser-version=12&username=my-user&access-key=12345644564-7f51-7f51-4185-a3d7-5d2b413f2efa\"}");
         Assert.assertFalse(result);
     }
 

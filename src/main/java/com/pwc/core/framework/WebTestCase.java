@@ -4,6 +4,8 @@ package com.pwc.core.framework;
 import com.pwc.core.framework.data.CssProperty;
 import com.pwc.core.framework.data.WebElementAttribute;
 
+import java.util.logging.Level;
+
 public abstract class WebTestCase extends MicroserviceTestSuite {
 
     /**
@@ -518,6 +520,34 @@ public abstract class WebTestCase extends MicroserviceTestSuite {
      */
     protected String getWebElementText(final String elementIdentifier) {
         return webEventController.getWebEventService().getText(elementIdentifier);
+    }
+
+    /**
+     * Check if the current page contains Console errors that contains a sub-string
+     *
+     * @param consoleIdentifier case-insensitive snippet of console log output to find
+     */
+    protected void webDiagnosticsConsoleContains(final String consoleIdentifier) {
+        webEventController.getWebEventService().webConsoleRequestContains(consoleIdentifier, true);
+    }
+
+    /**
+     * Check if the current page contains Console errors at a given log level or above
+     *
+     * @param targetLogLevel target log java.util.Level
+     */
+    protected void webDiagnosticsConsoleLevelAbove(final Level targetLogLevel) {
+        webEventController.getWebEventService().webConsoleRequestLevel(targetLogLevel, true);
+    }
+
+    /**
+     * Get current Network requests that contain a particular request identifier and verify occurrence count
+     *
+     * @param requestIdentifier       target request identifier to do a case-insensitive match against
+     * @param matchingOccurrenceCount expected number of request occurrences
+     */
+    public void webDiagnosticsRequestCountEquals(final String requestIdentifier, final int matchingOccurrenceCount) {
+        webEventController.getWebEventService().webNetworkRequestCount(requestIdentifier, matchingOccurrenceCount);
     }
 
 }

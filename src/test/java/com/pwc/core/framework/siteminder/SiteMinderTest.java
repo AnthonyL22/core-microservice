@@ -82,7 +82,7 @@ public class SiteMinderTest extends Authenticator {
     @Test(expected = Exception.class)
     public void getAuthenticationOtherCookiesTest() throws Exception {
         cookies.clear();
-        BasicClientCookie cookie = new BasicClientCookie("PADSESSIONID", "unit test");
+        BasicClientCookie cookie = new BasicClientCookie("SESSIONID", "unit test");
         cookies.add(cookie);
         List<Cookie> cookies = spyAuthenticator.getAuthenticationCookies(APPLICATION_WEB_URL, USERNAME, PASSWORD);
         Assert.assertEquals(1, cookies.size());

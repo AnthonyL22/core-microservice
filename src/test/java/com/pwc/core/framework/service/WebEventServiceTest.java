@@ -17,12 +17,17 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.logging.LogEntries;
+import org.openqa.selenium.logging.LogEntry;
+import org.openqa.selenium.logging.LogType;
+import org.openqa.selenium.logging.Logs;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 
 import java.sql.SQLException;
 import java.util.*;
+import java.util.logging.Level;
 
 import static org.mockito.Mockito.*;
 
@@ -99,11 +104,13 @@ public class WebEventServiceTest extends WebElementBaseTest {
     WebDriver.TargetLocator mockTargetLocator;
     public static final List<String> ELEMENT_XPATHS = new ArrayList<>();
     private WebDriver.Options mockOptions;
+    private Logs mockLogs;
     private WebDriver.Window mockWindow;
     private Set<Cookie> mockCookies;
     private Set<Cookie> mockEmptyCookies;
     private Cookie mockTabNameCookie;
     private org.apache.http.cookie.Cookie mockHttpCookie;
+    private static final String CONSOLE_OUTPUT_MESSAGE = "http://www.pacificwebconsulting.com - console failure for: SSL Certificate Expired";
 
     @Before
     public void setUp() throws SQLException {
@@ -135,6 +142,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
         ELEMENT_XPATHS.add("//div[@id='777']");
 
         mockOptions = mock(WebDriver.Options.class);
+        mockLogs = mock(Logs.class);
         mockWindow = mock(WebDriver.Window.class);
 
         mockTabNameCookie = mock(Cookie.class);
@@ -170,6 +178,81 @@ public class WebEventServiceTest extends WebElementBaseTest {
 
         when(mockWebDriverService.executeScript(JavascriptConstants.IS_OPEN_HTTPS)).thenReturn(0L);
 
+        when(mockOptions.logs()).thenReturn(mockLogs);
+        when(mockWebDriverService.manage()).thenReturn(mockOptions);
+        when(mockWebDriverService.manage().logs()).thenReturn(mockLogs);
+        LogEntry logEntry = new LogEntry(Level.WARNING, 1245555L, CONSOLE_OUTPUT_MESSAGE);
+        List<LogEntry> entries = new ArrayList<>();
+        entries.add(logEntry);
+        LogEntries logEntries = new LogEntries(entries);
+        when(mockWebDriverService.manage().logs().get(LogType.BROWSER)).thenReturn(logEntries);
+
+        List<String> mockNetworkRequests = new ArrayList<>();
+        mockNetworkRequests.add("http://www.myapplication.com/api/user");
+        mockNetworkRequests.add("http://www.myapplication.com/home");
+        mockNetworkRequests.add("http://www.myapplication.com/api/exceptionHandler");
+        when(mockWebDriverService.executeScript(JavascriptConstants.LIST_HTTP_RESOURCES)).thenReturn(mockNetworkRequests);
+
+    }
+
+    @Test
+    public void webNetworkRequestCountTest() {
+        webEventService.webNetworkRequestCount("api/user", 1);
+    }
+
+    @Test (expected = AssertionError.class)
+    public void webNetworkRequestNotFoundTest() {
+        webEventService.webNetworkRequestCount("exceptions", 1);
+    }
+
+    @Test
+    public void webConsoleContainsExpectedContainsTest() {
+        webEventService.webConsoleRequestContains("SSL Certificate Expired", true);
+    }
+
+    @Test (expected = AssertionError.class)
+    public void webConsoleContainsExpectedNotContainsTest() {
+        webEventService.webConsoleRequestContains("Generic Message Not found", true);
+    }
+
+    @Test (expected = AssertionError.class)
+    public void webConsoleContainsNotExpectedContainsTest() {
+        webEventService.webConsoleRequestContains("SSL Certificate Expired", false);
+    }
+
+    @Test
+    public void webConsoleContainsNotExpectedNotContainsTest() {
+        webEventService.webConsoleRequestContains("Generic Message Not found", false);
+    }
+
+    @Test (expected = AssertionError.class)
+    public void webConsoleLevelSevereTest() {
+        webEventService.webConsoleRequestLevel(Level.SEVERE, true);
+    }
+
+    @Test
+    public void webConsoleLevelMatchingTest() {
+        webEventService.webConsoleRequestLevel(Level.WARNING, true);
+    }
+
+    @Test
+    public void webConsoleLevelLessThanLevelTest() {
+        webEventService.webConsoleRequestLevel(Level.INFO, true);
+    }
+
+    @Test
+    public void webConsoleLevelLessThanSevereTest() {
+        webEventService.webConsoleRequestLevel(Level.SEVERE, false);
+    }
+
+    @Test (expected = AssertionError.class)
+    public void webConsoleLevelMatchingLogLevelShouldFailTest() {
+        webEventService.webConsoleRequestLevel(Level.WARNING, false);
+    }
+
+    @Test (expected = AssertionError.class)
+    public void webConsoleLevelLessThanLogLevelShouldFailTest() {
+        webEventService.webConsoleRequestLevel(Level.INFO, false);
     }
 
     @Test(expected = AssertionError.class)
@@ -235,7 +318,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
 
         Assert.assertEquals(webEventService.getUrl(), DEFAULT_URL + "myDetails/777");
         verify(mockWebDriverService, times(2)).getCurrentUrl();
-        verify(mockWebDriverService, times(1)).manage();
+        verify(mockWebDriverService, times(3)).manage();
         verify(mockOptions, times(1)).window();
     }
 
@@ -405,7 +488,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
 
         Assert.assertEquals(webEventService.getUrl(), DEFAULT_URL + "myDetails/1234");
         verify(mockWebDriverService, times(2)).getCurrentUrl();
-        verify(mockWebDriverService, times(1)).manage();
+        verify(mockWebDriverService, times(3)).manage();
         verify(mockOptions, times(1)).window();
     }
 
@@ -419,7 +502,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
 
         Assert.assertEquals(webEventService.getUrl(), DEFAULT_URL + "myDetails/777");
         verify(mockWebDriverService, times(2)).getCurrentUrl();
-        verify(mockWebDriverService, times(1)).manage();
+        verify(mockWebDriverService, times(3)).manage();
         verify(mockOptions, times(1)).window();
     }
 
@@ -433,7 +516,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
 
         Assert.assertEquals(webEventService.getUrl(), DEFAULT_URL + "foobar");
         verify(mockWebDriverService, times(2)).getCurrentUrl();
-        verify(mockWebDriverService, times(1)).manage();
+        verify(mockWebDriverService, times(3)).manage();
         verify(mockOptions, times(1)).window();
     }
 
@@ -1720,15 +1803,5 @@ public class WebEventServiceTest extends WebElementBaseTest {
         boolean result = webEventService.elementEqualsText(false, "foobar here", "foobar here");
         Assert.assertTrue(result);
     }
-
-//    @Test
-//    public void testAuthenticateSiteMinder(){
-//
-//        Authenticator mockAuthenticator = mock(Authenticator.class);
-//        List<Cookie> cookies = new ArrayList<>();
-//
-//        when(mockAuthenticator.getAuthenticationCookies(DEFAULT_URL, Credentials.DEFAULT_PAD_USER.username, Credentials.DEFAULT_PAD_USER.password)).thenReturn(cookies);
-//        webEventService.authenticateSiteMinder(DEFAULT_URL, Credentials.DEFAULT_PAD_USER);
-//    }
 
 }

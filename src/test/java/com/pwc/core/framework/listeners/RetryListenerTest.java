@@ -64,7 +64,7 @@ public class RetryListenerTest extends MicroserviceTestListener {
         when(mockITestResult.getTestClass()).thenReturn(mockITestClass);
         when(mockITestResult.getMethod()).thenReturn(mockITestNGMethod);
         when(mockITestResult.getName()).thenReturn("UnitTestCase");
-        when(mockITestNGMethod.getDescription()).thenReturn("PAD-777");
+        when(mockITestNGMethod.getDescription()).thenReturn("MYSTORY-777");
         when(mockITestNGMethod.getTestClass()).thenReturn(mockITestClass);
 
         setGridEnabled(true);

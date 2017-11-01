@@ -66,7 +66,7 @@ public class MicroserviceTestListenerTest extends MicroserviceTestListener {
         when(mockITestResult.getMethod()).thenReturn(mockITestNGMethod);
         when(mockITestResult.getName()).thenReturn("UnitTestCase");
 
-        when(mockITestNGMethod.getDescription()).thenReturn("PAD-777");
+        when(mockITestNGMethod.getDescription()).thenReturn("MYSTORY-777");
         when(mockITestNGMethod.getTestClass()).thenReturn(mockITestClass);
 
         ConstructorOrMethod mockConstructorOrMethod = mock(ConstructorOrMethod.class);
