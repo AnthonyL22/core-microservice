@@ -12,7 +12,7 @@ import java.util.*;
 @RunWith(MockitoJUnitRunner.class)
 public class JsonUtilsTest {
 
-    private static final String SAMPLE_JSON = "[{\"os\":\"Windows 10\",\"platform\":\"XP\",\"browser\":\"firefox\",\"browser-version\":\"11\",\"long-name\":\"Firefox\",\"long-version\":\"11.0.\",\"url\":\"sauce-ondemand:?os=Windows 10&browser=firefox&browser-version=11&username=pad-jenkins&access-key=71047900-7f51-4185-a3d7-5d2b413f2efa\"},{\"os\":\"Windows 10\",\"platform\":\"XP\",\"browser\":\"firefox\",\"browser-version\":\"12\",\"long-name\":\"Firefox\",\"long-version\":\"12.0.\",\"url\":\"sauce-ondemand:?os=Windows 10&browser=firefox&browser-version=12&username=pad-jenkins&access-key=71047900-7f51-4185-a3d7-5d2b413f2efa\"}]";
+    private static final String SAMPLE_JSON = "[{\"os\":\"Windows 10\",\"platform\":\"XP\",\"browser\":\"firefox\",\"browser-version\":\"11\",\"long-name\":\"Firefox\",\"long-version\":\"11.0.\",\"url\":\"sauce-ondemand:?os=Windows 10&browser=firefox&browser-version=11&username=myuser-jenkins&access-key=12347900-7f51-4185-a3d7-5d2b413f2efa\"},{\"os\":\"Windows 10\",\"platform\":\"XP\",\"browser\":\"firefox\",\"browser-version\":\"12\",\"long-name\":\"Firefox\",\"long-version\":\"12.0.\",\"url\":\"sauce-ondemand:?os=Windows 10&browser=firefox&browser-version=12&username=myuser-jenkins&access-key=12347900-7f51-4185-a3d7-5d2b413f2efa\"}]";
     private static final List SAMPLE_JSON_LIST = new ArrayList(Arrays.asList("foobar", "testing", "here"));
     private static final Set SAMPLE_JSON_SET = new HashSet(Arrays.asList("foobar", "testing", "here"));
 
