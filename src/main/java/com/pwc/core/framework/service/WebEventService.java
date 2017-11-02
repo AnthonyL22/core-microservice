@@ -1353,7 +1353,7 @@ public class WebEventService extends WebEventController {
     }
 
     /**
-     * Check if the current page contains Console errors that contains a sub-string
+     * * Check if the current page's Console contains or does not contain a sub-string message
      *
      * @param consoleIdentifier case-insensitive snippet of console log output to find
      * @param expectedText      flag check for text to exist or not

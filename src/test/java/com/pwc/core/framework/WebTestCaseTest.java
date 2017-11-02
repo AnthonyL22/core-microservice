@@ -276,6 +276,11 @@ public class WebTestCaseTest extends WebTestCase {
     }
 
     @Test
+    public void webConsoleNotContainsTest() {
+        webDiagnosticsConsoleNotContains("foobar");
+    }
+
+    @Test
     public void webConsoleLevelAboveTest() {
         webDiagnosticsConsoleLevelAbove(Level.SEVERE);
     }

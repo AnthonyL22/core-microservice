@@ -523,12 +523,21 @@ public abstract class WebTestCase extends MicroserviceTestSuite {
     }
 
     /**
-     * Check if the current page contains Console errors that contains a sub-string
+     * * Check if the current page's Console does contains a sub-string message
      *
      * @param consoleIdentifier case-insensitive snippet of console log output to find
      */
     protected void webDiagnosticsConsoleContains(final String consoleIdentifier) {
         webEventController.getWebEventService().webConsoleRequestContains(consoleIdentifier, true);
+    }
+
+    /**
+     * Check if the current page's Console does not contains a sub-string message
+     *
+     * @param consoleIdentifier case-insensitive snippet of console log output to find
+     */
+    protected void webDiagnosticsConsoleNotContains(final String consoleIdentifier) {
+        webEventController.getWebEventService().webConsoleRequestContains(consoleIdentifier, false);
     }
 
     /**
