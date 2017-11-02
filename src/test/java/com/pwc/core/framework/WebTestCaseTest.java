@@ -282,7 +282,7 @@ public class WebTestCaseTest extends WebTestCase {
 
     @Test
     public void webConsoleLevelAboveTest() {
-        webDiagnosticsConsoleLevelAbove(Level.SEVERE);
+        webDiagnosticsConsoleLevelBelow(Level.SEVERE);
     }
 
     @Test

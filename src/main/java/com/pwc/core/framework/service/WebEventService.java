@@ -1379,28 +1379,18 @@ public class WebEventService extends WebEventController {
     }
 
     /**
-     * Check if the current page contains Console errors at a given log level or above
+     * Check if the current page contains Console errors at a given log level or below
      *
-     * @param targetLogLevel            target log java.util.Level
-     * @param isEqualOrGreaterThanLevel verify if log Level is greater than or equal to the target log level intValue
+     * @param targetLogLevel target log java.util.Level
      */
-    public void webConsoleRequestLevel(final Level targetLogLevel, final boolean isEqualOrGreaterThanLevel) {
+    public void webConsoleRequestLevel(final Level targetLogLevel) {
         List<LogEntry> sourceConsoleEntries = getConsoleRequests();
         sourceConsoleEntries.forEach(sourceConsoleEntry -> {
-            if (isEqualOrGreaterThanLevel) {
-                if (sourceConsoleEntry.getLevel().intValue() >= targetLogLevel.intValue()) {
-                    assertPass("Verify consoleLevel() Passed for errorLevel='%s' entry='%s'", sourceConsoleEntry.getLevel(), StringUtils.substringBefore(sourceConsoleEntry.getMessage(), " "));
-                } else {
-                    assertFail("Verify consoleLevel() Failed for errorLevel='%s' entry='%s'", sourceConsoleEntry.getLevel(), StringUtils.substringBefore(sourceConsoleEntry.getMessage(), " "));
-                }
+            if (targetLogLevel.intValue() <= sourceConsoleEntry.getLevel().intValue()) {
+                assertPass("Verify consoleLevel() Passed for errorLevel='%s' entry='%s'", sourceConsoleEntry.getLevel(), StringUtils.substringBefore(sourceConsoleEntry.getMessage(), " "));
             } else {
-                if (sourceConsoleEntry.getLevel().intValue() < targetLogLevel.intValue()) {
-                    assertPass("Verify consoleLevel() Passed for errorLevel='%s' entry='%s'", sourceConsoleEntry.getLevel(), StringUtils.substringBefore(sourceConsoleEntry.getMessage(), " "));
-                } else {
-                    assertFail("Verify consoleLevel() Failed for errorLevel='%s' entry='%s'", sourceConsoleEntry.getLevel(), StringUtils.substringBefore(sourceConsoleEntry.getMessage(), " "));
-                }
+                assertFail("Verify consoleLevel() Failed for errorLevel='%s' entry='%s'", sourceConsoleEntry.getLevel(), StringUtils.substringBefore(sourceConsoleEntry.getMessage(), " "));
             }
-
         });
     }
 

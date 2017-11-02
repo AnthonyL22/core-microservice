@@ -541,12 +541,12 @@ public abstract class WebTestCase extends MicroserviceTestSuite {
     }
 
     /**
-     * Check if the current page contains Console errors at a given log level or above
+     * Check if the current page contains Console errors at a given log level or below
      *
      * @param targetLogLevel target log java.util.Level
      */
-    protected void webDiagnosticsConsoleLevelAbove(final Level targetLogLevel) {
-        webEventController.getWebEventService().webConsoleRequestLevel(targetLogLevel, true);
+    protected void webDiagnosticsConsoleLevelBelow(final Level targetLogLevel) {
+        webEventController.getWebEventService().webConsoleRequestLevel(targetLogLevel);
     }
 
     /**

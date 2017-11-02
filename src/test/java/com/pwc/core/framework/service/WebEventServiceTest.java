@@ -225,34 +225,19 @@ public class WebEventServiceTest extends WebElementBaseTest {
         webEventService.webConsoleRequestContains("Generic Message Not found", false);
     }
 
-    @Test (expected = AssertionError.class)
+    @Test(expected = AssertionError.class)
     public void webConsoleLevelSevereTest() {
-        webEventService.webConsoleRequestLevel(Level.SEVERE, true);
+        webEventService.webConsoleRequestLevel(Level.SEVERE);
     }
 
     @Test
     public void webConsoleLevelMatchingTest() {
-        webEventService.webConsoleRequestLevel(Level.WARNING, true);
+        webEventService.webConsoleRequestLevel(Level.WARNING);
     }
 
     @Test
     public void webConsoleLevelLessThanLevelTest() {
-        webEventService.webConsoleRequestLevel(Level.INFO, true);
-    }
-
-    @Test
-    public void webConsoleLevelLessThanSevereTest() {
-        webEventService.webConsoleRequestLevel(Level.SEVERE, false);
-    }
-
-    @Test (expected = AssertionError.class)
-    public void webConsoleLevelMatchingLogLevelShouldFailTest() {
-        webEventService.webConsoleRequestLevel(Level.WARNING, false);
-    }
-
-    @Test (expected = AssertionError.class)
-    public void webConsoleLevelLessThanLogLevelShouldFailTest() {
-        webEventService.webConsoleRequestLevel(Level.INFO, false);
+        webEventService.webConsoleRequestLevel(Level.INFO);
     }
 
     @Test(expected = AssertionError.class)
