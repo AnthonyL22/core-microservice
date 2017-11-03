@@ -1409,9 +1409,9 @@ public class WebEventService extends WebEventController {
             }
         }
         if (occurrencesFound == matchingOccurrenceCount) {
-            assertPass("networkRequestCount() Passed for occurrence count='%s' identifier='%s'", occurrencesFound, occurrencesFound, requestIdentifier.toString());
+            assertPass("networkRequestCount() Passed for occurrence count='%s' identifier='%s'", occurrencesFound, requestIdentifier.toString());
         } else {
-            assertFail("networkRequestCount() Failed for occurrence count='%s' identifier='%s'", occurrencesFound, occurrencesFound, requestIdentifier.toString());
+            assertFail("networkRequestCount() Failed for occurrence count='%s' identifier='%s'", occurrencesFound, requestIdentifier.toString());
         }
     }
 
