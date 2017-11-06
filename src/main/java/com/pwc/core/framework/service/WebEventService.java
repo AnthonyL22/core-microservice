@@ -1386,7 +1386,7 @@ public class WebEventService extends WebEventController {
     public void webConsoleRequestLevel(final Level targetLogLevel) {
         List<LogEntry> sourceConsoleEntries = getConsoleRequests();
         sourceConsoleEntries.forEach(sourceConsoleEntry -> {
-            if (targetLogLevel.intValue() <= sourceConsoleEntry.getLevel().intValue()) {
+            if (sourceConsoleEntry.getLevel().intValue() <= targetLogLevel.intValue()) {
                 assertPass("Verify consoleLevel() Passed for errorLevel='%s' entry='%s'", sourceConsoleEntry.getLevel(), StringUtils.substringBefore(sourceConsoleEntry.getMessage(), " "));
             } else {
                 assertFail("Verify consoleLevel() Failed for errorLevel='%s' entry='%s'", sourceConsoleEntry.getLevel(), StringUtils.substringBefore(sourceConsoleEntry.getMessage(), " "));

@@ -2,7 +2,6 @@ package com.pwc.core.framework.listeners;
 
 import com.pwc.core.framework.FrameworkConstants;
 import com.pwc.core.framework.MicroserviceTestSuite;
-import com.pwc.core.framework.annotations.Issue;
 import com.saucelabs.saucerest.SauceREST;
 import org.junit.Before;
 import org.junit.Test;

@@ -200,7 +200,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
         webEventService.webNetworkRequestCount("api/user", 1);
     }
 
-    @Test (expected = AssertionError.class)
+    @Test(expected = AssertionError.class)
     public void webNetworkRequestNotFoundTest() {
         webEventService.webNetworkRequestCount("exceptions", 1);
     }
@@ -210,12 +210,12 @@ public class WebEventServiceTest extends WebElementBaseTest {
         webEventService.webConsoleRequestContains("SSL Certificate Expired", true);
     }
 
-    @Test (expected = AssertionError.class)
+    @Test(expected = AssertionError.class)
     public void webConsoleContainsExpectedNotContainsTest() {
         webEventService.webConsoleRequestContains("Generic Message Not found", true);
     }
 
-    @Test (expected = AssertionError.class)
+    @Test(expected = AssertionError.class)
     public void webConsoleContainsNotExpectedContainsTest() {
         webEventService.webConsoleRequestContains("SSL Certificate Expired", false);
     }
@@ -225,18 +225,18 @@ public class WebEventServiceTest extends WebElementBaseTest {
         webEventService.webConsoleRequestContains("Generic Message Not found", false);
     }
 
-    @Test(expected = AssertionError.class)
-    public void webConsoleLevelSevereTest() {
+    @Test
+    public void webConsoleLevelLimitAboveActualLevelTest() {
         webEventService.webConsoleRequestLevel(Level.SEVERE);
     }
 
     @Test
-    public void webConsoleLevelMatchingTest() {
+    public void webConsoleLevelLimitMatchingActualLevelTest() {
         webEventService.webConsoleRequestLevel(Level.WARNING);
     }
 
-    @Test
-    public void webConsoleLevelLessThanLevelTest() {
+    @Test(expected = AssertionError.class)
+    public void webConsoleLevelLimitBelowActualLevelTest() {
         webEventService.webConsoleRequestLevel(Level.INFO);
     }
 
