@@ -10,7 +10,7 @@ This service is an on-ramp for entire engineering teams to contribute to the fun
 
 Currently capabilities include:
 
-* Browser (Internet Explorer, Firefox, Chrome, Safari, PhantomJS)
+* Browser (Internet Explorer, Firefox, Chrome, Headless Chrome, Safari, PhantomJS)
 * Mobile Browser (Android, iOS using Appium)
 * REST Web Services (SiteMinder Authenticated) 
 * Database (Oracle, MongoDB, MS SQL, any JDBC connection)
