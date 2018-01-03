@@ -64,6 +64,13 @@ public class GridUtilsTest {
     }
 
     @Test
+    public void initBrowserTypesHeadlessChromeTest() {
+        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.HEADLESS_CHROME_BROWSER_MODE);
+        GridUtils.initBrowserType();
+        Assert.assertEquals(FrameworkConstants.HEADLESS_CHROME_BROWSER_MODE, System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY));
+    }
+
+    @Test
     public void initBrowserTypesCHTest() {
         System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.CHROME_BROWSER_MODE);
         GridUtils.initBrowserType();

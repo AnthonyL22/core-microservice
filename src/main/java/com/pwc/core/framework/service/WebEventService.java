@@ -32,7 +32,12 @@ import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.util.EntityUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.parser.Parser;
-import org.openqa.selenium.*;
+import org.openqa.selenium.Alert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.InvalidCookieDomainException;
+import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.logging.LogEntries;
 import org.openqa.selenium.logging.LogEntry;
@@ -57,12 +62,24 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.StringReader;
 import java.security.SecureRandom;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.pwc.assertion.AssertService.*;
+import static com.pwc.assertion.AssertService.assertContains;
+import static com.pwc.assertion.AssertService.assertEquals;
+import static com.pwc.assertion.AssertService.assertFail;
+import static com.pwc.assertion.AssertService.assertFalse;
+import static com.pwc.assertion.AssertService.assertNotContains;
+import static com.pwc.assertion.AssertService.assertNotEquals;
+import static com.pwc.assertion.AssertService.assertPass;
+import static com.pwc.assertion.AssertService.assertTrue;
 import static com.pwc.logging.service.LoggerService.LOG;
 
 
@@ -72,6 +89,7 @@ public class WebEventService extends WebEventController {
     private long timeOutInSeconds;
     private long sleepInMillis;
     private long pageTimeoutInSeconds;
+    private boolean videoCaptureEnabled;
 
     public static final long CACHED_COOKIE_FILE_TIMEOUT = 1000 * 60 * 30;
     private static final String REGEX_XPATH_FINDER = ".*[\\[@'].*";
@@ -530,9 +548,9 @@ public class WebEventService extends WebEventController {
             actualHeaderRowCount = getTableHeaderCount(gridElement);
             actualRowCount = gridElement.findElements(By.tagName(WebElementType.TR.type)).size() - actualHeaderRowCount;
         } catch (Exception e) {
-            DebuggingUtils.takeScreenShot(this.microserviceWebDriver, isVideoCaptureEnabled());
             assertFail("tableRowCount() Failed for expected row count=%s", expectedRowCount);
         }
+        record();
         assertEquals("Verify tableRowCount()", actualRowCount, expectedRowCount);
     }
 
@@ -571,9 +589,9 @@ public class WebEventService extends WebEventController {
                 assertFalse("Verify tableTextContains() not contains text='%s'", StringUtils.containsIgnoreCase(StringUtils.trim(cell.getText()), expectedText), expectedText);
             }
         } catch (Exception e) {
-            DebuggingUtils.takeScreenShot(this.microserviceWebDriver, isVideoCaptureEnabled());
             assertFail("tableTextEquals() Failed for expectedText='%s'", expectedText);
         }
+        record();
     }
 
     /**
@@ -597,9 +615,9 @@ public class WebEventService extends WebEventController {
                 assertNotEquals("Verify tableTextEquals() not exists text='%s'", StringUtils.trim(cell.getText()), expectedText, expectedText);
             }
         } catch (Exception e) {
-            DebuggingUtils.takeScreenShot(this.microserviceWebDriver, isVideoCaptureEnabled());
             assertFail("tableTextEquals() Failed for expectedText='%s'", expectedText);
         }
+        record();
     }
 
     /**
@@ -666,6 +684,9 @@ public class WebEventService extends WebEventController {
      * @return duration took to perform page redirect
      */
     public long redirectToUrl(String url) {
+
+        record();
+
         StopWatch sw = new StopWatch();
         try {
             if (StringUtils.endsWith(microserviceWebDriver.getCurrentUrl(), getSiteMinderRedirectUrl())) {
@@ -680,12 +701,13 @@ public class WebEventService extends WebEventController {
 
             sw.start();
             microserviceWebDriver.get(getUrl());
-            //waitForBrowserToLoad();
             sw.stop();
 
             if (!StringUtils.equalsIgnoreCase(microserviceWebDriver.getCapabilities().getBrowserName(), "android")) {
                 microserviceWebDriver.manage().window().maximize();
             }
+
+            record();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -741,57 +763,6 @@ public class WebEventService extends WebEventController {
     }
 
     /**
-     * Verify a CSS value Equals for this element based on the given css property
-     *
-     * @param elementIdentifier     WebElement to find via xpath or unique identifier
-     * @param cssProperty           WebElement's CSS property to validate
-     * @param expectedAttributeText Expected CSS property value
-     * @param expectedToEqual       value should or should not exist flag
-     */
-    public void elementCssPropertyEquals(final String elementIdentifier, final CssProperty cssProperty, final String expectedAttributeText, final boolean expectedToEqual) {
-        WebElement webElement = findWebElement(elementIdentifier);
-        if (webElement != null && expectedToEqual) {
-            assertEquals("Verify elementCssPropertyEquals() for element=%s", webElement.getCssValue(cssProperty.property), expectedAttributeText);
-        } else {
-            assertNotEquals("Verify elementCssPropertyEquals() for element=%s", webElement.getCssValue(cssProperty.property), expectedAttributeText);
-        }
-    }
-
-    /**
-     * Verify a CSS value contains for this element based on the given css property
-     *
-     * @param elementIdentifier    WebElement to find via xpath or unique identifier
-     * @param cssProperty          WebElement's CSS property to validate
-     * @param expectedPropertyText Expected CSS property value
-     * @param expectedToContain    value should or should not exist flag
-     */
-    public void elementCssPropertyContains(final String elementIdentifier, final CssProperty cssProperty, final String expectedPropertyText, final boolean expectedToContain) {
-        WebElement webElement = findWebElement(elementIdentifier);
-        if (webElement != null && expectedToContain) {
-            assertTrue("Verify elementCssPropertyContains() for expectedPropertyText='%s'",
-                    StringUtils.containsIgnoreCase(webElement.getCssValue(cssProperty.property), expectedPropertyText), expectedPropertyText);
-        } else {
-            assertFalse("Verify elementCssPropertyContains() for expectedPropertyText='%s'",
-                    StringUtils.containsIgnoreCase(webElement.getCssValue(cssProperty.property), expectedPropertyText), expectedPropertyText);
-        }
-    }
-
-    /**
-     * Check if the current page source contains the expectedText anywhere regardless of the
-     * case
-     *
-     * @param expectedText expected text to locate on current page
-     * @param textExists   text should or should not exist flag
-     */
-    public void elementTextExists(final String expectedText, final boolean textExists) {
-        if (textExists) {
-            assertTrue("Verify elementTextExists() exists text='%s'%s", pageContainsText(expectedText), expectedText, DebuggingUtils.getDebugInfo(this.microserviceWebDriver));
-        } else {
-            assertFalse("Verify elementTextExists() exists text='%s'%s", pageContainsText(expectedText), expectedText, DebuggingUtils.getDebugInfo(this.microserviceWebDriver));
-        }
-    }
-
-    /**
      * Check current page is the expected page based on the page title
      *
      * @param expectedPageTitle expected page title
@@ -826,6 +797,120 @@ public class WebEventService extends WebEventController {
         } else {
             executeJavascript(String.format(JavascriptConstants.BLUR_ELEMENT_BY_ID, elementIdentifier));
         }
+        record();
+    }
+
+    /**
+     * Verify a CSS value Equals for this element based on the given css property
+     *
+     * @param elementIdentifier     WebElement to find via xpath or unique identifier
+     * @param cssProperty           WebElement's CSS property to validate
+     * @param expectedAttributeText Expected CSS property value
+     * @param expectedToEqual       value should or should not exist flag
+     */
+    public void elementCssPropertyEquals(final String elementIdentifier, final CssProperty cssProperty, final String expectedAttributeText, final boolean expectedToEqual) {
+        WebElement webElement = findWebElement(elementIdentifier);
+        if (webElement != null && expectedToEqual) {
+            assertEquals("Verify elementCssPropertyEquals() for element=%s", webElement.getCssValue(cssProperty.property), expectedAttributeText);
+        } else {
+            assertNotEquals("Verify elementCssPropertyEquals() for element=%s", webElement.getCssValue(cssProperty.property), expectedAttributeText);
+        }
+        record();
+    }
+
+    /**
+     * Verify a CSS value contains for this element based on the given css property
+     *
+     * @param elementIdentifier    WebElement to find via xpath or unique identifier
+     * @param cssProperty          WebElement's CSS property to validate
+     * @param expectedPropertyText Expected CSS property value
+     * @param expectedToContain    value should or should not exist flag
+     */
+    public void elementCssPropertyContains(final String elementIdentifier, final CssProperty cssProperty, final String expectedPropertyText, final boolean expectedToContain) {
+        WebElement webElement = findWebElement(elementIdentifier);
+        if (webElement != null && expectedToContain) {
+            assertTrue("Verify elementCssPropertyContains() for expectedPropertyText='%s'",
+                    StringUtils.containsIgnoreCase(webElement.getCssValue(cssProperty.property), expectedPropertyText), expectedPropertyText);
+        } else {
+            assertFalse("Verify elementCssPropertyContains() for expectedPropertyText='%s'",
+                    StringUtils.containsIgnoreCase(webElement.getCssValue(cssProperty.property), expectedPropertyText), expectedPropertyText);
+        }
+        record();
+    }
+
+    /**
+     * Check if the current page contains an element
+     *
+     * @param elementIdentifier     WebElement to find
+     * @param attribute             element property to validate
+     * @param expectedAttributeText expected property textual value
+     * @param expectedToExist       expected flag to decide if element should exist or not
+     */
+    public void elementAttribute(final String elementIdentifier, final WebElementAttribute attribute, final String expectedAttributeText, final boolean expectedToExist) {
+        WebElement webElement = findWebElement(elementIdentifier);
+        if (webElement != null && expectedToExist) {
+            if (attribute.equals(WebElementAttribute.CHECKED.attribute)) {
+                assertTrue("Verify elementAttribute() for element=%s", elementEqualsText(true, webElement.getAttribute(attribute.attribute), expectedAttributeText), elementIdentifier);
+            } else {
+                if (expectedAttributeText.isEmpty()) {
+                    assertTrue("Verify elementAttribute() for element=%s", elementEqualsText(true, webElement.getAttribute(attribute.attribute), expectedAttributeText), elementIdentifier);
+                } else {
+
+                    if (StringUtils.equalsIgnoreCase(webElement.getTagName(), WebElementType.SELECT.type)) {
+                        Select dropDownList = new Select(webElement);
+                        List<WebElement> selectedOptions = dropDownList.getAllSelectedOptions();
+                        for (WebElement selectedOption : selectedOptions) {
+                            assertTrue("Verify elementAttribute() for element=%s", elementEqualsText(true, selectedOption.getText(), expectedAttributeText));
+                        }
+                    } else {
+                        assertTrue("Verify elementAttribute() for element=%s", elementEqualsText(true, webElement.getAttribute(attribute.attribute), expectedAttributeText) ||
+                                elementEqualsText(true, StringUtils.trim(webElement.getText()), expectedAttributeText), elementIdentifier);
+                    }
+
+                }
+            }
+
+        } else if (webElement == null && expectedToExist) {
+            assertFail("Verify elementAttribute() for element=%s", elementIdentifier);
+        } else if (webElement != null) {
+            assertFalse("Verify elementAttribute() for element=%s", elementEqualsText(false, webElement.getAttribute(attribute.attribute), expectedAttributeText) ||
+                    elementEqualsText(false, StringUtils.trim(webElement.getText()), expectedAttributeText), elementIdentifier);
+        }
+        record();
+    }
+
+    /**
+     * Check if the current WebElement's property contains a text
+     *
+     * @param elementIdentifier     WebElement to find
+     * @param attribute             WebElement attribute to interrogate
+     * @param expectedAttributeText expected WebElement attribute
+     * @param expectedToExist       expected flag to decide if element should exist or not
+     */
+    public void elementAttributeContains(final String elementIdentifier, final WebElementAttribute attribute, final String expectedAttributeText, final boolean expectedToExist) {
+        WebElement webElement = findWebElement(elementIdentifier);
+        if (webElement != null && expectedToExist) {
+            assertTrue("Verify elementAttributeContains() for element=%s", elementContainsText(true, webElement.getAttribute(attribute.attribute), expectedAttributeText), elementIdentifier);
+        } else if (webElement != null) {
+            assertFalse("Verify elementAttributeContains() for element=%s", elementContainsText(false, webElement.getAttribute(attribute.attribute), expectedAttributeText), elementIdentifier);
+        }
+        record();
+    }
+
+    /**
+     * Check if the current page source contains the expectedText anywhere regardless of the
+     * case
+     *
+     * @param expectedText expected text to locate on current page
+     * @param textExists   text should or should not exist flag
+     */
+    public void elementTextExists(final String expectedText, final boolean textExists) {
+        if (textExists) {
+            assertTrue("Verify elementTextExists() exists text='%s'%s", pageContainsText(expectedText), expectedText, DebuggingUtils.getDebugInfo(this.microserviceWebDriver));
+        } else {
+            assertFalse("Verify elementTextExists() exists text='%s'%s", pageContainsText(expectedText), expectedText, DebuggingUtils.getDebugInfo(this.microserviceWebDriver));
+        }
+        record();
     }
 
     /**
@@ -869,9 +954,9 @@ public class WebEventService extends WebEventController {
                 assertFalse("Verify elementTextContains() for element=%s", elementContainsText(false, actualText, expectedText), elementIdentifier);
             }
         } else {
-            DebuggingUtils.takeScreenShot(this.microserviceWebDriver, isVideoCaptureEnabled());
             assertFail("elementTextContains() Failed for element=%s", elementIdentifier);
         }
+        record();
     }
 
     /**
@@ -896,6 +981,35 @@ public class WebEventService extends WebEventController {
     }
 
     /**
+     * Check if the current page contains a visible element
+     *
+     * @param elementIdentifier WebElement to find
+     */
+    public void elementVisible(final String elementIdentifier) {
+        waitForElementToDisplay(elementIdentifier);
+        if ((isVisible(elementIdentifier))) {
+            assertPass("elementVisible() Passed for element=%s", elementIdentifier);
+        } else {
+            assertFail("elementVisible() Failed for element=%s", elementIdentifier);
+        }
+        record();
+    }
+
+    /**
+     * Check if the current page does not contain a visible element
+     *
+     * @param elementIdentifier WebElement to find
+     */
+    public void elementNotVisible(final String elementIdentifier) {
+        if (!isVisible(elementIdentifier)) {
+            assertPass("elementNotVisible() Passed for element=%s", elementIdentifier);
+        } else {
+            assertFail("elementNotVisible() Failed for element=%s", elementIdentifier);
+        }
+        record();
+    }
+
+    /**
      * Check if the current page contains an element (exists or not).  This differs from visible checking.
      *
      * @param elementIdentifier WebElement to find
@@ -911,92 +1025,6 @@ public class WebEventService extends WebEventController {
     }
 
     /**
-     * Check if the current page contains a visible element
-     *
-     * @param elementIdentifier WebElement to find
-     */
-    public void elementVisible(final String elementIdentifier) {
-        waitForElementToDisplay(elementIdentifier);
-        if ((isVisible(elementIdentifier))) {
-            assertPass("elementVisible() Passed for element=%s", elementIdentifier);
-        } else {
-            DebuggingUtils.takeScreenShot(this.microserviceWebDriver, isVideoCaptureEnabled());
-            assertFail("elementVisible() Failed for element=%s", elementIdentifier);
-        }
-    }
-
-    /**
-     * Check if the current page does not contain a visible element
-     *
-     * @param elementIdentifier WebElement to find
-     */
-    public void elementNotVisible(final String elementIdentifier) {
-        if (!isVisible(elementIdentifier)) {
-            assertPass("elementNotVisible() Passed for element=%s", elementIdentifier);
-        } else {
-            DebuggingUtils.takeScreenShot(this.microserviceWebDriver, isVideoCaptureEnabled());
-            assertFail("elementNotVisible() Failed for element=%s", elementIdentifier);
-        }
-    }
-
-    /**
-     * Check if the current page contains an element
-     *
-     * @param elementIdentifier     WebElement to find
-     * @param attribute             element property to validate
-     * @param expectedAttributeText expected property textual value
-     * @param expectedToExist       expected flag to decide if element should exist or not
-     */
-    public void elementAttribute(final String elementIdentifier, final WebElementAttribute attribute, final String expectedAttributeText, final boolean expectedToExist) {
-        WebElement webElement = findWebElement(elementIdentifier);
-        if (webElement != null && expectedToExist) {
-            if (attribute.equals(WebElementAttribute.CHECKED.attribute)) {
-                assertTrue("Verify elementAttribute() for element=%s", elementEqualsText(true, webElement.getAttribute(attribute.attribute), expectedAttributeText), elementIdentifier);
-            } else {
-                if (expectedAttributeText.isEmpty()) {
-                    assertTrue("Verify elementAttribute() for element=%s", elementEqualsText(true, webElement.getAttribute(attribute.attribute), expectedAttributeText), elementIdentifier);
-                } else {
-
-                    if (StringUtils.equalsIgnoreCase(webElement.getTagName(), WebElementType.SELECT.type)) {
-                        Select dropDownList = new Select(webElement);
-                        List<WebElement> selectedOptions = dropDownList.getAllSelectedOptions();
-                        for (WebElement selectedOption : selectedOptions) {
-                            assertTrue("Verify elementAttribute() for element=%s", elementEqualsText(true, selectedOption.getText(), expectedAttributeText));
-                        }
-                    } else {
-                        assertTrue("Verify elementAttribute() for element=%s", elementEqualsText(true, webElement.getAttribute(attribute.attribute), expectedAttributeText) ||
-                                elementEqualsText(true, StringUtils.trim(webElement.getText()), expectedAttributeText), elementIdentifier);
-                    }
-
-                }
-            }
-
-        } else if (webElement == null && expectedToExist) {
-            assertFail("Verify elementAttribute() for element=%s", elementIdentifier);
-        } else if (webElement != null) {
-            assertFalse("Verify elementAttribute() for element=%s", elementEqualsText(false, webElement.getAttribute(attribute.attribute), expectedAttributeText) ||
-                    elementEqualsText(false, StringUtils.trim(webElement.getText()), expectedAttributeText), elementIdentifier);
-        }
-    }
-
-    /**
-     * Check if the current WebElement's property contains a text
-     *
-     * @param elementIdentifier     WebElement to find
-     * @param attribute             WebElement attribute to interrogate
-     * @param expectedAttributeText expected WebElement attribute
-     * @param expectedToExist       expected flag to decide if element should exist or not
-     */
-    public void elementAttributeContains(final String elementIdentifier, final WebElementAttribute attribute, final String expectedAttributeText, final boolean expectedToExist) {
-        WebElement webElement = findWebElement(elementIdentifier);
-        if (webElement != null && expectedToExist) {
-            assertTrue("Verify elementAttributeContains() for element=%s", elementContainsText(true, webElement.getAttribute(attribute.attribute), expectedAttributeText), elementIdentifier);
-        } else if (webElement != null) {
-            assertFalse("Verify elementAttributeContains() for element=%s", elementContainsText(false, webElement.getAttribute(attribute.attribute), expectedAttributeText), elementIdentifier);
-        }
-    }
-
-    /**
      * Check if the current page contains an element
      *
      * @param elementIdentifier WebElement to find
@@ -1007,9 +1035,9 @@ public class WebEventService extends WebEventController {
         if (webElement != null) {
             assertPass("elementExists() Passed for element=%s", elementIdentifier);
         } else {
-            DebuggingUtils.takeScreenShot(this.microserviceWebDriver, isVideoCaptureEnabled());
             assertFail("elementExists() Failed for element=%s", elementIdentifier);
         }
+        record();
     }
 
     /**
@@ -1022,7 +1050,7 @@ public class WebEventService extends WebEventController {
         if (webElement == null) {
             assertPass("elementNotExists() Passed for element=%s", elementIdentifier);
         } else {
-            DebuggingUtils.takeScreenShot(this.microserviceWebDriver, isVideoCaptureEnabled());
+            record();
             assertFail("elementNotExists() Failed for element=%s", elementIdentifier);
         }
     }
@@ -1037,6 +1065,7 @@ public class WebEventService extends WebEventController {
     public void alertTextEquals(final String expectedText, final String buttonTextToClick, final boolean expectedToExist) {
         try {
 
+            record();
             WebDriverWait wait = new WebDriverWait(microserviceWebDriver, 2);
             wait.until(ExpectedConditions.alertIsPresent());
             Alert alert = microserviceWebDriver.switchTo().alert();
@@ -1054,9 +1083,9 @@ public class WebEventService extends WebEventController {
             }
 
         } catch (Exception e) {
-            DebuggingUtils.takeScreenShot(this.microserviceWebDriver, isVideoCaptureEnabled());
             assertFail("alertTextEquals() encountered error=%s", e.getMessage());
         }
+        record();
     }
 
     /**
@@ -1069,6 +1098,7 @@ public class WebEventService extends WebEventController {
     public void alertTextContains(final String expectedText, final String buttonTextToClick, final boolean expectedToExist) {
         try {
 
+            record();
             WebDriverWait wait = new WebDriverWait(microserviceWebDriver, 2);
             wait.until(ExpectedConditions.alertIsPresent());
             Alert alert = microserviceWebDriver.switchTo().alert();
@@ -1087,7 +1117,7 @@ public class WebEventService extends WebEventController {
             }
 
         } catch (Exception e) {
-            DebuggingUtils.takeScreenShot(this.microserviceWebDriver, isVideoCaptureEnabled());
+            record();
             assertFail("alertTextEquals() encountered error=%s", e.getMessage());
         }
     }
@@ -1101,13 +1131,12 @@ public class WebEventService extends WebEventController {
      * @return pass or fail criteria
      */
     public boolean elementContainsText(final boolean textExists, final String actualText, final String expectedText) {
+        record();
         if (textExists && !StringUtils.containsIgnoreCase(actualText, expectedText)) {
-            DebuggingUtils.takeScreenShot(this.microserviceWebDriver, isVideoCaptureEnabled());
             return false;
         } else if (textExists && StringUtils.containsIgnoreCase(actualText, expectedText)) {
             return true;
         } else if (!textExists && StringUtils.containsIgnoreCase(actualText, expectedText)) {
-            DebuggingUtils.takeScreenShot(this.microserviceWebDriver, isVideoCaptureEnabled());
             return true;
         } else {
             return false;
@@ -1123,6 +1152,7 @@ public class WebEventService extends WebEventController {
      * @return pass or fail criteria
      */
     public boolean elementEqualsText(final boolean textExists, final String actualText, final String expectedText) {
+        record();
         if (textExists && !StringUtils.equals(actualText, expectedText)) {
             return false;
         } else if (textExists && StringUtils.equals(actualText, expectedText)) {
@@ -1153,6 +1183,8 @@ public class WebEventService extends WebEventController {
      */
     public void waitForElementToDisappear(final String elementIdentifier) {
         try {
+
+            record();
             (new WebDriverWait(this.microserviceWebDriver, timeOutInSeconds, sleepInMillis)).until(new ExpectedCondition<Boolean>() {
 
                 boolean isElementNotVisible = true;
@@ -1169,7 +1201,6 @@ public class WebEventService extends WebEventController {
             });
 
         } catch (Exception e) {
-            DebuggingUtils.takeScreenShot(this.microserviceWebDriver, isVideoCaptureEnabled());
             Assert.fail(String.format("Element='%s', didn't disappear in allotted time.", elementIdentifier), e);
         }
     }
@@ -1184,6 +1215,7 @@ public class WebEventService extends WebEventController {
     public void waitForElementToExist(final String elementIdentifier) {
         try {
 
+            record();
             (new WebDriverWait(this.microserviceWebDriver, timeOutInSeconds, sleepInMillis)).until(new ExpectedCondition<Boolean>() {
                 boolean elementExists = false;
                 int countDown = (int) timeOutInSeconds;
@@ -1199,7 +1231,6 @@ public class WebEventService extends WebEventController {
             });
 
         } catch (Exception e) {
-            DebuggingUtils.takeScreenShot(this.microserviceWebDriver, isVideoCaptureEnabled());
             Assert.fail(String.format("Element='%s', didn't exist in allotted time.", elementIdentifier), e);
         }
     }
@@ -1214,6 +1245,7 @@ public class WebEventService extends WebEventController {
     public void waitForElementToDisplay(final String elementIdentifier) {
         try {
 
+            record();
             (new WebDriverWait(this.microserviceWebDriver, timeOutInSeconds, sleepInMillis)).until(new ExpectedCondition<Boolean>() {
                 boolean isElementVisible = false;
                 int countDown = (int) timeOutInSeconds;
@@ -1229,7 +1261,6 @@ public class WebEventService extends WebEventController {
             });
 
         } catch (Exception e) {
-            DebuggingUtils.takeScreenShot(this.microserviceWebDriver, isVideoCaptureEnabled());
             Assert.fail(String.format("Element='%s', didn't appear in allotted time.", elementIdentifier), e);
         }
     }
@@ -1244,6 +1275,7 @@ public class WebEventService extends WebEventController {
     public void waitForElementToDisplayContainingText(final String elementIdentifier, final String textToWaitToDisplay) {
         try {
 
+            record();
             (new WebDriverWait(this.microserviceWebDriver, timeOutInSeconds, sleepInMillis))
                     .ignoring(StaleElementReferenceException.class)
                     .until(new ExpectedCondition<Boolean>() {
@@ -1261,9 +1293,9 @@ public class WebEventService extends WebEventController {
                     });
 
         } catch (Exception e) {
-            DebuggingUtils.takeScreenShot(this.microserviceWebDriver, isVideoCaptureEnabled());
             Assert.fail(String.format("Element='%s', didn't appear in allotted time.", elementIdentifier), e);
         }
+        record();
     }
 
     /**
@@ -1276,11 +1308,13 @@ public class WebEventService extends WebEventController {
     public void waitForTextToDisplay(final String textToWaitToDisplay) {
         try {
 
+            record();
             (new WebDriverWait(this.microserviceWebDriver, timeOutInSeconds, sleepInMillis)).until(new ExpectedCondition<Boolean>() {
                 boolean isElementVisible = false;
                 int countDown = (int) timeOutInSeconds;
 
                 public Boolean apply(WebDriver d) {
+
                     isElementVisible = pageContainsText(textToWaitToDisplay);
                     if (!isElementVisible && countDown > 0) {
                         LOG(true, "Waiting - Text='%s' NOT VISIBLE, Retrying for %s seconds ****", textToWaitToDisplay, countDown--);
@@ -1290,9 +1324,9 @@ public class WebEventService extends WebEventController {
             });
 
         } catch (Exception e) {
-            DebuggingUtils.takeScreenShot(this.microserviceWebDriver, isVideoCaptureEnabled());
             Assert.fail(String.format("Text='%s', didn't appear in allotted time.", textToWaitToDisplay), e);
         }
+        record();
     }
 
     /**
@@ -1305,11 +1339,13 @@ public class WebEventService extends WebEventController {
     public void waitForTextToDisappear(final String textToWaitToDisappear) {
         try {
 
+            record();
             (new WebDriverWait(this.microserviceWebDriver, timeOutInSeconds, sleepInMillis)).until(new ExpectedCondition<Boolean>() {
                 boolean isElementNotVisible = true;
                 int countDown = (int) timeOutInSeconds;
 
                 public Boolean apply(WebDriver d) {
+
                     isElementNotVisible = !pageContainsText(textToWaitToDisappear);
                     if (!isElementNotVisible && countDown > 0) {
                         LOG(true, "Waiting - Text='%s' STILL VISIBLE, Retrying for %s seconds ****", textToWaitToDisappear, countDown--);
@@ -1319,7 +1355,6 @@ public class WebEventService extends WebEventController {
             });
 
         } catch (Exception e) {
-            DebuggingUtils.takeScreenShot(this.microserviceWebDriver, isVideoCaptureEnabled());
             Assert.fail(String.format("Text='%s', didn't disappear in allotted time.", textToWaitToDisappear), e);
         }
     }
@@ -1331,6 +1366,8 @@ public class WebEventService extends WebEventController {
     public void waitForBrowserToLoad() {
 
         try {
+
+            record();
             (new WebDriverWait(this.microserviceWebDriver, pageTimeoutInSeconds, sleepInMillis)).until(new ExpectedCondition<Boolean>() {
                 boolean noActiveRequests = false;
                 int countDown = (int) pageTimeoutInSeconds;
@@ -1347,8 +1384,20 @@ public class WebEventService extends WebEventController {
                 }
             });
         } catch (Exception e) {
-            DebuggingUtils.takeScreenShot(this.microserviceWebDriver, isVideoCaptureEnabled());
             Assert.fail(String.format("Browser didn't appear READY in allotted time of %s seconds", pageTimeoutInSeconds), e);
+        }
+    }
+
+    /**
+     * Wait for implicit amount of time
+     *
+     * @param millis wait duration
+     */
+    private void waitForDuration(final long millis) {
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException eat) {
+            eat.getMessage();
         }
     }
 
@@ -1488,7 +1537,9 @@ public class WebEventService extends WebEventController {
      * Refresh the currently displayed browser
      */
     public void refreshBrowser() {
+        record();
         microserviceWebDriver.navigate().refresh();
+        record();
     }
 
     /**
@@ -1579,15 +1630,11 @@ public class WebEventService extends WebEventController {
     }
 
     /**
-     * Wait for implicit amount of time
-     *
-     * @param millis wait duration
+     * Take a screen shot of currently executing test to eventually use for video playback
      */
-    private void waitForDuration(final long millis) {
-        try {
-            Thread.sleep(millis);
-        } catch (InterruptedException eat) {
-            eat.getMessage();
+    private void record() {
+        if (videoCaptureEnabled) {
+            DebuggingUtils.takeScreenShot(microserviceWebDriver);
         }
     }
 
@@ -1629,6 +1676,16 @@ public class WebEventService extends WebEventController {
 
     public void setPageTimeoutInSeconds(long pageTimeoutInSeconds) {
         this.pageTimeoutInSeconds = pageTimeoutInSeconds;
+    }
+
+    @Override
+    public boolean isVideoCaptureEnabled() {
+        return videoCaptureEnabled;
+    }
+
+    @Override
+    public void setVideoCaptureEnabled(boolean videoCaptureEnabled) {
+        this.videoCaptureEnabled = videoCaptureEnabled;
     }
 
     public String getUrl() {

@@ -398,6 +398,14 @@ public class WebEventControllerTest {
     }
 
     @Test
+    public void setDriverExecutableHeadlessChromeDriverTest() {
+        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.HEADLESS_CHROME_BROWSER_MODE);
+        String driverPath = webEventController.setDriverExecutable();
+        Assert.assertEquals(driverPath, "");
+        Assert.assertEquals(System.getProperty(FrameworkConstants.WEB_DRIVER_CHROME), "");
+    }
+
+    @Test
     public void setDriverExecutableInternetExplorerDriverTest() {
         System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.INTERNET_EXPLORER_BROWSER_MODE);
         String driverPath = webEventController.setDriverExecutable();

@@ -200,6 +200,13 @@ public class WebServiceProcessorTest {
     }
 
     @Test(expected = AssertionError.class)
+    public void executeJSONStringPOSTTest() {
+        JsonPath response = (JsonPath) webServiceProcessor.execute(URL_PATH, USER, PASS, UsersWebServiceWebServiceCommand.POST_ADD_USER_ID, 1234, EXPECTED_JSON_RESPONSE);
+        Assert.assertEquals("404", response.getString(FrameworkConstants.HTTP_STATUS_VALUE_KEY));
+        Assert.assertEquals("Not Found", response.getString(FrameworkConstants.HTTP_STATUS_REASON_PHRASE_KEY));
+    }
+
+    @Test(expected = AssertionError.class)
     public void executeLongArgsGETTest() {
         JsonPath response = (JsonPath) webServiceProcessor.execute(URL_PATH, USER, PASS, UsersWebServiceWebServiceCommand.GET_ADD_USER_ID, 1234, mockUserNameMap);
         Assert.assertEquals("404", response.getString(FrameworkConstants.HTTP_STATUS_VALUE_KEY));

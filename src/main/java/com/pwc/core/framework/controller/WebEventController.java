@@ -2,7 +2,15 @@ package com.pwc.core.framework.controller;
 
 import com.pwc.core.framework.FrameworkConstants;
 import com.pwc.core.framework.data.Credentials;
-import com.pwc.core.framework.driver.*;
+import com.pwc.core.framework.driver.MicroserviceAndroidDriver;
+import com.pwc.core.framework.driver.MicroserviceChromeDriver;
+import com.pwc.core.framework.driver.MicroserviceEdgeDriver;
+import com.pwc.core.framework.driver.MicroserviceFirefoxDriver;
+import com.pwc.core.framework.driver.MicroserviceIOSDriver;
+import com.pwc.core.framework.driver.MicroserviceInternetExplorerDriver;
+import com.pwc.core.framework.driver.MicroserviceRemoteWebDriver;
+import com.pwc.core.framework.driver.MicroserviceSafariDriver;
+import com.pwc.core.framework.driver.MicroserviceWebDriver;
 import com.pwc.core.framework.processors.web.KeyboardActivityProcessor;
 import com.pwc.core.framework.processors.web.MouseActivityProcessor;
 import com.pwc.core.framework.processors.web.ViewActivityProcessor;
@@ -14,7 +22,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.phantomjs.PhantomJSDriverService;
-import org.openqa.selenium.remote.*;
+import org.openqa.selenium.remote.BrowserType;
+import org.openqa.selenium.remote.CapabilityType;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.LocalFileDetector;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
@@ -83,6 +95,10 @@ public class WebEventController {
                     this.remoteWebDriver = getChromeBrowser();
                     break;
                 }
+                case FrameworkConstants.HEADLESS_CHROME_BROWSER_MODE: {
+                    this.remoteWebDriver = getHeadlessChromeBrowser();
+                    break;
+                }
                 case FrameworkConstants.ANDROID_MODE: {
                     this.remoteWebDriver = getAndroidBrowser();
                     break;
@@ -122,6 +138,7 @@ public class WebEventController {
             webEventService.setTimeOutInSeconds(defaultWaitForElementTimeoutInSeconds);
             webEventService.setSleepInMillis(defaultWaitForSleepDurationInMillis);
             webEventService.setPageTimeoutInSeconds(defaultWaitForPageTimeoutInSeconds);
+            webEventService.setVideoCaptureEnabled(videoCaptureEnabled);
 
             webEventService.redirectToUrl(webUrl);
 
@@ -279,6 +296,29 @@ public class WebEventController {
     }
 
     /**
+     * Get Headless Chrome Web Driver for local or RemoteWebDriver capability
+     *
+     * @return MicroserviceWebDriver instance
+     * @throws MalformedURLException url exception
+     */
+    public MicroserviceWebDriver getHeadlessChromeBrowser() throws MalformedURLException {
+        LOG("starting headless chrome browser");
+        setDriverExecutable();
+        ChromeOptions chromeOptions = new ChromeOptions();
+        chromeOptions.addArguments("headless");
+        chromeOptions.addArguments("window-size=1920,1080");
+//        chromeOptions.addArguments("remote-debugging-port=9222");
+        capabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
+        capabilities.setCapability(CapabilityType.BROWSER_NAME, BrowserType.CHROME);
+        capabilities.setCapability("video", "True");
+        if (this.remoteWebDriver == null) {
+            return (new MicroserviceChromeDriver(capabilities));
+        }
+
+        return null;
+    }
+
+    /**
      * Get Android Web Driver for local or RemoteWebDriver capability
      *
      * @return MicroserviceWebDriver instance
@@ -424,6 +464,13 @@ public class WebEventController {
                 System.setProperty(FrameworkConstants.WEB_DRIVER_CHROME, PropertiesUtils.getPath(executable));
                 break;
             }
+            case FrameworkConstants.HEADLESS_CHROME_BROWSER_MODE: {
+                executable = StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), "windows") ?
+                        PropertiesUtils.getFirstFileFromTestResources("chrome_win.exe") :
+                        PropertiesUtils.getFirstFileFromTestResources("chrome_mac");
+                System.setProperty(FrameworkConstants.WEB_DRIVER_CHROME, PropertiesUtils.getPath(executable));
+                break;
+            }
             case FrameworkConstants.FIREFOX_BROWSER_MODE: {
                 executable = StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), "windows") ?
                         PropertiesUtils.getFirstFileFromTestResources("geckodriver.exe") :
@@ -464,6 +511,9 @@ public class WebEventController {
      * @return time in milliseconds for Mouse-specific web event to execute
      */
     public long webAction(final WebElement webElement, final Object webElementValue) {
+        if (videoCaptureEnabled) {
+            DebuggingUtils.takeScreenShot(remoteWebDriver);
+        }
         if (MouseActivityProcessor.applies(webElement)) {
             StopWatch stopWatch = new StopWatch();
             stopWatch.start();

@@ -138,6 +138,16 @@ to assist in nearly every need of a quality initiative.
 * WebElementUtils
 * CollectionUtils
 
+## Video Playback Feature
+This service records the execution of an automated test and creates a video that users can then playback to watch the automated test.  
+This service is capable of recording all concurrent tests which are executed simultaneously.  The resulting video files 
+are stored in directories matching each test name in directory *target/test-classes/screenshots*.  Simply, enable the 
+following setting in the automation.properties file in your configuration to begin recording test execution(s):
+
+```
+capture.video=false
+```
+
 ## Log Export Feature
 
 #### Prerequisite
@@ -210,7 +220,7 @@ Simply define the following at runtime via **-D** system variables:
 
 | User Defined Command  | Options                                                                                 | Default     | Example                      |
 | ----------------------|-----------------------------------------------------------------------------------------|-------------|------------------------------|
-| -Dbrowser             | ch, ff, ie, safari                                                                      | Chrome      | -Dbrowser=ff                 |
+| -Dbrowser             | ch, headless, ff, ie, safari                                                            | Chrome      | -Dbrowser=ff                 |
 | -Dbrowser.version     | any available                                                                           | 44          | -Dbrowser.version=38.0       |
 | -Dbrowser.resolution  | 800x600, 1024x768, 1152x864, 1280x800, 1280x960, 1280x1024, others                      | 1024x768    | -Dbrowser.resolution=800x600 |
 | -Dplatform            | mac, osx, linux, windows, windows 10, windows 8, windows 8.1, windows 7, windows xp, xp | linux       | -Dplatform=xp                |
@@ -239,7 +249,6 @@ If you choose not to override ANY of the settings above the following runtime se
 * Your Operating System
 * Chrome (your installed version) 
 
-
 ## Properties Files Settings
 There are three properties files used to drive all automated tests.  The following .properties files are required to be defined in your application's config directory.
 
@@ -261,6 +270,7 @@ enable.siteMinder=false
 siteminder.open.url=
 saucelabs.username=my-user
 saucelabs.accesskey=12345900-7f51-4185-a3d7-5d2b12342efa
+capture.video=false
 ```
 
 Settings:
@@ -279,6 +289,7 @@ Settings:
 | siteminder.open.url           |                  | Site Minder auth URL                       |
 | saucelabs.username            |                  | Sauce Labs username (see grid.properties)  |
 | saucelabs.accesskey           |                  | Sauce Labs key (see grid.properties)       |
+| capture.video                 | false            | record test execution video                |
 
 ### database.properties
 Properties used for connections to the database under test. 
@@ -338,6 +349,22 @@ See the [Selenium GRID instructions](https://github.com/AnthonyL22/runtime-micro
 ## Shared GRID
 If you have a shared machine with a potentially static IP address follow the same instructions as the previous section
 to setup a shared GRID.  Be sure to define the **grid.hub.url** in your grid.properties file.
+
+## Headless Automation Execution
+The following headless browsers are supported.  It is recommended that you use the [Video Feature](https://github.com/AnthonyL22/core-microservice#video-playback-feature)
+for debugging tests.
+
+### Headless Chrome
+The Chrome Headless browser is supported with a default browser resolution of 1920,1080.  
+
+Important: the headless browser(s) are executed on the system that is executing Maven or the IDE.  Distributed execution grids are not used by the 
+headless Chrome browser.
+ 
+The following system environment variables must be set to run the Headless Chrome browser in a runtime environment
+
+```
+-Dbrowser=headless
+```
 
 ### PhantomJS
 If you would like to use a headless PhantomJS browser you must use Selenium GRID with the PhantomJS drivers enabled.

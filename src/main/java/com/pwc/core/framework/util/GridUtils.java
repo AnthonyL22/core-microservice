@@ -12,6 +12,7 @@ public class GridUtils {
 
     private static final Pattern FIREFOX_REGEX = Pattern.compile("^.*?(ff|firefox)+?");
     private static final Pattern CHROME_REGEX = Pattern.compile("^.*?(ch|chrome)+?");
+    private static final Pattern CHROME_HEADLESS_REGEX = Pattern.compile("^.*?(headless|headlesschrome)+?");
     private static final Pattern ANDROID_REGEX = Pattern.compile("^.*?(droid|appium|android|google)+?");
     private static final Pattern IOS_REGEX = Pattern.compile("^.*?(iphone|ipad)+?");
     private static final Pattern INTERNET_EXPLORER_REGEX = Pattern.compile("^.*?(ie|internet\\sexplorer|explorer)+?");
@@ -60,6 +61,11 @@ public class GridUtils {
             browserMatcher = CHROME_REGEX.matcher(property);
             if (browserMatcher.find()) {
                 System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.CHROME_BROWSER_MODE);
+                return;
+            }
+            browserMatcher = CHROME_HEADLESS_REGEX.matcher(property);
+            if (browserMatcher.find()) {
+                System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.HEADLESS_CHROME_BROWSER_MODE);
                 return;
             }
             browserMatcher = INTERNET_EXPLORER_REGEX.matcher(property);

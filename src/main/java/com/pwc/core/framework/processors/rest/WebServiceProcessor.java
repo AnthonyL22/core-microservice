@@ -19,7 +19,12 @@ import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.methods.*;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
@@ -281,10 +286,25 @@ public class WebServiceProcessor {
                 } else if (payload instanceof List) {
 
                     String jsonEntity = toJSON(payload);
-                    StringEntity stringEntity = new StringEntity(jsonEntity);
+                    StringEntity stringEntity = new StringEntity(((List) payload).get(0).toString());
                     httpPost.setEntity(stringEntity);
                     httpPost.setHeader("Content-type", ContentType.APPLICATION_JSON.toString());
-                    LOG(true, "POST JSON='%s'", jsonEntity);
+                    LOG(true, "POST JSON='%s'", ((List) payload).get(0).toString());
+
+                    StopWatch stopWatch = new StopWatch();
+                    stopWatch.start();
+                    CloseableHttpResponse response = httpclient.execute(httpPost);
+                    stopWatch.stop();
+                    HttpEntity httpEntity = response.getEntity();
+                    wsResponse = getWebServiceResponse(response, httpEntity, stopWatch);
+                    closeHttpConnections(httpclient, response);
+
+                } else if (payload instanceof String) {
+
+                    StringEntity stringEntity = new StringEntity(payload.toString());
+                    httpPost.setEntity(stringEntity);
+                    httpPost.setHeader("Content-type", ContentType.APPLICATION_JSON.toString());
+                    LOG(true, "POST JSON='%s'", payload.toString());
 
                     StopWatch stopWatch = new StopWatch();
                     stopWatch.start();
