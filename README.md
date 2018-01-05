@@ -356,7 +356,7 @@ The following headless browsers are supported.  It is recommended that you use t
 ### Headless Chrome
 The Chrome Headless browser is supported with a default browser resolution of 1920,1080.  
 
-Important: the headless browser(s) are executed on the system that is executing Maven or the IDE.  Distributed execution in Selenium GRIDs are also supported for the headless Chrome browser.
+Important: the headless browser(s) are executed on the system that is executing Maven or the IDE.  Distributed execution in Selenium GRIDs is also supported for the headless Chrome browser.
  
 The following system environment variables must be set to run the Headless Chrome browser in a runtime environment
 
