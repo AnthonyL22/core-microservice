@@ -311,8 +311,16 @@ public class WebEventController {
         capabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
         capabilities.setCapability(CapabilityType.BROWSER_NAME, BrowserType.CHROME);
         capabilities.setCapability("video", "True");
-        if (this.remoteWebDriver == null) {
-            return (new MicroserviceChromeDriver(capabilities));
+        if (gridEnabled) {
+            if (this.remoteWebDriver == null) {
+                MicroserviceRemoteWebDriver microserviceRemoteWebDriver = new MicroserviceRemoteWebDriver(new URL(gridUrl), capabilities);
+                microserviceRemoteWebDriver.setFileDetector(new LocalFileDetector());
+                return microserviceRemoteWebDriver;
+            }
+        } else {
+            if (this.remoteWebDriver == null) {
+                return (new MicroserviceChromeDriver(capabilities));
+            }
         }
 
         return null;
