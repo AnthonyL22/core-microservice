@@ -18,16 +18,13 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class WebTestCaseTest extends WebTestCase {
 
-    public static final String IDENTIFIER = "//div[@id='top-nav']";
-    public static final String EXPECTED_TEXT = "foobar";
-
-    private WebEventController mockWebEventController;
-    private WebEventService mockWebEventService;
+    private static final String IDENTIFIER = "//div[@id='top-nav']";
+    private static final String EXPECTED_TEXT = "foobar";
 
     @Before
     public void setUp() {
-        mockWebEventController = mock(WebEventController.class);
-        mockWebEventService = mock(WebEventService.class);
+        WebEventController mockWebEventController = mock(WebEventController.class);
+        WebEventService mockWebEventService = mock(WebEventService.class);
 
         when(mockWebEventController.getWebEventService()).thenReturn(mockWebEventService);
         webEventController = mockWebEventController;
@@ -98,6 +95,11 @@ public class WebTestCaseTest extends WebTestCase {
     @Test
     public void executeJavascriptTest() {
         executeJavascript("Ext.each(Ext.ComponentQuery.query(\"tabpanel\"),function(){if (this.stateId==='TabPanelMain'){this.setActiveTab(1)}})");
+    }
+
+    @Test
+    public void executeJavascriptArgsTest() {
+        executeJavascript("Ext.each(Ext.ComponentQuery.query(\"tabpanel\"),function(){if (this.stateId==='%s'){this.setActiveTab(1)}})", "TabPanelMain");
     }
 
     @Test

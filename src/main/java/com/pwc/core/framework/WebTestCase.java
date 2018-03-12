@@ -138,6 +138,17 @@ public abstract class WebTestCase extends MicroserviceTestSuite {
     }
 
     /**
+     * Execute Javascript via Selenium interface
+     *
+     * @param javascriptSnippet js String to execute
+     * @param args              optional replaceable Javascript arguments
+     * @return resulting object
+     */
+    protected Object executeJavascript(final String javascriptSnippet, final Object... args) {
+        return webEventController.getWebEventService().executeJavascript(combine(javascriptSnippet, args));
+    }
+
+    /**
      * Navigate directly to a particular URL
      *
      * @param url well-formed web URL or partial URL

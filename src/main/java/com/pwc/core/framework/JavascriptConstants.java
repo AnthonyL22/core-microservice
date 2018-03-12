@@ -47,6 +47,7 @@ public final class JavascriptConstants {
     // NAVIGATION Actions
     public static final String SCROLL_TO_TOP_OF_WINDOW_ACTION = "window.scrollTo(document.body.scrollHeight,0);";
     public static final String SCROLL_TO_BOTTOM_OF_WINDOW_ACTION = "window.scrollTo(0,document.body.scrollHeight);";
+    public static final String URL_REDIRECT_ACTION = "window.location.replace('%s')";
 
     private JavascriptConstants() {
     }

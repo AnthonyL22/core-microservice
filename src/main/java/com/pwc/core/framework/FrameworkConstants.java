@@ -85,7 +85,10 @@ public final class FrameworkConstants {
     public static final String STATUS_KEY = "STATUS";
     public static final String ENTITY_KEY = "ENTITY";
 
-    // Javascript Snippets (deprecated - use JavascriptConstants)
+    /**
+     * @deprecated use JavascriptConstants fields instead
+     */
+    @Deprecated
     public static final String JAVASCRIPT_CLICK_ELEMENT_BY_XPATH = "var element = document.evaluate(\"%s\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue; element.click();";
     public static final String JAVASCRIPT_ALERT_ELEMENT_BY_XPATH = "var element = document.evaluate(\"%s\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue; alert(element.textContent);";
     public static final String JAVASCRIPT_CLICK_ELEMENT_BY_ID = "document.getElementById('%s').click();";
@@ -106,7 +109,7 @@ public final class FrameworkConstants {
             "{if (elements[i].firstChild.textContent.indexOf('%s') > -1) elements[i].click();}";
     public static final String JAVASCRIPT_CLICK_LAST_ELEMENT_BY_CLASS_NAME = "var elements = document.getElementsByClassName('%s'); elements[elements.length - 1].click();";
 
-    private FrameworkConstants(){
+    private FrameworkConstants() {
     }
 
 }

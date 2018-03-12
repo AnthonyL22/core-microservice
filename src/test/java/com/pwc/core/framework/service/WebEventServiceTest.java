@@ -14,7 +14,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.openqa.selenium.*;
+import org.openqa.selenium.Alert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Cookie;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.logging.LogEntries;
@@ -25,11 +29,19 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 
-import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class WebEventServiceTest extends WebElementBaseTest {
@@ -80,16 +92,10 @@ public class WebEventServiceTest extends WebElementBaseTest {
             "</html>";
 
     private static final String XPATH_LOCATOR = "//div[@id='777']";
-    public static final String DEFAULT_URL = "https://mywebsite.com/";
+    private static final String DEFAULT_URL = "https://mywebsite.com/";
     private final String ALERT_TEXT = "This is a warning shot";
 
-    WebEventService webEventService;
-
-    @Mock
-    WebEventService mockWebEventService;
-
-    @Mock
-    MicroserviceWebDriver mockMicroserviceWebDriver;
+    private WebEventService webEventService;
 
     @Mock
     MicroserviceWebDriver mockWebDriverService;
@@ -102,9 +108,9 @@ public class WebEventServiceTest extends WebElementBaseTest {
 
     @Mock
     WebDriver.TargetLocator mockTargetLocator;
-    public static final List<String> ELEMENT_XPATHS = new ArrayList<>();
+
+    private static final List<String> ELEMENT_XPATHS = new ArrayList<>();
     private WebDriver.Options mockOptions;
-    private Logs mockLogs;
     private WebDriver.Window mockWindow;
     private Set<Cookie> mockCookies;
     private Set<Cookie> mockEmptyCookies;
@@ -113,7 +119,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
     private static final String CONSOLE_OUTPUT_MESSAGE = "http://www.pacificwebconsulting.com - console failure for: SSL Certificate Expired";
 
     @Before
-    public void setUp() throws SQLException {
+    public void setUp() {
 
         Credentials mockCredentials = new Credentials("foo", "bar");
 
@@ -142,7 +148,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
         ELEMENT_XPATHS.add("//div[@id='777']");
 
         mockOptions = mock(WebDriver.Options.class);
-        mockLogs = mock(Logs.class);
+        Logs mockLogs = mock(Logs.class);
         mockWindow = mock(WebDriver.Window.class);
 
         mockTabNameCookie = mock(Cookie.class);
@@ -238,30 +244,6 @@ public class WebEventServiceTest extends WebElementBaseTest {
     @Test(expected = AssertionError.class)
     public void webConsoleLevelLimitBelowActualLevelTest() {
         webEventService.webConsoleRequestLevel(Level.INFO);
-    }
-
-    @Test(expected = AssertionError.class)
-    public void getActiveEnvStageTest() {
-        webEventService.setUrl(DEFAULT_URL + "stage/index.html");
-        webEventService.loadSavedCookiesFromFile();
-    }
-
-    @Test(expected = AssertionError.class)
-    public void getActiveEnvUATTest() {
-        webEventService.setUrl(DEFAULT_URL + "uat/index.html");
-        webEventService.loadSavedCookiesFromFile();
-    }
-
-    @Test(expected = AssertionError.class)
-    public void getActiveEnvTestTest() {
-        webEventService.setUrl(DEFAULT_URL + "test/index.html");
-        webEventService.loadSavedCookiesFromFile();
-    }
-
-    @Test(expected = AssertionError.class)
-    public void getActiveEnvDEVTest() {
-        webEventService.setUrl(DEFAULT_URL + "dev/index.html");
-        webEventService.loadSavedCookiesFromFile();
     }
 
     @Test(expected = AssertionError.class)
@@ -1050,12 +1032,6 @@ public class WebEventServiceTest extends WebElementBaseTest {
     public void waitForBrowserToLoadBrowserNeverLoadsTest() {
         when(mockWebDriverService.executeScript(JavascriptConstants.IS_OPEN_HTTPS)).thenReturn(7L);
         webEventService.waitForBrowserToLoad();
-    }
-
-    @Test(expected = AssertionError.class)
-    public void loadSavedCookiesFromFileTest() {
-        List cookies = webEventService.loadSavedCookiesFromFile();
-        Assert.assertNull(cookies);
     }
 
     @Test

@@ -1,7 +1,5 @@
 package com.pwc.core.framework.service;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pwc.core.framework.FrameworkConstants;
 import com.pwc.core.framework.JavascriptConstants;
 import com.pwc.core.framework.controller.WebEventController;
@@ -11,10 +9,8 @@ import com.pwc.core.framework.data.WebElementAttribute;
 import com.pwc.core.framework.data.WebElementType;
 import com.pwc.core.framework.driver.MicroserviceWebDriver;
 import com.pwc.core.framework.siteminder.Authenticator;
-import com.pwc.core.framework.siteminder.BasicClientCookieMixIn;
 import com.pwc.core.framework.util.DateUtils;
 import com.pwc.core.framework.util.DebuggingUtils;
-import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -28,7 +24,6 @@ import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.client.LaxRedirectStrategy;
-import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.util.EntityUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.parser.Parser;
@@ -59,7 +54,6 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 import java.io.File;
-import java.io.FileFilter;
 import java.io.StringReader;
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -90,17 +84,14 @@ public class WebEventService extends WebEventController {
     private long sleepInMillis;
     private long pageTimeoutInSeconds;
     private boolean videoCaptureEnabled;
-
-    public static final long CACHED_COOKIE_FILE_TIMEOUT = 1000 * 60 * 30;
-    private static final String REGEX_XPATH_FINDER = ".*[\\[@'].*";
-
     private String url;
     private String siteMinderRedirectUrl;
     private Credentials credentials;
     private MicroserviceWebDriver microserviceWebDriver;
     private CloseableHttpClient customHttpClient;
-    private File uniqueCookiesFile;
     private BasicCookieStore cookieStore;
+
+    private static final String REGEX_XPATH_FINDER = ".*[\\[@'].*";
 
     public WebEventService() {
     }
@@ -123,54 +114,12 @@ public class WebEventService extends WebEventController {
         setSiteMinderRedirectUrl(siteMinderUrl);
         this.credentials = credentials;
         List<Cookie> cookies;
-        //cookies = loadSavedCookiesFromFile();
-        //if (cookies == null) {
         cookies = generateUniqueCookiesFile();
-        //}
-
         if (headless) {
             addCookiesToHttpClient(cookies);
         } else {
             addCookiesToDriver(cookies, siteMinderUrl);
         }
-
-    }
-
-    /**
-     * Return saved cookie list from local file
-     *
-     * @return list of Cookies
-     */
-    protected List<Cookie> loadSavedCookiesFromFile() {
-
-        String filename = getCookieFilename();
-        List<Cookie> cookies = null;
-
-        try {
-            String env = getActiveEnv();
-            File tempDir = new File(System.getProperty("java.io.tmpdir"));
-            FileFilter jsonFileFilter = new WildcardFileFilter(String.format("%s.%s*%s*.%s", credentials.getUsername(), env, "cookies", "json"));
-            File[] existingFiles = tempDir.listFiles(jsonFileFilter);
-
-            if (existingFiles.length == 0) {
-                return generateUniqueCookiesFile();
-            } else {
-                LOG(true, "Using existing cookies file='%s'", existingFiles[0]);
-                long lastModifiedDatetime = existingFiles[0].lastModified();
-                long fileExpiredDatetime = new Date().getTime() - CACHED_COOKIE_FILE_TIMEOUT;
-                if (existingFiles[0].exists() && lastModifiedDatetime > fileExpiredDatetime) {
-                    ObjectMapper mapper = new ObjectMapper();
-                    mapper.addMixIn(BasicClientCookie.class, BasicClientCookieMixIn.class);
-                    cookies = mapper.readValue(existingFiles[0], new TypeReference<List<BasicClientCookie>>() {
-                    });
-                }
-            }
-
-        } catch (Exception e) {
-            Assert.fail("Failed to load '" + filename + "'", e);
-        }
-
-        return cookies;
 
     }
 
@@ -182,17 +131,10 @@ public class WebEventService extends WebEventController {
     private List<Cookie> generateUniqueCookiesFile() {
 
         List<Cookie> cookies = null;
-        String uniqueCookiesFile = getCookieFilename();
         try {
             Authenticator authenticator = Authenticator.getInstance();
             cookies = authenticator.getAuthenticationCookies(getUrl(), credentials.getUsername(), credentials.getPassword());
             cookies = scrubCookiesForDomain(cookies);
-//            if (cookies != null) {
-//                LOG(true, "Generating unique cookies file='%s'", uniqueCookiesFile);
-//                this.uniqueCookiesFile = new File(uniqueCookiesFile);
-//                ObjectMapper mapper = new ObjectMapper();
-//                mapper.writeValue(this.uniqueCookiesFile, cookies);
-//            }
         } catch (Exception e) {
             e.printStackTrace();
             Assert.fail("Failed to generate valid cookies for url='" + getUrl() + "'", e.getCause());
@@ -542,7 +484,7 @@ public class WebEventService extends WebEventController {
      */
     public void tableRowCount(final String elementIdentifier, final int expectedRowCount) {
         WebElement gridElement = findWebElement(elementIdentifier);
-        int actualHeaderRowCount = 0;
+        int actualHeaderRowCount;
         int actualRowCount = 0;
         try {
             actualHeaderRowCount = getTableHeaderCount(gridElement);
@@ -1015,7 +957,7 @@ public class WebEventService extends WebEventController {
      * @param elementIdentifier WebElement to find
      * @return exists/not exists flag
      */
-    public boolean exists(final String elementIdentifier) {
+    private boolean exists(final String elementIdentifier) {
         try {
             WebElement element = findWebElement(elementIdentifier);
             return element != null;
@@ -1694,10 +1636,6 @@ public class WebEventService extends WebEventController {
 
     public void setUrl(String url) {
         this.url = url;
-    }
-
-    public File getUniqueCookiesFile() {
-        return uniqueCookiesFile;
     }
 
 }

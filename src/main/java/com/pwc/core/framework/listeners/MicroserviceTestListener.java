@@ -8,7 +8,12 @@ import com.pwc.core.framework.util.PropertiesUtils;
 import com.pwc.logging.helper.LoggerHelper;
 import com.saucelabs.saucerest.SauceREST;
 import org.apache.commons.lang3.StringUtils;
-import org.testng.*;
+import org.testng.IInvokedMethod;
+import org.testng.IInvokedMethodListener;
+import org.testng.ITestContext;
+import org.testng.ITestListener;
+import org.testng.ITestResult;
+import org.testng.TestListenerAdapter;
 import org.testng.annotations.Listeners;
 
 import java.lang.reflect.Method;

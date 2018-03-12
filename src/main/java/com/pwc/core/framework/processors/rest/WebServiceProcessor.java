@@ -285,7 +285,6 @@ public class WebServiceProcessor {
 
                 } else if (payload instanceof List) {
 
-                    String jsonEntity = toJSON(payload);
                     StringEntity stringEntity = new StringEntity(((List) payload).get(0).toString());
                     httpPost.setEntity(stringEntity);
                     httpPost.setHeader("Content-type", ContentType.APPLICATION_JSON.toString());

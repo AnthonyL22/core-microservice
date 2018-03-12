@@ -12,14 +12,17 @@ import com.pwc.core.framework.data.Credentials;
 import com.pwc.core.framework.data.PropertiesFile;
 import com.pwc.core.framework.listeners.MicroserviceTestListener;
 import com.pwc.core.framework.util.PropertiesUtils;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.experimental.categories.Category;
 import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.testng.annotations.*;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Listeners;
 
 import java.util.HashMap;
 import java.util.List;
@@ -120,9 +123,6 @@ public abstract class MicroserviceTestSuite {
     public void tearDownClass() {
         try {
             if (webEventController != null) {
-                if (webEventController.isSiteMinderEnabled()) {
-                    FileUtils.deleteQuietly(webEventController.getWebEventService().getUniqueCookiesFile());
-                }
                 webEventController.performQuit();
             }
             if (databaseController != null) {

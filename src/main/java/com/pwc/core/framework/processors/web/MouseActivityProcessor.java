@@ -1,6 +1,17 @@
 package com.pwc.core.framework.processors.web;
 
-import com.pwc.core.framework.processors.web.elements.*;
+import com.pwc.core.framework.processors.web.elements.AnchorElementImpl;
+import com.pwc.core.framework.processors.web.elements.ButtonElementImpl;
+import com.pwc.core.framework.processors.web.elements.ButtonInputElementImpl;
+import com.pwc.core.framework.processors.web.elements.CheckboxElementImpl;
+import com.pwc.core.framework.processors.web.elements.ComboBoxElementImpl;
+import com.pwc.core.framework.processors.web.elements.HeadingElementImpl;
+import com.pwc.core.framework.processors.web.elements.IconElementImpl;
+import com.pwc.core.framework.processors.web.elements.ImageElementImpl;
+import com.pwc.core.framework.processors.web.elements.ListItemElementImpl;
+import com.pwc.core.framework.processors.web.elements.RadioButtonElementImpl;
+import com.pwc.core.framework.processors.web.elements.SelectableElementImpl;
+import com.pwc.core.framework.processors.web.elements.SpanElementImpl;
 import org.openqa.selenium.WebElement;
 
 public class MouseActivityProcessor {

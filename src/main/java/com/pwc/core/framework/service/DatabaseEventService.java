@@ -8,9 +8,18 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.math.BigDecimal;
-import java.sql.*;
-import java.util.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.TimeZone;
+import java.util.UUID;
 
 import static com.pwc.logging.service.LoggerService.LOG;
 
@@ -189,7 +198,7 @@ public class DatabaseEventService {
      *
      * @param preparedStatement  SQL statement
      * @param valuesToSubstitute values to substitute in the query
-     * @throws SQLException
+     * @throws SQLException prepared statement SQL exception
      */
     private PreparedStatement substituteQueryValues(PreparedStatement preparedStatement, final String sqlTemplateQuery, final Object[] valuesToSubstitute) throws SQLException {
         if (valuesToSubstitute != null) {
