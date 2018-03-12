@@ -233,7 +233,6 @@ public class WebEventController {
         capabilities.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
         capabilities.setCapability(CapabilityType.BROWSER_NAME, BrowserType.FIREFOX);
 
-
         if (gridEnabled) {
             if (this.remoteWebDriver == null) {
                 MicroserviceRemoteWebDriver microserviceRemoteWebDriver = new MicroserviceRemoteWebDriver(new URL(gridUrl), capabilities);

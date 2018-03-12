@@ -26,8 +26,8 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class WebEventControllerTest {
 
-    public static final String APPLICATION_WEB_URL = "http://my-web-application.mywebsite.com";
-    public static final String GRID_URL = "http://localhost:4444/wd/hub";
+    private static final String APPLICATION_WEB_URL = "http://my-web-application.mywebsite.com";
+    private static final String GRID_URL = "http://localhost:4444/wd/hub";
     private static final String UNIT_TEST_TUNNEL_IDENTIFIER = "unit-test-tunnel";
 
     WebEventController webEventController;
@@ -348,14 +348,14 @@ public class WebEventControllerTest {
         Assert.assertNull(result);
     }
 
-    @Test(expected = org.openqa.selenium.WebDriverException.class)
+    @Test(expected = NullPointerException.class)
     public void getIOSBrowserGridNoExistingLiveRemoteDriverTest() throws Exception {
         webEventController.setGridEnabled(true);
         webEventController.setGridUrl(GRID_URL);
         webEventController.getIOSBrowser();
     }
 
-    @Test(expected = org.openqa.selenium.WebDriverException.class)
+    @Test(expected = NullPointerException.class)
     public void getFirefoxBrowserGridNoExistingLiveRemoteDriverTest() throws Exception {
         webEventController.setGridEnabled(true);
         webEventController.setGridUrl(GRID_URL);
@@ -428,7 +428,7 @@ public class WebEventControllerTest {
         Assert.assertNull(result);
     }
 
-    @Test(expected = org.openqa.selenium.WebDriverException.class)
+    @Test(expected = NullPointerException.class)
     public void getPhantomJsBrowserGridNoExistingLiveRemoteDriverTest() throws Exception {
         webEventController.setGridEnabled(true);
         webEventController.setGridUrl(GRID_URL);
@@ -453,7 +453,7 @@ public class WebEventControllerTest {
         Assert.assertNull(result);
     }
 
-    @Test(expected = org.openqa.selenium.WebDriverException.class)
+    @Test(expected = NullPointerException.class)
     public void getEdgeBrowserNoExistingLiveRemoteDriverTest() throws Exception {
         webEventController.setGridEnabled(true);
         webEventController.setGridUrl(GRID_URL);
@@ -469,7 +469,7 @@ public class WebEventControllerTest {
         Assert.assertNull(result);
     }
 
-    @Test(expected = org.openqa.selenium.WebDriverException.class)
+    @Test(expected = NullPointerException.class)
     public void getSafariGridNoExistingLiveRemoteDriverTest() throws Exception {
         webEventController.setGridEnabled(true);
         webEventController.setGridUrl(GRID_URL);
@@ -495,7 +495,7 @@ public class WebEventControllerTest {
         Assert.assertNull(result);
     }
 
-    @Test(expected = org.openqa.selenium.WebDriverException.class)
+    @Test(expected = NullPointerException.class)
     public void getInternetExplorerBrowserGridNoExistingLiveRemoteDriverTest() throws Exception {
         webEventController.setGridEnabled(true);
         webEventController.setGridUrl(GRID_URL);
