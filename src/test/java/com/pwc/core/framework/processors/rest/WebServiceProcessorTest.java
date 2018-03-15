@@ -35,6 +35,7 @@ public class WebServiceProcessorTest {
     private final String URL_PATH = "http://foobar-web-services.com";
     private final String USER = "foo";
     private final String PASS = "foo";
+
     private WebServiceProcessor webServiceProcessor;
     private HashMap<String, Object> mockUserNameMap = new HashMap<>();
     private List<String> mockUserNameList = new ArrayList<>();
@@ -43,7 +44,7 @@ public class WebServiceProcessorTest {
     private CloseableHttpResponse mockCloseableHttpResponse;
     private HttpEntity mockHttpEntity;
 
-    final String EXPECTED_JSON_RESPONSE = "{\n" +
+    private final String EXPECTED_JSON_RESPONSE = "{\n" +
             "    \"id\": 23850994,\n" +
             "    \"lastName\": \"Doe\",\n" +
             "    \"qcguid\": 478182,\n" +

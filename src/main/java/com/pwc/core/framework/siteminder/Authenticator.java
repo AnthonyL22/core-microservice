@@ -1,6 +1,7 @@
 package com.pwc.core.framework.siteminder;
 
 import com.pwc.core.framework.processors.rest.WebServiceProcessor;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -28,6 +29,7 @@ import static org.apache.http.ssl.SSLContexts.custom;
 public class Authenticator {
 
     private static Authenticator instance;
+    private static final int MAX_AUTHENTICATION_RETRIES = 5;
 
     /**
      * Singleton get instance of Authenticator.
@@ -57,7 +59,7 @@ public class Authenticator {
      * @throws KeyManagementException   exception
      * @throws KeyStoreException        exception
      */
-    protected static SSLContext buildSSLContext() throws NoSuchAlgorithmException, KeyManagementException, KeyStoreException {
+    private static SSLContext buildSSLContext() throws NoSuchAlgorithmException, KeyManagementException, KeyStoreException {
         return custom()
                 .setSecureRandom(new SecureRandom())
                 .loadTrustMaterial(null, new TrustSelfSignedStrategy())
@@ -90,6 +92,9 @@ public class Authenticator {
             HttpClientContext context = getHttpClientContext();
             response = httpClient.execute(get, context);
             LOG(true, "Authentication Status = '%s'", response.getStatusLine());
+            if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
+                context = retryAuthentication(response, get, httpClient);
+            }
 
             CookieStore cookieStore = context.getCookieStore();
             cookies = cookieStore.getCookies();
@@ -103,6 +108,38 @@ public class Authenticator {
         }
 
         return cookies;
+    }
+
+    /**
+     * Due to potential authentication issues, this retry mechanism attempts 5x to authenticate
+     *
+     * @param response   HttpResponse
+     * @param get        HttpGet
+     * @param httpClient HttpClient
+     * @return valid HttpClientContext after retry or null if failed
+     * @throws IOException
+     */
+    protected HttpClientContext retryAuthentication(CloseableHttpResponse response, HttpGet get, CloseableHttpClient httpClient) throws IOException {
+        int retryCount = 1;
+        HttpClientContext context;
+        try {
+            while (retryCount <= MAX_AUTHENTICATION_RETRIES) {
+                LOG(true, "Authentication Retry %s time due to response='%s'", retryCount, response.getStatusLine().getStatusCode());
+                context = getHttpClientContext();
+                response = httpClient.execute(get, context);
+                if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
+                    retryCount++;
+                } else {
+                    return context;
+                }
+            }
+
+        } catch (Exception e) {
+            Assert.fail(String.format("Failed to retry authentication after retrying %s times to url=%s", retryCount, get.getURI()), e);
+        } finally {
+            response.close();
+        }
+        return null;
     }
 
     public HttpClientContext getHttpClientContext() {

@@ -943,7 +943,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
 
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void gridRowCountFindTableTest() {
         when(mockWebDriverService.findElementByXPath(".//*[@id='datatable']")).thenReturn(getMockWebElement());
         webEventService.tableRowCount("datatable", 0);

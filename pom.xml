@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.pacificwebconsulting.core</groupId>
   <artifactId>core-microservice</artifactId>
-  <version>2.0.29-SNAPSHOT</version>
+  <version>2.0.30-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>Core Automation Microservice</name>
   <description>Central automated test execution framework</description>
@@ -39,7 +39,7 @@
     </snapshotRepository>
   </distributionManagement>
   <properties>
-    <appium.version>5.0.2</appium.version>
+    <appium.version>5.0.4</appium.version>
     <assertion-microservice.version>1.0.2</assertion-microservice.version>
     <byte-buddy.version>1.7.7</byte-buddy.version>
     <commonsdbcp2.version>2.0</commonsdbcp2.version>
@@ -73,7 +73,7 @@
     <restassured.version>2.9.0</restassured.version>
     <saucelabs-java.version>2.1.23</saucelabs-java.version>
     <saucelabs.version>1.0.35</saucelabs.version>
-    <selenium.version>3.5.3</selenium.version>
+    <selenium.version>3.11.0</selenium.version>
     <sortpom-maven-plugin.version>2.6.0</sortpom-maven-plugin.version>
     <spring-mongodb.version>1.2.0.RELEASE</spring-mongodb.version>
     <spring.version>3.2.3.RELEASE</spring.version>
