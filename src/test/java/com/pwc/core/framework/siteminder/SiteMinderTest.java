@@ -1,5 +1,6 @@
 package com.pwc.core.framework.siteminder;
 
+import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -22,25 +23,32 @@ import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SiteMinderTest extends Authenticator {
 
-    public static final String APPLICATION_WEB_URL = "http://my-web-application.mywebsite.com";
-    public static final String USERNAME = "foo";
-    public static final String PASSWORD = "bar";
+    private static final String APPLICATION_WEB_URL = "http://my-web-application.mywebsite.com";
+    private static final String USERNAME = "foo";
+    private static final String PASSWORD = "bar";
 
     private List<Cookie> cookies;
     private Authenticator spyAuthenticator;
+    private CloseableHttpResponse mockCloseableHttpResponse;
+    private HttpGet mockHttpGet;
+    private CloseableHttpClient mockDefaultHttpClient;
+    private HttpClientContext mockHttpClientContext;
 
     @Before
     public void setUp() throws Exception {
-        CloseableHttpClient mockDefaultHttpClient = mock(CloseableHttpClient.class);
-        HttpGet mockHttpGet = mock(HttpGet.class);
+        mockDefaultHttpClient = mock(CloseableHttpClient.class);
+        mockHttpGet = mock(HttpGet.class);
         mockHttpGet.setURI(new URI(APPLICATION_WEB_URL));
-        HttpClientContext mockHttpClientContext = mock(HttpClientContext.class);
-        CloseableHttpResponse mockCloseableHttpResponse = mock(CloseableHttpResponse.class);
+        mockHttpClientContext = mock(HttpClientContext.class);
+        mockCloseableHttpResponse = mock(CloseableHttpResponse.class);
         StatusLine mockStatusLine = mock(StatusLine.class);
 
         CookieStore mockCookieStore = mock(CookieStore.class);
@@ -71,6 +79,28 @@ public class SiteMinderTest extends Authenticator {
         when(spyAuthenticator.generateClient(APPLICATION_WEB_URL, USERNAME, PASSWORD, mockSSLContext)).thenReturn(mockDefaultHttpClient);
         when(mockDefaultHttpClient.execute(mockHttpGet, mockHttpClientContext)).thenReturn(mockCloseableHttpResponse);
 
+    }
+
+    @Test(expected = AssertionError.class)
+    public void retryAuthenticationRuntimeExceptionTest() throws Exception {
+        when(mockHttpGet.getURI()).thenReturn(URI.create(APPLICATION_WEB_URL));
+        when(mockCloseableHttpResponse.getStatusLine()).thenThrow(Exception.class);
+        HttpClientContext context = spyAuthenticator.retryAuthentication(mockCloseableHttpResponse, mockHttpGet, mockDefaultHttpClient);
+        Assert.assertNull(context);
+    }
+
+    @Test
+    public void retryAuthentication200ResponseTest() throws Exception {
+        when(mockDefaultHttpClient.execute(mockHttpGet, mockHttpClientContext).getStatusLine().getStatusCode()).thenReturn(HttpStatus.SC_OK);
+        HttpClientContext context = spyAuthenticator.retryAuthentication(mockCloseableHttpResponse, mockHttpGet, mockDefaultHttpClient);
+        Assert.assertNotNull(context);
+    }
+
+    @Test
+    public void retryAuthentication504ResponseAndRetryTest() throws Exception {
+        when(mockDefaultHttpClient.execute(mockHttpGet, mockHttpClientContext).getStatusLine().getStatusCode()).thenReturn(HttpStatus.SC_GATEWAY_TIMEOUT);
+        HttpClientContext context = spyAuthenticator.retryAuthentication(mockCloseableHttpResponse, mockHttpGet, mockDefaultHttpClient);
+        Assert.assertNull(context);
     }
 
     @Test(expected = Exception.class)
