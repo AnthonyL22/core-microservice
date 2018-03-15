@@ -1,6 +1,5 @@
 package com.pwc.core.framework.siteminder;
 
-import org.apache.http.Header;
 import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
 import org.apache.http.client.CookieStore;
@@ -79,13 +78,6 @@ public class SiteMinderTest extends Authenticator {
         when(mockDefaultHttpClient.execute(mockHttpGet)).thenReturn(mockCloseableHttpResponse);
         when(spyAuthenticator.generateClient(APPLICATION_WEB_URL, USERNAME, PASSWORD, mockSSLContext)).thenReturn(mockDefaultHttpClient);
         when(mockDefaultHttpClient.execute(mockHttpGet, mockHttpClientContext)).thenReturn(mockCloseableHttpResponse);
-
-        Header mockHeader = mock(Header.class);
-        Header[] mockHeaders = new Header[1];
-        mockHeaders[0] = mockHeader;
-        when(mockHeader.getName()).thenReturn("Access-Control-Allow-Headers");
-        when(mockHeader.getValue()).thenReturn("Access-Control-Allow-Headers: origin, x-requested-with");
-        when(mockCloseableHttpResponse.getAllHeaders()).thenReturn(mockHeaders);
 
     }
 

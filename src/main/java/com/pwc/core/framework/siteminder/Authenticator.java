@@ -1,7 +1,6 @@
 package com.pwc.core.framework.siteminder;
 
 import com.pwc.core.framework.processors.rest.WebServiceProcessor;
-import org.apache.http.Header;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -125,11 +124,7 @@ public class Authenticator {
         HttpClientContext context;
         try {
             while (retryCount <= MAX_AUTHENTICATION_RETRIES) {
-                Header[] headers = response.getAllHeaders();
                 LOG(true, "Authentication Retry %s time due to response='%s'", retryCount, response.getStatusLine().getStatusCode());
-                for (Header header : headers) {
-                    LOG(true, "  %s :: %s", header.getName(), header.getValue());
-                }
                 context = getHttpClientContext();
                 response = httpClient.execute(get, context);
                 if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
