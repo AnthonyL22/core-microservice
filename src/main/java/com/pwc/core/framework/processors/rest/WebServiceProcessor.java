@@ -111,7 +111,7 @@ public class WebServiceProcessor {
      * Generic REST web service Execution method for simple GET requests
      * that return a String response
      *
-     * @param url  URL endpoint to hit
+     * @param url  web service URL
      * @param user username
      * @param pass password
      * @return JsonPath json payload
@@ -225,7 +225,9 @@ public class WebServiceProcessor {
      * Generic REST web service Execution method for simple GET requests
      * that return a String response
      *
-     * @param command Type of command to execute
+     * @param url      web service URL
+     * @param oAuthKey OAuth key to use as the Bearer token
+     * @param command  Type of command to execute
      * @return JsonPath json payload
      */
     protected Object execute(final String url, final OAuthKey oAuthKey, final WebServiceCommand command) {
@@ -236,6 +238,8 @@ public class WebServiceProcessor {
      * Generic REST web service Execution method for simple GET requests
      * that return a String response. Example: http://www.mywebsite.com/rest/getAllUsers
      *
+     * @param url           web service URL
+     * @param oAuthKey      OAuth key to use as the Bearer token
      * @param command       Type of command to execute
      * @param pathParameter web service path parameter
      * @return JsonPath json payload
@@ -296,6 +300,8 @@ public class WebServiceProcessor {
     /**
      * Generic REST web service Execution method
      *
+     * @param url           web service URL
+     * @param oAuthKey      OAuth key to use as the Bearer token
      * @param command       Type of command to execute
      * @param pathParameter web service path parameter
      * @param payload       Request body payload
@@ -443,13 +449,13 @@ public class WebServiceProcessor {
     /**
      * Set the BasicAuth header to the user/pass provided
      *
-     * @param oauthKey OAuth2 key used to be the Bearer
+     * @param oAuthKey OAuth key to use as the Bearer token
      * @param httpBase Http base to set header for
      * @return decorated HttpRequestBase for use by get, post, put, ect..
      */
-    private HttpRequestBase setHeaderCredentials(final OAuthKey oauthKey, HttpRequestBase httpBase) {
+    private HttpRequestBase setHeaderCredentials(final OAuthKey oAuthKey, HttpRequestBase httpBase) {
         try {
-            String authenticationHeader = "Bearer " + oauthKey.getKey();
+            String authenticationHeader = "Bearer " + oAuthKey.getKey();
             httpBase.setHeader(HttpHeaders.AUTHORIZATION, authenticationHeader);
         } catch (Exception e) {
             return httpBase;
@@ -585,11 +591,25 @@ public class WebServiceProcessor {
 
     }
 
+    /**
+     * Close the Http response and client sessions
+     *
+     * @param httpclient HttpClient to close
+     * @param response   HttpResponse to close
+     * @throws IOException exception if closing connections failure occurs
+     */
     private void closeHttpConnections(CloseableHttpClient httpclient, CloseableHttpResponse response) throws IOException {
         response.close();
         httpclient.close();
     }
 
+    /**
+     * Construct URI from payload map passed in
+     *
+     * @param httpRequestBase Http request
+     * @param payload         payload to construct URI with
+     * @return hydrated URI
+     */
     protected URI constructUriFromPayloadMap(HttpRequestBase httpRequestBase, HashMap<String, Object> payload) {
         try {
             List<NameValuePair> nvps = new ArrayList<>();
@@ -602,7 +622,13 @@ public class WebServiceProcessor {
         }
     }
 
-    protected String getFirstValueInMap(HashMap<String, Object> payload) {
+    /**
+     * Return the first value in the HashMap provided
+     *
+     * @param payload payload map
+     * @return first value
+     */
+    private String getFirstValueInMap(HashMap<String, Object> payload) {
         try {
             for (Map.Entry<String, Object> entry : payload.entrySet()) {
                 return String.valueOf(entry.getValue());
@@ -632,7 +658,9 @@ public class WebServiceProcessor {
     /**
      * Convert the current CloseableHttpResponse response's StatusLine to a JSON representation
      *
-     * @param response current response
+     * @param response   current response
+     * @param httpEntity Http response to evaluate
+     * @param stopWatch  Spring stop watch used to report response time of web service to calling test
      * @return JSON response
      */
     private String convertHttpResponseToJson(CloseableHttpResponse response, HttpEntity httpEntity, StopWatch stopWatch) {
@@ -691,12 +719,20 @@ public class WebServiceProcessor {
         return json;
     }
 
+    /**
+     * Get authenticated HttpClient
+     *
+     * @param url      url to authenticate
+     * @param username username
+     * @param password password
+     * @return authenticated HttpClient
+     */
     protected CloseableHttpClient getAuthenticatedClient(String url, String username, String password) {
 
         CloseableHttpClient httpclient = null;
         try {
             SSLContext sslcontext = buildSSLContext();
-            httpclient = buildHttpClient(url, username, password, sslcontext);
+            httpclient = buildHttpClient(username, password, sslcontext);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -704,6 +740,14 @@ public class WebServiceProcessor {
 
     }
 
+    /**
+     * Build SSLContext
+     *
+     * @return custom SSL Context
+     * @throws NoSuchAlgorithmException
+     * @throws KeyManagementException
+     * @throws KeyStoreException
+     */
     private static SSLContext buildSSLContext() throws NoSuchAlgorithmException, KeyManagementException, KeyStoreException {
         return custom()
                 .setSecureRandom(new SecureRandom())
@@ -711,7 +755,15 @@ public class WebServiceProcessor {
                 .build();
     }
 
-    public static CloseableHttpClient buildHttpClient(String url, String username, String password, SSLContext sslContext) {
+    /**
+     * Build HttpClient for user and password provided
+     *
+     * @param username   username
+     * @param password   password
+     * @param sslContext SSLContext
+     * @return hydrated HttpClient
+     */
+    public static CloseableHttpClient buildHttpClient(String username, String password, SSLContext sslContext) {
 
         CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
         if (StringUtils.isNotEmpty(username) && StringUtils.isNotEmpty(password)) {

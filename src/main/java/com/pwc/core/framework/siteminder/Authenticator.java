@@ -47,8 +47,8 @@ public class Authenticator {
         return new HttpGet(url);
     }
 
-    public CloseableHttpClient generateClient(String url, String username, String password, SSLContext sslcontext) {
-        return WebServiceProcessor.buildHttpClient(url, username, password, sslcontext);
+    public CloseableHttpClient generateClient(String username, String password, SSLContext sslcontext) {
+        return WebServiceProcessor.buildHttpClient(username, password, sslcontext);
     }
 
     /**
@@ -67,13 +67,13 @@ public class Authenticator {
     }
 
     /**
-     * Get Authentication cookies from a login attempt with the Siteminder server for a site protected
+     * Get Authentication cookies from a login attempt with the SiteMinder server for a site protected
      * with SSL.
      *
-     * @param url      the url to use to redirect to the Siteminder login prompt.
-     * @param username the username to log into Siteminder with.
-     * @param password the password to login into Siteminder with.
-     * @return a List of cookies that contain the Siteminder authentication token
+     * @param url      the url to use to redirect to the SiteMinder login prompt.
+     * @param username the username to log into SiteMinder with.
+     * @param password the password to login into SiteMinder with.
+     * @return a List of cookies that contain the SiteMinder authentication token
      * @throws IOException authenticated cookies generation failure
      */
     public List<Cookie> getAuthenticationCookies(String url, String username, String password) throws IOException {
@@ -83,7 +83,7 @@ public class Authenticator {
         try {
 
             SSLContext sslcontext = buildSSLContext();
-            httpClient = generateClient(url, username, password, sslcontext);
+            httpClient = generateClient(username, password, sslcontext);
             LOG(true, "Authenticating User='%s'", username);
 
             HttpGet get = generateHttpGet(url);
@@ -117,7 +117,7 @@ public class Authenticator {
      * @param get        HttpGet
      * @param httpClient HttpClient
      * @return valid HttpClientContext after retry or null if failed
-     * @throws IOException
+     * @throws IOException exception trying to retry authentication
      */
     protected HttpClientContext retryAuthentication(CloseableHttpResponse response, HttpGet get, CloseableHttpClient httpClient) throws IOException {
         int retryCount = 1;

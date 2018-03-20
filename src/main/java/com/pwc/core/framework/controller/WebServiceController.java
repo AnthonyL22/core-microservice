@@ -73,6 +73,7 @@ public class WebServiceController extends WebServiceProcessor {
      *
      * @param oAuthKey OAuth key
      * @param command  BaseGetCommand command type
+     * @return web service response
      */
     protected Object webServiceAction(final OAuthKey oAuthKey, final WebServiceCommand command) {
         return webServiceAction(oAuthKey, command, null, null);

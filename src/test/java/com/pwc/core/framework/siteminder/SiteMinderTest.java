@@ -44,6 +44,7 @@ public class SiteMinderTest extends Authenticator {
 
     @Before
     public void setUp() throws Exception {
+
         mockDefaultHttpClient = mock(CloseableHttpClient.class);
         mockHttpGet = mock(HttpGet.class);
         mockHttpGet.setURI(new URI(APPLICATION_WEB_URL));
@@ -72,11 +73,11 @@ public class SiteMinderTest extends Authenticator {
         when(mockSSLContextBuilder.setSecureRandom(new SecureRandom())).thenReturn(mockSSLContextBuilder);
         when(mockSSLContextBuilder.loadTrustMaterial(null, new TrustSelfSignedStrategy())).thenReturn(mockSSLContextBuilder);
         when(mockSSLContextBuilder.build()).thenReturn(mockSSLContext);
-        doReturn(mockDefaultHttpClient).when(spyAuthenticator).generateClient(APPLICATION_WEB_URL, USERNAME, PASSWORD, mockSSLContext);
+        doReturn(mockDefaultHttpClient).when(spyAuthenticator).generateClient(USERNAME, PASSWORD, mockSSLContext);
 
         doReturn(mockHttpGet).when(spyAuthenticator).generateHttpGet(APPLICATION_WEB_URL);
         when(mockDefaultHttpClient.execute(mockHttpGet)).thenReturn(mockCloseableHttpResponse);
-        when(spyAuthenticator.generateClient(APPLICATION_WEB_URL, USERNAME, PASSWORD, mockSSLContext)).thenReturn(mockDefaultHttpClient);
+        when(spyAuthenticator.generateClient(USERNAME, PASSWORD, mockSSLContext)).thenReturn(mockDefaultHttpClient);
         when(mockDefaultHttpClient.execute(mockHttpGet, mockHttpClientContext)).thenReturn(mockCloseableHttpResponse);
 
     }
