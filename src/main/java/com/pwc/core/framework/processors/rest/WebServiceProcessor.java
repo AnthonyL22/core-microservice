@@ -10,6 +10,7 @@ import com.jayway.restassured.path.json.JsonPath;
 import com.jayway.restassured.path.json.config.JsonPathConfig;
 import com.pwc.core.framework.FrameworkConstants;
 import com.pwc.core.framework.command.WebServiceCommand;
+import com.pwc.core.framework.data.OAuthKey;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
@@ -221,6 +222,205 @@ public class WebServiceProcessor {
     }
 
     /**
+     * Generic REST web service Execution method for simple GET requests
+     * that return a String response
+     *
+     * @param command Type of command to execute
+     * @return JsonPath json payload
+     */
+    protected Object execute(final String url, final OAuthKey oAuthKey, final WebServiceCommand command) {
+        return execute(url, oAuthKey, command, null);
+    }
+
+    /**
+     * Generic REST web service Execution method for simple GET requests
+     * that return a String response. Example: http://www.mywebsite.com/rest/getAllUsers
+     *
+     * @param command       Type of command to execute
+     * @param pathParameter web service path parameter
+     * @return JsonPath json payload
+     */
+    protected Object execute(final String url, final OAuthKey oAuthKey, final WebServiceCommand command, final Object pathParameter) {
+
+        Object wsResponse = null;
+        String wsUrl = constructRestUrl(url, command, pathParameter);
+
+        try {
+
+            HttpGet httpGet;
+            HttpPost httpPost;
+            HttpDelete httpDelete;
+            HttpPut httpPut;
+            CloseableHttpResponse response = null;
+            CloseableHttpClient httpclient = HttpClients.custom().setSSLSocketFactory(SSLConnectionSocketFactory.getSocketFactory()).build();
+
+            StopWatch stopWatch = new StopWatch();
+            if (StringUtils.equals(command.methodType(), FrameworkConstants.POST_REQUEST)) {
+                httpPost = new HttpPost(wsUrl);
+                httpPost = (HttpPost) setHeaderCredentials(oAuthKey, httpPost);
+                stopWatch.start();
+                response = httpclient.execute(httpPost);
+                stopWatch.stop();
+            } else if (StringUtils.equals(command.methodType(), FrameworkConstants.GET_REQUEST)) {
+                httpGet = new HttpGet(wsUrl);
+                httpGet = (HttpGet) setHeaderCredentials(oAuthKey, httpGet);
+                stopWatch.start();
+                response = httpclient.execute(httpGet);
+                stopWatch.stop();
+            } else if (StringUtils.equals(command.methodType(), FrameworkConstants.PUT_REQUEST)) {
+                httpPut = new HttpPut(wsUrl);
+                httpPut = (HttpPut) setHeaderCredentials(oAuthKey, httpPut);
+                stopWatch.start();
+                response = httpclient.execute(httpPut);
+                stopWatch.stop();
+            } else if (StringUtils.equals(command.methodType(), FrameworkConstants.DELETE_REQUEST)) {
+                httpDelete = new HttpDelete(wsUrl);
+                httpDelete = (HttpDelete) setHeaderCredentials(oAuthKey, httpDelete);
+                stopWatch.start();
+                response = httpclient.execute(httpDelete);
+                stopWatch.stop();
+            }
+
+            HttpEntity httpEntity = response.getEntity();
+            wsResponse = getWebServiceResponse(response, httpEntity, stopWatch);
+            closeHttpConnections(httpclient, response);
+
+        } catch (Exception e) {
+            Assert.fail(String.format("REST call failed for url=%s with exception='%s'", wsUrl, e.getCause()), e);
+        }
+
+        return wsResponse;
+
+    }
+
+    /**
+     * Generic REST web service Execution method
+     *
+     * @param command       Type of command to execute
+     * @param pathParameter web service path parameter
+     * @param payload       Request body payload
+     * @return JsonPath json payload
+     */
+    protected Object execute(final String url, final OAuthKey oAuthKey, final WebServiceCommand command, final Object pathParameter, final Object payload) {
+
+        Object wsResponse = null;
+        String wsUrl = constructRestUrl(url, command, pathParameter);
+
+        try {
+
+            CloseableHttpClient httpclient = HttpClients.custom().setSSLSocketFactory(SSLConnectionSocketFactory.getSocketFactory()).build();
+
+            HttpGet httpGet;
+            HttpPost httpPost;
+            HttpPut httpPut;
+
+            if (StringUtils.equals(command.methodType(), FrameworkConstants.POST_REQUEST)) {
+
+                httpPost = new HttpPost(wsUrl);
+                httpPost = (HttpPost) setHeaderCredentials(oAuthKey, httpPost);
+
+                if (payload instanceof HashMap) {
+
+                    URI uri = constructUriFromPayloadMap(httpPost, (HashMap<String, Object>) payload);
+                    LOG(true, "OAUTH POST URI='%s'", uri);
+
+                    httpPost.setURI(uri);
+                    StopWatch stopWatch = new StopWatch();
+                    stopWatch.start();
+                    CloseableHttpResponse response = httpclient.execute(httpPost);
+                    stopWatch.stop();
+                    HttpEntity httpEntity = response.getEntity();
+                    wsResponse = getWebServiceResponse(response, httpEntity, stopWatch);
+                    closeHttpConnections(httpclient, response);
+
+                } else if (payload instanceof List) {
+
+                    StringEntity stringEntity = new StringEntity(((List) payload).get(0).toString());
+                    httpPost.setEntity(stringEntity);
+                    httpPost.setHeader("Content-type", ContentType.APPLICATION_JSON.toString());
+                    LOG(true, "OAUTH POST JSON='%s'", ((List) payload).get(0).toString());
+
+                    StopWatch stopWatch = new StopWatch();
+                    stopWatch.start();
+                    CloseableHttpResponse response = httpclient.execute(httpPost);
+                    stopWatch.stop();
+                    HttpEntity httpEntity = response.getEntity();
+                    wsResponse = getWebServiceResponse(response, httpEntity, stopWatch);
+                    closeHttpConnections(httpclient, response);
+
+                } else if (payload instanceof String) {
+
+                    StringEntity stringEntity = new StringEntity(payload.toString());
+                    httpPost.setEntity(stringEntity);
+                    httpPost.setHeader("Content-type", ContentType.APPLICATION_JSON.toString());
+                    LOG(true, "OAUTH POST JSON='%s'", payload.toString());
+
+                    StopWatch stopWatch = new StopWatch();
+                    stopWatch.start();
+                    CloseableHttpResponse response = httpclient.execute(httpPost);
+                    stopWatch.stop();
+                    HttpEntity httpEntity = response.getEntity();
+                    wsResponse = getWebServiceResponse(response, httpEntity, stopWatch);
+                    closeHttpConnections(httpclient, response);
+
+                }
+
+            } else if (StringUtils.equals(command.methodType(), FrameworkConstants.PUT_REQUEST)) {
+
+                httpPut = new HttpPut(wsUrl);
+                httpPut = (HttpPut) setHeaderCredentials(oAuthKey, httpPut);
+
+                if (payload instanceof HashMap) {
+
+                    URI uri = new URI(wsUrl);
+                    LOG(true, "OAUTH PUT URI='%s'", uri);
+                    httpPut.setURI(uri);
+
+                    String entityPayload = getFirstValueInMap((HashMap<String, Object>) payload);
+                    httpPut.setHeader("Content-Type", "application/json");
+                    httpPut.setEntity(new StringEntity(entityPayload, "UTF-8"));
+
+                    StopWatch stopWatch = new StopWatch();
+                    stopWatch.start();
+                    CloseableHttpResponse response = httpclient.execute(httpPut);
+                    stopWatch.stop();
+                    HttpEntity httpEntity = response.getEntity();
+                    wsResponse = getWebServiceResponse(response, httpEntity, stopWatch);
+                    closeHttpConnections(httpclient, response);
+
+                }
+            } else {
+
+                httpGet = new HttpGet(wsUrl);
+                httpGet = (HttpGet) setHeaderCredentials(oAuthKey, httpGet);
+
+                if (payload instanceof HashMap) {
+
+                    URI uri = constructUriFromPayloadMap(httpGet, (HashMap<String, Object>) payload);
+                    LOG(true, "OAUTH GET URI='%s'", uri);
+                    httpGet.setURI(uri);
+                    StopWatch stopWatch = new StopWatch();
+                    stopWatch.start();
+                    CloseableHttpResponse response = httpclient.execute(httpGet);
+                    stopWatch.stop();
+                    HttpEntity httpEntity = response.getEntity();
+                    wsResponse = getWebServiceResponse(response, httpEntity, stopWatch);
+                    closeHttpConnections(httpclient, response);
+
+                } else {
+
+                }
+            }
+
+        } catch (Exception e) {
+            Assert.fail(String.format("REST call failed for url=%s with exception='%s'", wsUrl, e.getCause()), e);
+        }
+
+        return wsResponse;
+
+    }
+
+    /**
      * Set the BasicAuth header to the user/pass provided
      *
      * @param user     username
@@ -233,6 +433,23 @@ public class WebServiceProcessor {
             String authentication = user + ":" + pass;
             byte[] encodedAuth = Base64.encodeBase64(authentication.getBytes(Charset.forName(DEFAULT_ENCODING)));
             String authenticationHeader = "Basic " + new String(encodedAuth);
+            httpBase.setHeader(HttpHeaders.AUTHORIZATION, authenticationHeader);
+        } catch (Exception e) {
+            return httpBase;
+        }
+        return httpBase;
+    }
+
+    /**
+     * Set the BasicAuth header to the user/pass provided
+     *
+     * @param oauthKey OAuth2 key used to be the Bearer
+     * @param httpBase Http base to set header for
+     * @return decorated HttpRequestBase for use by get, post, put, ect..
+     */
+    private HttpRequestBase setHeaderCredentials(final OAuthKey oauthKey, HttpRequestBase httpBase) {
+        try {
+            String authenticationHeader = "Bearer " + oauthKey.getKey();
             httpBase.setHeader(HttpHeaders.AUTHORIZATION, authenticationHeader);
         } catch (Exception e) {
             return httpBase;

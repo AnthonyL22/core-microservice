@@ -2,6 +2,7 @@ package com.pwc.core.framework.controller;
 
 import com.pwc.core.framework.command.WebServiceCommand;
 import com.pwc.core.framework.data.Credentials;
+import com.pwc.core.framework.data.OAuthKey;
 import com.pwc.core.framework.processors.rest.WebServiceProcessor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -64,6 +65,47 @@ public class WebServiceController extends WebServiceProcessor {
             return execute(urlBuilder.toString(), credentials.getUsername(), credentials.getPassword());
         } else {
             return execute(urlBuilder.toString(), user, password);
+        }
+    }
+
+    /**
+     * Send a REST ws action to a service End Point
+     *
+     * @param oAuthKey OAuth key
+     * @param command  BaseGetCommand command type
+     */
+    protected Object webServiceAction(final OAuthKey oAuthKey, final WebServiceCommand command) {
+        return webServiceAction(oAuthKey, command, null, null);
+    }
+
+    /**
+     * Send a REST ws action to a service End Point
+     *
+     * @param oAuthKey    OAuth key
+     * @param command     BaseGetCommand command type
+     * @param requestBody POST request body
+     * @return web service response
+     */
+    protected Object webServiceAction(final OAuthKey oAuthKey, final WebServiceCommand command, final Object requestBody) {
+        return webServiceAction(oAuthKey, command, requestBody, null);
+    }
+
+    /**
+     * Web service execution based on web service URL defined in automation.properties
+     *
+     * @param oAuthKey      OAuth key
+     * @param command       web service command
+     * @param pathParameter web service path parameter(s)
+     * @param parameterMap  web service parameter map
+     * @return web service response
+     */
+    public Object webServiceAction(final OAuthKey oAuthKey, final WebServiceCommand command, final Object pathParameter, final Object parameterMap) {
+        if (pathParameter == null && parameterMap == null) {
+            return execute(url, oAuthKey, command);
+        } else if (parameterMap == null && pathParameter != null) {
+            return execute(url, oAuthKey, command, pathParameter);
+        } else {
+            return execute(url, oAuthKey, command, pathParameter, parameterMap);
         }
     }
 

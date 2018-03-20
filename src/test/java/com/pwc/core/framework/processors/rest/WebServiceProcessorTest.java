@@ -3,6 +3,7 @@ package com.pwc.core.framework.processors.rest;
 import com.jayway.restassured.path.json.JsonPath;
 import com.pwc.core.framework.FrameworkConstants;
 import com.pwc.core.framework.command.WebServiceCommand;
+import com.pwc.core.framework.data.OAuthKey;
 import com.pwc.core.framework.util.RandomStringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpStatus;
@@ -23,6 +24,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -57,6 +59,7 @@ public class WebServiceProcessorTest {
             "    \"firstName\": \"John N.\"\n" +
             "}";
     private HttpRequestBase mockHttpRequestBase;
+    private OAuthKey oAuthKey;
 
     public enum UsersWebServiceWebServiceCommand implements WebServiceCommand {
 
@@ -148,6 +151,26 @@ public class WebServiceProcessorTest {
         }
         when(mockHttpRequestBase.getURI()).thenReturn(expectedURI);
 
+        oAuthKey = new OAuthKey("oijkjlkjkj43lkjjuyoiyfghuiopkl67");
+
+    }
+
+    @Test
+    public void executeWithOAuthTest() {
+        Object response = webServiceProcessor.execute("http://www.foobar.com", oAuthKey, UsersWebServiceWebServiceCommand.POST_ADD_USER_ID);
+        Assert.assertNotNull(response);
+    }
+
+    @Test
+    public void executeWithOAuthWithPathParameterTest() {
+        Object response = webServiceProcessor.execute("http://www.foobar.com", oAuthKey, UsersWebServiceWebServiceCommand.POST_ADD_USER_ID, "foobar");
+        Assert.assertNotNull(response);
+    }
+
+    @Test
+    public void executeWithOAuthWithAllParametersTest() {
+        Object response = webServiceProcessor.execute("http://www.foobar.com", oAuthKey, UsersWebServiceWebServiceCommand.POST_ADD_USER_ID, "foobar", Arrays.asList("hello"));
+        Assert.assertNotNull(response);
     }
 
     @Test()

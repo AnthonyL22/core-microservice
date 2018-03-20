@@ -4,6 +4,7 @@ import com.jayway.restassured.path.json.JsonPath;
 import com.pwc.core.framework.FrameworkConstants;
 import com.pwc.core.framework.command.WebServiceCommand;
 import com.pwc.core.framework.data.Credentials;
+import com.pwc.core.framework.data.OAuthKey;
 import com.pwc.core.framework.processors.rest.WebServiceProcessor;
 import org.junit.Assert;
 import org.junit.Before;
@@ -11,7 +12,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.sql.SQLException;
 import java.util.HashMap;
 
 import static org.mockito.Mockito.mock;
@@ -20,7 +20,7 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class WebServiceControllerTest extends BaseWebServiceTest {
 
-    final JsonPath JSON_USER_RESPONSE = new JsonPath("{\n" +
+    private static final JsonPath JSON_USER_RESPONSE = new JsonPath("{\n" +
             "  \"id\": 23850994,\n" +
             "  \"qcguid\": 478182,\n" +
             "  \"firstName\": \"John N.\",\n" +
@@ -35,9 +35,8 @@ public class WebServiceControllerTest extends BaseWebServiceTest {
 
     private HashMap<String, Object> parameters;
     private WebServiceController mockWebServiceController;
-    private WebServiceProcessor mockWebServiceProcessor;
     private Credentials mockCredentials;
-    private String MOCK_URL = "http://www.mywebsite.com";
+    private OAuthKey mockOAuthKey;
 
     private enum UsersWebServiceWebServiceCommand implements WebServiceCommand {
 
@@ -71,12 +70,12 @@ public class WebServiceControllerTest extends BaseWebServiceTest {
     }
 
     @Before
-    public void setUp() throws SQLException {
+    public void setUp() {
         parameters = new HashMap<>();
         parameters.put("lastName", "Doe");
         mockWebServiceController = mock(WebServiceController.class);
-        mockWebServiceProcessor = mock(WebServiceProcessor.class);
         mockCredentials = new Credentials("foo", "bar");
+        mockOAuthKey = mock(OAuthKey.class);
     }
 
     @Test
@@ -95,13 +94,18 @@ public class WebServiceControllerTest extends BaseWebServiceTest {
         Assert.assertEquals("Verify firstName field", response.get("firstName"), "John N.");
     }
 
-//    @Test
-//    public void webServiceCredentialsTest() {
-//        when(mockWebServiceController.webServiceAction(mockCredentials, UsersWebServiceWebServiceCommand.GET_BY_LAST_NAME, "hi", parameters)).thenReturn(JSON_USER_RESPONSE);
-//        when(mockWebServiceController.execute(MOCK_URL, mockCredentials.getUsername(), mockCredentials.getPassword(), UsersWebServiceWebServiceCommand.GET_BY_LAST_NAME, "hi", parameters)).thenReturn(JSON_USER_RESPONSE);
-//        webServiceAction(mockCredentials, UsersWebServiceWebServiceCommand.GET_BY_LAST_NAME, "hi", parameters);
-//        System.out.println("");
-//    }
+    @Test
+    public void webServiceOAuthTest() {
+        when(mockWebServiceController.webServiceAction(mockOAuthKey, UsersWebServiceWebServiceCommand.GET_BY_LAST_NAME)).thenReturn(JSON_USER_RESPONSE);
+        JsonPath response = (JsonPath) mockWebServiceController.webServiceAction(mockOAuthKey, UsersWebServiceWebServiceCommand.GET_BY_LAST_NAME);
+        Assert.assertNotNull("Verify id field", response.getInt("id"));
+    }
 
+    @Test
+    public void webServiceOAuthWithRequestBodyTest() {
+        when(mockWebServiceController.webServiceAction(mockOAuthKey, UsersWebServiceWebServiceCommand.GET_BY_LAST_NAME, "foobar")).thenReturn(JSON_USER_RESPONSE);
+        JsonPath response = (JsonPath) mockWebServiceController.webServiceAction(mockOAuthKey, UsersWebServiceWebServiceCommand.GET_BY_LAST_NAME, "foobar");
+        Assert.assertNotNull("Verify id field", response.getInt("id"));
+    }
 
 }

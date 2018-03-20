@@ -7,6 +7,7 @@ import com.pwc.core.framework.controller.DatabaseController;
 import com.pwc.core.framework.controller.WebEventController;
 import com.pwc.core.framework.controller.WebServiceController;
 import com.pwc.core.framework.data.Credentials;
+import com.pwc.core.framework.data.OAuthKey;
 import com.pwc.core.framework.service.DatabaseEventService;
 import com.pwc.core.framework.service.WebEventService;
 import org.junit.After;
@@ -28,9 +29,8 @@ import static org.mockito.Mockito.*;
 @RunWith(MockitoJUnitRunner.class)
 public class MicroserviceTestSuiteTest extends MicroserviceTestSuiteBaseTest {
 
-    public static final String IDENTIFIER = "//div[@id='nav-bar']";
-    public static final String SQL_TEMPLATE_QUERY = "select * from model_recommendation where id = ?";
-    private static final String GENERIC_URL = "http://a_web_site.com/";
+    private static final String IDENTIFIER = "//div[@id='nav-bar']";
+    private static final String SQL_TEMPLATE_QUERY = "select * from model_recommendation where id = ?";
 
     private WebElement mockWebElement;
     private WebEventService mockWebEventService;
@@ -38,7 +38,8 @@ public class MicroserviceTestSuiteTest extends MicroserviceTestSuiteBaseTest {
     private DatabaseController mockDatabaseController;
     private WebServiceController mockWebServiceController;
     private DatabaseEventService mockDatabaseEventService;
-    private Credentials credentials;
+    private Credentials mockCredentials;
+    private OAuthKey mockOAuthKey;
 
     private enum UsersWebServiceWebServiceCommand implements WebServiceCommand {
 
@@ -96,7 +97,7 @@ public class MicroserviceTestSuiteTest extends MicroserviceTestSuiteBaseTest {
         mockHttpResultMap.put(FrameworkConstants.STATUS_KEY, "HTTP/1.1 200 OK");
         mockHttpResultMap.put(FrameworkConstants.ENTITY_KEY, "\"ENTITY\" -> \"{\"status\":400,\"result\":\"Widget has been set to read-only.\",\"widgetId\":null}\"");
 
-        credentials = new Credentials("foo", "bar");
+        mockCredentials = new Credentials("foo", "bar");
 
         mockWebElement = mock(WebElement.class);
         mockWebEventService = mock(WebEventService.class);
@@ -104,6 +105,8 @@ public class MicroserviceTestSuiteTest extends MicroserviceTestSuiteBaseTest {
         mockWebServiceController = mock(WebServiceController.class);
         mockDatabaseEventService = mock(DatabaseEventService.class);
         mockDatabaseController = mock(DatabaseController.class);
+
+        mockOAuthKey = mock(OAuthKey.class);
 
     }
 
@@ -133,7 +136,7 @@ public class MicroserviceTestSuiteTest extends MicroserviceTestSuiteBaseTest {
         AbstractApplicationContext mockAbstractApplicationContext = mock(AbstractApplicationContext.class);
         setCtx(mockAbstractApplicationContext);
         when(mockAbstractApplicationContext.getBean("webEventController")).thenReturn(mockWebEventController);
-        webAction(credentials);
+        webAction(mockCredentials);
         verify(mockWebEventService, times(0)).findWebElement(IDENTIFIER);
         verify(mockAbstractApplicationContext, times(1)).getBean("webEventController");
     }
@@ -166,7 +169,7 @@ public class MicroserviceTestSuiteTest extends MicroserviceTestSuiteBaseTest {
         webEventController = mockWebEventController;
         when(webEventController.getWebEventService()).thenReturn(mockWebEventService);
         when(mockWebEventService.findWebElement(IDENTIFIER)).thenReturn(mockWebElement);
-        webAction(credentials);
+        webAction(mockCredentials);
         verify(mockWebEventService, times(0)).findWebElement(IDENTIFIER);
     }
 
@@ -254,6 +257,41 @@ public class MicroserviceTestSuiteTest extends MicroserviceTestSuiteBaseTest {
     public void webServiceActionBaseCommandAndBodyTest() {
         webServiceController = mockWebServiceController;
         Object response = webServiceAction(UsersWebServiceWebServiceCommand.GET_BY_LAST_NAME, new ArrayList<>(Arrays.asList("foo", "bar")));
+        Assert.assertNull(response);
+    }
+
+    @Test
+    public void webServiceActionWitCredentialsCommandTest() {
+        webServiceController = mockWebServiceController;
+        Object response = webServiceAction(mockCredentials, UsersWebServiceWebServiceCommand.GET_BY_LAST_NAME);
+        Assert.assertNull(response);
+    }
+
+    @Test
+    public void webServiceActionWithRequestListBodyBaseCommandTest() {
+        webServiceController = mockWebServiceController;
+        Object response = webServiceAction(mockCredentials, UsersWebServiceWebServiceCommand.GET_BY_LAST_NAME, new ArrayList<>(Arrays.asList("foo", "bar")));
+        Assert.assertNull(response);
+    }
+
+    @Test
+    public void webServiceActionWithRequestStringBodyBaseCommandTest() {
+        webServiceController = mockWebServiceController;
+        Object response = webServiceAction(mockCredentials, UsersWebServiceWebServiceCommand.GET_BY_LAST_NAME, "bar");
+        Assert.assertNull(response);
+    }
+
+    @Test
+    public void webServiceActionOAuthBaseCommandTest() {
+        webServiceController = mockWebServiceController;
+        Object response = webServiceAction(mockOAuthKey, UsersWebServiceWebServiceCommand.GET_BY_LAST_NAME);
+        Assert.assertNull(response);
+    }
+
+    @Test
+    public void webServiceActionOAuthWithRequestBodyBaseCommandTest() {
+        webServiceController = mockWebServiceController;
+        Object response = webServiceAction(mockOAuthKey, UsersWebServiceWebServiceCommand.GET_BY_LAST_NAME, new ArrayList<>(Arrays.asList("foo", "bar")));
         Assert.assertNull(response);
     }
 
