@@ -70,6 +70,9 @@ public class WebEventController {
     @Value("${browser.wait.timeout.seconds:10}")
     public long defaultWaitForPageTimeoutInSeconds;
 
+    @Value("${enable.ajax.requests.waiting:true}")
+    private boolean waitForAjaxRequestsEnabled;
+
     private MicroserviceWebDriver remoteWebDriver;
     private WebEventService webEventService;
     private DesiredCapabilities capabilities;
@@ -139,6 +142,7 @@ public class WebEventController {
             webEventService.setSleepInMillis(defaultWaitForSleepDurationInMillis);
             webEventService.setPageTimeoutInSeconds(defaultWaitForPageTimeoutInSeconds);
             webEventService.setVideoCaptureEnabled(videoCaptureEnabled);
+            webEventService.setWaitForAjaxRequestsEnabled(waitForAjaxRequestsEnabled);
 
             webEventService.redirectToUrl(webUrl);
 

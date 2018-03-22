@@ -1030,6 +1030,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
 
     @Test(expected = AssertionError.class)
     public void waitForBrowserToLoadBrowserNeverLoadsTest() {
+        webEventService.setWaitForAjaxRequestsEnabled(true);
         when(mockWebDriverService.executeScript(JavascriptConstants.IS_OPEN_HTTPS)).thenReturn(7L);
         webEventService.waitForBrowserToLoad();
     }

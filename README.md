@@ -266,6 +266,7 @@ enable.hard.assert=false
 default.wait.for.sleep.millis=3
 element.wait.timeout.seconds=55
 browser.wait.timeout.seconds=10
+enable.ajax.requests.waiting=true
 enable.siteMinder=false
 siteminder.open.url=
 saucelabs.username=my-user
@@ -285,6 +286,7 @@ Settings:
 | default.wait.for.sleep.millis | 1000             | driver wait for element retry (ms)         |
 | element.wait.timeout.seconds  | 180              | driver timeout waiting for element (sec)   |
 | browser.wait.timeout.seconds  | 10               | browser timeout wait (sec)                 |
+| enable.ajax.requests.waiting  | true             | boolean: enable active ajax req's waiting  |
 | enable.siteMinder             | false            | boolean: enable Site Minder auth           |
 | siteminder.open.url           |                  | Site Minder auth URL                       |
 | saucelabs.username            |                  | Sauce Labs username (see grid.properties)  |

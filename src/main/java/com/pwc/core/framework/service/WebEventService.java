@@ -84,6 +84,7 @@ public class WebEventService extends WebEventController {
     private long sleepInMillis;
     private long pageTimeoutInSeconds;
     private boolean videoCaptureEnabled;
+    private boolean waitForAjaxRequestsEnabled;
     private String url;
     private String siteMinderRedirectUrl;
     private Credentials credentials;
@@ -1307,27 +1308,30 @@ public class WebEventService extends WebEventController {
      */
     public void waitForBrowserToLoad() {
 
-        try {
+        if (isWaitForAjaxRequestsEnabled()) {
 
-            record();
-            (new WebDriverWait(this.microserviceWebDriver, pageTimeoutInSeconds, sleepInMillis)).until(new ExpectedCondition<Boolean>() {
-                boolean noActiveRequests = false;
-                int countDown = (int) pageTimeoutInSeconds;
+            try {
 
-                public Boolean apply(WebDriver d) {
+                record();
+                (new WebDriverWait(this.microserviceWebDriver, pageTimeoutInSeconds, sleepInMillis)).until(new ExpectedCondition<Boolean>() {
+                    boolean noActiveRequests = false;
+                    int countDown = (int) pageTimeoutInSeconds;
 
-                    noActiveRequests = pendingAjaxRequests();
-                    //noActiveRequests = Boolean.valueOf(microserviceWebDriver.executeScript(FrameworkConstants.JAVASCRIPT_NO_AJAX_REQUESTS).toString());
-                    if (!noActiveRequests && countDown > 0) {
-                        //countDown--;
-                        LOG(true, "Waiting - BROWSER NOT READY. Retrying for %s seconds ****", countDown--);
+                    public Boolean apply(WebDriver d) {
+
+                        noActiveRequests = pendingAjaxRequests();
+                        if (!noActiveRequests && countDown > 0) {
+                            LOG(true, "Waiting - BROWSER NOT READY. Retrying for %s seconds ****", countDown--);
+                        }
+                        return noActiveRequests;
                     }
-                    return noActiveRequests;
-                }
-            });
-        } catch (Exception e) {
-            Assert.fail(String.format("Browser didn't appear READY in allotted time of %s seconds", pageTimeoutInSeconds), e);
+                });
+            } catch (Exception e) {
+                Assert.fail(String.format("Browser didn't appear READY in allotted time of %s seconds", pageTimeoutInSeconds), e);
+            }
+
         }
+
     }
 
     /**
@@ -1636,6 +1640,14 @@ public class WebEventService extends WebEventController {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public boolean isWaitForAjaxRequestsEnabled() {
+        return waitForAjaxRequestsEnabled;
+    }
+
+    public void setWaitForAjaxRequestsEnabled(boolean waitForAjaxRequestsEnabled) {
+        this.waitForAjaxRequestsEnabled = waitForAjaxRequestsEnabled;
     }
 
 }
