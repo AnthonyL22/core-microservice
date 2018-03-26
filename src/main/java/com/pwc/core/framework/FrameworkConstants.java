@@ -24,6 +24,7 @@ public final class FrameworkConstants {
     public static final String SEPARATOR = System.getProperty("file.separator");
     public static final String AUTOMATION_CONTEXT_XML = "automation-context.xml";
     public static final String SYSTEM_OS_NAME = "os.name";
+    public static final String MAC_SYSTEM_OS_NAME = "sw_vers";
     public static final String SYSTEM_TEST_ENVIRONMENT_DIR = "config/";
     public static final String SYSTEM_JVM_TYPE = "sun.arch.data.model";
     public static final String SYSTEM_DEFAULT_TIMEZONE = "PST";

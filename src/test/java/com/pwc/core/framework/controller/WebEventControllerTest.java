@@ -16,7 +16,6 @@ import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.Assert;
 
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,8 +29,8 @@ public class WebEventControllerTest {
     private static final String GRID_URL = "http://localhost:4444/wd/hub";
     private static final String UNIT_TEST_TUNNEL_IDENTIFIER = "unit-test-tunnel";
 
-    WebEventController webEventController;
-    WebEventService webEventService;
+    private WebEventController webEventController;
+    private WebEventService webEventService;
 
     private WebElement mockWebElement;
     private MicroserviceWebDriver mockWebDriverService;
@@ -40,7 +39,7 @@ public class WebEventControllerTest {
     private Credentials credentials;
 
     @Before
-    public void setUp() throws SQLException {
+    public void setUp() {
 
         credentials = new Credentials("foo", "bar");
 
@@ -390,7 +389,9 @@ public class WebEventControllerTest {
     }
 
     @Test
-    public void setDriverExecutableChromeDriverTest() {
+    public void setDriverExecutableChromeWindowsDriverTest() {
+        System.setProperty(FrameworkConstants.MAC_SYSTEM_OS_NAME, "");
+        System.setProperty(FrameworkConstants.SYSTEM_OS_NAME, "windows 10");
         System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.CHROME_BROWSER_MODE);
         String driverPath = webEventController.setDriverExecutable();
         Assert.assertEquals(driverPath, "");
@@ -398,7 +399,49 @@ public class WebEventControllerTest {
     }
 
     @Test
-    public void setDriverExecutableHeadlessChromeDriverTest() {
+    public void setDriverExecutableChromeMacDriverTest() {
+        System.setProperty(FrameworkConstants.SYSTEM_OS_NAME, "");
+        System.setProperty(FrameworkConstants.MAC_SYSTEM_OS_NAME, "Mac OSX");
+        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.CHROME_BROWSER_MODE);
+        String driverPath = webEventController.setDriverExecutable();
+        Assert.assertEquals(driverPath, "");
+        Assert.assertEquals(System.getProperty(FrameworkConstants.WEB_DRIVER_CHROME), "");
+    }
+
+    @Test
+    public void setDriverExecutableChromeLinuxDriverTest() {
+        System.setProperty(FrameworkConstants.SYSTEM_OS_NAME, "");
+        System.setProperty(FrameworkConstants.MAC_SYSTEM_OS_NAME, "");
+        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.CHROME_BROWSER_MODE);
+        String driverPath = webEventController.setDriverExecutable();
+        Assert.assertEquals(driverPath, "");
+        Assert.assertEquals(System.getProperty(FrameworkConstants.WEB_DRIVER_CHROME), "");
+    }
+
+    @Test
+    public void setDriverExecutableHeadlessChromeWindowsDriverTest() {
+        System.setProperty(FrameworkConstants.MAC_SYSTEM_OS_NAME, "");
+        System.setProperty(FrameworkConstants.SYSTEM_OS_NAME, "windows 10");
+        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.HEADLESS_CHROME_BROWSER_MODE);
+        String driverPath = webEventController.setDriverExecutable();
+        Assert.assertEquals(driverPath, "");
+        Assert.assertEquals(System.getProperty(FrameworkConstants.WEB_DRIVER_CHROME), "");
+    }
+
+    @Test
+    public void setDriverExecutableHeadlessChromeMacDriverTest() {
+        System.setProperty(FrameworkConstants.SYSTEM_OS_NAME, "");
+        System.setProperty(FrameworkConstants.MAC_SYSTEM_OS_NAME, "Mac OSX");
+        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.HEADLESS_CHROME_BROWSER_MODE);
+        String driverPath = webEventController.setDriverExecutable();
+        Assert.assertEquals(driverPath, "");
+        Assert.assertEquals(System.getProperty(FrameworkConstants.WEB_DRIVER_CHROME), "");
+    }
+
+    @Test
+    public void setDriverExecutableHeadlessChromeLinuxDriverTest() {
+        System.setProperty(FrameworkConstants.SYSTEM_OS_NAME, "");
+        System.setProperty(FrameworkConstants.MAC_SYSTEM_OS_NAME, "");
         System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.HEADLESS_CHROME_BROWSER_MODE);
         String driverPath = webEventController.setDriverExecutable();
         Assert.assertEquals(driverPath, "");

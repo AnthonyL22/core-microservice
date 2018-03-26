@@ -469,16 +469,24 @@ public class WebEventController {
 
         switch (DESIRED_BROWSER) {
             case FrameworkConstants.CHROME_BROWSER_MODE: {
-                executable = StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), "windows") ?
-                        PropertiesUtils.getFirstFileFromTestResources("chrome_win.exe") :
-                        PropertiesUtils.getFirstFileFromTestResources("chrome_mac");
+                if (StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), "windows")) {
+                    executable = PropertiesUtils.getFirstFileFromTestResources("chrome_win.exe");
+                } else if (StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.MAC_SYSTEM_OS_NAME), "mac")) {
+                    executable = PropertiesUtils.getFirstFileFromTestResources("chrome_mac");
+                } else {
+                    executable = PropertiesUtils.getFirstFileFromTestResources("chrome_linux_64");
+                }
                 System.setProperty(FrameworkConstants.WEB_DRIVER_CHROME, PropertiesUtils.getPath(executable));
                 break;
             }
             case FrameworkConstants.HEADLESS_CHROME_BROWSER_MODE: {
-                executable = StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), "windows") ?
-                        PropertiesUtils.getFirstFileFromTestResources("chrome_win.exe") :
-                        PropertiesUtils.getFirstFileFromTestResources("chrome_mac");
+                if (StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), "windows")) {
+                    executable = PropertiesUtils.getFirstFileFromTestResources("chrome_win.exe");
+                } else if (StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.MAC_SYSTEM_OS_NAME), "mac")) {
+                    executable = PropertiesUtils.getFirstFileFromTestResources("chrome_mac");
+                } else {
+                    executable = PropertiesUtils.getFirstFileFromTestResources("chrome_linux_64");
+                }
                 System.setProperty(FrameworkConstants.WEB_DRIVER_CHROME, PropertiesUtils.getPath(executable));
                 break;
             }
