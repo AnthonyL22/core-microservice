@@ -1,4 +1,6 @@
-[![Maven Central](https://img.shields.io/maven-metadata/v/http/central.maven.org/maven2/com/pacificwebconsulting/core/core-microservice/maven-metadata.xml.svg)](https://img.shields.io/maven-metadata/v/http/central.maven.org/maven2/com/pacificwebconsulting/core/core-microservice/maven-metadata.xml.svg)
+[![Maven Central](https://img.shields.io/maven-central/v/com.pacificwebconsulting.core/core-microservice.svg)](https://img.shields.io/maven-central/v/com.pacificwebconsulting.core/core-microservice.svg)
+
+[![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 
 Got a question?  [Email us](http://www.pacificwebconsulting.com/contact/) or reach out on [LinkedIn](https://www.linkedin.com/in/alombardo/) 
 
@@ -27,7 +29,7 @@ feature requests. Anything else, such as questions for help in using the library
 
 # Maven Dependency
 
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.pacificwebconsulting.core/core-microservice/badge.svg?style=plastic)](https://maven-badges.herokuapp.com/maven-central/com.pacificwebconsulting.core/core-microservice)
+[![Maven Central](https://img.shields.io/maven-central/v/com.pacificwebconsulting.core/core-microservice.svg)](https://img.shields.io/maven-central/v/com.pacificwebconsulting.core/core-microservice.svg)
 
 ```
 <dependency>
