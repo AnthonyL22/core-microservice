@@ -30,6 +30,7 @@ import org.jsoup.parser.Parser;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.InvalidCookieDomainException;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -1311,21 +1312,19 @@ public class WebEventService extends WebEventController {
         if (isWaitForAjaxRequestsEnabled()) {
 
             try {
-
-                record();
                 (new WebDriverWait(this.microserviceWebDriver, pageTimeoutInSeconds, sleepInMillis)).until(new ExpectedCondition<Boolean>() {
                     boolean noActiveRequests = false;
                     int countDown = (int) pageTimeoutInSeconds;
 
-                    public Boolean apply(WebDriver d) {
-
-                        noActiveRequests = pendingAjaxRequests();
+                    public Boolean apply(WebDriver driver) {
+                        noActiveRequests = Boolean.parseBoolean(((JavascriptExecutor) driver).executeScript(JavascriptConstants.IS_DOCUMENT_READY).toString());
                         if (!noActiveRequests && countDown > 0) {
                             LOG(true, "Waiting - BROWSER NOT READY. Retrying for %s seconds ****", countDown--);
                         }
                         return noActiveRequests;
                     }
                 });
+
             } catch (Exception e) {
                 Assert.fail(String.format("Browser didn't appear READY in allotted time of %s seconds", pageTimeoutInSeconds), e);
             }
@@ -1428,55 +1427,6 @@ public class WebEventService extends WebEventController {
         LogEntries entries = this.microserviceWebDriver.manage().logs().get(LogType.BROWSER);
         entries.forEach(consoleRequests::add);
         return consoleRequests;
-    }
-
-    /**
-     * Check for pending AJAX requests
-     *
-     * @return flag when no active AJAX requests are present
-     */
-    private boolean pendingAjaxRequests() {
-
-        Object ajaxConnectionCount = executeJavascript(JavascriptConstants.IS_OPEN_HTTPS);
-        if (ajaxConnectionCount instanceof Long) {
-            Long count = (Long) ajaxConnectionCount;
-            if (count > 0L) {
-                LOG(true, "active request count: %s", count);
-            }
-            if (count == 0L) {
-                return true;
-            }
-        } else {
-            monkeyPatchXMLHttpRequest();
-        }
-
-        return false;
-    }
-
-    /**
-     * Perform XMLHttpRequest checking for readyState == Done
-     */
-    private void monkeyPatchXMLHttpRequest() {
-
-        Object numberOfAjaxConnections = executeJavascript(JavascriptConstants.IS_OPEN_HTTPS);
-        if (numberOfAjaxConnections instanceof Long) {
-            return;
-        }
-        String script = "  (function() {" +
-                "var oldOpen = XMLHttpRequest.prototype.open;" +
-                "window.openHTTPs = 0;" +
-                "XMLHttpRequest.prototype.open = function(method, url, async, user, pass) {" +
-                "window.openHTTPs++;" +
-                "this.addEventListener('readystatechange', function() {" +
-                "if(this.readyState == 4) {" +
-                "window.openHTTPs--;" +
-                "}" +
-                "}, false);" +
-                "oldOpen.call(this, method, url, async, user, pass);" +
-                "}" +
-                "})();";
-        executeJavascript(script);
-
     }
 
     /**

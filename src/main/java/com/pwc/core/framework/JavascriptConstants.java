@@ -41,7 +41,6 @@ public final class JavascriptConstants {
     // LOGICAL Queries
     public static final String IS_JQUERY_AJAX_REQUESTS_ACTIVE = "if($.active == 0){ return true;} else { return false;}";
     public static final String IS_DOCUMENT_READY = "if(document.readyState == 'complete'){ return true;} else { return false;}";
-    public static final String IS_OPEN_HTTPS = "return window.openHTTPs";
     public static final String LIST_HTTP_RESOURCES = "var resourceList = []; var entries = window.performance.getEntriesByType('resource'); entries.forEach(function (resource) { resourceList.push(resource.name);}); return(resourceList);";
 
     // NAVIGATION Actions

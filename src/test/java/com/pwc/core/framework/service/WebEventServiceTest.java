@@ -182,8 +182,6 @@ public class WebEventServiceTest extends WebElementBaseTest {
         BasicCookieStore mockBasicCookieStore = mock(BasicCookieStore.class);
         webEventService.setCookieStore(mockBasicCookieStore);
 
-        when(mockWebDriverService.executeScript(JavascriptConstants.IS_OPEN_HTTPS)).thenReturn(0L);
-
         when(mockOptions.logs()).thenReturn(mockLogs);
         when(mockWebDriverService.manage()).thenReturn(mockOptions);
         when(mockWebDriverService.manage().logs()).thenReturn(mockLogs);
@@ -1031,7 +1029,14 @@ public class WebEventServiceTest extends WebElementBaseTest {
     @Test(expected = AssertionError.class)
     public void waitForBrowserToLoadBrowserNeverLoadsTest() {
         webEventService.setWaitForAjaxRequestsEnabled(true);
-        when(mockWebDriverService.executeScript(JavascriptConstants.IS_OPEN_HTTPS)).thenReturn(7L);
+        when(mockWebDriverService.executeScript(JavascriptConstants.IS_DOCUMENT_READY)).thenReturn("waiting");
+        webEventService.waitForBrowserToLoad();
+    }
+
+    @Test
+    public void waitForBrowserToLoadBrowserFullyLoadedTest() {
+        webEventService.setWaitForAjaxRequestsEnabled(true);
+        when(mockWebDriverService.executeScript(JavascriptConstants.IS_DOCUMENT_READY)).thenReturn("true");
         webEventService.waitForBrowserToLoad();
     }
 

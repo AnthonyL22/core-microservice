@@ -1,4 +1,4 @@
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.pacificwebconsulting.core/core-microservice/badge.svg?style=plastic)](https://maven-badges.herokuapp.com/maven-central/com.pacificwebconsulting.core/core-microservice)
+[![Maven Central](https://img.shields.io/maven-metadata/v/http/central.maven.org/maven2/com/pacificwebconsulting/core/core-microservice/maven-metadata.xml.svg)](https://img.shields.io/maven-metadata/v/http/central.maven.org/maven2/com/pacificwebconsulting/core/core-microservice/maven-metadata.xml.svg)
 
 Got a question?  [Email us](http://www.pacificwebconsulting.com/contact/) or reach out on [LinkedIn](https://www.linkedin.com/in/alombardo/) 
 
