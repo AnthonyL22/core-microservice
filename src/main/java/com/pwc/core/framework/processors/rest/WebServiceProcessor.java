@@ -43,7 +43,9 @@ import org.testng.Assert;
 import javax.net.ssl.SSLContext;
 import java.io.IOException;
 import java.net.URI;
+import java.net.URLDecoder;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -440,6 +442,7 @@ public class WebServiceProcessor {
             byte[] encodedAuth = Base64.encodeBase64(authentication.getBytes(Charset.forName(DEFAULT_ENCODING)));
             String authenticationHeader = "Basic " + new String(encodedAuth);
             httpBase.setHeader(HttpHeaders.AUTHORIZATION, authenticationHeader);
+            httpBase.setHeader(HttpHeaders.ACCEPT, "application/json");
         } catch (Exception e) {
             return httpBase;
         }
@@ -608,17 +611,22 @@ public class WebServiceProcessor {
      *
      * @param httpRequestBase Http request
      * @param payload         payload to construct URI with
-     * @return hydrated URI
+     * @return hydrated, decoded URI
      */
     protected URI constructUriFromPayloadMap(HttpRequestBase httpRequestBase, HashMap<String, Object> payload) {
+        URI encodedUri = null;
         try {
-            List<NameValuePair> nvps = new ArrayList<>();
+            List<NameValuePair> nameValuePairs = new ArrayList<>();
             for (Map.Entry<String, Object> entry : payload.entrySet()) {
-                nvps.add(new BasicNameValuePair(entry.getKey(), String.valueOf(entry.getValue())));
+                nameValuePairs.add(new BasicNameValuePair(entry.getKey(), String.valueOf(entry.getValue())));
             }
-            return new URIBuilder(httpRequestBase.getURI()).addParameters(nvps).build();
+
+            encodedUri = new URIBuilder(httpRequestBase.getURI()).addParameters(nameValuePairs).build();
+            String decoded = URLDecoder.decode(String.valueOf(encodedUri), StandardCharsets.UTF_8.toString());
+            return new URI(decoded);
+
         } catch (Exception e) {
-            return null;
+            return encodedUri;
         }
     }
 

@@ -145,7 +145,7 @@ public class WebServiceProcessorTest {
         mockHttpRequestBase = mock(HttpRequestBase.class);
         URI expectedURI = null;
         try {
-            expectedURI = new URI(URL_PATH + "/rest/users/byLastName?lastName=Jones?zip=32137");
+            expectedURI = new URI(URL_PATH + "/rest/users/byLastName");
         } catch (URISyntaxException e) {
             e.getMessage();
         }
@@ -177,7 +177,7 @@ public class WebServiceProcessorTest {
     public void setHeaderCredentialsAllInfoTest() {
         HttpGet mockHttpGet = new HttpGet();
         mockHttpGet = (HttpGet) webServiceProcessor.setHeaderCredentials(USER, PASS, mockHttpGet);
-        Assert.assertEquals(mockHttpGet.getAllHeaders().length, 1);
+        Assert.assertEquals(mockHttpGet.getAllHeaders().length, 2);
         Assert.assertTrue(mockHttpGet.getHeaders("Authorization")[0].getValue().contains("Basic"));
     }
 
@@ -238,10 +238,40 @@ public class WebServiceProcessorTest {
     }
 
     @Test
+    public void constructUriFromPayloadMapEncodedExceptionTest() throws URISyntaxException {
+        HashMap<String, Object> mockUserNameMap = new HashMap<>();
+        mockUserNameMap.put("lastName", "Lombardo Ant");
+        mockUserNameMap.put("zip", 32137);
+        URI encodedURI = new URI(URL_PATH + "/rest/users/byLastName?collection%3Dfoobar&type%3DMyProjectDocument");
+        HttpRequestBase baseHttpRequest = mock(HttpRequestBase.class);
+        when(baseHttpRequest.getURI()).thenReturn(encodedURI);
+        URI result = webServiceProcessor.constructUriFromPayloadMap(baseHttpRequest, mockUserNameMap);
+
+        Assert.assertEquals(result.toString(), mockHttpRequestBase.getURI() + "?collection%3Dfoobar&type%3DMyProjectDocument&zip=32137&lastName=Lombardo+Ant");
+    }
+
+    @Test
+    public void constructUriFromPayloadMapEncodedTest() throws URISyntaxException {
+        URI encodedURI = new URI(URL_PATH + "/rest/users/byLastName?collection%3Dfoobar&type%3DMyProjectDocument");
+        HttpRequestBase baseHttpRequest = mock(HttpRequestBase.class);
+        when(baseHttpRequest.getURI()).thenReturn(encodedURI);
+        URI result = webServiceProcessor.constructUriFromPayloadMap(baseHttpRequest, mockUserNameMap);
+        Assert.assertEquals(result.toString(), mockHttpRequestBase.getURI() + "?collection=foobar&type=MyProjectDocument&zip=32137&lastName=Jones");
+    }
+
+    @Test
+    public void constructUriFromPayloadMapDecodedTest() throws URISyntaxException {
+        URI decodedURI = new URI(URL_PATH + "/rest/users/byLastName?collection=foobar&type=MyProjectDocument");
+        HttpRequestBase decodedHttpRequest = mock(HttpRequestBase.class);
+        when(decodedHttpRequest.getURI()).thenReturn(decodedURI);
+        URI result = webServiceProcessor.constructUriFromPayloadMap(decodedHttpRequest, mockUserNameMap);
+        Assert.assertEquals(result.toString(), mockHttpRequestBase.getURI() + "?collection=foobar&type=MyProjectDocument&zip=32137&lastName=Jones");
+    }
+
+    @Test
     public void constructUriFromPayloadMapTest() {
         URI result = webServiceProcessor.constructUriFromPayloadMap(mockHttpRequestBase, mockUserNameMap);
-        Assert.assertTrue(result.toString().contains("zip=" + mockUserNameMap.get("zip")));
-        Assert.assertTrue(result.toString().contains("lastName=" + mockUserNameMap.get("lastName")));
+        Assert.assertEquals(result.toString(), mockHttpRequestBase.getURI() + "?zip=32137&lastName=Jones");
     }
 
     @Test
