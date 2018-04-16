@@ -5,7 +5,6 @@ import com.pwc.core.framework.FrameworkConstants;
 import com.pwc.core.framework.command.WebServiceCommand;
 import com.pwc.core.framework.data.Credentials;
 import com.pwc.core.framework.data.OAuthKey;
-import com.pwc.core.framework.processors.rest.WebServiceProcessor;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

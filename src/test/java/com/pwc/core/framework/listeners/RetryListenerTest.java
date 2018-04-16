@@ -7,7 +7,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.testng.*;
+import org.testng.Assert;
+import org.testng.IInvokedMethodListener;
+import org.testng.ISuite;
+import org.testng.ITestClass;
+import org.testng.ITestNGMethod;
+import org.testng.ITestResult;
+import org.testng.SuiteRunner;
 import org.testng.internal.ConstructorOrMethod;
 import org.testng.internal.IConfiguration;
 import org.testng.xml.XmlSuite;
@@ -17,7 +23,10 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RetryListenerTest extends MicroserviceTestListener {

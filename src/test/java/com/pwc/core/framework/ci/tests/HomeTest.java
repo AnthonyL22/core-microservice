@@ -2,7 +2,13 @@ package com.pwc.core.framework.ci.tests;
 
 import com.pwc.core.framework.ci.parent.Data;
 
-import static com.pwc.logging.service.LoggerService.*;
+import static com.pwc.logging.service.LoggerService.AND;
+import static com.pwc.logging.service.LoggerService.BUT;
+import static com.pwc.logging.service.LoggerService.FEATURE;
+import static com.pwc.logging.service.LoggerService.GIVEN;
+import static com.pwc.logging.service.LoggerService.SCENARIO;
+import static com.pwc.logging.service.LoggerService.THEN;
+import static com.pwc.logging.service.LoggerService.WHEN;
 
 public class HomeTest {
 

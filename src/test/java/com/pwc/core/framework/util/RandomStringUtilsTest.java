@@ -11,7 +11,10 @@ import org.testng.Assert;
 import java.util.Random;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.isOneOf;
+import static org.hamcrest.Matchers.not;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RandomStringUtilsTest {

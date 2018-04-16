@@ -17,7 +17,9 @@ import org.testng.Assert;
 import java.io.File;
 import java.sql.SQLException;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.withSettings;
 
 
 @RunWith(MockitoJUnitRunner.class)
