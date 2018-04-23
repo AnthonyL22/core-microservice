@@ -47,6 +47,7 @@ public final class FrameworkConstants {
     public static final String WEB_DRIVER_IE = "webdriver.ie.driver";
     public static final String WEB_DRIVER_CHROME = "webdriver.chrome.driver";
     public static final String WEB_DRIVER_GECKO = "webdriver.gecko.driver";
+    public static final String WEB_DRIVER_EDGE = "webdriver.edge.driver";
 
     // DEFAULT Date Patterns
     public static final String DATETIME_LOGGER_DATETIME_PATTER = "yyyy-MM-dd HH:mm:ss.SSS";

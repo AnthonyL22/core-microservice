@@ -387,6 +387,7 @@ public class WebEventController {
         LOG("starting internet explorer browser");
         setDriverExecutable();
         capabilities.setCapability(CapabilityType.BROWSER_NAME, BrowserType.IE);
+        capabilities.setCapability("ignoreProtectedModeSettings", true);
         if (gridEnabled) {
             if (this.remoteWebDriver == null) {
                 MicroserviceRemoteWebDriver microserviceRemoteWebDriver = new MicroserviceRemoteWebDriver(new URL(gridUrl), capabilities);
@@ -471,10 +472,10 @@ public class WebEventController {
             case FrameworkConstants.CHROME_BROWSER_MODE: {
                 if (StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), "windows")) {
                     executable = PropertiesUtils.getFirstFileFromTestResources("chrome_win.exe");
-                } else if (StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.MAC_SYSTEM_OS_NAME), "mac")) {
-                    executable = PropertiesUtils.getFirstFileFromTestResources("chrome_mac");
-                } else {
+                } else if (StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), "linux")) {
                     executable = PropertiesUtils.getFirstFileFromTestResources("chrome_linux_64");
+                } else {
+                    executable = PropertiesUtils.getFirstFileFromTestResources("chrome_mac");
                 }
                 System.setProperty(FrameworkConstants.WEB_DRIVER_CHROME, PropertiesUtils.getPath(executable));
                 break;
@@ -482,10 +483,10 @@ public class WebEventController {
             case FrameworkConstants.HEADLESS_CHROME_BROWSER_MODE: {
                 if (StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), "windows")) {
                     executable = PropertiesUtils.getFirstFileFromTestResources("chrome_win.exe");
-                } else if (StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.MAC_SYSTEM_OS_NAME), "mac")) {
-                    executable = PropertiesUtils.getFirstFileFromTestResources("chrome_mac");
-                } else {
+                } else if (StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), "linux")) {
                     executable = PropertiesUtils.getFirstFileFromTestResources("chrome_linux_64");
+                } else {
+                    executable = PropertiesUtils.getFirstFileFromTestResources("chrome_mac");
                 }
                 System.setProperty(FrameworkConstants.WEB_DRIVER_CHROME, PropertiesUtils.getPath(executable));
                 break;
@@ -502,6 +503,11 @@ public class WebEventController {
                         PropertiesUtils.getFirstFileFromTestResources("ie_win32.exe") :
                         PropertiesUtils.getFirstFileFromTestResources("ie_win64.exe");
                 System.setProperty(FrameworkConstants.WEB_DRIVER_IE, PropertiesUtils.getPath(executable));
+                break;
+            }
+            case FrameworkConstants.EDGE_BROWSER_MODE: {
+                executable = PropertiesUtils.getFirstFileFromTestResources("edge.exe");
+                System.setProperty(FrameworkConstants.WEB_DRIVER_EDGE, PropertiesUtils.getPath(executable));
                 break;
             }
             case FrameworkConstants.PHANTOMJS_BROWSER_MODE: {
