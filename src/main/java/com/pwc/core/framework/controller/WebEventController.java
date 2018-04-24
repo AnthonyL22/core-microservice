@@ -19,7 +19,6 @@ import com.pwc.core.framework.util.DebuggingUtils;
 import com.pwc.core.framework.util.GridUtils;
 import com.pwc.core.framework.util.PropertiesUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.SystemUtils;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.phantomjs.PhantomJSDriverService;
@@ -34,10 +33,7 @@ import org.springframework.util.StopWatch;
 import org.testng.Assert;
 import org.testng.Reporter;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -475,7 +471,7 @@ public class WebEventController {
             case FrameworkConstants.CHROME_BROWSER_MODE: {
                 if (StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), "windows")) {
                     executable = PropertiesUtils.getFirstFileFromTestResources("chrome_win.exe");
-                } else if (isUnix()) {
+                } else if (StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), "linux")) {
                     executable = PropertiesUtils.getFirstFileFromTestResources("chrome_linux_64");
                 } else {
                     executable = PropertiesUtils.getFirstFileFromTestResources("chrome_mac");
@@ -486,7 +482,7 @@ public class WebEventController {
             case FrameworkConstants.HEADLESS_CHROME_BROWSER_MODE: {
                 if (StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), "windows")) {
                     executable = PropertiesUtils.getFirstFileFromTestResources("chrome_win.exe");
-                } else if (isUnix()) {
+                } else if (StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), "linux")) {
                     executable = PropertiesUtils.getFirstFileFromTestResources("chrome_linux_64");
                 } else {
                     executable = PropertiesUtils.getFirstFileFromTestResources("chrome_mac");
@@ -508,6 +504,11 @@ public class WebEventController {
                 System.setProperty(FrameworkConstants.WEB_DRIVER_IE, PropertiesUtils.getPath(executable));
                 break;
             }
+            case FrameworkConstants.EDGE_BROWSER_MODE: {
+                executable = PropertiesUtils.getFirstFileFromTestResources("edge.exe");
+                System.setProperty(FrameworkConstants.WEB_DRIVER_EDGE, PropertiesUtils.getPath(executable));
+                break;
+            }
             case FrameworkConstants.PHANTOMJS_BROWSER_MODE: {
 
                 if (StringUtils.isNotEmpty(System.getProperty(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY))) {
@@ -524,21 +525,6 @@ public class WebEventController {
 
         }
         return "";
-    }
-
-    /**
-     * Check if the current operating system is Unix based
-     *
-     * @return boolean flag if Unix based
-     */
-    private static boolean isUnix() {
-
-        try {
-            String os = System.getProperty("os.name");
-            return (SystemUtils.IS_OS_UNIX || os.indexOf("nix") >= 0 || os.indexOf("nux") >= 0 || os.indexOf("aix") > 0);
-        } catch (Exception e) {
-            return false;
-        }
     }
 
     /**
