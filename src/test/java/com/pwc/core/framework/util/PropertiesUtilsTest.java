@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
@@ -91,7 +92,7 @@ public class PropertiesUtilsTest {
         Assert.assertEquals(PROPERTIES_FILE, file.getName());
         Assert.assertTrue(StringUtils.contains(file.getPath(), PROPERTIES_FILE));
         try {
-            List<String> lines = FileUtils.readLines(file);
+            List<String> lines = FileUtils.readLines(file, StandardCharsets.UTF_8);
             Assert.assertEquals(14, lines.size());
             Assert.assertEquals(lines.get(0), "web.url=http://my-web-application.mywebsite.com");
             Assert.assertEquals(lines.get(1), "web.services.url=http://my-web-services.com");

@@ -12,6 +12,7 @@ import org.testng.Assert;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -61,7 +62,7 @@ public class ContinuousIntegrationGrouperTest {
         String args[] = {CANONICAL_CLASS_NAME, destinationPropertiesFileLocation};
         ContinuousIntegrationGrouper.main(args);
         File output = new File(destinationPropertiesFileLocation + FrameworkConstants.SEPARATOR + ContinuousIntegrationGrouper.getDefaultOutputFileName());
-        List<String> lines = FileUtils.readLines(output);
+        List<String> lines = FileUtils.readLines(output, StandardCharsets.UTF_8);
         Assert.assertTrue(StringUtils.contains(lines.get(0), "input="));
         Assert.assertTrue(StringUtils.contains(lines.get(0), "Test"));
         Assert.assertEquals(lines.size(), 1);
@@ -72,7 +73,7 @@ public class ContinuousIntegrationGrouperTest {
         ContinuousIntegrationGrouper.main(fullyDecoratedArgs);
         destinationPropertiesFileLocation = StringUtils.replace(destinationPropertiesFileLocation, "%20", " ");
         File output = new File(destinationPropertiesFileLocation + FrameworkConstants.SEPARATOR + OUTPUT_FILE);
-        List<String> lines = FileUtils.readLines(output);
+        List<String> lines = FileUtils.readLines(output, StandardCharsets.UTF_8);
         Assert.assertTrue(StringUtils.contains(lines.get(0), "input="));
         Assert.assertTrue(StringUtils.contains(lines.get(0), "Test"));
         Assert.assertEquals(lines.size(), 1);
@@ -97,7 +98,7 @@ public class ContinuousIntegrationGrouperTest {
         ContinuousIntegrationGrouper.setOutputFile(OUTPUT_FILE);
         ContinuousIntegrationGrouper.writeArrayToFile(new String[]{"hi,there,now"});
         File output = new File(destinationPropertiesFileLocation + System.getProperty("file.separator") + OUTPUT_FILE);
-        List<String> lines = FileUtils.readLines(output);
+        List<String> lines = FileUtils.readLines(output, StandardCharsets.UTF_8);
         Assert.assertEquals(lines.size(), 1);
         Assert.assertEquals(lines.get(0), "input=hi,there,now,");
     }

@@ -27,11 +27,22 @@ public class FileUtilsTest {
     }
 
     @Test
-    public void createNewFileFromFileObjTest() {
+    public void createNewFileWithFileNameFromFileObjTest() {
         final String FILE_NAME = RandomStringUtils.randomAlphabetic(5) + ".json";
         File file = new File(FILE_NAME);
         FileUtils.createFile(file, FILE_NAME, SAMPLE_FILE_CONTENTS);
         List<String> result = FileUtils.readFile(file, FILE_NAME);
+        Assert.assertTrue(result.size() == 1);
+        Assert.assertEquals(result.get(0), SAMPLE_FILE_CONTENTS);
+        FileUtils.deleteFile(file, FILE_NAME);
+    }
+
+    @Test
+    public void createNewFileFromFileObjTest() {
+        final String FILE_NAME = RandomStringUtils.randomAlphabetic(6) + ".json";
+        File file = new File(FILE_NAME);
+        FileUtils.createFile(file, FILE_NAME, SAMPLE_FILE_CONTENTS);
+        List<String> result = FileUtils.readFile(file);
         Assert.assertTrue(result.size() == 1);
         Assert.assertEquals(result.get(0), SAMPLE_FILE_CONTENTS);
         FileUtils.deleteFile(file, FILE_NAME);

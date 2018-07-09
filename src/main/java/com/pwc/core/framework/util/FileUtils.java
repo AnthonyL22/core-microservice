@@ -2,6 +2,7 @@ package com.pwc.core.framework.util;
 
 import java.io.File;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -90,9 +91,26 @@ public class FileUtils {
         }
 
         try {
-            lines = org.apache.commons.io.FileUtils.readLines(file);
+            lines = org.apache.commons.io.FileUtils.readLines(file, Charset.defaultCharset());
         } catch (Exception e) {
             LOG(true, "Unable to read file named='%s'", fileName);
+        }
+        return lines;
+    }
+
+    /**
+     * Read any first file found in path matching the file provided
+     *
+     * @param file     File to read
+     * @return ArrayList of lines read from file
+     */
+    public static List<String> readFile(File file) {
+        List<String> lines = new ArrayList<>();
+
+        try {
+            lines = org.apache.commons.io.FileUtils.readLines(file, Charset.defaultCharset());
+        } catch (Exception e) {
+            LOG(true, "Unable to read file named='%s'", file.getName());
         }
         return lines;
     }
