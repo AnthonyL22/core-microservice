@@ -10,6 +10,7 @@ public final class JavascriptConstants {
     public static final String BLUR_ELEMENT_BY_ID = "document.getElementById('%s').blur();";
 
     // TEXT ENTRY Action
+    public static final String GET_ELEMENT_TEXT_JAVASCRIPT = "var element = document.evaluate(\"%s\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue; return element.innerText";
     public static final String ENTER_VALUE_ELEMENT_BY_XPATH = "var element = document.evaluate(\"%s\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue; element.value='%s';";
 
     // SELECT/COMBO Actions
@@ -42,6 +43,9 @@ public final class JavascriptConstants {
     public static final String IS_JQUERY_AJAX_REQUESTS_ACTIVE = "if($.active == 0){ return true;} else { return false;}";
     public static final String IS_DOCUMENT_READY = "if(document.readyState == 'complete'){ return true;} else { return false;}";
     public static final String LIST_HTTP_RESOURCES = "var resourceList = []; var entries = window.performance.getEntriesByType('resource'); entries.forEach(function (resource) { resourceList.push(resource.name);}); return(resourceList);";
+
+    // Application Values
+    public static final String GET_LOCAL_STORAGE_VALUE_BY_ITEM_KEY = "var key = window.localStorage.getItem(\"%s\"); return key";
 
     // NAVIGATION Actions
     public static final String SCROLL_TO_TOP_OF_WINDOW_ACTION = "window.scrollTo(document.body.scrollHeight,0);";
