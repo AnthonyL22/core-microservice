@@ -101,7 +101,7 @@ public class FileUtils {
     /**
      * Read any first file found in path matching the file provided
      *
-     * @param file     File to read
+     * @param file File to read
      * @return ArrayList of lines read from file
      */
     public static List<String> readFile(File file) {
