@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.lang.reflect.Field;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +27,7 @@ public class PropertiesUtils {
     public static List<String> readResourceFile(final String fileName) {
         File file = PropertiesUtils.getFileFromResources(fileName);
         try {
-            return FileUtils.readLines(file);
+            return FileUtils.readLines(file, Charset.defaultCharset());
         } catch (Exception e) {
             LOG(true, "Unable to read file='%s' due to exception='%s'", fileName, e.getMessage());
         }

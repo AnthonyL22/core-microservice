@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.io.File;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -38,7 +39,7 @@ public class ContinuousIntegrationLogExporterTest {
         ContinuousIntegrationLogExporter.main(fullyDecoratedArgs);
 
         File testReportFileWithStatistics = new File(REPORT_FILE_NAME);
-        List<String> linesRead = FileUtils.readLines(testReportFileWithStatistics, "UTF-8");
+        List<String> linesRead = FileUtils.readLines(testReportFileWithStatistics, StandardCharsets.UTF_8);
         Assert.assertTrue(Collections.frequency(linesRead, "  Feature: Smoke Test") > 0);
         Assert.assertTrue(Collections.frequency(linesRead, "    But I go back to the Home page") > 0);
         Assert.assertTrue(Collections.frequency(linesRead, "MANUAL TEST CASE REPORT SUMMARY") > 0);
@@ -51,7 +52,7 @@ public class ContinuousIntegrationLogExporterTest {
         ContinuousIntegrationLogExporter.main(new String[]{TEST_SOURCE_PATH, REPORT_FILE_NAME});
 
         File testReportFileWithStatistics = new File(REPORT_FILE_NAME);
-        List<String> linesRead = FileUtils.readLines(testReportFileWithStatistics, "UTF-8");
+        List<String> linesRead = FileUtils.readLines(testReportFileWithStatistics, StandardCharsets.UTF_8);
         Assert.assertTrue(Collections.frequency(linesRead, "  Feature: Smoke Test") > 0);
         Assert.assertTrue(Collections.frequency(linesRead, "    But I go back to the Home page") > 0);
 
@@ -124,7 +125,7 @@ public class ContinuousIntegrationLogExporterTest {
         ContinuousIntegrationLogExporter.appendStatisticsToReport(testReportFile, files);
 
         File testReportFileWithStatistics = new File(REPORT_FILE_NAME);
-        List<String> linesRead = FileUtils.readLines(testReportFileWithStatistics, "UTF-8");
+        List<String> linesRead = FileUtils.readLines(testReportFileWithStatistics, StandardCharsets.UTF_8);
         Assert.assertTrue(Collections.frequency(linesRead, "MANUAL TEST CASE REPORT SUMMARY") > 0);
 
     }

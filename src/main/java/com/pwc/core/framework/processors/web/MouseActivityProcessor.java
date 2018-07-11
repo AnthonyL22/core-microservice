@@ -9,6 +9,7 @@ import com.pwc.core.framework.processors.web.elements.HeadingElementImpl;
 import com.pwc.core.framework.processors.web.elements.IconElementImpl;
 import com.pwc.core.framework.processors.web.elements.ImageElementImpl;
 import com.pwc.core.framework.processors.web.elements.ListItemElementImpl;
+import com.pwc.core.framework.processors.web.elements.PDropDownElementImpl;
 import com.pwc.core.framework.processors.web.elements.RadioButtonElementImpl;
 import com.pwc.core.framework.processors.web.elements.SelectableElementImpl;
 import com.pwc.core.framework.processors.web.elements.SpanElementImpl;
@@ -37,7 +38,8 @@ public class MouseActivityProcessor {
                 ComboBoxElementImpl.applies(webElement) ||
                 ListItemElementImpl.applies(webElement) ||
                 SpanElementImpl.applies(webElement) ||
-                HeadingElementImpl.applies(webElement);
+                HeadingElementImpl.applies(webElement) ||
+                PDropDownElementImpl.applies(webElement);
     }
 
     public void webAction(WebElement webElement, Object value) {
@@ -77,6 +79,9 @@ public class MouseActivityProcessor {
         } else if (HeadingElementImpl.applies(webElement)) {
             HeadingElementImpl headingElement = new HeadingElementImpl();
             headingElement.webAction(webElement, value);
+        } else if (PDropDownElementImpl.applies(webElement)) {
+            PDropDownElementImpl pDropDownElement = new PDropDownElementImpl();
+            pDropDownElement.webAction(webElement, value);
         }
     }
 
