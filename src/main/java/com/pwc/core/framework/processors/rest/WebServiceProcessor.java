@@ -11,6 +11,7 @@ import com.jayway.restassured.path.json.config.JsonPathConfig;
 import com.pwc.core.framework.FrameworkConstants;
 import com.pwc.core.framework.command.WebServiceCommand;
 import com.pwc.core.framework.data.OAuthKey;
+import com.pwc.core.framework.data.SmSessionKey;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
@@ -35,6 +36,7 @@ import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.client.LaxRedirectStrategy;
+import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.springframework.util.StopWatch;
@@ -415,7 +417,208 @@ public class WebServiceProcessor {
                     wsResponse = getWebServiceResponse(response, httpEntity, stopWatch);
                     closeHttpConnections(httpclient, response);
 
-                } else {
+                }
+            }
+
+        } catch (Exception e) {
+            Assert.fail(String.format("REST call failed for url=%s with exception='%s'", wsUrl, e.getCause()), e);
+        }
+
+        return wsResponse;
+
+    }
+
+    /**
+     * Generic REST web service Execution method for simple GET requests
+     * that return a String response
+     *
+     * @param url          web service URL
+     * @param smSessionKey SMSESSION key to use as the SMSESSION token
+     * @param command      Type of command to execute
+     * @return JsonPath json payload
+     */
+    protected Object execute(final String url, final SmSessionKey smSessionKey, final WebServiceCommand command) {
+        return execute(url, smSessionKey, command, null);
+    }
+
+    /**
+     * Generic REST web service Execution method for simple GET requests
+     * that return a String response. Example: http://www.mywebsite.com/rest/getAllUsers
+     *
+     * @param url           web service URL
+     * @param smSessionKey  SMSESSION key to use as the SMSESSION token
+     * @param command       Type of command to execute
+     * @param pathParameter web service path parameter
+     * @return JsonPath json payload
+     */
+    protected Object execute(final String url, final SmSessionKey smSessionKey, final WebServiceCommand command, final Object pathParameter) {
+
+        Object wsResponse = null;
+        String wsUrl = constructRestUrl(url, command, pathParameter);
+
+        try {
+
+            HttpGet httpGet;
+            HttpPost httpPost;
+            HttpDelete httpDelete;
+            HttpPut httpPut;
+            CloseableHttpResponse response = null;
+            CloseableHttpClient httpclient = HttpClients.custom().setSSLSocketFactory(SSLConnectionSocketFactory.getSocketFactory()).build();
+
+            StopWatch stopWatch = new StopWatch();
+            if (StringUtils.equals(command.methodType(), FrameworkConstants.POST_REQUEST)) {
+                httpPost = new HttpPost(wsUrl);
+                httpPost = (HttpPost) setHeaderCredentials(smSessionKey, httpPost);
+                stopWatch.start();
+                response = httpclient.execute(httpPost);
+                stopWatch.stop();
+            } else if (StringUtils.equals(command.methodType(), FrameworkConstants.GET_REQUEST)) {
+                httpGet = new HttpGet(wsUrl);
+                httpGet = (HttpGet) setHeaderCredentials(smSessionKey, httpGet);
+                stopWatch.start();
+                response = httpclient.execute(httpGet);
+                stopWatch.stop();
+            } else if (StringUtils.equals(command.methodType(), FrameworkConstants.PUT_REQUEST)) {
+                httpPut = new HttpPut(wsUrl);
+                httpPut = (HttpPut) setHeaderCredentials(smSessionKey, httpPut);
+                stopWatch.start();
+                response = httpclient.execute(httpPut);
+                stopWatch.stop();
+            } else if (StringUtils.equals(command.methodType(), FrameworkConstants.DELETE_REQUEST)) {
+                httpDelete = new HttpDelete(wsUrl);
+                httpDelete = (HttpDelete) setHeaderCredentials(smSessionKey, httpDelete);
+                stopWatch.start();
+                response = httpclient.execute(httpDelete);
+                stopWatch.stop();
+            }
+
+            HttpEntity httpEntity = response.getEntity();
+            wsResponse = getWebServiceResponse(response, httpEntity, stopWatch);
+            closeHttpConnections(httpclient, response);
+
+        } catch (Exception e) {
+            Assert.fail(String.format("REST call failed for url=%s with exception='%s'", wsUrl, e.getCause()), e);
+        }
+
+        return wsResponse;
+
+    }
+
+    /**
+     * Generic REST web service Execution method
+     *
+     * @param url           web service URL
+     * @param smSessionKey  SMSESSION key to use as the SMSESSION token
+     * @param command       Type of command to execute
+     * @param pathParameter web service path parameter
+     * @param payload       Request body payload
+     * @return JsonPath json payload
+     */
+    protected Object execute(final String url, final SmSessionKey smSessionKey, final WebServiceCommand command, final Object pathParameter, final Object payload) {
+
+        Object wsResponse = null;
+        String wsUrl = constructRestUrl(url, command, pathParameter);
+
+        try {
+
+            CloseableHttpClient httpclient = HttpClients.custom().setSSLSocketFactory(SSLConnectionSocketFactory.getSocketFactory()).build();
+
+            HttpGet httpGet;
+            HttpPost httpPost;
+            HttpPut httpPut;
+
+            if (StringUtils.equals(command.methodType(), FrameworkConstants.POST_REQUEST)) {
+
+                httpPost = new HttpPost(wsUrl);
+                httpPost = (HttpPost) setHeaderCredentials(smSessionKey, httpPost);
+
+                if (payload instanceof HashMap) {
+
+                    URI uri = constructUriFromPayloadMap(httpPost, (HashMap<String, Object>) payload);
+                    LOG(true, "SMSESSION POST URI='%s'", uri);
+
+                    httpPost.setURI(uri);
+                    StopWatch stopWatch = new StopWatch();
+                    stopWatch.start();
+                    CloseableHttpResponse response = httpclient.execute(httpPost);
+                    stopWatch.stop();
+                    HttpEntity httpEntity = response.getEntity();
+                    wsResponse = getWebServiceResponse(response, httpEntity, stopWatch);
+                    closeHttpConnections(httpclient, response);
+
+                } else if (payload instanceof List) {
+
+                    StringEntity stringEntity = new StringEntity(((List) payload).get(0).toString());
+                    httpPost.setEntity(stringEntity);
+                    httpPost.setHeader("Content-type", ContentType.APPLICATION_JSON.toString());
+                    LOG(true, "SMSESSION POST JSON='%s'", ((List) payload).get(0).toString());
+
+                    StopWatch stopWatch = new StopWatch();
+                    stopWatch.start();
+                    CloseableHttpResponse response = httpclient.execute(httpPost);
+                    stopWatch.stop();
+                    HttpEntity httpEntity = response.getEntity();
+                    wsResponse = getWebServiceResponse(response, httpEntity, stopWatch);
+                    closeHttpConnections(httpclient, response);
+
+                } else if (payload instanceof String) {
+
+                    StringEntity stringEntity = new StringEntity(payload.toString());
+                    httpPost.setEntity(stringEntity);
+                    httpPost.setHeader("Content-type", ContentType.APPLICATION_JSON.toString());
+                    LOG(true, "SMSESSION POST JSON='%s'", payload.toString());
+
+                    StopWatch stopWatch = new StopWatch();
+                    stopWatch.start();
+                    CloseableHttpResponse response = httpclient.execute(httpPost);
+                    stopWatch.stop();
+                    HttpEntity httpEntity = response.getEntity();
+                    wsResponse = getWebServiceResponse(response, httpEntity, stopWatch);
+                    closeHttpConnections(httpclient, response);
+
+                }
+
+            } else if (StringUtils.equals(command.methodType(), FrameworkConstants.PUT_REQUEST)) {
+
+                httpPut = new HttpPut(wsUrl);
+                httpPut = (HttpPut) setHeaderCredentials(smSessionKey, httpPut);
+
+                if (payload instanceof HashMap) {
+
+                    URI uri = new URI(wsUrl);
+                    LOG(true, "SMSESSION PUT URI='%s'", uri);
+                    httpPut.setURI(uri);
+
+                    String entityPayload = getFirstValueInMap((HashMap<String, Object>) payload);
+                    httpPut.setHeader("Content-Type", "application/json");
+                    httpPut.setEntity(new StringEntity(entityPayload, "UTF-8"));
+
+                    StopWatch stopWatch = new StopWatch();
+                    stopWatch.start();
+                    CloseableHttpResponse response = httpclient.execute(httpPut);
+                    stopWatch.stop();
+                    HttpEntity httpEntity = response.getEntity();
+                    wsResponse = getWebServiceResponse(response, httpEntity, stopWatch);
+                    closeHttpConnections(httpclient, response);
+
+                }
+            } else {
+
+                httpGet = new HttpGet(wsUrl);
+                httpGet = (HttpGet) setHeaderCredentials(smSessionKey, httpGet);
+
+                if (payload instanceof HashMap) {
+
+                    URI uri = constructUriFromPayloadMap(httpGet, (HashMap<String, Object>) payload);
+                    LOG(true, "SMSESSION GET URI='%s'", uri);
+                    httpGet.setURI(uri);
+                    StopWatch stopWatch = new StopWatch();
+                    stopWatch.start();
+                    CloseableHttpResponse response = httpclient.execute(httpGet);
+                    stopWatch.stop();
+                    HttpEntity httpEntity = response.getEntity();
+                    wsResponse = getWebServiceResponse(response, httpEntity, stopWatch);
+                    closeHttpConnections(httpclient, response);
 
                 }
             }
@@ -450,17 +653,24 @@ public class WebServiceProcessor {
     }
 
     /**
-     * Set the BasicAuth header to the user/pass provided
+     * Add a header containing a authorization key from either OAUTH2 or Site Minder
      *
-     * @param oAuthKey OAuth key to use as the Bearer token
-     * @param httpBase Http base to set header for
+     * @param authorizationKey Authorization key of OAuthKey or SmSessionKey types to add to the header
+     * @param httpBase         Http base to set header for
      * @return decorated HttpRequestBase for use by get, post, put, ect..
      */
-    private HttpRequestBase setHeaderCredentials(final OAuthKey oAuthKey, HttpRequestBase httpBase) {
+    private HttpRequestBase setHeaderCredentials(final Object authorizationKey, HttpRequestBase httpBase) {
         try {
-            String authenticationHeader = "Bearer " + oAuthKey.getKey();
-            httpBase.setHeader(HttpHeaders.AUTHORIZATION, authenticationHeader);
+
+            BasicHeader header;
+            if (authorizationKey instanceof OAuthKey) {
+                header = new BasicHeader(HttpHeaders.AUTHORIZATION, "Bearer " + ((OAuthKey) authorizationKey).getKey());
+            } else {
+                header = new BasicHeader("Cookie", "SMSESSION=" + ((SmSessionKey) authorizationKey).getKey());
+            }
+            httpBase.setHeader(header);
         } catch (Exception e) {
+            LOG(true, "Failed to set header credentials", e);
             return httpBase;
         }
         return httpBase;

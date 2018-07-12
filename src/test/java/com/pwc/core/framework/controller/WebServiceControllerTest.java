@@ -5,6 +5,7 @@ import com.pwc.core.framework.FrameworkConstants;
 import com.pwc.core.framework.command.WebServiceCommand;
 import com.pwc.core.framework.data.Credentials;
 import com.pwc.core.framework.data.OAuthKey;
+import com.pwc.core.framework.data.SmSessionKey;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,6 +37,7 @@ public class WebServiceControllerTest extends BaseWebServiceTest {
     private WebServiceController mockWebServiceController;
     private Credentials mockCredentials;
     private OAuthKey mockOAuthKey;
+    private SmSessionKey mockSmSessionKey;
 
     private enum UsersWebServiceWebServiceCommand implements WebServiceCommand {
 
@@ -75,6 +77,7 @@ public class WebServiceControllerTest extends BaseWebServiceTest {
         mockWebServiceController = mock(WebServiceController.class);
         mockCredentials = new Credentials("foo", "bar");
         mockOAuthKey = mock(OAuthKey.class);
+        mockSmSessionKey = mock(SmSessionKey.class);
     }
 
     @Test
@@ -104,6 +107,20 @@ public class WebServiceControllerTest extends BaseWebServiceTest {
     public void webServiceOAuthWithRequestBodyTest() {
         when(mockWebServiceController.webServiceAction(mockOAuthKey, UsersWebServiceWebServiceCommand.GET_BY_LAST_NAME, "foobar")).thenReturn(JSON_USER_RESPONSE);
         JsonPath response = (JsonPath) mockWebServiceController.webServiceAction(mockOAuthKey, UsersWebServiceWebServiceCommand.GET_BY_LAST_NAME, "foobar");
+        Assert.assertNotNull("Verify id field", response.getInt("id"));
+    }
+
+    @Test
+    public void webServiceSmSessionTest() {
+        when(mockWebServiceController.webServiceAction(mockSmSessionKey, UsersWebServiceWebServiceCommand.GET_BY_LAST_NAME)).thenReturn(JSON_USER_RESPONSE);
+        JsonPath response = (JsonPath) mockWebServiceController.webServiceAction(mockSmSessionKey, UsersWebServiceWebServiceCommand.GET_BY_LAST_NAME);
+        Assert.assertNotNull("Verify id field", response.getInt("id"));
+    }
+
+    @Test
+    public void webServiceSmSessionWithRequestBodyTest() {
+        when(mockWebServiceController.webServiceAction(mockSmSessionKey, UsersWebServiceWebServiceCommand.GET_BY_LAST_NAME, "foobar")).thenReturn(JSON_USER_RESPONSE);
+        JsonPath response = (JsonPath) mockWebServiceController.webServiceAction(mockSmSessionKey, UsersWebServiceWebServiceCommand.GET_BY_LAST_NAME, "foobar");
         Assert.assertNotNull("Verify id field", response.getInt("id"));
     }
 

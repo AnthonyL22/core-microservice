@@ -4,6 +4,7 @@ import com.jayway.restassured.path.json.JsonPath;
 import com.pwc.core.framework.FrameworkConstants;
 import com.pwc.core.framework.command.WebServiceCommand;
 import com.pwc.core.framework.data.OAuthKey;
+import com.pwc.core.framework.data.SmSessionKey;
 import com.pwc.core.framework.util.RandomStringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpStatus;
@@ -60,6 +61,7 @@ public class WebServiceProcessorTest {
             "}";
     private HttpRequestBase mockHttpRequestBase;
     private OAuthKey oAuthKey;
+    private SmSessionKey smSessionKey;
 
     public enum UsersWebServiceWebServiceCommand implements WebServiceCommand {
 
@@ -131,6 +133,7 @@ public class WebServiceProcessorTest {
 
     @Before
     public void setUp() {
+
         mockCloseableHttpClient = mock(CloseableHttpClient.class);
         mockCloseableHttpResponse = mock(CloseableHttpResponse.class);
         mockHttpEntity = mock(HttpEntity.class);
@@ -152,7 +155,26 @@ public class WebServiceProcessorTest {
         when(mockHttpRequestBase.getURI()).thenReturn(expectedURI);
 
         oAuthKey = new OAuthKey("oijkjlkjkj43lkjjuyoiyfghuiopkl67");
+        smSessionKey = new SmSessionKey("UYTYIUHIJOKL6t5ryuhiujj576576768798");
 
+    }
+
+    @Test
+    public void executeWithSmSessionKeyTest() {
+        Object response = webServiceProcessor.execute("http://www.foobar.com", smSessionKey, UsersWebServiceWebServiceCommand.POST_ADD_USER_ID);
+        Assert.assertNotNull(response);
+    }
+
+    @Test
+    public void executeWithSmSessionKeyWithPathParameterTest() {
+        Object response = webServiceProcessor.execute("http://www.foobar.com", smSessionKey, UsersWebServiceWebServiceCommand.POST_ADD_USER_ID, "foobar");
+        Assert.assertNotNull(response);
+    }
+
+    @Test
+    public void executeWithSmSessionKeyWithAllParametersTest() {
+        Object response = webServiceProcessor.execute("http://www.foobar.com", smSessionKey, UsersWebServiceWebServiceCommand.POST_ADD_USER_ID, "foobar", Arrays.asList("hello"));
+        Assert.assertNotNull(response);
     }
 
     @Test

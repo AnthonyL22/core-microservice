@@ -11,6 +11,7 @@ import com.pwc.core.framework.controller.WebServiceController;
 import com.pwc.core.framework.data.Credentials;
 import com.pwc.core.framework.data.OAuthKey;
 import com.pwc.core.framework.data.PropertiesFile;
+import com.pwc.core.framework.data.SmSessionKey;
 import com.pwc.core.framework.listeners.MicroserviceTestListener;
 import com.pwc.core.framework.util.PropertiesUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -384,6 +385,61 @@ public abstract class MicroserviceTestSuite {
             webServiceController = (WebServiceController) ctx.getBean("webServiceController");
         }
         return webServiceController.webServiceAction(oAuthKey, command, pathParameter, parameter);
+    }
+
+    /**
+     * Send a REST ws action to a service End Point
+     *
+     * @param smSessionKey SMSESSION key
+     * @param command      BaseGetCommand command type
+     * @return web service response
+     */
+    protected Object webServiceAction(final SmSessionKey smSessionKey, final WebServiceCommand command) {
+        return webServiceAction(smSessionKey, command, null);
+    }
+
+    /**
+     * Send a REST ws action to a service End Point
+     *
+     * @param smSessionKey SMSESSION key
+     * @param command      BaseGetCommand command type
+     * @param requestBody  POST request body
+     * @return web service response
+     */
+    protected Object webServiceAction(final SmSessionKey smSessionKey, final WebServiceCommand command, final Object requestBody) {
+        if (requestBody instanceof HashMap || requestBody instanceof List) {
+            return webServiceAction(smSessionKey, command, null, requestBody);
+        } else {
+            return webServiceAction(smSessionKey, command, requestBody, null);
+        }
+    }
+
+    /**
+     * Send a REST ws action to a service End Point
+     *
+     * @param smSessionKey SMSESSION key
+     * @param command      BaseGetCommand command type
+     * @param parameterMap Name-Value pair filled map of parameters to send in HTTP request
+     * @return web service response
+     */
+    protected Object webServiceAction(final SmSessionKey smSessionKey, final WebServiceCommand command, final HashMap<String, Object> parameterMap) {
+        return webServiceAction(smSessionKey, command, null, parameterMap);
+    }
+
+    /**
+     * Send a REST ws action to a service End Point
+     *
+     * @param smSessionKey  SMSESSION key
+     * @param command       BaseGetCommand command type
+     * @param pathParameter web service path parameter(s)
+     * @param parameter     HashMap or simple request body arg to send in HTTP request
+     * @return web service response
+     */
+    protected Object webServiceAction(final SmSessionKey smSessionKey, final WebServiceCommand command, final Object pathParameter, final Object parameter) {
+        if (webServiceController == null) {
+            webServiceController = (WebServiceController) ctx.getBean("webServiceController");
+        }
+        return webServiceController.webServiceAction(smSessionKey, command, pathParameter, parameter);
     }
 
     /**

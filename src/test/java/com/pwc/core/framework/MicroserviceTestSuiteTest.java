@@ -8,6 +8,7 @@ import com.pwc.core.framework.controller.WebEventController;
 import com.pwc.core.framework.controller.WebServiceController;
 import com.pwc.core.framework.data.Credentials;
 import com.pwc.core.framework.data.OAuthKey;
+import com.pwc.core.framework.data.SmSessionKey;
 import com.pwc.core.framework.service.DatabaseEventService;
 import com.pwc.core.framework.service.WebEventService;
 import org.junit.After;
@@ -44,6 +45,7 @@ public class MicroserviceTestSuiteTest extends MicroserviceTestSuiteBaseTest {
     private DatabaseEventService mockDatabaseEventService;
     private Credentials mockCredentials;
     private OAuthKey mockOAuthKey;
+    private SmSessionKey mockSmSessionKey;
 
     private enum UsersWebServiceWebServiceCommand implements WebServiceCommand {
 
@@ -111,6 +113,7 @@ public class MicroserviceTestSuiteTest extends MicroserviceTestSuiteBaseTest {
         mockDatabaseController = mock(DatabaseController.class);
 
         mockOAuthKey = mock(OAuthKey.class);
+        mockSmSessionKey = mock(SmSessionKey.class);
 
     }
 
@@ -296,6 +299,20 @@ public class MicroserviceTestSuiteTest extends MicroserviceTestSuiteBaseTest {
     public void webServiceActionOAuthWithRequestBodyBaseCommandTest() {
         webServiceController = mockWebServiceController;
         Object response = webServiceAction(mockOAuthKey, UsersWebServiceWebServiceCommand.GET_BY_LAST_NAME, new ArrayList<>(Arrays.asList("foo", "bar")));
+        Assert.assertNull(response);
+    }
+
+    @Test
+    public void webServiceActionSmSessionBaseCommandTest() {
+        webServiceController = mockWebServiceController;
+        Object response = webServiceAction(mockSmSessionKey, UsersWebServiceWebServiceCommand.GET_BY_LAST_NAME);
+        Assert.assertNull(response);
+    }
+
+    @Test
+    public void webServiceActionSmSessionWithRequestBodyBaseCommandTest() {
+        webServiceController = mockWebServiceController;
+        Object response = webServiceAction(mockSmSessionKey, UsersWebServiceWebServiceCommand.GET_BY_LAST_NAME, new ArrayList<>(Arrays.asList("foo", "bar")));
         Assert.assertNull(response);
     }
 
