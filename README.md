@@ -125,6 +125,28 @@ long responseTime = response.get(FrameworkConstants.HTTP_RESPONSE_TIME_KEY)
 // Assert if the returned response time is acceptable
 ```
 
+#### Web Service Authentication
+The following security options are available to webServiceAction() users:
+
+* OAuth2
+* Site Minder
+* Basic (Base64 Encoded)
+* Open
+
+##### OAuth2 Security
+To use OAuth security simply provide the OAuth key when calling webServiceAction().  The service will decorate your 
+request header with a Authorization header of 'Bearer YOUR_OAUTH_KEY' prior to calling the web service.
+
+##### Site Minder Security
+To use Site Minder security simply provide the Site Minder key when calling webServiceAction().  The service will 
+decorate your request header with a 'Cookie' header of 'SMSESSION= YOUR_SM_SESSION_KEY_KEY' prior to calling the web service.
+
+##### Basic Security
+To use basic security simply provide a decorated Credentials object when calling webServiceAction().  The service 
+will decorate your request with Base64 encoded credentials in the Authorization header of 'Basic YOUR_BASE64_ENCODED_CREDENTIALS' 
+prior to calling the web service.
+
+
 ## Utility Features
 This service provides a [diverse Utilities set](https://github.com/AnthonyL22/core-microservice/tree/master/src/main/java/com/pwc/core/framework/util) 
 to assist in nearly every need of a quality initiative.
