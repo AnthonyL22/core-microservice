@@ -161,6 +161,7 @@ to assist in nearly every need of a quality initiative.
 * StringUtils
 * WebElementUtils
 * CollectionUtils
+* TableUtils
 
 ## Video Playback Feature
 This service records the execution of an automated test and creates a video that users can then playback to watch the automated test.  
