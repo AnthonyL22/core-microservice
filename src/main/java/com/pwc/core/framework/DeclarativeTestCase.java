@@ -202,7 +202,6 @@ public abstract class DeclarativeTestCase extends MicroserviceTestSuite {
         return webEventController.getWebEventService().getText(elementIdentifier);
     }
 
-    /////////////////////////////
     /**
      * Get a list of the current Page's console log entries
      */
