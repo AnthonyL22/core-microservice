@@ -1410,9 +1410,29 @@ public class WebEventService extends WebEventController {
     }
 
     /**
-     * Get all current Network requests displayed in the current browser
+     * Get current Network requests Set that contain a particular request identifier
+     *
+     * @param requestIdentifier target request identifier to do a case-insensitive match against
      */
-    private List<String> getPageRequests() {
+    public Set<String> webNetworkRequestMatch(final String requestIdentifier) {
+
+        Set<String> matchingRequests = new HashSet<>();
+        List<String> sourcePageRequests = getPageRequests();
+        sourcePageRequests.forEach(request -> {
+            if (StringUtils.containsIgnoreCase(request, String.valueOf(requestIdentifier))) {
+                matchingRequests.add(request);
+            }
+        });
+        return matchingRequests;
+    }
+
+    /**
+     * Get all current Network requests displayed in the current browser
+     *
+     * @return List of current page requests
+     */
+    public List<String> getPageRequests() {
+
         List<String> networkRequests = new ArrayList<>();
         List<String> currentRequestList = (List<String>) executeJavascript(JavascriptConstants.LIST_HTTP_RESOURCES);
         currentRequestList.forEach(networkRequests::add);
@@ -1421,8 +1441,11 @@ public class WebEventService extends WebEventController {
 
     /**
      * Get all current Console requests displayed in the current browser
+     *
+     * @return List of console requests
      */
-    private List<LogEntry> getConsoleRequests() {
+    public List<LogEntry> getConsoleRequests() {
+
         List<LogEntry> consoleRequests = new ArrayList<>();
         LogEntries entries = this.microserviceWebDriver.manage().logs().get(LogType.BROWSER);
         entries.forEach(consoleRequests::add);

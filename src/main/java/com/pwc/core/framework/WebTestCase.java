@@ -3,7 +3,10 @@ package com.pwc.core.framework;
 
 import com.pwc.core.framework.data.CssProperty;
 import com.pwc.core.framework.data.WebElementAttribute;
+import org.openqa.selenium.logging.LogEntry;
 
+import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 
 public abstract class WebTestCase extends MicroserviceTestSuite {
@@ -151,11 +154,20 @@ public abstract class WebTestCase extends MicroserviceTestSuite {
     /**
      * Navigate directly to a particular URL
      *
-     * @param url well-formed web URL or partial URL
+     * @param url  base well-formed web URL or partial URL
+     * @param args Optional url arguments to concatenate to base url
      * @return duration took to perform page redirect
      */
-    protected long redirect(final String url) {
-        return webEventController.getWebEventService().redirectToUrl(url);
+    protected long redirect(final String url, Object... args) {
+
+        long duration;
+        if (null != args) {
+            duration = webEventController.getWebEventService().redirectToUrl(combine(url, args));
+        } else {
+            duration = webEventController.getWebEventService().redirectToUrl(url);
+        }
+        waitForBrowserToLoad();
+        return duration;
     }
 
     /**
@@ -534,7 +546,14 @@ public abstract class WebTestCase extends MicroserviceTestSuite {
     }
 
     /**
-     * * Check if the current page's Console does contains a sub-string message
+     * Get a list of the current Page's console log entries
+     */
+    protected List<LogEntry> webDiagnosticsConsoleRequests() {
+        return webEventController.getWebEventService().getConsoleRequests();
+    }
+
+    /**
+     * Check if the current page's Console does contains a sub-string message
      *
      * @param consoleIdentifier case-insensitive snippet of console log output to find
      */
@@ -566,8 +585,24 @@ public abstract class WebTestCase extends MicroserviceTestSuite {
      * @param requestIdentifier       target request identifier to do a case-insensitive match against
      * @param matchingOccurrenceCount expected number of request occurrences
      */
-    public void webDiagnosticsRequestCountEquals(final String requestIdentifier, final int matchingOccurrenceCount) {
+    protected void webDiagnosticsRequestCountEquals(final String requestIdentifier, final int matchingOccurrenceCount) {
         webEventController.getWebEventService().webNetworkRequestCount(requestIdentifier, matchingOccurrenceCount);
+    }
+
+    /**
+     * Get Set of current Network requests Set that contain a particular request identifier
+     *
+     * @param requestIdentifier target request identifier to do a case-insensitive match against
+     */
+    protected Set<String> webNetworkRequestMatch(final String requestIdentifier) {
+        return webEventController.getWebEventService().webNetworkRequestMatch(requestIdentifier);
+    }
+
+    /**
+     * Get a list of the current Network requests
+     */
+    protected List<String> webNetworkRequests() {
+        return webEventController.getWebEventService().getPageRequests();
     }
 
 }

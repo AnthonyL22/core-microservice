@@ -20,6 +20,7 @@ public class DateUtils {
      * @return switched date/time format in new target format
      */
     public static String switchDateTimeFormat(String sourceDateTime, String sourceFormat, String targetFormat) {
+
         String result;
         SimpleDateFormat sourceDateFormatter;
         SimpleDateFormat targetDateFormatter;
@@ -40,6 +41,7 @@ public class DateUtils {
      * @return dateOffset date and time
      */
     public static String getDateTime(final int dateOffset) {
+
         return getDateTime(FrameworkConstants.SYSTEM_DEFAULT_DATETIME_PATTERN, System.getProperty(FrameworkConstants.SYSTEM_USER_TIMEZONE), dateOffset);
     }
 
@@ -51,6 +53,7 @@ public class DateUtils {
      * @return dateOffset date and time
      */
     public static String getDateTime(final int dateOffset, final String pattern) {
+
         return getDateTime(pattern, System.getProperty(FrameworkConstants.SYSTEM_USER_TIMEZONE), dateOffset);
     }
 
@@ -61,6 +64,7 @@ public class DateUtils {
      * @return offset date and time offset
      */
     public static String getDateTime(final String pattern) {
+
         return getDateTime(pattern, System.getProperty(FrameworkConstants.SYSTEM_USER_TIMEZONE));
     }
 
@@ -73,6 +77,7 @@ public class DateUtils {
      * @return offset date and time offset
      */
     public static String getDateTime(final String pattern, final String timeZone) {
+
         return getDateTime(pattern, timeZone, 0);
     }
 
@@ -86,6 +91,7 @@ public class DateUtils {
      * @return offset date and time
      */
     public static String getDateTime(final String pattern, final String timeZone, final int dateOffset) {
+
         Calendar cal = Calendar.getInstance(TimeZone.getTimeZone(timeZone));
         cal.add(Calendar.DATE, dateOffset);
         return getDateTime(pattern, cal, timeZone);
@@ -100,6 +106,7 @@ public class DateUtils {
      * @return formatted calendar time
      */
     public static String getDateTime(final String pattern, final int field, final int offset) {
+
         Calendar cal = Calendar.getInstance();
         cal.add(field, offset);
         return getDateTime(pattern, cal, System.getProperty(FrameworkConstants.SYSTEM_USER_TIMEZONE));
@@ -114,6 +121,7 @@ public class DateUtils {
      * @return formatted calendar time
      */
     public static String getDateTime(final String pattern, final Calendar calendar, final String timeZone) {
+
         DateFormat formatter;
         try {
             formatter = new SimpleDateFormat(pattern);
@@ -132,6 +140,7 @@ public class DateUtils {
      * @return dateOffset date and time
      */
     public static Date getDateByOffset(final int dateOffset) {
+
         Calendar cal = Calendar.getInstance(TimeZone.getTimeZone(System.getProperty(FrameworkConstants.SYSTEM_USER_TIMEZONE)));
         cal.add(Calendar.DATE, dateOffset);
         return cal.getTime();
@@ -149,6 +158,7 @@ public class DateUtils {
      * @return international date format Date object
      */
     public static Date getFormattedDate(final String dateToParse, String pattern) {
+
         try {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
             return simpleDateFormat.parse(dateToParse);

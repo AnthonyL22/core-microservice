@@ -2,6 +2,11 @@ package com.pwc.core.framework;
 
 import com.pwc.core.framework.data.CssProperty;
 import com.pwc.core.framework.data.WebElementAttribute;
+import org.openqa.selenium.logging.LogEntry;
+
+import java.util.List;
+import java.util.Set;
+import java.util.logging.Level;
 
 public abstract class DeclarativeTestCase extends MicroserviceTestSuite {
 
@@ -195,6 +200,67 @@ public abstract class DeclarativeTestCase extends MicroserviceTestSuite {
 
     protected String getWebElementText(final String elementIdentifier) {
         return webEventController.getWebEventService().getText(elementIdentifier);
+    }
+
+    /////////////////////////////
+    /**
+     * Get a list of the current Page's console log entries
+     */
+    protected List<LogEntry> getConsoleRequests() {
+        return webEventController.getWebEventService().getConsoleRequests();
+    }
+
+    /**
+     * Check if the current page's Console does contains a sub-string message
+     *
+     * @param consoleIdentifier case-insensitive snippet of console log output to find
+     */
+    protected void consoleContains(final String consoleIdentifier) {
+        webEventController.getWebEventService().webConsoleRequestContains(consoleIdentifier, true);
+    }
+
+    /**
+     * Check if the current page's Console does not contains a sub-string message
+     *
+     * @param consoleIdentifier case-insensitive snippet of console log output to find
+     */
+    protected void consoleNotContains(final String consoleIdentifier) {
+        webEventController.getWebEventService().webConsoleRequestContains(consoleIdentifier, false);
+    }
+
+    /**
+     * Check if the current page contains Console errors at a given log level or below
+     *
+     * @param targetLogLevel target log java.util.Level
+     */
+    protected void consoleLevelBelow(final Level targetLogLevel) {
+        webEventController.getWebEventService().webConsoleRequestLevel(targetLogLevel);
+    }
+
+    /**
+     * Get current Network requests that contain a particular request identifier and verify occurrence count
+     *
+     * @param requestIdentifier       target request identifier to do a case-insensitive match against
+     * @param matchingOccurrenceCount expected number of request occurrences
+     */
+    protected void networkRequestCountEquals(final String requestIdentifier, final int matchingOccurrenceCount) {
+        webEventController.getWebEventService().webNetworkRequestCount(requestIdentifier, matchingOccurrenceCount);
+    }
+
+    /**
+     * Get Set of current Network requests Set that contain a particular request identifier
+     *
+     * @param requestIdentifier target request identifier to do a case-insensitive match against
+     */
+    protected Set<String> networkRequestMatch(final String requestIdentifier) {
+        return webEventController.getWebEventService().webNetworkRequestMatch(requestIdentifier);
+    }
+
+    /**
+     * Get a list of the current Network requests
+     */
+    protected List<String> getNetworkRequests() {
+        return webEventController.getWebEventService().getPageRequests();
     }
 
 }

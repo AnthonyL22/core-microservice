@@ -23,6 +23,7 @@ public class StringUtils {
      * @return A string representation of Clob
      */
     public static String clobToString(Clob clobObject) {
+
         String clobAsString = "";
         try {
             InputStream asciiStream = clobObject.getAsciiStream();
