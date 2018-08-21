@@ -10,8 +10,7 @@ public class ObjectUtils {
      */
     protected static boolean isEmpty(Object object) {
 
-        boolean emptyObject = null == object;
-        return emptyObject;
+        return null == object;
     }
 
     /**
@@ -22,8 +21,7 @@ public class ObjectUtils {
      */
     protected static boolean isNotEmpty(Object object) {
 
-        boolean notEmptyObject = null != object;
-        return notEmptyObject;
+        return null != object;
     }
 
 }
