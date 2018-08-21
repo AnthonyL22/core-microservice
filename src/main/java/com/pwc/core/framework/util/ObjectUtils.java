@@ -10,12 +10,7 @@ public class ObjectUtils {
      */
     protected static boolean isEmpty(Object object) {
 
-        boolean emptyObject;
-        try {
-            emptyObject = null == object;
-        } catch (Exception e) {
-            emptyObject = true;
-        }
+        boolean emptyObject = null == object;
         return emptyObject;
     }
 
@@ -27,12 +22,7 @@ public class ObjectUtils {
      */
     protected static boolean isNotEmpty(Object object) {
 
-        boolean notEmptyObject;
-        try {
-            notEmptyObject = null != object;
-        } catch (Exception e) {
-            notEmptyObject = false;
-        }
+        boolean notEmptyObject = null != object;
         return notEmptyObject;
     }
 
