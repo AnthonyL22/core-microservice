@@ -8,7 +8,7 @@ public class ObjectUtils {
      * @param object object to check for nulls
      * @return is object null
      */
-    protected boolean isEmpty(Object object) {
+    protected static boolean isEmpty(Object object) {
 
         boolean emptyObject;
         try {
@@ -25,7 +25,7 @@ public class ObjectUtils {
      * @param object object to check for not null
      * @return is object null
      */
-    protected boolean isNotEmpty(Object object) {
+    protected static boolean isNotEmpty(Object object) {
 
         boolean notEmptyObject;
         try {
