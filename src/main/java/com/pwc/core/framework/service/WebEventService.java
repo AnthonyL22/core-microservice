@@ -1119,6 +1119,76 @@ public class WebEventService extends WebEventController {
     }
 
     /**
+     * Measure how long it takes for an element to disappear and not be visible to a user
+     *
+     * @return duration in seconds
+     */
+    public long durationForElementToDisappear(final String elementIdentifier) {
+
+        waitForElementToDisplay(elementIdentifier);
+        final int[] durationElementIsDisplayed = {0};
+
+        try {
+
+            (new WebDriverWait(this.microserviceWebDriver, timeOutInSeconds, 1000)).until(new ExpectedCondition<Boolean>() {
+
+                boolean isElementStillVisible = false;
+                int countDown = (int) timeOutInSeconds;
+
+                public Boolean apply(WebDriver d) {
+
+                    isElementStillVisible = isVisible(elementIdentifier);
+                    if (isElementStillVisible && countDown > 0) {
+                        LOG(true, "Waiting - Element='%s' STILL VISIBLE, Retrying for %s seconds ****", elementIdentifier, countDown--);
+                        durationElementIsDisplayed[0]++;
+                    }
+                    return !isElementStillVisible;
+                }
+            });
+
+        } catch (Exception e) {
+            LOG(false, "exception='%s'", e);
+        }
+
+        return durationElementIsDisplayed[0];
+    }
+
+    /**
+     * Measure how long it takes for an element to appear and become visible to a user
+     *
+     * @return duration in seconds
+     */
+    public long durationForElementToAppear(final String elementIdentifier) {
+
+        waitForElementToDisappear(elementIdentifier);
+        final int[] durationElementIsNotDisplayed = {0};
+
+        try {
+
+            (new WebDriverWait(this.microserviceWebDriver, timeOutInSeconds, 1000)).until(new ExpectedCondition<Boolean>() {
+
+                boolean isVisible = true;
+                int countDown = (int) timeOutInSeconds;
+
+                public Boolean apply(WebDriver d) {
+
+                    isVisible = isVisible(elementIdentifier);
+                    if (!isVisible && countDown > 0) {
+                        LOG(true, "Waiting - Element='%s' NOT VISIBLE, Retrying for %s seconds ****", elementIdentifier, countDown--);
+                        durationElementIsNotDisplayed[0]++;
+                    }
+                    return !isVisible;
+                }
+            });
+
+        } catch (Exception e) {
+            LOG(false, "exception='%s'", e);
+        }
+
+        return durationElementIsNotDisplayed[0];
+    }
+
+    /**
      * Wait for Element to disappear in the browser.  Will timeout after the configurable timeout and throw a failure to fail the test.
      * NOTE: be very careful with this method.  Make sure your elementIdentifier to wait for to NOT display is going to surly
      * disappear
@@ -1413,6 +1483,7 @@ public class WebEventService extends WebEventController {
      * Get current Network requests Set that contain a particular request identifier
      *
      * @param requestIdentifier target request identifier to do a case-insensitive match against
+     * @return unique Set of matching network tab requests
      */
     public Set<String> webNetworkRequestMatch(final String requestIdentifier) {
 
