@@ -1121,9 +1121,9 @@ public class WebEventService extends WebEventController {
     /**
      * Measure how long it takes for an element to disappear and not be visible to a user
      *
-     * @return duration in seconds
+     * @return duration in seconds for element to not be visible
      */
-    public long durationForElementToDisappear(final String elementIdentifier) {
+    public int durationForElementToDisappear(final String elementIdentifier) {
 
         waitForElementToDisplay(elementIdentifier);
         final int[] durationElementIsDisplayed = {0};
@@ -1156,11 +1156,10 @@ public class WebEventService extends WebEventController {
     /**
      * Measure how long it takes for an element to appear and become visible to a user
      *
-     * @return duration in seconds
+     * @return duration in seconds for element to be visible
      */
-    public long durationForElementToAppear(final String elementIdentifier) {
+    public int durationForElementToAppear(final String elementIdentifier) {
 
-        waitForElementToDisappear(elementIdentifier);
         final int[] durationElementIsNotDisplayed = {0};
 
         try {
@@ -1177,7 +1176,7 @@ public class WebEventService extends WebEventController {
                         LOG(true, "Waiting - Element='%s' NOT VISIBLE, Retrying for %s seconds ****", elementIdentifier, countDown--);
                         durationElementIsNotDisplayed[0]++;
                     }
-                    return !isVisible;
+                    return isVisible;
                 }
             });
 
