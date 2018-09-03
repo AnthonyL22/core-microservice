@@ -116,12 +116,12 @@ appear OR disappear from being visible to the user.  These utility methods rely 
 Selenium for registering when an element is actually visible or not visible to the user.
 
 ```
-int duration = durationForElementToAppear("//div[text()='Home Page']
+int duration = durationForElementToAppear("//div[text()='Home Page']")
 // Assert if the returned response time is acceptable
 ```
 
 ```
-int duration = durationForElementToDisappear("//div[text()='Wait while Loading...']
+int duration = durationForElementToDisappear("//div[text()='Wait while Loading...']")
 // Assert if the returned response time is acceptable
 ```
 
