@@ -11,6 +11,7 @@ import com.pwc.core.framework.driver.MicroserviceWebDriver;
 import com.pwc.core.framework.siteminder.Authenticator;
 import com.pwc.core.framework.util.DateUtils;
 import com.pwc.core.framework.util.DebuggingUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -175,7 +176,7 @@ public class WebEventService extends WebEventController {
     private void addCookiesToDriver(final List<Cookie> cookies, final String siteMinderUrl) {
 
         try {
-            if (cookies.size() > 0) {
+            if (CollectionUtils.isNotEmpty(cookies)) {
                 constructUrlWithFullHostFromGivenUrl(getUrl());
                 microserviceWebDriver.get(StringUtils.appendIfMissing(getUrl(), "/", "/") + siteMinderUrl);
                 for (Cookie c : cookies) {
@@ -197,7 +198,7 @@ public class WebEventService extends WebEventController {
      */
     protected void addCookiesToHttpClient(final List<Cookie> cookies) {
 
-        if (cookies.size() > 0) {
+        if (CollectionUtils.isNotEmpty(cookies)) {
 
             CloseableHttpResponse loginResponse = null;
 
@@ -1123,7 +1124,7 @@ public class WebEventService extends WebEventController {
      *
      * @return duration in seconds for element to not be visible
      */
-    public int durationForElementToDisappear(final String elementIdentifier) {
+    public int measureDurationForElementToDisappear(final String elementIdentifier) {
 
         waitForElementToDisplay(elementIdentifier);
         final int[] durationElementIsDisplayed = {0};
@@ -1158,7 +1159,7 @@ public class WebEventService extends WebEventController {
      *
      * @return duration in seconds for element to be visible
      */
-    public int durationForElementToAppear(final String elementIdentifier) {
+    public int measureDurationForElementToAppear(final String elementIdentifier) {
 
         final int[] durationElementIsNotDisplayed = {0};
 

@@ -110,6 +110,22 @@ long responseTime = webAction("//a[@id='MyAnchor']")
 // Assert if the returned response time is acceptable
 ```
 
+#### WebElement Appear OR Disappear
+There are also two helpful methods that calculate the time (in seconds) how long it takes for a WebElement to 
+appear OR disappear from being visible to the user.  These utility methods rely on the .isDisplayed() property in 
+Selenium for registering when an element is actually visible or not visible to the user.
+
+```
+int duration = durationForElementToAppear("//div[text()='Home Page']
+// Assert if the returned response time is acceptable
+```
+
+```
+int duration = durationForElementToDisappear("//div[text()='Wait while Loading...']
+// Assert if the returned response time is acceptable
+```
+
+
 #### Web Diagnostics Usage
 We also provide the ability to validate the Console & Network tab activities in your browser.  These are increasingly handy 
 if you need to monitor/test your web application at a lower level.

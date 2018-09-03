@@ -432,6 +432,26 @@ public abstract class WebTestCase extends MicroserviceTestSuite {
     }
 
     /**
+     * Measure the performance duration of how long it takes for a WebElement to appear in the browser to the user
+     *
+     * @param elementIdentifier element to find visibility
+     * @return duration in seconds for the element to display
+     */
+    protected int durationForElementToAppear(final String elementIdentifier) {
+        return webEventController.getWebEventService().measureDurationForElementToAppear(elementIdentifier);
+    }
+
+    /**
+     * Measure the performance duration of how long it takes for a WebElement to disappear from the browser
+     *
+     * @param elementIdentifier element to find to be not visible
+     * @return duration in seconds for the element to disappear
+     */
+    protected int durationForElementToDisappear(final String elementIdentifier) {
+        return webEventController.getWebEventService().measureDurationForElementToDisappear(elementIdentifier);
+    }
+
+    /**
      * Wait for Element to disappear in the browser.  Will timeout after the configurable timeout and throw a failure to fail the test.
      * NOTE: be very careful with this method.  Make sure your elementIdentifier to wait for to NOT display is going to surly
      * disappear
@@ -547,6 +567,8 @@ public abstract class WebTestCase extends MicroserviceTestSuite {
 
     /**
      * Get a list of the current Page's console log entries
+     *
+     * @return List of console log entries
      */
     protected List<LogEntry> webDiagnosticsConsoleRequests() {
         return webEventController.getWebEventService().getConsoleRequests();
@@ -593,6 +615,7 @@ public abstract class WebTestCase extends MicroserviceTestSuite {
      * Get Set of current Network requests Set that contain a particular request identifier
      *
      * @param requestIdentifier target request identifier to do a case-insensitive match against
+     * @return unique Set of matching network tab requests
      */
     protected Set<String> webNetworkRequestMatch(final String requestIdentifier) {
         return webEventController.getWebEventService().webNetworkRequestMatch(requestIdentifier);
@@ -600,6 +623,8 @@ public abstract class WebTestCase extends MicroserviceTestSuite {
 
     /**
      * Get a list of the current Network requests
+     *
+     * @return unique List of network tab requests
      */
     protected List<String> webNetworkRequests() {
         return webEventController.getWebEventService().getPageRequests();

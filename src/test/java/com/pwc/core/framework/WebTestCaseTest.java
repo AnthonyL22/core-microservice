@@ -238,6 +238,18 @@ public class WebTestCaseTest extends WebTestCase {
     }
 
     @Test
+    public void measureDurationForElementToAppearTest() {
+        int duration = durationForElementToAppear(IDENTIFIER);
+        Assert.assertNotEquals(duration, -1);
+    }
+
+    @Test
+    public void measureDurationForElementToDisappearTest() {
+        int duration = durationForElementToDisappear(IDENTIFIER);
+        Assert.assertNotEquals(duration, -1);
+    }
+
+    @Test
     public void waitForElementToDisappearTest() {
         waitForElementToDisappear(IDENTIFIER);
     }
