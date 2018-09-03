@@ -215,6 +215,21 @@ public abstract class MicroserviceTestSuite {
     }
 
     /**
+     * Initialize a headless page based on user defined URL that returns all HTML for the given request.
+     * Typically used for testing custom web page endpoints
+     *
+     * @param credentials nullable Credentials to authenticate with
+     * @param url         web service URL
+     * @return HTML for the given URL
+     */
+    protected String htmlAction(final Credentials credentials, final String url) {
+        if (webServiceController == null) {
+            webServiceController = (WebServiceController) ctx.getBean("webServiceController");
+        }
+        return webServiceController.htmlServiceAction(credentials, url);
+    }
+
+    /**
      * Initialize a headless page based on the web.services.url property defined in automation.properties file.
      * Typically used for testing a single page endpoint(s)
      *

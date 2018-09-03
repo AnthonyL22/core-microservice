@@ -134,6 +134,37 @@ webDiagnosticsConsole...() - validate your browser's Console tab Activities
 webDiagnosticsRequest...() - validate your browser's Network tab Activities
 ```
 
+### HTML Web Usage
+Utilizes the Apache HttpClient to open and optionally authenticate a given URL headlessly.  Next this operation returns
+the entire HTML DOM object as a String.  The HTML response object is returned for the tester to then 
+operate on accordingly.
+
+```
+Credentials myCredentials = new Credentials("anthony", "password");
+String rawPageHtml = htmlAction(myCredentials, "www.mywebsite.com");
+// Perform any String-based operations on the resultig page HTML
+``` 
+
+```
+String rawPageHtml = htmlAction(null, "www.mywebsite.com");
+// Perform any String-based operations on the resultig page HTML
+``` 
+
+### HTTP Web Usage
+Utilizes the Apache HttpClient to open and optionally authenticate a given URL headlessly.  A JSON response object is
+returned for the tester to then operate on accordingly.
+
+```
+Credentials myCredentials = new Credentials("anthony", "password");
+JsonPath response = (JsonPath) httpAction(myCredentials, "http://www.myemail.com");
+long responseTime = response.get(FrameworkConstants.HTTP_RESPONSE_TIME_KEY)
+```
+
+```
+JsonPath response = (JsonPath) httpAction(null, "http://www.myemail.com");
+long responseTime = response.get(FrameworkConstants.HTTP_RESPONSE_TIME_KEY)
+```
+
 ### Web Service Usage
 ```
 JsonPath response = (JsonPath) webServiceAction(SolrWebServiceCommand.SEARCH);

@@ -1,5 +1,7 @@
 package com.pwc.core.framework.controller;
 
+import com.jayway.restassured.path.json.JsonPath;
+import com.pwc.core.framework.FrameworkConstants;
 import com.pwc.core.framework.command.WebServiceCommand;
 import com.pwc.core.framework.data.Credentials;
 import com.pwc.core.framework.data.OAuthKey;
@@ -8,6 +10,13 @@ import com.pwc.core.framework.processors.rest.WebServiceProcessor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
+import static com.pwc.logging.service.LoggerService.LOG;
 
 @Component
 public class WebServiceController extends WebServiceProcessor {
@@ -174,6 +183,32 @@ public class WebServiceController extends WebServiceProcessor {
         } else {
             return execute(url, user, password);
         }
+    }
+
+    /**
+     * Http execution based on a direct url that returns the resulting HTML for a headless page
+     *
+     * @param credentials user credentials
+     * @param url         user defined url
+     * @return HTML representation of headless page
+     */
+    public String htmlServiceAction(final Credentials credentials, final String url) {
+
+        StringBuilder urlBuilder = new StringBuilder();
+        try {
+
+            JsonPath response = (JsonPath) httpServiceAction(credentials, url);
+            InputStream targetStream = new ByteArrayInputStream(response.get(FrameworkConstants.HTTP_ENTITY_KEY).toString().getBytes());
+            BufferedReader rd = new BufferedReader(new InputStreamReader(targetStream));
+            String line;
+            while ((line = rd.readLine()) != null) {
+                urlBuilder.append(line);
+            }
+
+        } catch (Exception e) {
+            LOG(true, "Failed to read html response for url=%s due to exception=%s", url, e);
+        }
+        return urlBuilder.toString();
     }
 
     public String getUrl() {
