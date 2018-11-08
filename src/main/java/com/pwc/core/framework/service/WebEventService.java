@@ -1122,6 +1122,7 @@ public class WebEventService extends WebEventController {
     /**
      * Measure how long it takes for an element to disappear and not be visible to a user
      *
+     * @param elementIdentifier element to find
      * @return duration in seconds for element to not be visible
      */
     public int measureDurationForElementToDisappear(final String elementIdentifier) {
@@ -1157,6 +1158,7 @@ public class WebEventService extends WebEventController {
     /**
      * Measure how long it takes for an element to appear and become visible to a user
      *
+     * @param elementIdentifier element to find
      * @return duration in seconds for element to be visible
      */
     public int measureDurationForElementToAppear(final String elementIdentifier) {
