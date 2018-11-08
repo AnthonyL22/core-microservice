@@ -1459,6 +1459,27 @@ public class WebEventService extends WebEventController {
     }
 
     /**
+     * Check if the Console contains entries greater than or equal to the allowable Level.  This is a filtered list
+     * for this specific project
+     *
+     * @param elementIdentifier WebElement to wait for to display before reading Console tab data
+     * @param level             {@link Level} the level to filter the log entries
+     * @param requestIgnoreSet  Set of Console requests to ignore
+     */
+    public void webConsoleRequestGreaterThanOrEqual(final String elementIdentifier, final Level level, final Set<String> requestIgnoreSet) {
+
+        waitForBrowserToLoad();
+        waitForElementToDisplay(elementIdentifier);
+
+        List<LogEntry> allRequests = getConsoleRequests();
+        requestIgnoreSet.forEach(ignoreIt -> allRequests.removeIf(request -> request.getMessage().contains(ignoreIt)));
+
+        LogEntries consoleEntries = new LogEntries(allRequests);
+        consoleEntries.filter(level);
+        assertEquals("Console contains %s entries @Log Level >= %s", consoleEntries.getAll().size(), 0, consoleEntries.getAll().size(), level.getName());
+    }
+
+    /**
      * Get current Network requests that contain a particular request identifier and verify occurrence count
      *
      * @param requestIdentifier       target request identifier to do a case-insensitive match against
@@ -1468,7 +1489,7 @@ public class WebEventService extends WebEventController {
         List<String> sourcePageRequests = getPageRequests();
         int occurrencesFound = 0;
         for (String sourcePageRequest : sourcePageRequests) {
-            if (StringUtils.containsIgnoreCase(sourcePageRequest, requestIdentifier.toString())) {
+            if (StringUtils.containsIgnoreCase(sourcePageRequest, requestIdentifier)) {
                 occurrencesFound++;
             }
         }

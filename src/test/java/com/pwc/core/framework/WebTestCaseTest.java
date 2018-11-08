@@ -10,6 +10,8 @@ import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.testng.Assert;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Level;
 
 import static org.mockito.Mockito.mock;
@@ -297,6 +299,13 @@ public class WebTestCaseTest extends WebTestCase {
     @Test
     public void webConsoleLevelAboveTest() {
         webDiagnosticsConsoleLevelBelow(Level.SEVERE);
+    }
+
+    @Test
+    public void webConsoleLevelGreaterThanOrEqual() {
+        Set<String> ignoreList = new HashSet<>();
+        ignoreList.add("help");
+        webConsoleRequestGreaterThanOrEqual("//div[@id='home']", Level.SEVERE, ignoreList);
     }
 
     @Test
