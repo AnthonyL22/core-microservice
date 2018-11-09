@@ -78,7 +78,7 @@
     <spring.version>5.1.0.RELEASE</spring.version>
     <surefire-junit47.version>2.12</surefire-junit47.version>
     <surefire.junit.version>2.18.1</surefire.junit.version>
-    <testng.version>6.9.4</testng.version>
+    <testng.version>6.9.10</testng.version>
     <versions-maven-plugin.version>2.1</versions-maven-plugin.version>
     <xmlapis.version>1.4.01</xmlapis.version>
   </properties>
