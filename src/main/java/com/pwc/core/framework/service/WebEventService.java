@@ -1481,9 +1481,9 @@ public class WebEventService extends WebEventController {
         filteredConsoleEntries.filter(level);
 
         if (CollectionUtils.isEmpty(filteredConsoleEntries.getAll())) {
-            assertPass("Console contains %s expected entries @Log Level >= %s", filteredConsoleEntries.getAll().size(), 0, filteredConsoleEntries.getAll().size(), level.getName());
+            assertPass("Console contains %s expected entries @Log Level >= %s", filteredConsoleEntries.getAll().size(), level.getName());
         } else {
-            assertFail("Console contains %s unexpected entries @Log Level >= %s", filteredConsoleEntries.getAll().size(), 0, filteredConsoleEntries.getAll().size(), level.getName());
+            assertFail("Console contains %s unexpected entries @Log Level >= %s", filteredConsoleEntries.getAll().size(), level.getName());
         }
     }
 
@@ -1502,9 +1502,9 @@ public class WebEventService extends WebEventController {
             }
         }
         if (occurrencesFound == matchingOccurrenceCount) {
-            assertPass("networkRequestCount() Passed for occurrence count='%s' identifier='%s'", occurrencesFound, requestIdentifier.toString());
+            assertPass("networkRequestCount() Passed for occurrence count='%s' identifier='%s'", occurrencesFound, requestIdentifier);
         } else {
-            assertFail("networkRequestCount() Failed for occurrence count='%s' identifier='%s'", occurrencesFound, requestIdentifier.toString());
+            assertFail("networkRequestCount() Failed for occurrence count='%s' identifier='%s'", occurrencesFound, requestIdentifier);
         }
     }
 
