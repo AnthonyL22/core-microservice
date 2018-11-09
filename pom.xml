@@ -45,8 +45,7 @@
     <commonsdbcp2.version>2.0</commonsdbcp2.version>
     <gagawa.version>1.0.1</gagawa.version>
     <httpclient.version>3.1</httpclient.version>
-    <jackson.json.version>2.5.1</jackson.json.version>
-    <jackson.version>1.9.13</jackson.version>
+    <jackson.json.version>2.9.7</jackson.json.version>
     <jacoco.version>0.7.5.201505241946</jacoco.version>
     <java_code.version>1.8</java_code.version>
     <jsoup.version>1.8.2</jsoup.version>
@@ -76,7 +75,7 @@
     <selenium.version>3.14.0</selenium.version>
     <sortpom-maven-plugin.version>2.6.0</sortpom-maven-plugin.version>
     <spring-mongodb.version>1.2.0.RELEASE</spring-mongodb.version>
-    <spring.version>3.2.3.RELEASE</spring.version>
+    <spring.version>5.1.0.RELEASE</spring.version>
     <surefire-junit47.version>2.12</surefire-junit47.version>
     <surefire.junit.version>2.18.1</surefire.junit.version>
     <testng.version>6.9.10</testng.version>

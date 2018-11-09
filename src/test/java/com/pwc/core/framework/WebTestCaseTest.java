@@ -305,7 +305,12 @@ public class WebTestCaseTest extends WebTestCase {
     public void webConsoleLevelGreaterThanOrEqual() {
         Set<String> ignoreList = new HashSet<>();
         ignoreList.add("help");
-        webConsoleRequestGreaterThanOrEqual("//div[@id='home']", Level.SEVERE, ignoreList);
+        webDiagnosticsConsoleRequestGreaterThanOrEqual("//div[@id='home']", Level.SEVERE, ignoreList);
+    }
+
+    @Test
+    public void webConsoleLevelGreaterThanOrEqualNullIgnore() {
+        webDiagnosticsConsoleRequestGreaterThanOrEqual("//div[@id='home']", Level.SEVERE);
     }
 
     @Test

@@ -607,9 +607,20 @@ public abstract class WebTestCase extends MicroserviceTestSuite {
      *
      * @param elementIdentifier WebElement to wait for to display before reading Console tab data
      * @param level             {@link Level} the level to filter the log entries
+     */
+    protected void webDiagnosticsConsoleRequestGreaterThanOrEqual(final String elementIdentifier, final Level level) {
+        webEventController.getWebEventService().webConsoleRequestGreaterThanOrEqual(elementIdentifier, level, null);
+    }
+
+    /**
+     * Check if the Console contains entries greater than or equal to the allowable Level.  This is a filtered list
+     * for this specific project
+     *
+     * @param elementIdentifier WebElement to wait for to display before reading Console tab data
+     * @param level             {@link Level} the level to filter the log entries
      * @param requestIgnoreSet  Set of Console requests to ignore from assertion
      */
-    protected void webConsoleRequestGreaterThanOrEqual(final String elementIdentifier, final Level level, final Set<String> requestIgnoreSet) {
+    protected void webDiagnosticsConsoleRequestGreaterThanOrEqual(final String elementIdentifier, final Level level, final Set<String> requestIgnoreSet) {
         webEventController.getWebEventService().webConsoleRequestGreaterThanOrEqual(elementIdentifier, level, requestIgnoreSet);
     }
 

@@ -1470,15 +1470,21 @@ public class WebEventService extends WebEventController {
      */
     public void webConsoleRequestGreaterThanOrEqual(final String elementIdentifier, final Level level, final Set<String> requestIgnoreSet) {
 
-        waitForBrowserToLoad();
         waitForElementToDisplay(elementIdentifier);
 
         List<LogEntry> allRequests = getConsoleRequests();
-        requestIgnoreSet.forEach(ignoreIt -> allRequests.removeIf(request -> request.getMessage().contains(ignoreIt)));
+        if (null != requestIgnoreSet) {
+            requestIgnoreSet.forEach(ignoreIt -> allRequests.removeIf(request -> request.getMessage().contains(ignoreIt)));
+        }
 
-        LogEntries consoleEntries = new LogEntries(allRequests);
-        consoleEntries.filter(level);
-        assertEquals("Console contains %s entries @Log Level >= %s", consoleEntries.getAll().size(), 0, consoleEntries.getAll().size(), level.getName());
+        LogEntries filteredConsoleEntries = new LogEntries(allRequests);
+        filteredConsoleEntries.filter(level);
+
+        if (CollectionUtils.isEmpty(filteredConsoleEntries.getAll())) {
+            assertPass("Console contains %s expected entries @Log Level >= %s", filteredConsoleEntries.getAll().size(), 0, filteredConsoleEntries.getAll().size(), level.getName());
+        } else {
+            assertFail("Console contains %s unexpected entries @Log Level >= %s", filteredConsoleEntries.getAll().size(), 0, filteredConsoleEntries.getAll().size(), level.getName());
+        }
     }
 
     /**
