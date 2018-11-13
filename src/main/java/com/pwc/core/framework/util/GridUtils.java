@@ -10,9 +10,10 @@ import java.util.regex.Pattern;
 
 public class GridUtils {
 
-    private static final Pattern FIREFOX_REGEX = Pattern.compile("^.*?(ff|firefox)+?");
-    private static final Pattern CHROME_REGEX = Pattern.compile("^.*?(ch|chrome)+?");
-    private static final Pattern CHROME_HEADLESS_REGEX = Pattern.compile("^.*?(headless|headlesschrome)+?");
+    private static final Pattern FIREFOX_REGEX = Pattern.compile("^.*?(firefox)+?");
+    private static final Pattern FIREFOX_HEADLESS_REGEX = Pattern.compile("^.*?(headless_ff|headlessff)+?");
+    private static final Pattern CHROME_REGEX = Pattern.compile("^.*?(chrome)+?");
+    private static final Pattern CHROME_HEADLESS_REGEX = Pattern.compile("^.*?(headless_ch|headlessch)+?");
     private static final Pattern ANDROID_REGEX = Pattern.compile("^.*?(droid|appium|android|google)+?");
     private static final Pattern IOS_REGEX = Pattern.compile("^.*?(iphone|ipad)+?");
     private static final Pattern INTERNET_EXPLORER_REGEX = Pattern.compile("^.*?(ie|internet\\sexplorer|explorer)+?");
@@ -56,6 +57,11 @@ public class GridUtils {
             browserMatcher = FIREFOX_REGEX.matcher(property);
             if (browserMatcher.find()) {
                 System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.FIREFOX_BROWSER_MODE);
+                return;
+            }
+            browserMatcher = FIREFOX_HEADLESS_REGEX.matcher(property);
+            if (browserMatcher.find()) {
+                System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.HEADLESS_FIREFOX_BROWSER_MODE);
                 return;
             }
             browserMatcher = CHROME_REGEX.matcher(property);

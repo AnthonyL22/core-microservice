@@ -32,10 +32,11 @@ public final class FrameworkConstants {
     public static final String DEV_ENVIRONMENT_KEY = "dev";
 
     // Default Script Execution Modes
-    public static final String FIREFOX_BROWSER_MODE = "ff";
-    public static final String CHROME_BROWSER_MODE = "ch";
-    public static final String HEADLESS_CHROME_BROWSER_MODE = "headless";
-    public static final String ANDROID_MODE = "an";
+    public static final String FIREFOX_BROWSER_MODE = "firefox";
+    public static final String HEADLESS_FIREFOX_BROWSER_MODE = "headless_ff";
+    public static final String CHROME_BROWSER_MODE = "chrome";
+    public static final String HEADLESS_CHROME_BROWSER_MODE = "headless_ch";
+    public static final String ANDROID_MODE = "android";
     public static final String IOS_MODE = "ios";
     public static final String INTERNET_EXPLORER_BROWSER_MODE = "ie";
     public static final String EDGE_BROWSER_MODE = "edge";

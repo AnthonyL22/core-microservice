@@ -12,7 +12,7 @@ This service is an on-ramp for entire engineering teams to contribute to the fun
 
 Currently capabilities include:
 
-* Browser (Internet Explorer, Firefox, Chrome, Headless Chrome, Safari, PhantomJS)
+* Browser (Internet Explorer, Firefox, Headless Firefox, Chrome, Headless Chrome, Safari, PhantomJS)
 * Mobile Browser (Android, iOS using Appium)
 * REST Web Services (SiteMinder Authenticated) 
 * Database (Oracle, MongoDB, MS SQL, any JDBC connection)
@@ -292,7 +292,7 @@ Simply define the following at runtime via **-D** system variables:
 
 | User Defined Command  | Options                                                                                 | Default     | Example                      |
 | ----------------------|-----------------------------------------------------------------------------------------|-------------|------------------------------|
-| -Dbrowser             | ch, headless, ff, ie, safari                                                            | Chrome      | -Dbrowser=ff                 |
+| -Dbrowser             | ch, headless_ch, ff, headless_ff, ie, safari                                            | Chrome      | -Dbrowser=ff                 |
 | -Dbrowser.version     | any available                                                                           | 44          | -Dbrowser.version=38.0       |
 | -Dbrowser.resolution  | 800x600, 1024x768, 1152x864, 1280x800, 1280x960, 1280x1024, others                      | 1024x768    | -Dbrowser.resolution=800x600 |
 | -Dplatform            | mac, osx, linux, windows, windows 10, windows 8, windows 8.1, windows 7, windows xp, xp | linux       | -Dplatform=xp                |
@@ -435,7 +435,7 @@ Important: the headless browser(s) are executed on the system that is executing 
 The following system environment variables must be set to run the Headless Chrome browser in a runtime environment
 
 ```
--Dbrowser=headless
+-Dbrowser=headless_ch OR headless_ff
 ```
 
 ### PhantomJS

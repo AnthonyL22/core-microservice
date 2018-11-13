@@ -16,6 +16,7 @@ import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.Assert;
 
+import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -104,20 +105,6 @@ public class WebEventControllerTest {
         webEventService.setMicroserviceWebDriver(mockWebDriverService);
         webEventService.redirectToUrl(APPLICATION_WEB_URL);
     }
-
-//    @Test
-//    public void navigateToUrlAndMaximizedBrowserTest() {
-//        WebDriver.Window mockWindow = mock(WebDriver.Window.class);
-//        WebDriver.Options mockOptions = mock(WebDriver.Options.class);
-//        when(mockOptions.window()).thenReturn(mockWindow);
-//        when(mockWebDriverService.manage()).thenReturn(mockOptions);
-//
-//        when(mockDesiredCapabilities.getBrowserName()).thenReturn("Chrome");
-//        when(mockWebDriverService.getCurrentUrl()).thenReturn(APPLICATION_WEB_URL);
-//        webEventService.setMicroserviceWebDriver(mockWebDriverService);
-//        long duration = webEventService.redirectToUrl(APPLICATION_WEB_URL);
-//        Assert.assertTrue(duration > 0 && duration < 1000);
-//    }
 
     @Test
     public void setDefaultDesiredCapabilitiesSauceLabsAllFieldsTest() {
@@ -339,11 +326,20 @@ public class WebEventControllerTest {
     }
 
     @Test()
-    public void getFirefoxBrowserGridExistingLiveRemoteDriverTest() throws Exception {
+    public void getFirefoxBrowserGridExistingLiveRemoteDriverTest() throws MalformedURLException {
         webEventController.setRemoteWebDriver(mockWebDriverService);
         webEventController.setGridEnabled(true);
         webEventController.setGridUrl(GRID_URL);
         MicroserviceWebDriver result = webEventController.getFirefoxBrowser();
+        Assert.assertNull(result);
+    }
+
+    @Test()
+    public void getFirefoxBrowserGridExistingLiveRemoteDriverHeadlessTest() throws MalformedURLException {
+        webEventController.setRemoteWebDriver(mockWebDriverService);
+        webEventController.setGridEnabled(true);
+        webEventController.setGridUrl(GRID_URL);
+        MicroserviceWebDriver result = webEventController.getHeadlessFirefoxBrowser();
         Assert.assertNull(result);
     }
 
@@ -355,14 +351,14 @@ public class WebEventControllerTest {
     }
 
     @Test(expected = NullPointerException.class)
-    public void getFirefoxBrowserGridNoExistingLiveRemoteDriverTest() throws Exception {
+    public void getFirefoxBrowserGridNoExistingLiveRemoteDriverTest() throws MalformedURLException {
         webEventController.setGridEnabled(true);
         webEventController.setGridUrl(GRID_URL);
         webEventController.getFirefoxBrowser();
     }
 
     @Test()
-    public void getFirefoxBrowserNoGridExistingLiveRemoteDriverTest() throws Exception {
+    public void getFirefoxBrowserNoGridExistingLiveRemoteDriverTest() throws MalformedURLException {
         webEventController.setRemoteWebDriver(mockWebDriverService);
         webEventController.setGridEnabled(false);
         webEventController.setGridUrl(GRID_URL);
@@ -473,7 +469,7 @@ public class WebEventControllerTest {
     }
 
     @Test()
-    public void getPhantomJsBrowserGridExistingLiveRemoteDriverTest() throws Exception {
+    public void getPhantomJsBrowserGridExistingLiveRemoteDriverTest() throws MalformedURLException {
         webEventController.setRemoteWebDriver(mockWebDriverService);
         webEventController.setGridEnabled(true);
         webEventController.setGridUrl(GRID_URL);
@@ -482,14 +478,14 @@ public class WebEventControllerTest {
     }
 
     @Test(expected = NullPointerException.class)
-    public void getPhantomJsBrowserGridNoExistingLiveRemoteDriverTest() throws Exception {
+    public void getPhantomJsBrowserGridNoExistingLiveRemoteDriverTest() throws MalformedURLException {
         webEventController.setGridEnabled(true);
         webEventController.setGridUrl(GRID_URL);
         webEventController.getPhantomJsBrowser();
     }
 
     @Test()
-    public void getPhantomJsBrowserNoGridExistingLiveRemoteDriverTest() throws Exception {
+    public void getPhantomJsBrowserNoGridExistingLiveRemoteDriverTest() throws MalformedURLException {
         webEventController.setRemoteWebDriver(mockWebDriverService);
         webEventController.setGridEnabled(false);
         webEventController.setGridUrl(GRID_URL);
@@ -498,7 +494,7 @@ public class WebEventControllerTest {
     }
 
     @Test()
-    public void getEdgeBrowserGridExistingLiveRemoteDriverTest() throws Exception {
+    public void getEdgeBrowserGridExistingLiveRemoteDriverTest() throws MalformedURLException {
         webEventController.setRemoteWebDriver(mockWebDriverService);
         webEventController.setGridEnabled(true);
         webEventController.setGridUrl(GRID_URL);
@@ -507,14 +503,14 @@ public class WebEventControllerTest {
     }
 
     @Test(expected = NullPointerException.class)
-    public void getEdgeBrowserNoExistingLiveRemoteDriverTest() throws Exception {
+    public void getEdgeBrowserNoExistingLiveRemoteDriverTest() throws MalformedURLException {
         webEventController.setGridEnabled(true);
         webEventController.setGridUrl(GRID_URL);
         webEventController.getEdgeBrowser();
     }
 
     @Test()
-    public void getSafariBrowserGridExistingLiveRemoteDriverTest() throws Exception {
+    public void getSafariBrowserGridExistingLiveRemoteDriverTest() throws MalformedURLException {
         webEventController.setRemoteWebDriver(mockWebDriverService);
         webEventController.setGridEnabled(true);
         webEventController.setGridUrl(GRID_URL);
@@ -523,14 +519,14 @@ public class WebEventControllerTest {
     }
 
     @Test(expected = NullPointerException.class)
-    public void getSafariGridNoExistingLiveRemoteDriverTest() throws Exception {
+    public void getSafariGridNoExistingLiveRemoteDriverTest() throws MalformedURLException {
         webEventController.setGridEnabled(true);
         webEventController.setGridUrl(GRID_URL);
         webEventController.getSafariBrowser();
     }
 
     @Test()
-    public void getSafariBrowserNoGridExistingLiveRemoteDriverTest() throws Exception {
+    public void getSafariBrowserNoGridExistingLiveRemoteDriverTest() throws MalformedURLException {
         webEventController.setRemoteWebDriver(mockWebDriverService);
         webEventController.setGridEnabled(false);
         webEventController.setGridUrl(GRID_URL);
@@ -540,7 +536,7 @@ public class WebEventControllerTest {
     }
 
     @Test()
-    public void getInternetExplorerBrowserGridExistingLiveRemoteDriverTest() throws Exception {
+    public void getInternetExplorerBrowserGridExistingLiveRemoteDriverTest() throws MalformedURLException {
         webEventController.setRemoteWebDriver(mockWebDriverService);
         webEventController.setGridEnabled(true);
         webEventController.setGridUrl(GRID_URL);
@@ -549,14 +545,14 @@ public class WebEventControllerTest {
     }
 
     @Test(expected = NullPointerException.class)
-    public void getInternetExplorerBrowserGridNoExistingLiveRemoteDriverTest() throws Exception {
+    public void getInternetExplorerBrowserGridNoExistingLiveRemoteDriverTest() throws MalformedURLException {
         webEventController.setGridEnabled(true);
         webEventController.setGridUrl(GRID_URL);
         webEventController.getInternetExplorerBrowser();
     }
 
     @Test()
-    public void getInternetExplorerBrowserNoGridExistingLiveRemoteDriverTest() throws Exception {
+    public void getInternetExplorerBrowserNoGridExistingLiveRemoteDriverTest() throws MalformedURLException {
         webEventController.setRemoteWebDriver(mockWebDriverService);
         webEventController.setGridEnabled(false);
         webEventController.setGridUrl(GRID_URL);

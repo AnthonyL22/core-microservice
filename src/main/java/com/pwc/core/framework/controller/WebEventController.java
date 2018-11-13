@@ -21,6 +21,8 @@ import com.pwc.core.framework.util.PropertiesUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxBinary;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.phantomjs.PhantomJSDriverService;
 import org.openqa.selenium.remote.BrowserType;
 import org.openqa.selenium.remote.CapabilityType;
@@ -92,6 +94,10 @@ public class WebEventController {
             switch (System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY)) {
                 case FrameworkConstants.FIREFOX_BROWSER_MODE: {
                     this.remoteWebDriver = getFirefoxBrowser();
+                    break;
+                }
+                case FrameworkConstants.HEADLESS_FIREFOX_BROWSER_MODE: {
+                    this.remoteWebDriver = getHeadlessFirefoxBrowser();
                     break;
                 }
                 case FrameworkConstants.CHROME_BROWSER_MODE: {
@@ -231,6 +237,7 @@ public class WebEventController {
      * @throws MalformedURLException url exception
      */
     public MicroserviceWebDriver getFirefoxBrowser() throws MalformedURLException {
+
         LOG("starting firefox browser");
         setDriverExecutable();
         capabilities.setCapability("marionette", true);
@@ -252,12 +259,48 @@ public class WebEventController {
     }
 
     /**
+     * Get Headless Firefox Web Driver for local or RemoteWebDriver capability
+     *
+     * @return MicroserviceWebDriver instance
+     */
+    public MicroserviceWebDriver getHeadlessFirefoxBrowser() throws MalformedURLException {
+
+        LOG("starting headless firefox browser");
+        setDriverExecutable();
+        FirefoxBinary firefoxBinary = new FirefoxBinary();
+        firefoxBinary.addCommandLineOptions("--headless");
+        FirefoxOptions firefoxOptions = new FirefoxOptions();
+        firefoxOptions.setBinary(firefoxBinary);
+        firefoxOptions.addArguments("window-size=1920,1080");
+        capabilities.setCapability(FirefoxOptions.FIREFOX_OPTIONS, firefoxOptions);
+        capabilities.setCapability("marionette", true);
+        capabilities.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
+        capabilities.setCapability(CapabilityType.BROWSER_NAME, BrowserType.FIREFOX);
+        capabilities.setCapability("video", "True");
+
+        if (gridEnabled) {
+            if (this.remoteWebDriver == null) {
+                MicroserviceRemoteWebDriver microserviceRemoteWebDriver = new MicroserviceRemoteWebDriver(new URL(gridUrl), capabilities);
+                microserviceRemoteWebDriver.setFileDetector(new LocalFileDetector());
+                return microserviceRemoteWebDriver;
+            }
+        } else {
+            if (this.remoteWebDriver == null) {
+                return (new MicroserviceFirefoxDriver(firefoxOptions));
+            }
+        }
+        return null;
+
+    }
+
+    /**
      * Get a group of SauceLabs generic Web Driver for local or RemoteWebDriver capability
      *
      * @return MicroserviceWebDriver instance
      * @throws MalformedURLException url exception
      */
     public MicroserviceWebDriver getAnyBrowser() throws MalformedURLException {
+
         LOG("starting sauce labs browser(s)");
         if (gridEnabled) {
             if (this.remoteWebDriver == null) {
@@ -276,6 +319,7 @@ public class WebEventController {
      * @throws MalformedURLException url exception
      */
     public MicroserviceWebDriver getChromeBrowser() throws MalformedURLException {
+
         LOG("starting chrome browser");
         setDriverExecutable();
         ChromeOptions chromeOptions = new ChromeOptions();
@@ -306,12 +350,12 @@ public class WebEventController {
      * @throws MalformedURLException url exception
      */
     public MicroserviceWebDriver getHeadlessChromeBrowser() throws MalformedURLException {
+
         LOG("starting headless chrome browser");
         setDriverExecutable();
         ChromeOptions chromeOptions = new ChromeOptions();
         chromeOptions.addArguments("headless");
         chromeOptions.addArguments("window-size=1920,1080");
-//        chromeOptions.addArguments("remote-debugging-port=9222");
         capabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
         capabilities.setCapability(CapabilityType.BROWSER_NAME, BrowserType.CHROME);
         capabilities.setCapability("video", "True");
@@ -337,6 +381,7 @@ public class WebEventController {
      * @throws MalformedURLException url exception
      */
     public MicroserviceWebDriver getAndroidBrowser() throws Exception {
+
         LOG("starting android browser");
         setDriverExecutable();
         capabilities.setCapability(CapabilityType.BROWSER_NAME, BrowserType.ANDROID);
@@ -361,6 +406,7 @@ public class WebEventController {
      * @throws MalformedURLException url exception
      */
     public MicroserviceWebDriver getEdgeBrowser() throws MalformedURLException {
+
         LOG("starting microsoft edge browser");
         setDriverExecutable();
         capabilities.setCapability(CapabilityType.BROWSER_NAME, BrowserType.EDGE);
@@ -385,6 +431,7 @@ public class WebEventController {
      * @throws MalformedURLException url exception
      */
     public MicroserviceWebDriver getInternetExplorerBrowser() throws MalformedURLException {
+
         LOG("starting internet explorer browser");
         setDriverExecutable();
         capabilities.setCapability(CapabilityType.BROWSER_NAME, BrowserType.IE);
@@ -409,6 +456,7 @@ public class WebEventController {
      * @throws MalformedURLException url exception
      */
     public MicroserviceWebDriver getSafariBrowser() throws MalformedURLException {
+
         LOG("starting safari browser");
         setDriverExecutable();
         capabilities.setCapability(CapabilityType.BROWSER_NAME, BrowserType.SAFARI);
@@ -433,6 +481,7 @@ public class WebEventController {
      * @throws MalformedURLException url exception
      */
     public MicroserviceWebDriver getPhantomJsBrowser() throws MalformedURLException {
+
         LOG("starting PhantomJS virtual browser");
         capabilities.setCapability(CapabilityType.BROWSER_NAME, BrowserType.PHANTOMJS);
         capabilities.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, setDriverExecutable());
@@ -463,7 +512,7 @@ public class WebEventController {
      *
      * @return driver executable file path
      */
-    public String setDriverExecutable() {
+    protected String setDriverExecutable() {
 
         final String DESIRED_BROWSER = StringUtils.defaultIfBlank(System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY), "");
         File executable;
@@ -492,6 +541,13 @@ public class WebEventController {
                 break;
             }
             case FrameworkConstants.FIREFOX_BROWSER_MODE: {
+                executable = StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), "windows") ?
+                        PropertiesUtils.getFirstFileFromTestResources("geckodriver.exe") :
+                        PropertiesUtils.getFirstFileFromTestResources("geckodriver");
+                System.setProperty(FrameworkConstants.WEB_DRIVER_GECKO, PropertiesUtils.getPath(executable));
+                break;
+            }
+            case FrameworkConstants.HEADLESS_FIREFOX_BROWSER_MODE: {
                 executable = StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), "windows") ?
                         PropertiesUtils.getFirstFileFromTestResources("geckodriver.exe") :
                         PropertiesUtils.getFirstFileFromTestResources("geckodriver");
@@ -536,6 +592,7 @@ public class WebEventController {
      * @return time in milliseconds for Mouse-specific web event to execute
      */
     public long webAction(final WebElement webElement, final Object webElementValue) {
+
         if (videoCaptureEnabled) {
             DebuggingUtils.takeScreenShot(remoteWebDriver);
         }
