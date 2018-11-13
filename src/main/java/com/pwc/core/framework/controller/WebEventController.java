@@ -262,6 +262,7 @@ public class WebEventController {
      * Get Headless Firefox Web Driver for local or RemoteWebDriver capability
      *
      * @return MicroserviceWebDriver instance
+     * @throws MalformedURLException url exception
      */
     public MicroserviceWebDriver getHeadlessFirefoxBrowser() throws MalformedURLException {
 
