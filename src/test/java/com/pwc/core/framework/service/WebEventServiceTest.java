@@ -244,19 +244,6 @@ public class WebEventServiceTest extends WebElementBaseTest {
         webEventService.webConsoleRequestLevel(Level.INFO);
     }
 
-    @Test(expected = AssertionError.class)
-    public void addCookiesToHttpClientSemiValidLoginResponseTest() {
-        List cookieList = new ArrayList(Arrays.asList(mockHttpCookie));
-        webEventService.addCookiesToHttpClient(cookieList);
-    }
-
-    @Test(expected = AssertionError.class)
-    public void addCookiesToHttpClientNullLoginResponseTest() {
-        webEventService.setUrl(DEFAULT_URL);
-        List cookieList = new ArrayList(Arrays.asList(mockHttpCookie));
-        webEventService.addCookiesToHttpClient(cookieList);
-    }
-
     @Test
     public void redirectDoNotMaximizeMobileBrowserTest() {
         DesiredCapabilities mockCapabilities = mock(DesiredCapabilities.class);

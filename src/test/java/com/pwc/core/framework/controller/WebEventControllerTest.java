@@ -98,14 +98,6 @@ public class WebEventControllerTest {
 
     }
 
-    //@Test
-    public void navigateToUrlMicrosoftEdgeSegmentTest() {
-        when(mockDesiredCapabilities.getBrowserName()).thenReturn("MicrosoftEdge");
-        when(mockWebDriverService.getCurrentUrl()).thenReturn(APPLICATION_WEB_URL);
-        webEventService.setMicroserviceWebDriver(mockWebDriverService);
-        webEventService.redirectToUrl(APPLICATION_WEB_URL);
-    }
-
     @Test
     public void setDefaultDesiredCapabilitiesSauceLabsAllFieldsTest() {
 

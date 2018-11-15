@@ -163,7 +163,7 @@ public class WebServiceProcessor {
 
     /**
      * Generic REST web service Execution method for simple GET requests
-     * that return a String response. Example: http://www.mywebsite.com/rest/getAllUsers
+     * that return a String response. Example: http://www.pacificwebconsulting.com/rest/getAllUsers
      *
      * @param url           web service URL
      * @param user          username

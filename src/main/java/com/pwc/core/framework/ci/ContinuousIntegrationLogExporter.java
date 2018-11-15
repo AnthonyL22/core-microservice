@@ -274,6 +274,7 @@ public class ContinuousIntegrationLogExporter {
 
         String sourceDirectory = StringUtils.replace(source.toString(), "/", FrameworkConstants.SEPARATOR);
         sourceDirectory = StringUtils.appendIfMissing(sourceDirectory, FrameworkConstants.SEPARATOR);
+        sourceDirectory = StringUtils.prependIfMissing(sourceDirectory, FrameworkConstants.SEPARATOR);
         return sourceDirectory;
     }
 

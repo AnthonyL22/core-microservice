@@ -48,6 +48,7 @@ public final class JavascriptConstants {
     public static final String GET_LOCAL_STORAGE_VALUE_BY_ITEM_KEY = "var key = window.localStorage.getItem(\"%s\"); return key";
 
     // NAVIGATION Actions
+    public static final String SCROLL_TO_ELEMENT_ACTION = "arguments[0].scrollIntoView(true);";
     public static final String SCROLL_TO_TOP_OF_WINDOW_ACTION = "window.scrollTo(document.body.scrollHeight,0);";
     public static final String SCROLL_TO_BOTTOM_OF_WINDOW_ACTION = "window.scrollTo(0,document.body.scrollHeight);";
     public static final String URL_REDIRECT_ACTION = "window.location.replace('%s')";
