@@ -10,6 +10,7 @@ import com.jayway.restassured.path.json.JsonPath;
 import com.jayway.restassured.path.json.config.JsonPathConfig;
 import com.pwc.core.framework.FrameworkConstants;
 import com.pwc.core.framework.command.WebServiceCommand;
+import com.pwc.core.framework.data.HeaderKeysMap;
 import com.pwc.core.framework.data.OAuthKey;
 import com.pwc.core.framework.data.SmSessionKey;
 import org.apache.commons.codec.binary.Base64;
@@ -21,12 +22,7 @@ import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpDelete;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpPut;
-import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.client.methods.*;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
@@ -432,6 +428,209 @@ public class WebServiceProcessor {
      * Generic REST web service Execution method for simple GET requests
      * that return a String response
      *
+     * @param url           web service URL
+     * @param headerKeysMap map of header key/value pairs necessary for authorization
+     * @param command       Type of command to execute
+     * @return JsonPath json payload
+     */
+    protected Object execute(final String url, final HeaderKeysMap headerKeysMap, final WebServiceCommand command) {
+        return execute(url, headerKeysMap, command, null);
+    }
+
+    /**
+     * Generic REST web service Execution method for simple GET requests
+     * that return a String response. Example: http://www.mywebsite.com/rest/getAllUsers
+     *
+     * @param url           web service URL
+     * @param headerKeysMap map of header key/value pairs necessary for authorization
+     * @param command       Type of command to execute
+     * @param pathParameter web service path parameter
+     * @return JsonPath json payload
+     */
+    protected Object execute(final String url, final HeaderKeysMap headerKeysMap, final WebServiceCommand command, final Object pathParameter) {
+
+        Object wsResponse = null;
+        String wsUrl = constructRestUrl(url, command, pathParameter);
+
+        try {
+
+            HttpGet httpGet;
+            HttpPost httpPost;
+            HttpDelete httpDelete;
+            HttpPut httpPut;
+            CloseableHttpResponse response = null;
+            CloseableHttpClient httpclient = HttpClients.custom().setSSLSocketFactory(SSLConnectionSocketFactory.getSocketFactory()).build();
+
+            StopWatch stopWatch = new StopWatch();
+            if (StringUtils.equals(command.methodType(), FrameworkConstants.POST_REQUEST)) {
+                httpPost = new HttpPost(wsUrl);
+                httpPost = (HttpPost) setHeaderCredentials(headerKeysMap.getAuthorizationMap(), httpPost);
+                stopWatch.start();
+                response = httpclient.execute(httpPost);
+                stopWatch.stop();
+            } else if (StringUtils.equals(command.methodType(), FrameworkConstants.GET_REQUEST)) {
+                httpGet = new HttpGet(wsUrl);
+                httpGet = (HttpGet) setHeaderCredentials(headerKeysMap.getAuthorizationMap(), httpGet);
+                stopWatch.start();
+                response = httpclient.execute(httpGet);
+                stopWatch.stop();
+            } else if (StringUtils.equals(command.methodType(), FrameworkConstants.PUT_REQUEST)) {
+                httpPut = new HttpPut(wsUrl);
+                httpPut = (HttpPut) setHeaderCredentials(headerKeysMap.getAuthorizationMap(), httpPut);
+                stopWatch.start();
+                response = httpclient.execute(httpPut);
+                stopWatch.stop();
+            } else if (StringUtils.equals(command.methodType(), FrameworkConstants.DELETE_REQUEST)) {
+                httpDelete = new HttpDelete(wsUrl);
+                httpDelete = (HttpDelete) setHeaderCredentials(headerKeysMap.getAuthorizationMap(), httpDelete);
+                stopWatch.start();
+                response = httpclient.execute(httpDelete);
+                stopWatch.stop();
+            }
+
+            HttpEntity httpEntity = response.getEntity();
+            wsResponse = getWebServiceResponse(response, httpEntity, stopWatch);
+            closeHttpConnections(httpclient, response);
+
+        } catch (Exception e) {
+            Assert.fail(String.format("REST call failed for url=%s with exception='%s'", wsUrl, e.getCause()), e);
+        }
+
+        return wsResponse;
+
+    }
+
+    /**
+     * Generic REST web service Execution method
+     *
+     * @param url           web service URL
+     * @param headerKeysMap map of header key/value pairs necessary for authorization
+     * @param command       Type of command to execute
+     * @param pathParameter web service path parameter
+     * @param payload       Request body payload
+     * @return JsonPath json payload
+     */
+    protected Object execute(final String url, final HeaderKeysMap headerKeysMap, final WebServiceCommand command, final Object pathParameter, final Object payload) {
+
+        Object wsResponse = null;
+        String wsUrl = constructRestUrl(url, command, pathParameter);
+
+        try {
+
+            CloseableHttpClient httpclient = HttpClients.custom().setSSLSocketFactory(SSLConnectionSocketFactory.getSocketFactory()).build();
+
+            HttpGet httpGet;
+            HttpPost httpPost;
+            HttpPut httpPut;
+
+            if (StringUtils.equals(command.methodType(), FrameworkConstants.POST_REQUEST)) {
+
+                httpPost = new HttpPost(wsUrl);
+                httpPost = (HttpPost) setHeaderCredentials(headerKeysMap.getAuthorizationMap(), httpPost);
+
+                if (payload instanceof HashMap) {
+
+                    URI uri = constructUriFromPayloadMap(httpPost, (HashMap<String, Object>) payload);
+                    LOG(true, "AUTHORIZED POST URI='%s'", uri);
+
+                    httpPost.setURI(uri);
+                    StopWatch stopWatch = new StopWatch();
+                    stopWatch.start();
+                    CloseableHttpResponse response = httpclient.execute(httpPost);
+                    stopWatch.stop();
+                    HttpEntity httpEntity = response.getEntity();
+                    wsResponse = getWebServiceResponse(response, httpEntity, stopWatch);
+                    closeHttpConnections(httpclient, response);
+
+                } else if (payload instanceof List) {
+
+                    StringEntity stringEntity = new StringEntity(((List) payload).get(0).toString());
+                    httpPost.setEntity(stringEntity);
+                    httpPost.setHeader("Content-type", ContentType.APPLICATION_JSON.toString());
+                    LOG(true, "AUTHORIZED POST JSON='%s'", ((List) payload).get(0).toString());
+
+                    StopWatch stopWatch = new StopWatch();
+                    stopWatch.start();
+                    CloseableHttpResponse response = httpclient.execute(httpPost);
+                    stopWatch.stop();
+                    HttpEntity httpEntity = response.getEntity();
+                    wsResponse = getWebServiceResponse(response, httpEntity, stopWatch);
+                    closeHttpConnections(httpclient, response);
+
+                } else if (payload instanceof String) {
+
+                    StringEntity stringEntity = new StringEntity(payload.toString());
+                    httpPost.setEntity(stringEntity);
+                    httpPost.setHeader("Content-type", ContentType.APPLICATION_JSON.toString());
+                    LOG(true, "AUTHORIZED POST JSON='%s'", payload.toString());
+
+                    StopWatch stopWatch = new StopWatch();
+                    stopWatch.start();
+                    CloseableHttpResponse response = httpclient.execute(httpPost);
+                    stopWatch.stop();
+                    HttpEntity httpEntity = response.getEntity();
+                    wsResponse = getWebServiceResponse(response, httpEntity, stopWatch);
+                    closeHttpConnections(httpclient, response);
+
+                }
+
+            } else if (StringUtils.equals(command.methodType(), FrameworkConstants.PUT_REQUEST)) {
+
+                httpPut = new HttpPut(wsUrl);
+                httpPut = (HttpPut) setHeaderCredentials(headerKeysMap.getAuthorizationMap(), httpPut);
+
+                if (payload instanceof HashMap) {
+
+                    URI uri = new URI(wsUrl);
+                    LOG(true, "AUTHORIZED PUT URI='%s'", uri);
+                    httpPut.setURI(uri);
+
+                    String entityPayload = getFirstValueInMap((HashMap<String, Object>) payload);
+                    httpPut.setHeader("Content-Type", "application/json");
+                    httpPut.setEntity(new StringEntity(entityPayload, "UTF-8"));
+
+                    StopWatch stopWatch = new StopWatch();
+                    stopWatch.start();
+                    CloseableHttpResponse response = httpclient.execute(httpPut);
+                    stopWatch.stop();
+                    HttpEntity httpEntity = response.getEntity();
+                    wsResponse = getWebServiceResponse(response, httpEntity, stopWatch);
+                    closeHttpConnections(httpclient, response);
+
+                }
+            } else {
+
+                httpGet = new HttpGet(wsUrl);
+                httpGet = (HttpGet) setHeaderCredentials(headerKeysMap.getAuthorizationMap(), httpGet);
+
+                if (payload instanceof HashMap) {
+
+                    URI uri = constructUriFromPayloadMap(httpGet, (HashMap<String, Object>) payload);
+                    LOG(true, "AUTHORIZED GET URI='%s'", uri);
+                    httpGet.setURI(uri);
+                    StopWatch stopWatch = new StopWatch();
+                    stopWatch.start();
+                    CloseableHttpResponse response = httpclient.execute(httpGet);
+                    stopWatch.stop();
+                    HttpEntity httpEntity = response.getEntity();
+                    wsResponse = getWebServiceResponse(response, httpEntity, stopWatch);
+                    closeHttpConnections(httpclient, response);
+
+                }
+            }
+
+        } catch (Exception e) {
+            Assert.fail(String.format("REST call failed for url=%s with exception='%s'", wsUrl, e.getCause()), e);
+        }
+
+        return wsResponse;
+
+    }
+
+    /**
+     * Generic REST web service Execution method for simple GET requests
+     * that return a String response
+     *
      * @param url          web service URL
      * @param smSessionKey SMSESSION key to use as the SMSESSION token
      * @param command      Type of command to execute
@@ -669,6 +868,27 @@ public class WebServiceProcessor {
                 header = new BasicHeader("Cookie", "SMSESSION=" + ((SmSessionKey) authorizationKey).getKey());
             }
             httpBase.setHeader(header);
+        } catch (Exception e) {
+            LOG(true, "Failed to set header credentials", e);
+            return httpBase;
+        }
+        return httpBase;
+    }
+
+    /**
+     * Add a header containing any number of header variables
+     *
+     * @param headerMap map of header key/value pairs to add to the request header
+     * @param httpBase  Http base to set header for
+     * @return decorated HttpRequestBase for use by get, post, put, ect..
+     */
+    private HttpRequestBase setHeaderCredentials(final HashMap<String, String> headerMap, HttpRequestBase httpBase) {
+
+        try {
+            headerMap.entrySet().stream().forEach(headerMapEntry -> {
+                BasicHeader header = new BasicHeader(headerMapEntry.getKey(), headerMapEntry.getValue());
+                httpBase.setHeader(header);
+            });
         } catch (Exception e) {
             LOG(true, "Failed to set header credentials", e);
             return httpBase;

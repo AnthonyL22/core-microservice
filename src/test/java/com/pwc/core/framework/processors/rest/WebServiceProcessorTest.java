@@ -3,6 +3,7 @@ package com.pwc.core.framework.processors.rest;
 import com.jayway.restassured.path.json.JsonPath;
 import com.pwc.core.framework.FrameworkConstants;
 import com.pwc.core.framework.command.WebServiceCommand;
+import com.pwc.core.framework.data.HeaderKeysMap;
 import com.pwc.core.framework.data.OAuthKey;
 import com.pwc.core.framework.data.SmSessionKey;
 import com.pwc.core.framework.util.RandomStringUtils;
@@ -61,6 +62,7 @@ public class WebServiceProcessorTest {
             "}";
     private HttpRequestBase mockHttpRequestBase;
     private OAuthKey oAuthKey;
+    private HeaderKeysMap headerKeysMap;
     private SmSessionKey smSessionKey;
 
     public enum UsersWebServiceWebServiceCommand implements WebServiceCommand {
@@ -155,6 +157,9 @@ public class WebServiceProcessorTest {
         when(mockHttpRequestBase.getURI()).thenReturn(expectedURI);
 
         oAuthKey = new OAuthKey("oijkjlkjkj43lkjjuyoiyfghuiopkl67");
+        HashMap mockHeaderMap = new HashMap();
+        mockHeaderMap.put("AppKey", "777");
+        headerKeysMap = new HeaderKeysMap(mockHeaderMap);
         smSessionKey = new SmSessionKey("UYTYIUHIJOKL6t5ryuhiujj576576768798");
 
     }
@@ -192,6 +197,25 @@ public class WebServiceProcessorTest {
     @Test
     public void executeWithOAuthWithAllParametersTest() {
         Object response = webServiceProcessor.execute("http://www.foobar.com", oAuthKey, UsersWebServiceWebServiceCommand.POST_ADD_USER_ID, "foobar", Arrays.asList("hello"));
+        Assert.assertNotNull(response);
+    }
+
+    ////
+    @Test
+    public void executeWithHeaderMapTest() {
+        Object response = webServiceProcessor.execute("http://www.foobar.com", headerKeysMap, UsersWebServiceWebServiceCommand.POST_ADD_USER_ID);
+        Assert.assertNotNull(response);
+    }
+
+    @Test
+    public void executeWithHeaderMapWithPathParameterTest() {
+        Object response = webServiceProcessor.execute("http://www.foobar.com", headerKeysMap, UsersWebServiceWebServiceCommand.POST_ADD_USER_ID, "foobar");
+        Assert.assertNotNull(response);
+    }
+
+    @Test
+    public void executeWithHeaderMapWithAllParametersTest() {
+        Object response = webServiceProcessor.execute("http://www.foobar.com", headerKeysMap, UsersWebServiceWebServiceCommand.POST_ADD_USER_ID, "foobar", Arrays.asList("hello"));
         Assert.assertNotNull(response);
     }
 

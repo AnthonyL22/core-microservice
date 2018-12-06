@@ -4,6 +4,7 @@ import com.jayway.restassured.path.json.JsonPath;
 import com.pwc.core.framework.FrameworkConstants;
 import com.pwc.core.framework.command.WebServiceCommand;
 import com.pwc.core.framework.data.Credentials;
+import com.pwc.core.framework.data.HeaderKeysMap;
 import com.pwc.core.framework.data.OAuthKey;
 import com.pwc.core.framework.data.SmSessionKey;
 import com.pwc.core.framework.processors.rest.WebServiceProcessor;
@@ -117,6 +118,48 @@ public class WebServiceController extends WebServiceProcessor {
             return execute(url, oAuthKey, command, pathParameter);
         } else {
             return execute(url, oAuthKey, command, pathParameter, parameterMap);
+        }
+    }
+
+    /**
+     * Send a REST ws action to a service End Point
+     *
+     * @param headerKeysMap map of header key/value pairs necessary for authorization
+     * @param command     BaseGetCommand command type
+     * @param requestBody POST request body
+     * @return web service response
+     */
+    protected Object webServiceAction(final HeaderKeysMap headerKeysMap, final WebServiceCommand command, final Object requestBody) {
+        return webServiceAction(headerKeysMap, command, requestBody, null);
+    }
+
+    /**
+     * Send a REST ws action to a service End Point
+     *
+     * @param headerKeysMap map of header key/value pairs necessary for authorization
+     * @param command  BaseGetCommand command type
+     * @return web service response
+     */
+    protected Object webServiceAction(final HeaderKeysMap headerKeysMap, final WebServiceCommand command) {
+        return webServiceAction(headerKeysMap, command, null, null);
+    }
+
+    /**
+     * Web service execution based on web service URL defined in automation.properties
+     *
+     * @param headerKeysMap map of header key/value pairs necessary for authorization
+     * @param command       web service command
+     * @param pathParameter web service path parameter(s)
+     * @param parameterMap  web service parameter map
+     * @return web service response
+     */
+    public Object webServiceAction(final HeaderKeysMap headerKeysMap, final WebServiceCommand command, final Object pathParameter, final Object parameterMap) {
+        if (pathParameter == null && parameterMap == null) {
+            return execute(url, headerKeysMap, command);
+        } else if (parameterMap == null && pathParameter != null) {
+            return execute(url, headerKeysMap, command, pathParameter);
+        } else {
+            return execute(url, headerKeysMap, command, pathParameter, parameterMap);
         }
     }
 

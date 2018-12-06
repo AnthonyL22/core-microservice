@@ -176,6 +176,7 @@ long responseTime = response.get(FrameworkConstants.HTTP_RESPONSE_TIME_KEY)
 The following security options are available to webServiceAction() users:
 
 * OAuth2
+* Custom Header key/value pair authentication
 * Site Minder
 * Basic (Base64 Encoded)
 * Open
@@ -183,6 +184,11 @@ The following security options are available to webServiceAction() users:
 ##### OAuth2 Security
 To use OAuth security simply provide the OAuth key when calling webServiceAction().  The service will decorate your 
 request header with a Authorization header of 'Bearer YOUR_OAUTH_KEY' prior to calling the web service.
+
+##### Custom Header Security
+To use custom header security simply provide a hydrated HeaderKeysMap object contains a HashMap of unique Header Key/Value
+pairs that will be added to the requests when calling webServiceAction().  The service will decorate your request headers
+with all key/value pairs prior to calling the web service.
 
 ##### Site Minder Security
 To use Site Minder security simply provide the Site Minder key when calling webServiceAction().  The service will 
