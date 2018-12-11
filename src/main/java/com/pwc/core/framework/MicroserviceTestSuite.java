@@ -57,6 +57,7 @@ public abstract class MicroserviceTestSuite {
 
     @BeforeMethod(alwaysRun = true)
     public void setUpMethod() {
+
         try {
             this.beforeMethod();
         } catch (Exception e) {
@@ -67,6 +68,7 @@ public abstract class MicroserviceTestSuite {
 
     @AfterMethod(alwaysRun = true)
     public void tearDownMethod() {
+
         try {
             this.afterMethod();
         } catch (Exception e) {
@@ -79,7 +81,6 @@ public abstract class MicroserviceTestSuite {
     public void setUpClass() {
 
         setEnvironmentDefaults();
-
         try {
             LOG(true, StringUtils.repeat("-", 78));
             LOG(true, String.format("\n Currently Running Test='%s'\n", StringUtils.substringAfterLast(this.getClass().getName(), ".")));
@@ -95,6 +96,7 @@ public abstract class MicroserviceTestSuite {
      * Set any system environment variables to default settings
      */
     private void setEnvironmentDefaults() {
+
         if (StringUtils.isEmpty(System.getProperty(FrameworkConstants.AUTOMATION_TEST_ENVIRONMENT))) {
             System.setProperty(FrameworkConstants.AUTOMATION_TEST_ENVIRONMENT, FrameworkConstants.DEV_ENVIRONMENT_KEY);
         }
@@ -102,6 +104,7 @@ public abstract class MicroserviceTestSuite {
 
     @BeforeClass(alwaysRun = true)
     public void setUpRunner() {
+
         try {
             String[] automationContext = {FrameworkConstants.AUTOMATION_CONTEXT_XML};
             ctx = new ClassPathXmlApplicationContext(automationContext);
@@ -116,6 +119,7 @@ public abstract class MicroserviceTestSuite {
 
     @AfterClass(alwaysRun = true)
     public void tearDownClass() {
+
         try {
             if (webEventController != null) {
                 webEventController.performQuit();
@@ -139,6 +143,7 @@ public abstract class MicroserviceTestSuite {
      * @param credentials Credentials to authenticate with
      */
     protected void webAction(final Credentials credentials) {
+
         if (webEventController == null) {
             webEventController = (WebEventController) ctx.getBean("webEventController");
             webEventController.initiateBrowser(credentials);
@@ -154,6 +159,7 @@ public abstract class MicroserviceTestSuite {
      * @return time in milliseconds for mouse-based action
      */
     protected long webAction(final String elementIdentifier) {
+
         return webAction(elementIdentifier, null);
     }
 
@@ -166,6 +172,7 @@ public abstract class MicroserviceTestSuite {
      * @return time in milliseconds for mouse-based action
      */
     protected long webAction(final String elementIdentifier, final boolean attributeValue) {
+
         return webAction(elementIdentifier, String.valueOf(attributeValue));
     }
 
@@ -177,6 +184,7 @@ public abstract class MicroserviceTestSuite {
      * @return time in milliseconds for mouse-based action
      */
     protected long webAction(final String elementIdentifier, final Object attributeValue) {
+
         if (webEventController == null) {
             webEventController = (WebEventController) ctx.getBean("webEventController");
             webEventController.initiateBrowser(null);
@@ -191,6 +199,20 @@ public abstract class MicroserviceTestSuite {
             assertFail(String.format("Unable to find element=%s", elementIdentifier));
         }
         return 0L;
+    }
+
+    /**
+     * Initialize a headless page based on user defined URL.  Typically used for testing custom web page endpoints
+     *
+     * @param url web service URL
+     * @return http/web service response
+     */
+    protected Object httpAction(final String url) {
+
+        if (webServiceController == null) {
+            webServiceController = (WebServiceController) ctx.getBean("webServiceController");
+        }
+        return httpAction(null, url);
     }
 
     /**

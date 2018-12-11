@@ -28,10 +28,7 @@ import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.BasicCredentialsProvider;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.impl.client.LaxRedirectStrategy;
+import org.apache.http.impl.client.*;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
@@ -54,6 +51,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.pwc.logging.service.LoggerService.LOG;
+import static org.apache.http.protocol.HTTP.USER_AGENT;
 import static org.apache.http.ssl.SSLContexts.custom;
 
 public class WebServiceProcessor {
@@ -105,6 +103,40 @@ public class WebServiceProcessor {
 
         LOG(true, "REST action for url='%s'", urlBuilder.toString());
         return urlBuilder.toString();
+    }
+
+    /**
+     * Generic REST web service Execution method for simple GET requests
+     * that return a String response
+     *
+     * @param url web service URL
+     * @return JsonPath json payload
+     */
+    protected Object execute(final String url) {
+
+        LOG(true, "HTTP action for url='%s'", url);
+        Object wsResponse = null;
+        try {
+
+            HttpGet httpGet;
+            CloseableHttpResponse response;
+            CloseableHttpClient httpclient = getNonAuthenticatedClient();
+            httpGet = new HttpGet(url);
+            httpGet = (HttpGet) setHeaderCredentials(httpGet);
+            StopWatch stopWatch = new StopWatch();
+            stopWatch.start();
+            response = httpclient.execute(httpGet);
+            stopWatch.stop();
+            HttpEntity httpEntity = response.getEntity();
+            wsResponse = getWebServiceResponse(response, httpEntity, stopWatch);
+            closeHttpConnections(httpclient, response);
+
+        } catch (Exception e) {
+            Assert.fail(String.format("HTTP call failed for url=%s", url), e);
+        }
+
+        return wsResponse;
+
     }
 
     /**
@@ -833,6 +865,21 @@ public class WebServiceProcessor {
     /**
      * Set the BasicAuth header to the user/pass provided
      *
+     * @param httpBase Http base to set header for
+     * @return decorated HttpRequestBase for use by get, post, put, ect..
+     */
+    protected HttpRequestBase setHeaderCredentials(HttpRequestBase httpBase) {
+        try {
+            httpBase.setHeader(HttpHeaders.USER_AGENT, USER_AGENT);
+        } catch (Exception e) {
+            return httpBase;
+        }
+        return httpBase;
+    }
+
+    /**
+     * Set the BasicAuth header to the user/pass provided
+     *
      * @param user     username
      * @param pass     password
      * @param httpBase Http base to set header for
@@ -1155,6 +1202,16 @@ public class WebServiceProcessor {
         }
 
         return json;
+    }
+
+    /**
+     * Get authenticated HttpClient
+     *
+     * @return authenticated HttpClient
+     */
+    private CloseableHttpClient getNonAuthenticatedClient() {
+
+        return HttpClientBuilder.create().build();
     }
 
     /**

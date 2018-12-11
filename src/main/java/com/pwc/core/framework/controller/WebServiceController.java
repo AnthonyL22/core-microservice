@@ -125,8 +125,8 @@ public class WebServiceController extends WebServiceProcessor {
      * Send a REST ws action to a service End Point
      *
      * @param headerKeysMap map of header key/value pairs necessary for authorization
-     * @param command     BaseGetCommand command type
-     * @param requestBody POST request body
+     * @param command       BaseGetCommand command type
+     * @param requestBody   POST request body
      * @return web service response
      */
     protected Object webServiceAction(final HeaderKeysMap headerKeysMap, final WebServiceCommand command, final Object requestBody) {
@@ -137,7 +137,7 @@ public class WebServiceController extends WebServiceProcessor {
      * Send a REST ws action to a service End Point
      *
      * @param headerKeysMap map of header key/value pairs necessary for authorization
-     * @param command  BaseGetCommand command type
+     * @param command       BaseGetCommand command type
      * @return web service response
      */
     protected Object webServiceAction(final HeaderKeysMap headerKeysMap, final WebServiceCommand command) {
@@ -223,8 +223,10 @@ public class WebServiceController extends WebServiceProcessor {
 
         if (credentials != null) {
             return execute(url, credentials.getUsername(), credentials.getPassword());
-        } else {
+        } else if (StringUtils.isNotEmpty(user) && StringUtils.isNotEmpty(password)) {
             return execute(url, user, password);
+        } else {
+            return execute(url);
         }
     }
 
