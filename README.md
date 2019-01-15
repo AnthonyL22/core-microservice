@@ -252,11 +252,17 @@ in potentially an interface such as:  String USER_NAME = "Anthony";
 ```
 
 #### Maven Configuration
-Simply add this to a profile or goal in your POM.xml to leverage in your build process
+Simply add this to a profile or goal in your POM.xml to leverage in your build process.
+
+**Required arguments:**
+1. Complete classpath to where your test classes reside
+2. Complete classpath to where your classes that contain Constant 'Name=Value' pairs reside
+3. Report file name
+4. OPTIONAL - Classes that contain Constant 'Name=Value' pairs
 
 ```
 <profile>
-  <id>manualTestReport</id>
+  <id>outputManualTestCaseReport</id>
   <activation>
     <activeByDefault>false</activeByDefault>
   </activation>
@@ -268,14 +274,15 @@ Simply add this to a profile or goal in your POM.xml to leverage in your build p
         <version>${exec-maven-plugin.version}</version>
         <executions>
           <execution>
-            <id>output-manual-tests</id>
+            <id>output-manual-test-cases</id>
             <goals>
               <goal>java</goal>
             </goals>
             <phase>install</phase>
             <configuration>
               <arguments>
-                <argument>com.google.special.automation.tests</argument>
+                <argument>src.test.java.nz.google.special.automation.tests</argument>
+                <argument>src.main.java.nz.google.special.automation.framework</argument>
                 <argument>Manual_Test_Cases.txt</argument>
                 <argument>Constants.java</argument>
               </arguments>

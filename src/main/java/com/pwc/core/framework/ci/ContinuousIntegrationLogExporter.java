@@ -10,46 +10,41 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.pwc.logging.service.LoggerService.LOG;
 
 public class ContinuousIntegrationLogExporter {
 
-    private static final String DEFAULT_TEST_DIR = "src.test.java";
     private static Map constants;
 
     public static void main(String[] args) throws Exception {
 
-        if (args.length < 2) {
+        if (args.length < 3) {
             throw new Exception("Missing required arguments; " +
-                    "[0] = Source Test Directory (ex: com.google.automation.tests), " +
-                    "[1] = Manual Test Report Name (ex: Manual_Test_Report.txt), " +
-                    "[2...] = OPTIONAL - Classes that contain Constant 'Name=Value' pairs");
+                    "[0] = Source Test Directory (ex: src.test.java.com.google.automation.tests), " +
+                    "[1] = Source Main Directory (ex: src.main.java.com.google.automation.framework), " +
+                    "[2] = Manual Test Report Name (ex: Manual_Test_Report.txt), " +
+                    "[3...] = OPTIONAL - Classes that contain Constant 'Name=Value' pairs");
         } else {
 
-            String sourceDirectory = getUserDefinedTestSourceDirectory(args[0]);
+            StringBuilder sourceTestDirectory = getJavaDirectory(args[0]);
 
-            File testReportFile = new File(args[1]);
-            if (testReportFile.exists()) {
-                testReportFile.delete();
+            File reportFile = new File(args[2]);
+            if (reportFile.exists()) {
+                reportFile.delete();
             }
 
             List<String> constantFiles = new ArrayList<>();
-            if (args.length > 2) {
-                for (int i = 2; i < args.length; i++) {
+            if (args.length > 3) {
+                for (int i = 3; i < args.length; i++) {
                     constantFiles.add(args[i]);
                 }
-                setConstants(getConstantValues(constantFiles));
+                setConstants(getConstantValues(args[1], constantFiles));
             }
 
-            List<File> files = generateManualTestOutput(sourceDirectory, testReportFile);
-            appendStatisticsToReport(testReportFile, files);
+            List<File> files = generateManualTestOutput(sourceTestDirectory.toString(), reportFile);
+            appendStatisticsToReport(reportFile, files);
 
         }
 
@@ -61,9 +56,9 @@ public class ContinuousIntegrationLogExporter {
      * @param constantFiles list of .java files that contain name/value pairs (ex: Constants.java)
      * @return full path to source directory
      */
-    protected static Map getConstantValues(final List<String> constantFiles) {
+    protected static Map getConstantValues(final String directory, final List<String> constantFiles) {
 
-        StringBuilder source = getBaseJavaDirectory();
+        StringBuilder source = getJavaDirectory(directory);
         Map constantMap = new HashMap();
 
         try {
@@ -99,13 +94,13 @@ public class ContinuousIntegrationLogExporter {
     /**
      * Generate manual test output report
      *
-     * @param sourceDirectory source file directory
+     * @param sourceTestFileDirectory source file directory
      * @param testReportFile  destination report File
      * @return list of files processed
      */
-    protected static List<File> generateManualTestOutput(String sourceDirectory, File testReportFile) {
+    protected static List<File> generateManualTestOutput(String sourceTestFileDirectory, File testReportFile) {
 
-        List<File> files = (List<File>) FileUtils.listFiles(new File(sourceDirectory), new SuffixFileFilter("Test.java"), TrueFileFilter.INSTANCE);
+        List<File> files = (List<File>) FileUtils.listFiles(new File(sourceTestFileDirectory), new SuffixFileFilter("Test.java"), TrueFileFilter.INSTANCE);
 
         try {
             for (File file : files) {
@@ -256,14 +251,14 @@ public class ContinuousIntegrationLogExporter {
     }
 
     /**
-     * Get Source directory where tests live
+     * Get Source directory where classes are defined
      *
      * @param arg source directory
      * @return full path to source directory
      */
-    protected static String getUserDefinedTestSourceDirectory(String arg) {
+    protected static String getUserDefinedSourceDirectory(String arg) {
 
-        StringBuilder source = getBaseJavaDirectory();
+        StringBuilder source = getJavaDirectory(arg);
 
         if (StringUtils.contains(arg, ".")) {
             arg = StringUtils.replace(arg, ".", FrameworkConstants.SEPARATOR);
@@ -281,18 +276,17 @@ public class ContinuousIntegrationLogExporter {
     /**
      * Get the base src/test/java directory location
      *
-     * @return base test calss source code directory
+     * @return base test class source code directory
      */
-    protected static StringBuilder getBaseJavaDirectory() {
+    protected static StringBuilder getJavaDirectory(final String directory) {
+
         File currentDirectory = new File(new File(".").getAbsolutePath());
         String base = StringUtils.replace(currentDirectory.getAbsolutePath(), "%20", " ");
-        base = StringUtils.removeStart(base, "/");
-        base = StringUtils.removeStart(base, FrameworkConstants.SEPARATOR);
         base = StringUtils.replace(base, "/", FrameworkConstants.SEPARATOR);
         base = StringUtils.substringBeforeLast(base, ".");
 
         StringBuilder source = new StringBuilder(base);
-        source.append(StringUtils.replace(DEFAULT_TEST_DIR, ".", FrameworkConstants.SEPARATOR));
+        source.append(StringUtils.replace(directory, ".", FrameworkConstants.SEPARATOR));
         return source;
     }
 

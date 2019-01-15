@@ -11,32 +11,32 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ContinuousIntegrationLogExporterTest {
 
-    final String TEST_SOURCE_PATH = "com.pwc.core.framework.ci.tests";
-    final String REPORT_FILE_NAME = "output.txt";
-    final String CONSTANT_FILE_ONE = "TestConstants.java";
-    final String CONSTANT_FILE_TWO = "Data.java";
-    String[] fullyDecoratedArgs = new String[3];
+    private final static String TEST_SOURCE_PATH = "src.test.java.com.pwc.core.framework.ci.tests";
+    private final static String MAIN_SOURCE_PATH = "src.test.java.com.pwc.core.framework.ci.parent";
+    private final static String REPORT_FILE_NAME = "output.txt";
+    private final static String CONSTANT_FILE_ONE = "TestConstants.java";
+    private final static String CONSTANT_FILE_TWO = "Data.java";
+    private String[] fullyDecoratedArgs = new String[5];
 
     @Before
     public void setUp() {
         fullyDecoratedArgs[0] = TEST_SOURCE_PATH;
-        fullyDecoratedArgs[1] = REPORT_FILE_NAME;
-        fullyDecoratedArgs[2] = CONSTANT_FILE_ONE;
-        fullyDecoratedArgs[2] = CONSTANT_FILE_TWO;
+        fullyDecoratedArgs[1] = MAIN_SOURCE_PATH;
+        fullyDecoratedArgs[2] = REPORT_FILE_NAME;
+        fullyDecoratedArgs[3] = CONSTANT_FILE_ONE;
+        fullyDecoratedArgs[4] = CONSTANT_FILE_TWO;
     }
 
     @Test()
     public void mainMinimalNumberOfArgumentsTest() throws Exception {
 
-        ContinuousIntegrationLogExporter.main(new String[]{TEST_SOURCE_PATH, REPORT_FILE_NAME});
+        ContinuousIntegrationLogExporter.main(new String[]{TEST_SOURCE_PATH, MAIN_SOURCE_PATH, REPORT_FILE_NAME});
 
         File testReportFileWithStatistics = new File(REPORT_FILE_NAME);
         List<String> linesRead = FileUtils.readLines(testReportFileWithStatistics, StandardCharsets.UTF_8);
@@ -51,33 +51,33 @@ public class ContinuousIntegrationLogExporterTest {
     }
 
     @Test()
-    public void getBaseJavaDirectoryTest() throws Exception {
-        StringBuilder result = ContinuousIntegrationLogExporter.getBaseJavaDirectory();
+    public void getBaseJavaDirectoryTest() {
+        StringBuilder result = ContinuousIntegrationLogExporter.getJavaDirectory(TEST_SOURCE_PATH);
         Assert.assertTrue(StringUtils.containsIgnoreCase(result, "src" + File.separator + "test" + File.separator + "java"));
     }
 
     @Test
-    public void getUserDefinedTestSourceDirectoryTest() throws Exception {
-        String result = ContinuousIntegrationLogExporter.getUserDefinedTestSourceDirectory(TEST_SOURCE_PATH);
+    public void getUserDefinedTestSourceDirectoryTest() {
+        String result = ContinuousIntegrationLogExporter.getUserDefinedSourceDirectory(TEST_SOURCE_PATH);
         Assert.assertTrue(StringUtils.containsIgnoreCase(result, "src" + File.separator + "test" + File.separator + "java"));
         Assert.assertTrue(StringUtils.containsIgnoreCase(result, StringUtils.replace(TEST_SOURCE_PATH, ".", FrameworkConstants.SEPARATOR)));
     }
 
     @Test
-    public void replaceAllConstantsWithMapValuesTest() throws Exception {
+    public void replaceAllConstantsWithMapValuesTest() {
         String[] trimmedList = new String[]{"home", "TestConstants.USER_NAME"};
         ContinuousIntegrationLogExporter.replaceAllConstantsWithMapValues(trimmedList);
     }
 
     @Test
-    public void replaceAllConstantsWithMapValuesNullConstantsTest() throws Exception {
+    public void replaceAllConstantsWithMapValuesNullConstantsTest() {
         String[] trimmedList = new String[]{"home", "TestConstants.USER_NAME"};
         ContinuousIntegrationLogExporter.setConstants(null);
         ContinuousIntegrationLogExporter.replaceAllConstantsWithMapValues(trimmedList);
     }
 
     @Test
-    public void processArgumentsTest() throws Exception {
+    public void processArgumentsTest() {
 
         String simpleLogLine = "        FEATURE(\"Smoke Test\");";
         String complexLogLine = "        GIVEN(\"I am logged in page=%s and authenticated user=%s\", \"home\", TestConstants.USER_NAME);";
@@ -92,9 +92,9 @@ public class ContinuousIntegrationLogExporterTest {
     @Test
     public void appendStatisticsToReportTest() throws Exception {
 
-        String sourceDirectory = ContinuousIntegrationLogExporter.getUserDefinedTestSourceDirectory(TEST_SOURCE_PATH);
+        StringBuilder sourceDirectory = ContinuousIntegrationLogExporter.getJavaDirectory(TEST_SOURCE_PATH);
         File testReportFile = new File(REPORT_FILE_NAME);
-        List<File> files = ContinuousIntegrationLogExporter.generateManualTestOutput(sourceDirectory, testReportFile);
+        List<File> files = ContinuousIntegrationLogExporter.generateManualTestOutput(sourceDirectory.toString(), testReportFile);
         ContinuousIntegrationLogExporter.appendStatisticsToReport(testReportFile, files);
 
         File testReportFileWithStatistics = new File(REPORT_FILE_NAME);
