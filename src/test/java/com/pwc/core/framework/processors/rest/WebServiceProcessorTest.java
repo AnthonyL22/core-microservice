@@ -60,6 +60,16 @@ public class WebServiceProcessorTest {
             "    \"displayFullName\": \"John N. Doe\",\n" +
             "    \"firstName\": \"John N.\"\n" +
             "}";
+
+    private final String SAMPLE_PAYLOAD = "{" +
+            "\"country\": \"USA\"," +
+            "\"hold\": false," +
+            "\"userInfo\": {" +
+            "\"currencyCode\": \"NZD\"," +
+            "\"packageCode\": \"1234\"," +
+            "\"moveDate\": \"2018-12-30\"," +
+            "\"moversInitials\": \"AL\"}}";
+
     private HttpRequestBase mockHttpRequestBase;
     private OAuthKey oAuthKey;
     private HeaderKeysMap headerKeysMap;
@@ -68,6 +78,7 @@ public class WebServiceProcessorTest {
     public enum UsersWebServiceWebServiceCommand implements WebServiceCommand {
 
         POST_ADD_USER_ID(FrameworkConstants.POST_REQUEST, "rest/users", "addUser"),
+        GET_ADD_USER_WITH_PAYLOAD(FrameworkConstants.GET_REQUEST, "rest/users", "addUserWithPayload"),
         GET_ADD_USER_ID(FrameworkConstants.GET_REQUEST, "rest/users", "addUser"),
         GET_BY_LAST_NAME(FrameworkConstants.GET_REQUEST, "rest/users", "byLastName"),
         PUT_BY_LAST_NAME(FrameworkConstants.PUT_REQUEST, "rest/users", "byLastName"),
@@ -162,6 +173,12 @@ public class WebServiceProcessorTest {
         headerKeysMap = new HeaderKeysMap(mockHeaderMap);
         smSessionKey = new SmSessionKey("UYTYIUHIJOKL6t5ryuhiujj576576768798");
 
+    }
+
+    @Test
+    public void executeGetRequestWithHeaderAndParametersAndEntityPayload() {
+        Object response = webServiceProcessor.execute("http://www.foobar.com", headerKeysMap, UsersWebServiceWebServiceCommand.GET_ADD_USER_WITH_PAYLOAD, "device=111&home=Hatfields", SAMPLE_PAYLOAD);
+        Assert.assertNotNull(response);
     }
 
     @Test

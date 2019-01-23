@@ -11,6 +11,7 @@ import com.jayway.restassured.path.json.config.JsonPathConfig;
 import com.pwc.core.framework.FrameworkConstants;
 import com.pwc.core.framework.command.WebServiceCommand;
 import com.pwc.core.framework.data.HeaderKeysMap;
+import com.pwc.core.framework.data.HttpGetWithEntity;
 import com.pwc.core.framework.data.OAuthKey;
 import com.pwc.core.framework.data.SmSessionKey;
 import org.apache.commons.codec.binary.Base64;
@@ -643,6 +644,24 @@ public class WebServiceProcessor {
                     StopWatch stopWatch = new StopWatch();
                     stopWatch.start();
                     CloseableHttpResponse response = httpclient.execute(httpGet);
+                    stopWatch.stop();
+                    HttpEntity httpEntity = response.getEntity();
+                    wsResponse = getWebServiceResponse(response, httpEntity, stopWatch);
+                    closeHttpConnections(httpclient, response);
+
+                } else if (isValidJson(payload.toString())) {
+
+                    HttpGetWithEntity httpGetWithEntity = new HttpGetWithEntity(wsUrl);
+                    httpGetWithEntity = (HttpGetWithEntity) setHeaderCredentials(headerKeysMap.getAuthorizationMap(), httpGetWithEntity);
+
+                    StringEntity stringEntity = new StringEntity(payload.toString());
+                    httpGetWithEntity.setEntity(stringEntity);
+                    httpGetWithEntity.setHeader("Content-type", ContentType.APPLICATION_JSON.toString());
+                    LOG(true, "AUTHORIZED GetWithEntity JSON='%s'", payload.toString());
+
+                    StopWatch stopWatch = new StopWatch();
+                    stopWatch.start();
+                    CloseableHttpResponse response = httpclient.execute(httpGetWithEntity);
                     stopWatch.stop();
                     HttpEntity httpEntity = response.getEntity();
                     wsResponse = getWebServiceResponse(response, httpEntity, stopWatch);
