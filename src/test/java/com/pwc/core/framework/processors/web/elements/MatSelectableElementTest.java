@@ -11,33 +11,31 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SelectableElementTest extends WebElementBaseTest {
+public class MatSelectableElementTest extends WebElementBaseTest {
 
     private static final String DROP_DOWN_VALUE = "Unit Test Name";
     private static final String MULTI_SELECT_DROP_DOWN_VALUE = "A, B, C, D";
-    SelectableElementImpl selectableElement;
+    MatSelectableElementImpl matSelectableElement;
 
     @Before
     public void setUp() {
-        selectableElement = new SelectableElementImpl();
+        matSelectableElement = new MatSelectableElementImpl();
     }
 
     @Test
     public void selectableElementAppliesTest() {
-        createMockElement("777", WebElementAttribute.ID, WebElementType.SELECT, true);
-        boolean result = SelectableElementImpl.applies(getMockWebElement());
+        createMockElement("777", WebElementAttribute.ID, WebElementType.MAT_SELECT, true);
+        boolean result = MatSelectableElementImpl.applies(getMockWebElement());
         Assert.assertTrue(result);
     }
 
     @Test
     public void selectableElementAppliesNoMatchTest() {
         createMockElement("777", WebElementAttribute.ID, WebElementType.INPUT, true);
-        boolean result = SelectableElementImpl.applies(getMockWebElement());
+        boolean result = MatSelectableElementImpl.applies(getMockWebElement());
         Assert.assertFalse(result);
     }
 
@@ -46,9 +44,9 @@ public class SelectableElementTest extends WebElementBaseTest {
         WebElement mockElement = mock(WebElement.class);
         Select mockSelectElement = mock(Select.class);
         when(mockElement.getAttribute(WebElementAttribute.ID.attribute)).thenReturn("7777");
-        when(mockElement.getTagName()).thenReturn(WebElementType.SELECT.type);
+        when(mockElement.getTagName()).thenReturn(WebElementType.MAT_SELECT.type);
         doNothing().when(mockSelectElement).selectByVisibleText(DROP_DOWN_VALUE);
-        selectableElement.webAction(mockElement, DROP_DOWN_VALUE);
+        matSelectableElement.webAction(mockElement, DROP_DOWN_VALUE);
     }
 
     @Test(expected = AssertionError.class)
@@ -56,14 +54,14 @@ public class SelectableElementTest extends WebElementBaseTest {
         WebElement mockElement = mock(WebElement.class);
         Select mockSelectElement = mock(Select.class);
         when(mockElement.getAttribute(WebElementAttribute.ID.attribute)).thenReturn("777");
-        when(mockElement.getTagName()).thenReturn(WebElementType.SELECT.type);
+        when(mockElement.getTagName()).thenReturn(WebElementType.MAT_SELECT.type);
         doNothing().when(mockSelectElement).selectByVisibleText("A");
-        selectableElement.webAction(mockElement, MULTI_SELECT_DROP_DOWN_VALUE);
+        matSelectableElement.webAction(mockElement, MULTI_SELECT_DROP_DOWN_VALUE);
     }
 
     @Test(expected = AssertionError.class)
     public void webActionExceptionTest() {
-        selectableElement.webAction(null, WebElementAttribute.VALUE.attribute);
+        matSelectableElement.webAction(null, WebElementAttribute.VALUE.attribute);
     }
 
 }

@@ -1,18 +1,6 @@
 package com.pwc.core.framework.processors.web;
 
-import com.pwc.core.framework.processors.web.elements.AnchorElementImpl;
-import com.pwc.core.framework.processors.web.elements.ButtonElementImpl;
-import com.pwc.core.framework.processors.web.elements.ButtonInputElementImpl;
-import com.pwc.core.framework.processors.web.elements.CheckboxElementImpl;
-import com.pwc.core.framework.processors.web.elements.ComboBoxElementImpl;
-import com.pwc.core.framework.processors.web.elements.HeadingElementImpl;
-import com.pwc.core.framework.processors.web.elements.IconElementImpl;
-import com.pwc.core.framework.processors.web.elements.ImageElementImpl;
-import com.pwc.core.framework.processors.web.elements.ListItemElementImpl;
-import com.pwc.core.framework.processors.web.elements.PDropDownElementImpl;
-import com.pwc.core.framework.processors.web.elements.RadioButtonElementImpl;
-import com.pwc.core.framework.processors.web.elements.SelectableElementImpl;
-import com.pwc.core.framework.processors.web.elements.SpanElementImpl;
+import com.pwc.core.framework.processors.web.elements.*;
 import org.openqa.selenium.WebElement;
 
 public class MouseActivityProcessor {
@@ -33,6 +21,7 @@ public class MouseActivityProcessor {
                 ButtonInputElementImpl.applies(webElement) ||
                 AnchorElementImpl.applies(webElement) ||
                 SelectableElementImpl.applies(webElement) ||
+                MatSelectableElementImpl.applies(webElement) ||
                 IconElementImpl.applies(webElement) ||
                 ImageElementImpl.applies(webElement) ||
                 ComboBoxElementImpl.applies(webElement) ||
@@ -61,6 +50,9 @@ public class MouseActivityProcessor {
         } else if (SelectableElementImpl.applies(webElement)) {
             SelectableElementImpl selectableElement = new SelectableElementImpl();
             selectableElement.webAction(webElement, value);
+        } else if (MatSelectableElementImpl.applies(webElement)) {
+            MatSelectableElementImpl matSelectableElement = new MatSelectableElementImpl();
+            matSelectableElement.webAction(webElement, value);
         } else if (IconElementImpl.applies(webElement)) {
             IconElementImpl iconElement = new IconElementImpl();
             iconElement.webAction(webElement, value);
