@@ -296,7 +296,7 @@ Simply add this to a profile or goal in your POM.xml to leverage in your build p
 </profile>
 ```
 
-# Adjustable Settings
+# Adjustable Sauce Labs Execution Settings
 The following settings can be modified at any stage of the automation execution process to run tests on the desired 
 system.  This is a necessary feature to enable users to run their tests in Sauce Labs on different browser and operating
 system configurations.  
@@ -311,6 +311,25 @@ Simply define the following at runtime via **-D** system variables:
 | -Dplatform            | mac, osx, linux, windows, windows 10, windows 8, windows 8.1, windows 7, windows xp, xp | linux       | -Dplatform=xp                |
 | -Dtime.zone           | Los Angeles, Honolulu, New_York                                                         | Los Angeles | -Dtime.zone=Los Angeles      |
 
+## Adjustable Browser Stack Execution Settings
+The following settings can be modified at any stage of the automation execution process to run tests in the desired
+testing environment.  Full list of options can be found in the 
+[Capabilities builder](https://www.browserstack.com/automate/capabilities).  
+
+Simply define the following at runtime via **-D** system variables:
+
+| User Defined Command  | Options                                                                                 | Default         | Example                      |
+| ----------------------|-----------------------------------------------------------------------------------------|-----------------|------------------------------|
+| -Dos                  | Windows, OS X                                                                           | Windows         | -Dos='OS X'                  |
+| -Dos_version          | 10, 8.1, 8, 7, XP, Mojave, Lion, etc...                                                 | latest Windows  | -Dos_version=xp              |
+| -Dbrowser             | Chrome, Firefox, Safari, Opera                                                          | Chrome          | -Dbrowser=Firefox            |
+| -Dbrowser_version     | 72.0, 64.0, etc...                                                                      | latest version  | -Dbrowser_version=71.0       |
+| -Dresolution          | 1024x768, 1280x960, 1280x1024, 1600x1200, 1920x1080                                     | 1024x768        | -Dresolution=1920x1080       |
+| -Dproject             | Specify a name for a logical group of builds                                            | BLANK           | -Dproject='RC Testing'       |
+| -Dbuild               | Specify a name for a logical group of tests                                             | BLANK           | -Dbuild='API Tests'          |
+| -Dname                | Specify an identifier for the test run                                                  | BLANK           | -Dname='Smoke Tests'         |
+| -Dbrowserstack.local  | Test localhost / internal servers in your network                                       | false           | -Dbrowserstack.local=false   |
+| -Dbrowserstack.timezone   | Configure tests to run on a custom time zone                                        | UTC             | -Dbrowserstack.timezone=PCT  |
 
 **IMPORTANT:**
 Defining any of the following variables will result in your test being executed using default Sauce Labs settings:

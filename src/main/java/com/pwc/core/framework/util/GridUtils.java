@@ -91,7 +91,7 @@ public class GridUtils {
             }
             browserMatcher = PHANTOM_JS_REGEX.matcher(property);
             if (browserMatcher.find()) {
-                System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.PHANTOMJS_BROWSER_MODE);
+                System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.PHANTOM_JS_BROWSER_MODE);
                 return;
             }
             browserMatcher = NO_BROWSER_REGEX.matcher(property);
@@ -143,6 +143,10 @@ public class GridUtils {
 
         Matcher platformMatcher;
         String property = StringUtils.trim(StringUtils.lowerCase(System.getProperty(FrameworkConstants.AUTOMATION_PLATFORM_PROPERTY)));
+
+        if (StringUtils.isEmpty(property)) {
+            property = StringUtils.trim(StringUtils.lowerCase(System.getProperty(FrameworkConstants.BROWSER_STACK_OS_PROPERTY)));
+        }
 
         if (StringUtils.isEmpty(property)) {
             return Platform.ANY.toString();

@@ -267,7 +267,7 @@ public class WebEventControllerTest {
 
     @Test(expected = AssertionError.class)
     public void initiateBrowserInvalidPhantomJsBrowserDriverLocationTest() {
-        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.PHANTOMJS_BROWSER_MODE);
+        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.PHANTOM_JS_BROWSER_MODE);
         webEventController.initiateBrowser(null);
     }
 
@@ -456,7 +456,7 @@ public class WebEventControllerTest {
 
     @Test
     public void setDriverExecutablePhantomJsDriverTest() {
-        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.PHANTOMJS_BROWSER_MODE);
+        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.PHANTOM_JS_BROWSER_MODE);
         webEventController.setDriverExecutable();
     }
 
