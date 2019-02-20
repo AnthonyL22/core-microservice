@@ -41,6 +41,7 @@
   <properties>
     <appium.version>5.0.4</appium.version>
     <assertion-microservice.version>1.0.2</assertion-microservice.version>
+    <automate-client-java.version>0.4</automate-client-java.version>
     <byte-buddy.version>1.7.7</byte-buddy.version>
     <commonsdbcp2.version>2.0</commonsdbcp2.version>
     <gagawa.version>1.0.1</gagawa.version>
@@ -98,6 +99,11 @@
     </dependencies>
   </dependencyManagement>
   <dependencies>
+    <dependency>
+      <groupId>com.browserstack</groupId>
+      <artifactId>automate-client-java</artifactId>
+      <version>${automate-client-java.version}</version>
+    </dependency>
     <dependency>
       <groupId>com.codeborne</groupId>
       <artifactId>phantomjsdriver</artifactId>

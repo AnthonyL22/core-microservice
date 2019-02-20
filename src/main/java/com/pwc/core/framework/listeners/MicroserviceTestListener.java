@@ -3,6 +3,7 @@ package com.pwc.core.framework.listeners;
 import com.pwc.core.framework.FrameworkConstants;
 import com.pwc.core.framework.MicroserviceTestSuite;
 import com.pwc.core.framework.annotations.Issue;
+import com.pwc.core.framework.util.BrowserStackREST;
 import com.pwc.core.framework.data.PropertiesFile;
 import com.pwc.core.framework.util.PropertiesUtils;
 import com.pwc.logging.helper.LoggerHelper;
@@ -27,22 +28,34 @@ public class MicroserviceTestListener extends TestListenerAdapter implements ITe
 
     private MicroserviceTestSuite sessionIdProvider;
     private SauceREST sauceInstance;
+    private BrowserStackREST browserStackInstance;
     private boolean gridEnabled;
     private String gridUrl;
 
     @Override
     public void beforeInvocation(IInvokedMethod iInvokedMethod, ITestResult iTestResult) {
-        if (sauceInstance == null) {
+
+        String gridToUse = PropertiesUtils.getPropertyFromPropertiesFile(
+                String.format("config/%s/%s", System.getProperty(FrameworkConstants.AUTOMATION_TEST_ENVIRONMENT),
+                        PropertiesFile.GRID_PROPERTIES_FILE.fileName), "grid.hub.url");
+
+        if (sauceInstance == null && StringUtils.containsIgnoreCase(gridToUse, "sauce")) {
             String username = PropertiesUtils.getPropertyFromPropertiesFile(
                     String.format("config/%s/%s", System.getProperty(FrameworkConstants.AUTOMATION_TEST_ENVIRONMENT), PropertiesFile.AUTOMATION_PROPERTIES_FILE.fileName), "saucelabs.username");
             String accessKey = PropertiesUtils.getPropertyFromPropertiesFile(
                     String.format("config/%s/%s", System.getProperty(FrameworkConstants.AUTOMATION_TEST_ENVIRONMENT), PropertiesFile.AUTOMATION_PROPERTIES_FILE.fileName), "saucelabs.accesskey");
-            gridUrl = PropertiesUtils.getPropertyFromPropertiesFile(
-                    String.format("config/%s/%s", System.getProperty(FrameworkConstants.AUTOMATION_TEST_ENVIRONMENT), PropertiesFile.GRID_PROPERTIES_FILE.fileName), "grid.hub.url");
-            gridEnabled = Boolean.valueOf(PropertiesUtils.getPropertyFromPropertiesFile(
-                    String.format("config/%s/%s", System.getProperty(FrameworkConstants.AUTOMATION_TEST_ENVIRONMENT), PropertiesFile.GRID_PROPERTIES_FILE.fileName), "grid.enabled"));
             sauceInstance = new SauceREST(username, accessKey);
+        } else if (browserStackInstance == null && StringUtils.containsIgnoreCase(gridToUse, "browserstack")) {
+            String username = PropertiesUtils.getPropertyFromPropertiesFile(
+                    String.format("config/%s/%s", System.getProperty(FrameworkConstants.AUTOMATION_TEST_ENVIRONMENT), PropertiesFile.AUTOMATION_PROPERTIES_FILE.fileName), "browserstack.username");
+            String accessKey = PropertiesUtils.getPropertyFromPropertiesFile(
+                    String.format("config/%s/%s", System.getProperty(FrameworkConstants.AUTOMATION_TEST_ENVIRONMENT), PropertiesFile.AUTOMATION_PROPERTIES_FILE.fileName), "browserstack.accesskey");
+            browserStackInstance = new BrowserStackREST(username, accessKey);
         }
+        gridUrl = PropertiesUtils.getPropertyFromPropertiesFile(
+                String.format("config/%s/%s", System.getProperty(FrameworkConstants.AUTOMATION_TEST_ENVIRONMENT), PropertiesFile.GRID_PROPERTIES_FILE.fileName), "grid.hub.url");
+        gridEnabled = Boolean.valueOf(PropertiesUtils.getPropertyFromPropertiesFile(
+                String.format("config/%s/%s", System.getProperty(FrameworkConstants.AUTOMATION_TEST_ENVIRONMENT), PropertiesFile.GRID_PROPERTIES_FILE.fileName), "grid.enabled"));
     }
 
     @Override
@@ -124,6 +137,16 @@ public class MicroserviceTestListener extends TestListenerAdapter implements ITe
             if (jobExistsInSaucelabs(jobId)) {
                 LOG(true, "SauceOnDemandSessionID=%s job-name=%s", jobId, testName);
                 sauceInstance.updateJobInfo(jobId, updates);
+            } else if (jobExistsInBrowserStack(jobId)) {
+                updates.clear();
+                updates = new HashMap<>();
+                if (didTestPass) {
+                    updates.put("status", "passed");
+                } else {
+                    updates.put("status", "failed");
+                }
+                LOG(true, "BrowserStackSessionID=%s job-name=%s", jobId, testName);
+                browserStackInstance.updateJobInfo(jobId, updates);
             }
         } catch (Exception eatMessage) {
             eatMessage.getMessage();
@@ -141,6 +164,25 @@ public class MicroserviceTestListener extends TestListenerAdapter implements ITe
             if (gridEnabled && StringUtils.containsIgnoreCase(gridUrl, "saucelabs")) {
                 if (sauceInstance != null && !StringUtils.isEmpty(jobId)) {
                     return !StringUtils.isEmpty(sauceInstance.getJobInfo(jobId));
+                }
+            }
+        } catch (Exception e) {
+            return false;
+        }
+        return false;
+    }
+
+    /**
+     * Check if the current job ID exists in BrowserStack environment.  If it does then the
+     * job will be updated with the current test results for this test execution
+     *
+     * @return job exists in BrowserStack
+     */
+    private boolean jobExistsInBrowserStack(String jobId) {
+        try {
+            if (gridEnabled && StringUtils.containsIgnoreCase(gridUrl, "browserstack")) {
+                if (browserStackInstance != null && !StringUtils.isEmpty(jobId)) {
+                    return true;
                 }
             }
         } catch (Exception e) {
