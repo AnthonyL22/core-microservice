@@ -39,7 +39,7 @@ public class MicroserviceTestListener extends TestListenerAdapter implements ITe
                 String.format("config/%s/%s", System.getProperty(FrameworkConstants.AUTOMATION_TEST_ENVIRONMENT),
                         PropertiesFile.GRID_PROPERTIES_FILE.fileName), "grid.hub.url");
 
-        if (sauceInstance == null && StringUtils.containsIgnoreCase(gridToUse, "sauce")) {
+        if (sauceInstance == null && StringUtils.containsIgnoreCase(gridToUse, "saucelabs")) {
             String username = PropertiesUtils.getPropertyFromPropertiesFile(
                     String.format("config/%s/%s", System.getProperty(FrameworkConstants.AUTOMATION_TEST_ENVIRONMENT), PropertiesFile.AUTOMATION_PROPERTIES_FILE.fileName), "saucelabs.username");
             String accessKey = PropertiesUtils.getPropertyFromPropertiesFile(
@@ -193,6 +193,14 @@ public class MicroserviceTestListener extends TestListenerAdapter implements ITe
 
     public void setSauceInstance(SauceREST sauceInstance) {
         this.sauceInstance = sauceInstance;
+    }
+
+    public void setBrowserStackInstance(BrowserStackREST browserStackInstance) {
+        this.browserStackInstance = browserStackInstance;
+    }
+
+    public void setGridUrl(String gridUrl) {
+        this.gridUrl = gridUrl;
     }
 
     public void setSessionIdProvider(MicroserviceTestSuite sessionIdProvider) {

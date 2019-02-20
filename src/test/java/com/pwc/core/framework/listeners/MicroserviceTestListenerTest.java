@@ -2,6 +2,7 @@ package com.pwc.core.framework.listeners;
 
 import com.pwc.core.framework.FrameworkConstants;
 import com.pwc.core.framework.MicroserviceTestSuite;
+import com.pwc.core.framework.util.BrowserStackREST;
 import com.saucelabs.saucerest.SauceREST;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,6 +37,7 @@ public class MicroserviceTestListenerTest extends MicroserviceTestListener {
     private static final String VALID_JOB_ID = "43b82b9bdff54c5086ff5de86dcfbda5";
     private static final String INVALID_JOB_ID = "123456789";
     private ITestResult mockITestResult;
+    private  SauceREST mockSauceREST;
     private TestRunner testRunner;
     private ITestNGMethod mockITestNGMethod;
     private MicroserviceTestSuite mockMicroserviceTestSuite;
@@ -46,8 +48,12 @@ public class MicroserviceTestListenerTest extends MicroserviceTestListener {
         mockMicroserviceTestSuite = mock(MicroserviceTestSuite.class);
         setSessionIdProvider(mockMicroserviceTestSuite);
 
-        SauceREST mockSauceREST = mock(SauceREST.class);
+        mockSauceREST = mock(SauceREST.class);
         setSauceInstance(mockSauceREST);
+
+        BrowserStackREST mockBrowserStackREST = mock(BrowserStackREST.class);
+        setBrowserStackInstance(mockBrowserStackREST);
+
         mockITestResult = mock(ITestResult.class);
 
         IConfiguration mockIConfiguration = mock(IConfiguration.class);
@@ -87,6 +93,42 @@ public class MicroserviceTestListenerTest extends MicroserviceTestListener {
 
         when(mockMicroserviceTestSuite.getCurrentJobId()).thenReturn(VALID_JOB_ID);
 
+    }
+
+    @Test
+    public void sauceLabsMarkJobResultsTest() throws NoSuchMethodException {
+
+        when(mockSauceREST.getJobInfo(VALID_JOB_ID)).thenReturn(VALID_JOB_ID);
+
+        setGridUrl("http://bruce:wilson1234567@ondemand.saucelabs.com:80/wd/hub");
+        when(mockMicroserviceTestSuite.getCurrentJobId()).thenReturn(VALID_JOB_ID);
+        SampleTest sample = new SampleTest();
+        Method mockMethod = sample.getClass().getMethod("testLoginNoAnnotationTest");
+
+        ConstructorOrMethod mockConstructorOrMethod = mock(ConstructorOrMethod.class);
+        when(mockConstructorOrMethod.getMethod()).thenReturn(mockMethod);
+        when(mockITestNGMethod.getConstructorOrMethod()).thenReturn(mockConstructorOrMethod);
+        when(mockITestResult.getMethod()).thenReturn(mockITestNGMethod);
+
+        onTestSuccess(mockITestResult);
+        verify(mockITestResult, times(3)).getName();
+    }
+
+    @Test
+    public void browserStackMarkJobResultsTest() throws NoSuchMethodException {
+
+        setGridUrl("http://brian:bar1234567@hub-cloud.browserstack.com/wd/hub");
+        when(mockMicroserviceTestSuite.getCurrentJobId()).thenReturn(VALID_JOB_ID);
+        SampleTest sample = new SampleTest();
+        Method mockMethod = sample.getClass().getMethod("testLoginNoAnnotationTest");
+
+        ConstructorOrMethod mockConstructorOrMethod = mock(ConstructorOrMethod.class);
+        when(mockConstructorOrMethod.getMethod()).thenReturn(mockMethod);
+        when(mockITestNGMethod.getConstructorOrMethod()).thenReturn(mockConstructorOrMethod);
+        when(mockITestResult.getMethod()).thenReturn(mockITestNGMethod);
+
+        onTestSuccess(mockITestResult);
+        verify(mockITestResult, times(3)).getName();
     }
 
     @Test

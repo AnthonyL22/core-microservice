@@ -23,6 +23,12 @@ public class BrowserStackREST {
         this.accessKey = accessKey;
     }
 
+    /**
+     * Update the BrowserStack status for the given session ID
+     *
+     * @param sessionId BrowserStack session ID
+     * @param updates   status Map
+     */
     public void updateJobInfo(final String sessionId, Map<String, Object> updates) {
 
         try {
@@ -45,19 +51,4 @@ public class BrowserStackREST {
         }
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getAccessKey() {
-        return accessKey;
-    }
-
-    public void setAccessKey(String accessKey) {
-        this.accessKey = accessKey;
-    }
 }
