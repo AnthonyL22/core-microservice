@@ -327,25 +327,44 @@ If you choose not to override ANY of the settings above the following runtime se
 * Linux
 * Chrome (latest version) 
 
-## Adjustable Browser Stack Execution Settings
+## Adjustable BrowserStack Execution Settings
 The following settings can be modified at any stage of the automation execution process to run tests in the desired
 testing environment.  Full list of options can be found in the 
 [Capabilities builder](https://www.browserstack.com/automate/capabilities).  
 
 Simply define the following at runtime via **-D** system variables.  Use double quotes around properties that contain spaces.
 
-| User Defined Command  | Options                                                                                 | Default         | Example                      |
-| ----------------------|-----------------------------------------------------------------------------------------|-----------------|------------------------------|
-| -Dos                  | Windows, OS X                                                                           | Windows         | -Dos="OS X"                  |
-| -Dos_version          | 10, 8.1, 8, 7, XP, Mojave, Lion, etc...                                                 | latest Windows  | -Dos_version=xp              |
-| -Dbrowser             | Chrome, Firefox, Safari, Opera                                                          | Chrome          | -Dbrowser=Firefox            |
-| -Dbrowser_version     | 72.0, 64.0, etc...                                                                      | latest version  | -Dbrowser_version=71.0       |
-| -Dresolution          | 1024x768, 1280x960, 1280x1024, 1600x1200, 1920x1080                                     | 1024x768        | -Dresolution=1920x1080       |
-| -Dproject             | Specify a name for a logical group of builds                                            | BLANK           | -Dproject="RC Testing"       |
-| -Dbuild               | Specify a name for a logical group of tests                                             | BLANK           | -Dbuild="API Tests"          |
-| -Dname                | Specify an identifier for the test run                                                  | BLANK           | -Dname="Smoke Tests"         |
-| -Dbrowserstack.local  | Test localhost / internal servers in your network                                       | false           | -Dbrowserstack.local=false   |
-| -Dbrowserstack.timezone   | Configure tests to run on a custom time zone                                        | UTC             | -Dbrowserstack.timezone=PCT  |
+| User Defined Command  | Options                                                                                 | Default         | Mandatory | Example                      |
+| ----------------------|-----------------------------------------------------------------------------------------|-----------------|-----------|------------------------------|
+| -Dos                  | Windows, OS X                                                                           | Windows         | No       | -Dos="OS X"                  |
+| -Dos                  | Windows, OS X                                                                           | Windows         | No        | -Dos="OS X"                  |
+| -Dos_version          | 10, 8.1, 8, 7, XP, Mojave, Lion, etc...                                                 | latest Windows  | No        | -Dos_version=xp              |
+| -Dbrowser             | Chrome, Firefox, Safari, Opera                                                          | Chrome          | No        | -Dbrowser=Firefox            |
+| -Dbrowser_version     | 72.0, 64.0, etc...                                                                      | latest version  | No        | -Dbrowser_version=71.0       |
+| -Dresolution          | 1024x768, 1280x960, 1280x1024, 1600x1200, 1920x1080                                     | 1024x768        | No        | -Dresolution=1920x1080       |
+| -Dproject             | Specify a name for a logical group of builds                                            | BLANK           | No        | -Dproject="RC Testing"       |
+| -Dbuild               | Specify a name for a logical group of tests                                             | BLANK           | No        | -Dbuild="API Tests"          |
+| -Dname                | Specify an identifier for the test run                                                  | BLANK           | No        | -Dname="Smoke Tests"         |
+| -Dbrowserstack.local  | Test localhost / internal servers in your network                                       | false           | No        | -Dbrowserstack.local=false   |
+| -Dbrowserstack.timezone   | Configure tests to run on a custom time zone                                        | UTC             | No        | -Dbrowserstack.timezone=PCT  |
+
+### BrowserStack Jenkins Integration
+In order to execute tests from a Jenkins system to the BrowserStack service you normally should create a unique tunnel
+to pass all tests through.  This proves to be necessary especially when your AUT is behind a VPN.  
+
+To create a unique tunnel for your tests to execute you simply add the following line of code to your automation 
+framework before you initiate the web browser.  This must happen before the WebDriver's capabilities are set by the
+*core-microservice*.  Typically, you would this logic to a setup method with the TestNG `@BeforeClass(alwaysRun = true)`
+annotation.
+
+```
+private static String localTunnelIdentifierInstance;
+
+if (null == localTunnelIdentifierInstance) {
+    localTunnelIdentifierInstance = combine("%sMyUniqueTunnel", RandomStringUtils.randomNumeric(5));
+}
+System.setProperty(FrameworkConstants.BROWSER_STACK_LOCAL_IDENTIFIER_PROPERTY, localTunnelIdentifierInstance);
+``` 
 
 ## Properties Files Settings
 There are three properties files used to drive all automated tests.  The following .properties files are required to be defined in your application's config directory.

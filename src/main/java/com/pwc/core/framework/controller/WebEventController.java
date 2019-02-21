@@ -220,6 +220,7 @@ public class WebEventController {
             capabilities.setCapability(FrameworkConstants.BROWSER_STACK_OS_VERSION_PROPERTY, StringUtils.trim(System.getProperty(FrameworkConstants.BROWSER_STACK_OS_VERSION_PROPERTY)));
             capabilities.setCapability(FrameworkConstants.BROWSER_STACK_RESOLUTION_PROPERTY, StringUtils.trim(System.getProperty(FrameworkConstants.BROWSER_STACK_RESOLUTION_PROPERTY)));
             capabilities.setCapability(FrameworkConstants.BROWSER_STACK_LOCAL_PROPERTY, browserstackLocal);
+            capabilities.setCapability(FrameworkConstants.BROWSER_STACK_LOCAL_IDENTIFIER_PROPERTY, StringUtils.trim(System.getProperty(FrameworkConstants.BROWSER_STACK_LOCAL_IDENTIFIER_PROPERTY)));
             capabilities.setCapability(FrameworkConstants.BROWSER_STACK_PROJECT_PROPERTY, StringUtils.trim(System.getProperty(FrameworkConstants.BROWSER_STACK_PROJECT_PROPERTY)));
             capabilities.setCapability(FrameworkConstants.BROWSER_STACK_BUILD_PROPERTY, StringUtils.trim(System.getProperty(FrameworkConstants.BROWSER_STACK_BUILD_PROPERTY)));
             capabilities.setCapability(FrameworkConstants.BROWSER_STACK_NAME_PROPERTY, StringUtils.trim(System.getProperty(FrameworkConstants.BROWSER_STACK_NAME_PROPERTY)));

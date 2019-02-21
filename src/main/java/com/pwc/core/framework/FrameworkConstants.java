@@ -25,6 +25,7 @@ public final class FrameworkConstants {
     public static final String BROWSER_STACK_OS_VERSION_PROPERTY = "os_version";
     public static final String BROWSER_STACK_RESOLUTION_PROPERTY = "resolution";
     public static final String BROWSER_STACK_LOCAL_PROPERTY = "browserstack.local";
+    public static final String BROWSER_STACK_LOCAL_IDENTIFIER_PROPERTY = "browserstack.localIdentifier";
     public static final String BROWSER_STACK_NAME_PROPERTY = "name";
     public static final String BROWSER_STACK_BUILD_PROPERTY = "build";
     public static final String BROWSER_STACK_PROJECT_PROPERTY = "project";
