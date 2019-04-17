@@ -46,7 +46,7 @@
     <commonsdbcp2.version>2.0</commonsdbcp2.version>
     <gagawa.version>1.0.1</gagawa.version>
     <httpclient.version>3.1</httpclient.version>
-    <jackson.json.version>2.9.7</jackson.json.version>
+    <jackson.json.version>2.9.8</jackson.json.version>
     <jacoco.version>0.7.5.201505241946</jacoco.version>
     <java_code.version>1.8</java_code.version>
     <jsoup.version>1.8.2</jsoup.version>
