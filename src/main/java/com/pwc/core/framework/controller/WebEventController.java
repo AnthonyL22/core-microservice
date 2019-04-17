@@ -75,6 +75,15 @@ public class WebEventController {
     @Value("${enable.ajax.requests.waiting:true}")
     private boolean waitForAjaxRequestsEnabled;
 
+    @Value("${browserstack.username}")
+    private String browserstackUser;
+
+    @Value("${browserstack.accesskey}")
+    private String browserstackAccesskey;
+
+    @Value("${browserstack.local:true}")
+    private String browserstackLocal;
+
     private MicroserviceWebDriver remoteWebDriver;
     private WebEventService webEventService;
     private DesiredCapabilities capabilities;
@@ -128,7 +137,7 @@ public class WebEventController {
                     this.remoteWebDriver = getSafariBrowser();
                     break;
                 }
-                case FrameworkConstants.PHANTOMJS_BROWSER_MODE: {
+                case FrameworkConstants.PHANTOM_JS_BROWSER_MODE: {
                     this.remoteWebDriver = getPhantomJsBrowser();
                     break;
                 }
@@ -159,6 +168,17 @@ public class WebEventController {
     }
 
     /**
+     * Check if Browser Stack is being used by the downstream user based on the username and password being defined.
+     *
+     * @return browser stack enabled | disabled flag
+     */
+    private boolean isBrowserStackEnabled() {
+
+        return StringUtils.isNotEmpty(browserstackUser)
+                && StringUtils.isNotEmpty(browserstackAccesskey);
+    }
+
+    /**
      * Set all browser based runtime capabilities for:
      * - browser type
      * - browser version
@@ -185,6 +205,31 @@ public class WebEventController {
             capabilities.setCapability(FrameworkConstants.AUTOMATION_ORIENTATION_PROPERTY, StringUtils.trim(System.getProperty(FrameworkConstants.AUTOMATION_ORIENTATION_PROPERTY)));
 
             System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, System.getenv(FrameworkConstants.SAUCELABS_BROWSER_PROPERTY));
+
+        } else if (isBrowserStackEnabled()) {
+
+            GridUtils.initBrowserType();
+
+            capabilities.setCapability(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, StringUtils.trim(System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY)));
+            capabilities.setCapability(FrameworkConstants.BROWSER_STACK_BROWSER_VERSION_PROPERTY, StringUtils.trim(System.getProperty(FrameworkConstants.BROWSER_STACK_BROWSER_VERSION_PROPERTY)));
+            if (StringUtils.isEmpty(System.getProperty(FrameworkConstants.BROWSER_STACK_OS_PROPERTY))) {
+                capabilities.setCapability(FrameworkConstants.BROWSER_STACK_OS_PROPERTY, "windows");
+            } else {
+                capabilities.setCapability(FrameworkConstants.BROWSER_STACK_OS_PROPERTY, StringUtils.trim(System.getProperty(FrameworkConstants.BROWSER_STACK_OS_PROPERTY)));
+            }
+            capabilities.setCapability(FrameworkConstants.BROWSER_STACK_OS_VERSION_PROPERTY, StringUtils.trim(System.getProperty(FrameworkConstants.BROWSER_STACK_OS_VERSION_PROPERTY)));
+            capabilities.setCapability(FrameworkConstants.BROWSER_STACK_RESOLUTION_PROPERTY, StringUtils.trim(System.getProperty(FrameworkConstants.BROWSER_STACK_RESOLUTION_PROPERTY)));
+            capabilities.setCapability(FrameworkConstants.BROWSER_STACK_LOCAL_PROPERTY, browserstackLocal);
+            capabilities.setCapability(FrameworkConstants.BROWSER_STACK_LOCAL_IDENTIFIER_PROPERTY, StringUtils.trim(System.getProperty(FrameworkConstants.BROWSER_STACK_LOCAL_IDENTIFIER_PROPERTY)));
+            capabilities.setCapability(FrameworkConstants.BROWSER_STACK_PROJECT_PROPERTY, StringUtils.trim(System.getProperty(FrameworkConstants.BROWSER_STACK_PROJECT_PROPERTY)));
+            capabilities.setCapability(FrameworkConstants.BROWSER_STACK_BUILD_PROPERTY, StringUtils.trim(System.getProperty(FrameworkConstants.BROWSER_STACK_BUILD_PROPERTY)));
+            capabilities.setCapability(FrameworkConstants.BROWSER_STACK_NAME_PROPERTY, StringUtils.trim(System.getProperty(FrameworkConstants.BROWSER_STACK_NAME_PROPERTY)));
+            capabilities.setCapability(FrameworkConstants.BROWSER_STACK_TEST_RUN_NAME_PROPERTY, StringUtils.trim(System.getProperty(FrameworkConstants.BROWSER_STACK_TEST_RUN_NAME_PROPERTY)));
+            capabilities.setCapability(FrameworkConstants.BROWSER_STACK_TIMEZONE_PROPERTY, StringUtils.trim(System.getProperty(FrameworkConstants.BROWSER_STACK_TIMEZONE_PROPERTY)));
+
+            LOG(true, "Initiating BrowserStack test execution with browser='%s', platform='%s'",
+                    capabilities.getCapability(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY),
+                    capabilities.getCapability(FrameworkConstants.BROWSER_STACK_OS_PROPERTY));
 
         } else {
             LOG(true, "Initiating User Defined test execution");
@@ -329,6 +374,7 @@ public class WebEventController {
         capabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
         capabilities.setCapability(CapabilityType.BROWSER_NAME, BrowserType.CHROME);
         capabilities.setCapability("video", "True");
+
         if (gridEnabled) {
             if (this.remoteWebDriver == null) {
                 MicroserviceRemoteWebDriver microserviceRemoteWebDriver = new MicroserviceRemoteWebDriver(new URL(gridUrl), capabilities);
@@ -360,6 +406,7 @@ public class WebEventController {
         capabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
         capabilities.setCapability(CapabilityType.BROWSER_NAME, BrowserType.CHROME);
         capabilities.setCapability("video", "True");
+
         if (gridEnabled) {
             if (this.remoteWebDriver == null) {
                 MicroserviceRemoteWebDriver microserviceRemoteWebDriver = new MicroserviceRemoteWebDriver(new URL(gridUrl), capabilities);
@@ -567,7 +614,7 @@ public class WebEventController {
                 System.setProperty(FrameworkConstants.WEB_DRIVER_EDGE, PropertiesUtils.getPath(executable));
                 break;
             }
-            case FrameworkConstants.PHANTOMJS_BROWSER_MODE: {
+            case FrameworkConstants.PHANTOM_JS_BROWSER_MODE: {
 
                 if (StringUtils.isNotEmpty(System.getProperty(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY))) {
                     return System.getProperty(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY);

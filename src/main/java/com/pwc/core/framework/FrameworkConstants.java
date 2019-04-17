@@ -6,8 +6,8 @@ public final class FrameworkConstants {
     public static final String AUTOMATION_TEST_ENVIRONMENT = "test.env";
     public static final String AUTOMATION_TIME_ZONE_ENVIRONMENT = "time.zone";
     public static final String AUTOMATION_BROWSER_PROPERTY = "browser";
-    public static final String SAUCELABS_BROWSER_PROPERTY = "SELENIUM_BROWSER";
     public static final String AUTOMATION_BROWSER_VERSION_PROPERTY = "browser.version";
+    public static final String SAUCELABS_BROWSER_PROPERTY = "SELENIUM_BROWSER";
     public static final String SAUCELABS_BROWSER_VERSION_PROPERTY = "SELENIUM_VERSION";
     public static final String SAUCELABS_TUNNEL_IDENTIFIER_PROPERTY = "TUNNEL_IDENTIFIER";
     public static final String SAUCELABS_ONDEMAND_BROWSERS_PROPERTY = "SAUCE_ONDEMAND_BROWSERS";
@@ -19,6 +19,18 @@ public final class FrameworkConstants {
     public static final String AUTOMATION_DEVICE_NAME_PROPERTY = "deviceName";
     public static final String AUTOMATION_ORIENTATION_PROPERTY = "deviceOrientation";
     public static final String SAUCELABS_PLATFORM_PROPERTY = "SELENIUM_PLATFORM";
+
+    public static final String BROWSER_STACK_BROWSER_VERSION_PROPERTY = "browser_version";
+    public static final String BROWSER_STACK_OS_PROPERTY = "os";
+    public static final String BROWSER_STACK_OS_VERSION_PROPERTY = "os_version";
+    public static final String BROWSER_STACK_RESOLUTION_PROPERTY = "resolution";
+    public static final String BROWSER_STACK_LOCAL_PROPERTY = "browserstack.local";
+    public static final String BROWSER_STACK_LOCAL_IDENTIFIER_PROPERTY = "browserstack.localIdentifier";
+    public static final String BROWSER_STACK_NAME_PROPERTY = "name";
+    public static final String BROWSER_STACK_BUILD_PROPERTY = "build";
+    public static final String BROWSER_STACK_PROJECT_PROPERTY = "project";
+    public static final String BROWSER_STACK_TEST_RUN_NAME_PROPERTY = "name";
+    public static final String BROWSER_STACK_TIMEZONE_PROPERTY = "browserstack.timezone";
 
     // System Properties Supported
     public static final String SEPARATOR = System.getProperty("file.separator");
@@ -41,7 +53,7 @@ public final class FrameworkConstants {
     public static final String INTERNET_EXPLORER_BROWSER_MODE = "ie";
     public static final String EDGE_BROWSER_MODE = "edge";
     public static final String SAFARI_BROWSER_MODE = "safari";
-    public static final String PHANTOMJS_BROWSER_MODE = "phantomjs";
+    public static final String PHANTOM_JS_BROWSER_MODE = "phantomjs";
     public static final String NONE_BROWSER_MODE = "none";
 
     // Selenium Drivers
