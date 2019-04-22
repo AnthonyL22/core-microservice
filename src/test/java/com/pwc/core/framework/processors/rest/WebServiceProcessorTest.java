@@ -79,6 +79,7 @@ public class WebServiceProcessorTest {
 
         POST_ADD_USER_ID(FrameworkConstants.POST_REQUEST, "rest/users", "addUser"),
         GET_ADD_USER_WITH_PAYLOAD(FrameworkConstants.GET_REQUEST, "rest/users", "addUserWithPayload"),
+        PUT_IS_VALID_USER_WITH_PAYLOAD(FrameworkConstants.PUT_REQUEST, "rest/users", "isValidUser"),
         GET_ADD_USER_ID(FrameworkConstants.GET_REQUEST, "rest/users", "addUser"),
         GET_BY_LAST_NAME(FrameworkConstants.GET_REQUEST, "rest/users", "byLastName"),
         PUT_BY_LAST_NAME(FrameworkConstants.PUT_REQUEST, "rest/users", "byLastName"),
@@ -173,6 +174,12 @@ public class WebServiceProcessorTest {
         headerKeysMap = new HeaderKeysMap(mockHeaderMap);
         smSessionKey = new SmSessionKey("UYTYIUHIJOKL6t5ryuhiujj576576768798");
 
+    }
+
+    @Test
+    public void executePutRequestWithEntityPayload() {
+        Object response = webServiceProcessor.execute("http://www.foobar.com", headerKeysMap, UsersWebServiceWebServiceCommand.PUT_IS_VALID_USER_WITH_PAYLOAD, "device=111&home=Hatfields", SAMPLE_PAYLOAD);
+        Assert.assertNotNull(response);
     }
 
     @Test
