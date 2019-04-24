@@ -21,6 +21,10 @@
       <name>Anthony Lombardo</name>
       <email>AnthonyL22@gmail.com</email>
     </developer>
+    <developer>
+      <name>Anastasiya Kirylava</name>
+      <email>anastasiyakirylava@gmail.com</email>
+    </developer>
   </developers>
   <scm>
     <connection>scm:git:https://github.com/AnthonyL22/core-microservice</connection>

@@ -34,7 +34,8 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class MicroserviceTestSuiteTest extends MicroserviceTestSuiteBaseTest {
 
-    private static final String IDENTIFIER = "//div[@id='nav-bar']";
+    private static final String XPATH_IDENTIFIER = "//div[@id='nav-bar']";
+    private static final String CSS_SELECTOR_IDENTIFIER = "form>input";
     private static final String SQL_TEMPLATE_QUERY = "select * from model_recommendation where id = ?";
 
     private WebElement mockWebElement;
@@ -139,12 +140,21 @@ public class MicroserviceTestSuiteTest extends MicroserviceTestSuiteBaseTest {
     }
 
     @Test
+    public void webActionFoundWebElementByCssSelectorTest() {
+        webEventController = mockWebEventController;
+        when(webEventController.getWebEventService()).thenReturn(mockWebEventService);
+        when(mockWebEventService.findWebElement(CSS_SELECTOR_IDENTIFIER)).thenReturn(mockWebElement);
+        webAction(CSS_SELECTOR_IDENTIFIER);
+        verify(mockWebEventService, times(1)).findWebElement(CSS_SELECTOR_IDENTIFIER);
+    }
+
+    @Test
     public void webActionCredentialsTest() {
         AbstractApplicationContext mockAbstractApplicationContext = mock(AbstractApplicationContext.class);
         setCtx(mockAbstractApplicationContext);
         when(mockAbstractApplicationContext.getBean("webEventController")).thenReturn(mockWebEventController);
         webAction(mockCredentials);
-        verify(mockWebEventService, times(0)).findWebElement(IDENTIFIER);
+        verify(mockWebEventService, times(0)).findWebElement(XPATH_IDENTIFIER);
         verify(mockAbstractApplicationContext, times(1)).getBean("webEventController");
     }
 
@@ -166,53 +176,53 @@ public class MicroserviceTestSuiteTest extends MicroserviceTestSuiteBaseTest {
 
     @Test(expected = NullPointerException.class)
     public void webActionNullControllerTest() {
-        when(mockWebEventService.findWebElement(IDENTIFIER)).thenReturn(mockWebElement);
-        webAction(IDENTIFIER);
-        verify(mockWebEventService, times(0)).findWebElement(IDENTIFIER);
+        when(mockWebEventService.findWebElement(XPATH_IDENTIFIER)).thenReturn(mockWebElement);
+        webAction(XPATH_IDENTIFIER);
+        verify(mockWebEventService, times(0)).findWebElement(XPATH_IDENTIFIER);
     }
 
     @Test
     public void webActionCredentialsNonNullWebEventControllerTest() {
         webEventController = mockWebEventController;
         when(webEventController.getWebEventService()).thenReturn(mockWebEventService);
-        when(mockWebEventService.findWebElement(IDENTIFIER)).thenReturn(mockWebElement);
+        when(mockWebEventService.findWebElement(XPATH_IDENTIFIER)).thenReturn(mockWebElement);
         webAction(mockCredentials);
-        verify(mockWebEventService, times(0)).findWebElement(IDENTIFIER);
+        verify(mockWebEventService, times(0)).findWebElement(XPATH_IDENTIFIER);
     }
 
     @Test
     public void webActionFoundWebElementTest() {
         webEventController = mockWebEventController;
         when(webEventController.getWebEventService()).thenReturn(mockWebEventService);
-        when(mockWebEventService.findWebElement(IDENTIFIER)).thenReturn(mockWebElement);
-        webAction(IDENTIFIER);
-        verify(mockWebEventService, times(1)).findWebElement(IDENTIFIER);
+        when(mockWebEventService.findWebElement(XPATH_IDENTIFIER)).thenReturn(mockWebElement);
+        webAction(XPATH_IDENTIFIER);
+        verify(mockWebEventService, times(1)).findWebElement(XPATH_IDENTIFIER);
     }
 
     @Test
     public void webActionBooleanAttributeTest() {
         webEventController = mockWebEventController;
         when(webEventController.getWebEventService()).thenReturn(mockWebEventService);
-        when(mockWebEventService.findWebElement(IDENTIFIER)).thenReturn(mockWebElement);
-        webAction(IDENTIFIER, true);
-        verify(mockWebEventService, times(1)).findWebElement(IDENTIFIER);
+        when(mockWebEventService.findWebElement(XPATH_IDENTIFIER)).thenReturn(mockWebElement);
+        webAction(XPATH_IDENTIFIER, true);
+        verify(mockWebEventService, times(1)).findWebElement(XPATH_IDENTIFIER);
     }
 
     @Test
     public void webActionStringAttributeTest() {
         webEventController = mockWebEventController;
         when(webEventController.getWebEventService()).thenReturn(mockWebEventService);
-        when(mockWebEventService.findWebElement(IDENTIFIER)).thenReturn(mockWebElement);
-        webAction(IDENTIFIER, true);
-        verify(mockWebEventService, times(1)).findWebElement(IDENTIFIER);
+        when(mockWebEventService.findWebElement(XPATH_IDENTIFIER)).thenReturn(mockWebElement);
+        webAction(XPATH_IDENTIFIER, true);
+        verify(mockWebEventService, times(1)).findWebElement(XPATH_IDENTIFIER);
     }
 
     @Test(expected = AssertionError.class)
     public void webActionNotFoundWebElementTest() {
         webEventController = mockWebEventController;
         when(webEventController.getWebEventService()).thenReturn(mockWebEventService);
-        webAction(IDENTIFIER);
-        verify(mockWebEventService, times(1)).findWebElement(IDENTIFIER);
+        webAction(XPATH_IDENTIFIER);
+        verify(mockWebEventService, times(1)).findWebElement(XPATH_IDENTIFIER);
     }
 
     @Test

@@ -95,6 +95,7 @@ public class WebEventService extends WebEventController {
     private BasicCookieStore cookieStore;
 
     private static final String REGEX_XPATH_FINDER = ".*[\\[@'].*";
+    private static final String REGEX_CSS_SELECTOR_FINDER = ".*[\\[#.=^$’>:+~].*";
 
     public WebEventService() {
     }
@@ -323,9 +324,18 @@ public class WebEventService extends WebEventController {
 
         waitForBrowserToLoad();
 
-        if (elementIdentifier.matches(REGEX_XPATH_FINDER)) {
+        if (elementIdentifier.matches(REGEX_XPATH_FINDER) && StringUtils.startsWith(elementIdentifier, "//")) {
             try {
                 WebElement webElement = this.microserviceWebDriver.findElementByXPath(elementIdentifier);
+                if (webElement != null) {
+                    return webElement;
+                }
+            } catch (Exception e) {
+                e.getMessage();
+            }
+        } else if (elementIdentifier.matches(REGEX_CSS_SELECTOR_FINDER) && !StringUtils.startsWith(elementIdentifier, "//")) {
+            try {
+                WebElement webElement = this.microserviceWebDriver.findElementByCssSelector(elementIdentifier);
                 if (webElement != null) {
                     return webElement;
                 }
