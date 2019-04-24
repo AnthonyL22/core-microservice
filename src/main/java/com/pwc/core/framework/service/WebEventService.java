@@ -315,7 +315,7 @@ public class WebEventService extends WebEventController {
     }
 
     /**
-     * Find WebElement by either XPath or CSS Selector.
+     * Find WebElement by all possible avenues
      *
      * @param elementIdentifier unique element identifying string
      * @return WebElement to then be used to interact with the AUT
@@ -324,7 +324,7 @@ public class WebEventService extends WebEventController {
 
         waitForBrowserToLoad();
 
-        if (StringUtils.startsWith(elementIdentifier, "//") && elementIdentifier.matches(REGEX_XPATH_FINDER)) {
+        if (elementIdentifier.matches(REGEX_XPATH_FINDER) && StringUtils.startsWith(elementIdentifier, "//")) {
             try {
                 WebElement webElement = this.microserviceWebDriver.findElementByXPath(elementIdentifier);
                 if (webElement != null) {
@@ -333,7 +333,7 @@ public class WebEventService extends WebEventController {
             } catch (Exception e) {
                 e.getMessage();
             }
-        } else if (!StringUtils.startsWith(elementIdentifier, "//") && elementIdentifier.matches(REGEX_CSS_SELECTOR_FINDER)) {
+        } else if (elementIdentifier.matches(REGEX_CSS_SELECTOR_FINDER) && !StringUtils.startsWith(elementIdentifier, "//")) {
             try {
                 WebElement webElement = this.microserviceWebDriver.findElementByCssSelector(elementIdentifier);
                 if (webElement != null) {
