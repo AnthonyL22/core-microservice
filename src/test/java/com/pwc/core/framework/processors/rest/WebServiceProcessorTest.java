@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -79,6 +80,7 @@ public class WebServiceProcessorTest {
 
         POST_ADD_USER_ID(FrameworkConstants.POST_REQUEST, "rest/users", "addUser"),
         GET_ADD_USER_WITH_PAYLOAD(FrameworkConstants.GET_REQUEST, "rest/users", "addUserWithPayload"),
+        PUT_WITH_PARAMETERS(FrameworkConstants.PUT_REQUEST, "rest/users", ""),
         PUT_IS_VALID_USER_WITH_PAYLOAD(FrameworkConstants.PUT_REQUEST, "rest/users", "isValidUser"),
         GET_ADD_USER_ID(FrameworkConstants.GET_REQUEST, "rest/users", "addUser"),
         GET_BY_LAST_NAME(FrameworkConstants.GET_REQUEST, "rest/users", "byLastName"),
@@ -174,6 +176,23 @@ public class WebServiceProcessorTest {
         headerKeysMap = new HeaderKeysMap(mockHeaderMap);
         smSessionKey = new SmSessionKey("UYTYIUHIJOKL6t5ryuhiujj576576768798");
 
+    }
+
+    @Test
+    public void executePutRequestWithOneParameter() {
+        Map parameters = new HashMap();
+        parameters.put("lastName", "Kirylava");
+        Object response = webServiceProcessor.execute("http://www.foobar.com", headerKeysMap, UsersWebServiceWebServiceCommand.PUT_WITH_PARAMETERS, "123", parameters);
+        Assert.assertNotNull(response);
+    }
+
+    @Test
+    public void executePutRequestWithTwoParameters() {
+        Map parameters = new HashMap();
+        parameters.put("firstName", "Anastasiya");
+        parameters.put("lastName", "Kirylava");
+        Object response = webServiceProcessor.execute("http://www.foobar.com", headerKeysMap, UsersWebServiceWebServiceCommand.PUT_WITH_PARAMETERS, "123", parameters);
+        Assert.assertNotNull(response);
     }
 
     @Test

@@ -614,13 +614,18 @@ public class WebServiceProcessor {
 
                 if (payload instanceof HashMap) {
 
-                    URI uri = new URI(wsUrl);
+                    URI uri;
+                    if (((HashMap) payload).size() > 1) {
+                        uri = constructUriFromPayloadMap(httpPut, (HashMap<String, Object>) payload);
+                    } else {
+                        uri = new URI(wsUrl);
+                        String entityPayload = getFirstValueInMap((HashMap<String, Object>) payload);
+                        httpPut.setEntity(new StringEntity(entityPayload, "UTF-8"));
+                    }
+
                     LOG(true, "AUTHORIZED PUT URI='%s'", uri);
                     httpPut.setURI(uri);
-
-                    String entityPayload = getFirstValueInMap((HashMap<String, Object>) payload);
                     httpPut.setHeader("Content-Type", "application/json");
-                    httpPut.setEntity(new StringEntity(entityPayload, "UTF-8"));
 
                     StopWatch stopWatch = new StopWatch();
                     stopWatch.start();
