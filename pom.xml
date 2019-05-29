@@ -73,6 +73,7 @@
     <mongodb-driver.version>3.0.2</mongodb-driver.version>
     <opera.version>1.5</opera.version>
     <phantomjsdriver.version>1.4.3</phantomjsdriver.version>
+    <poi-ooxml.version>3.15</poi-ooxml.version>
     <procyon.version>0.5.28</procyon.version>
     <restassured.version>2.9.0</restassured.version>
     <saucelabs-java.version>2.1.23</saucelabs-java.version>
@@ -200,6 +201,11 @@
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-dbcp2</artifactId>
       <version>${commonsdbcp2.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.poi</groupId>
+      <artifactId>poi-ooxml</artifactId>
+      <version>${poi-ooxml.version}</version>
     </dependency>
     <dependency>
       <groupId>org.bitbucket.mstrobel</groupId>
