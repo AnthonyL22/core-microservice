@@ -387,6 +387,66 @@ public class WebEventControllerTest {
     }
 
     @Test
+    public void setDriverExecutableFirefoxWindowsDriverTest() {
+        System.setProperty(FrameworkConstants.MAC_SYSTEM_OS_NAME, "");
+        System.setProperty(FrameworkConstants.SYSTEM_OS_NAME, "windows 10");
+        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.FIREFOX_BROWSER_MODE);
+        String driverPath = webEventController.setDriverExecutable();
+        Assert.assertEquals(driverPath, "");
+        Assert.assertEquals(System.getProperty(FrameworkConstants.WEB_DRIVER_GECKO), "");
+    }
+
+    @Test
+    public void setDriverExecutableFirefoxMacDriverTest() {
+        System.setProperty(FrameworkConstants.SYSTEM_OS_NAME, "");
+        System.setProperty(FrameworkConstants.MAC_SYSTEM_OS_NAME, "Mac OSX");
+        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.FIREFOX_BROWSER_MODE);
+        String driverPath = webEventController.setDriverExecutable();
+        Assert.assertEquals(driverPath, "");
+        Assert.assertEquals(System.getProperty(FrameworkConstants.WEB_DRIVER_GECKO), "");
+    }
+
+    @Test
+    public void setDriverExecutableFirefoxLinuxDriverTest() {
+        System.setProperty(FrameworkConstants.SYSTEM_OS_NAME, "Linux");
+        System.setProperty(FrameworkConstants.MAC_SYSTEM_OS_NAME, "");
+        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.FIREFOX_BROWSER_MODE);
+        String driverPath = webEventController.setDriverExecutable();
+        Assert.assertEquals(driverPath, "");
+        Assert.assertEquals(System.getProperty(FrameworkConstants.WEB_DRIVER_GECKO), "");
+    }
+
+    @Test
+    public void setDriverExecutableHeadlessFirefoxWindowsDriverTest() {
+        System.setProperty(FrameworkConstants.MAC_SYSTEM_OS_NAME, "");
+        System.setProperty(FrameworkConstants.SYSTEM_OS_NAME, "windows 10");
+        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.HEADLESS_FIREFOX_BROWSER_MODE);
+        String driverPath = webEventController.setDriverExecutable();
+        Assert.assertEquals(driverPath, "");
+        Assert.assertEquals(System.getProperty(FrameworkConstants.WEB_DRIVER_GECKO), "");
+    }
+
+    @Test
+    public void setDriverExecutableHeadlessFirefoxMacDriverTest() {
+        System.setProperty(FrameworkConstants.SYSTEM_OS_NAME, "");
+        System.setProperty(FrameworkConstants.MAC_SYSTEM_OS_NAME, "Mac OSX");
+        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.HEADLESS_FIREFOX_BROWSER_MODE);
+        String driverPath = webEventController.setDriverExecutable();
+        Assert.assertEquals(driverPath, "");
+        Assert.assertEquals(System.getProperty(FrameworkConstants.WEB_DRIVER_GECKO), "");
+    }
+
+    @Test
+    public void setDriverExecutableHeadlessFirefoxLinuxDriverTest() {
+        System.setProperty(FrameworkConstants.SYSTEM_OS_NAME, "");
+        System.setProperty(FrameworkConstants.MAC_SYSTEM_OS_NAME, "");
+        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.HEADLESS_FIREFOX_BROWSER_MODE);
+        String driverPath = webEventController.setDriverExecutable();
+        Assert.assertEquals(driverPath, "");
+        Assert.assertEquals(System.getProperty(FrameworkConstants.WEB_DRIVER_GECKO), "");
+    }
+
+    @Test
     public void setDriverExecutableChromeWindowsDriverTest() {
         System.setProperty(FrameworkConstants.MAC_SYSTEM_OS_NAME, "");
         System.setProperty(FrameworkConstants.SYSTEM_OS_NAME, "windows 10");

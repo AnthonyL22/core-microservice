@@ -1,9 +1,13 @@
 package com.pwc.core.framework.util;
 
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static com.pwc.logging.service.LoggerService.LOG;
 
@@ -47,6 +51,25 @@ public class CollectionUtils {
             LOG(true, "Unable to get random set due to reason='%s'", e);
             return setValues;
         }
+    }
+
+    /**
+     * Remove items from the list with a list of blacklist items.
+     *
+     * @param sourceList    source list to remove items from
+     * @param itemsToRemove items to remove from sourceList by their value
+     */
+    public static List removeBlacklistedItems(List sourceList, final List<String> itemsToRemove) {
+
+        List cleanList = new ArrayList();
+        IntStream.range(0, sourceList.size()).forEach(index -> {
+            itemsToRemove.forEach(blacklistedItem -> {
+                if (!StringUtils.equalsIgnoreCase(String.valueOf(sourceList.get(index)), blacklistedItem)) {
+                    cleanList.add(sourceList.get(index));
+                }
+            });
+        });
+        return cleanList;
     }
 
 }

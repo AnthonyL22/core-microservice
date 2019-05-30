@@ -45,6 +45,9 @@ import static com.pwc.logging.service.LoggerService.LOG;
 @Component
 public class WebEventController {
 
+    private static final String WINDOWS_OS = "windows";
+    private static final String LINUX_OS = "linux";
+
     @Value("${web.url}")
     private String webUrl;
 
@@ -213,7 +216,7 @@ public class WebEventController {
             capabilities.setCapability(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, StringUtils.trim(System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY)));
             capabilities.setCapability(FrameworkConstants.BROWSER_STACK_BROWSER_VERSION_PROPERTY, StringUtils.trim(System.getProperty(FrameworkConstants.BROWSER_STACK_BROWSER_VERSION_PROPERTY)));
             if (StringUtils.isEmpty(System.getProperty(FrameworkConstants.BROWSER_STACK_OS_PROPERTY))) {
-                capabilities.setCapability(FrameworkConstants.BROWSER_STACK_OS_PROPERTY, "windows");
+                capabilities.setCapability(FrameworkConstants.BROWSER_STACK_OS_PROPERTY, WINDOWS_OS);
             } else {
                 capabilities.setCapability(FrameworkConstants.BROWSER_STACK_OS_PROPERTY, StringUtils.trim(System.getProperty(FrameworkConstants.BROWSER_STACK_OS_PROPERTY)));
             }
@@ -567,9 +570,9 @@ public class WebEventController {
 
         switch (DESIRED_BROWSER) {
             case FrameworkConstants.CHROME_BROWSER_MODE: {
-                if (StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), "windows")) {
+                if (StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), WINDOWS_OS)) {
                     executable = PropertiesUtils.getFirstFileFromTestResources("chrome_win.exe");
-                } else if (StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), "linux")) {
+                } else if (StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), LINUX_OS)) {
                     executable = PropertiesUtils.getFirstFileFromTestResources("chrome_linux_64");
                 } else {
                     executable = PropertiesUtils.getFirstFileFromTestResources("chrome_mac");
@@ -578,9 +581,9 @@ public class WebEventController {
                 break;
             }
             case FrameworkConstants.HEADLESS_CHROME_BROWSER_MODE: {
-                if (StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), "windows")) {
+                if (StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), WINDOWS_OS)) {
                     executable = PropertiesUtils.getFirstFileFromTestResources("chrome_win.exe");
-                } else if (StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), "linux")) {
+                } else if (StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), LINUX_OS)) {
                     executable = PropertiesUtils.getFirstFileFromTestResources("chrome_linux_64");
                 } else {
                     executable = PropertiesUtils.getFirstFileFromTestResources("chrome_mac");
@@ -589,16 +592,24 @@ public class WebEventController {
                 break;
             }
             case FrameworkConstants.FIREFOX_BROWSER_MODE: {
-                executable = StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), "windows") ?
-                        PropertiesUtils.getFirstFileFromTestResources("geckodriver.exe") :
-                        PropertiesUtils.getFirstFileFromTestResources("geckodriver");
+                if (StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), WINDOWS_OS)) {
+                    executable = PropertiesUtils.getFirstFileFromTestResources("geckodriver.exe");
+                } else if (StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), LINUX_OS)) {
+                    executable = PropertiesUtils.getFirstFileFromTestResources("geckodriver_linux_64");
+                } else {
+                    executable = PropertiesUtils.getFirstFileFromTestResources("geckodriver_mac");
+                }
                 System.setProperty(FrameworkConstants.WEB_DRIVER_GECKO, PropertiesUtils.getPath(executable));
                 break;
             }
             case FrameworkConstants.HEADLESS_FIREFOX_BROWSER_MODE: {
-                executable = StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), "windows") ?
-                        PropertiesUtils.getFirstFileFromTestResources("geckodriver.exe") :
-                        PropertiesUtils.getFirstFileFromTestResources("geckodriver");
+                if (StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), WINDOWS_OS)) {
+                    executable = PropertiesUtils.getFirstFileFromTestResources("geckodriver.exe");
+                } else if (StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), LINUX_OS)) {
+                    executable = PropertiesUtils.getFirstFileFromTestResources("geckodriver_linux_64");
+                } else {
+                    executable = PropertiesUtils.getFirstFileFromTestResources("geckodriver_mac");
+                }
                 System.setProperty(FrameworkConstants.WEB_DRIVER_GECKO, PropertiesUtils.getPath(executable));
                 break;
             }
@@ -619,7 +630,7 @@ public class WebEventController {
                 if (StringUtils.isNotEmpty(System.getProperty(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY))) {
                     return System.getProperty(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY);
                 } else {
-                    executable = StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), "windows") ?
+                    executable = StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), WINDOWS_OS) ?
                             PropertiesUtils.getFirstFileFromTestResources("phantomjs.exe") :
                             PropertiesUtils.getFirstFileFromTestResources("phantomjs");
                     System.setProperty(PhantomJSDriverService.PHANTOMJS_GHOSTDRIVER_PATH_PROPERTY, PropertiesUtils.getPath(executable));
