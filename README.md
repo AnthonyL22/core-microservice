@@ -389,6 +389,9 @@ siteminder.open.url=
 saucelabs.username=my-user
 saucelabs.accesskey=12345900-7f51-4185-a3d7-5d2b12342efa
 capture.video=false
+browserstack.username=
+browserstack.accesskey=123456789
+browserstack.local=false
 ```
 
 Settings:
@@ -406,8 +409,11 @@ Settings:
 | enable.ajax.requests.waiting  | true             | boolean: enable active ajax req's waiting  |
 | enable.siteMinder             | false            | boolean: enable Site Minder auth           |
 | siteminder.open.url           |                  | Site Minder auth URL                       |
-| saucelabs.username            |                  | Sauce Labs username (see grid.properties)  |
-| saucelabs.accesskey           |                  | Sauce Labs key (see grid.properties)       |
+| saucelabs.username            |                  | Sauce Labs username                        |
+| saucelabs.accesskey           |                  | Sauce Labs key                             |
+| browserstack.username         |                  | BrowserStack username                      |
+| browserstack.accesskey        |                  | BrowserStack key                           |
+| browserstack.local            | false            | Connect to BrowserStack locally?           |
 | capture.video                 | false            | record test execution video                |
 
 ### database.properties
@@ -451,6 +457,10 @@ must be part of your project defines the following self-explanatory properties:
 grid.enabled=true
 grid.hub.url=http://<YOUR PRIVATE GRID IP ADDRESS>:4444/wd/hub
 #grid.hub.url=http://<YOUR_SAUCELABS_USER>:<YOUR_SAUCELABS_KEY>@ondemand.saucelabs.com:80/wd/hub
+
+OR
+
+#http://${browserstack.username}:${browserstack.accesskey}@hub-cloud.browserstack.com/wd/hub
 ```
 
 ## IDE
