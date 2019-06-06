@@ -17,7 +17,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 import java.util.UUID;
 
@@ -133,6 +135,41 @@ public class DatabaseEventService {
             LOG("Error executing QUERY", e);
         }
         return "";
+    }
+
+    /**
+     * Execute a parameter query that returns List of Maps.
+     *
+     * @param sqlTemplateQuery SQL query to run, with ? placeholders for parameters
+     * @return returns a Object of Maps
+     */
+    public Object executeParameterQueryMap(final String sqlTemplateQuery, final boolean includeColumns) {
+
+        List<Map> rows = new ArrayList<>();
+        try {
+            if (!StringUtils.startsWith(sqlTemplateQuery, "update") ||
+                    !StringUtils.startsWith(sqlTemplateQuery, "delete") ||
+                    !StringUtils.startsWith(sqlTemplateQuery, "insert") && includeColumns) {
+                ResultSet resultSet = executeQuery(sqlTemplateQuery);
+                ResultSetMetaData rsmd = resultSet.getMetaData();
+                while (resultSet.next()) {
+                    int numCols = rsmd.getColumnCount();
+                    Map row = new HashMap<>(numCols);
+                    for (int i = 1; i <= numCols; ++i) {
+                        row.put(rsmd.getColumnName(i), resultSet.getObject(i));
+                    }
+                    rows.add(row);
+                }
+                return rows;
+
+            } else {
+                return executeQuery(sqlTemplateQuery);
+            }
+        } catch (final Exception e) {
+            e.printStackTrace();
+            LOG(true, "Error executing QUERY exception=%s", e.getCause());
+        }
+        return rows;
     }
 
     /**

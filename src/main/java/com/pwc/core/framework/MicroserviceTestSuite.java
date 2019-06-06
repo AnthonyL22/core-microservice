@@ -8,7 +8,11 @@ import com.pwc.core.framework.command.WebServiceCommand;
 import com.pwc.core.framework.controller.DatabaseController;
 import com.pwc.core.framework.controller.WebEventController;
 import com.pwc.core.framework.controller.WebServiceController;
-import com.pwc.core.framework.data.*;
+import com.pwc.core.framework.data.Credentials;
+import com.pwc.core.framework.data.HeaderKeysMap;
+import com.pwc.core.framework.data.OAuthKey;
+import com.pwc.core.framework.data.PropertiesFile;
+import com.pwc.core.framework.data.SmSessionKey;
 import com.pwc.core.framework.listeners.MicroserviceTestListener;
 import com.pwc.core.framework.util.PropertiesUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -17,7 +21,11 @@ import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.testng.annotations.*;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Listeners;
 
 import java.util.HashMap;
 import java.util.List;
@@ -540,6 +548,22 @@ public abstract class MicroserviceTestSuite {
         }
         databaseController.establishDatabaseConnection(ctx);
         return databaseController.getDatabaseEventService().executeParameterQuery(sqlCommand.sql(), queryParameters);
+    }
+
+    /**
+     * Ability to query the database under test and return a List of Maps.  Typically used to include column names along
+     * with the resulting query results.
+     *
+     * @param sqlCommand     Parameter-decorated SQL Statement
+     * @param includeColumns include column names in result set
+     * @return result potentially a List of Maps
+     */
+    protected Object databaseAction(final DatabaseCommand sqlCommand, boolean includeColumns) {
+        if (databaseController == null) {
+            databaseController = (DatabaseController) ctx.getBean("databaseController");
+        }
+        databaseController.establishDatabaseConnection(ctx);
+        return databaseController.getDatabaseEventService().executeParameterQueryMap(sqlCommand.sql(), includeColumns);
     }
 
     /**

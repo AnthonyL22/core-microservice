@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -44,6 +45,12 @@ public class CollectionUtilsTest {
     public void getRandomSetEmptySetTest() {
         Set result = CollectionUtils.getRandomSet(null);
         assertFalse(result.size() > 0);
+    }
+
+    @Test
+    public void removeBlacklistedItemsTest() {
+        List result = CollectionUtils.removeBlacklistedItems(BEST_PLACES_ON_EARTH_LIST, Arrays.asList("Flagler"));
+        assertEquals(BEST_PLACES_ON_EARTH_LIST.size() - 1, result.size());
     }
 
 }

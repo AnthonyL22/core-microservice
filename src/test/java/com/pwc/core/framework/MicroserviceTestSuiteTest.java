@@ -23,6 +23,7 @@ import org.testng.Assert;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.mockito.Mockito.mock;
@@ -36,7 +37,8 @@ public class MicroserviceTestSuiteTest extends MicroserviceTestSuiteBaseTest {
 
     private static final String XPATH_IDENTIFIER = "//div[@id='nav-bar']";
     private static final String CSS_SELECTOR_IDENTIFIER = "form>input";
-    private static final String SQL_TEMPLATE_QUERY = "select * from model_recommendation where id = ?";
+    private static final String SQL_TEMPLATE_QUERY = "select * from user_name where id = ?";
+    private static final String SQL_QUERY = "select * from user_name";
 
     private WebElement mockWebElement;
     private WebEventService mockWebEventService;
@@ -81,8 +83,8 @@ public class MicroserviceTestSuiteTest extends MicroserviceTestSuiteBaseTest {
 
     private enum QueryCommand implements DatabaseCommand {
 
-        QUERY_MODEL_RECOMMENDATION_BY_ID("select * from model_recommendation where id = ?"),
-        QUERY_MODEL_RECOMMENDATION("select * from model_recommendation");
+        QUERY_USER_NAME_BY_ID("select * from user_name where id = ?"),
+        QUERY_USER_NAME("select * from user_name");
 
         private String sqlStatement;
 
@@ -159,18 +161,36 @@ public class MicroserviceTestSuiteTest extends MicroserviceTestSuiteBaseTest {
     }
 
     @Test
+    public void databaseActionMapIncludingColumnsTest() {
+        databaseController = mockDatabaseController;
+        when(databaseController.getDatabaseEventService()).thenReturn(mockDatabaseEventService);
+        when(mockDatabaseEventService.executeParameterQueryMap(SQL_QUERY, true)).thenReturn(new ArrayList<HashMap>());
+        databaseAction(QueryCommand.QUERY_USER_NAME, true);
+        verify(mockDatabaseEventService, times(1)).executeParameterQueryMap(SQL_QUERY, true);
+    }
+
+    @Test
+    public void databaseActionMapNotIncludingColumnsTest() {
+        databaseController = mockDatabaseController;
+        when(databaseController.getDatabaseEventService()).thenReturn(mockDatabaseEventService);
+        when(mockDatabaseEventService.executeParameterQueryMap(SQL_QUERY, false)).thenReturn(new ArrayList<HashMap>());
+        databaseAction(QueryCommand.QUERY_USER_NAME, false);
+        verify(mockDatabaseEventService, times(1)).executeParameterQueryMap(SQL_QUERY, false);
+    }
+
+    @Test
     public void databaseActionTest() {
         databaseController = mockDatabaseController;
         when(databaseController.getDatabaseEventService()).thenReturn(mockDatabaseEventService);
         when(mockDatabaseEventService.executeParameterQuery(SQL_TEMPLATE_QUERY, new Object[]{1})).thenReturn(new Object());
-        databaseAction(QueryCommand.QUERY_MODEL_RECOMMENDATION_BY_ID, 1);
+        databaseAction(QueryCommand.QUERY_USER_NAME_BY_ID, 1);
         verify(mockDatabaseEventService, times(1)).executeParameterQuery(SQL_TEMPLATE_QUERY, new Object[]{1});
     }
 
     @Test(expected = NullPointerException.class)
     public void databaseActionNullControllerTest() {
         when(mockDatabaseEventService.executeParameterQuery(SQL_TEMPLATE_QUERY, new Object[]{1})).thenReturn(new Object());
-        databaseAction(QueryCommand.QUERY_MODEL_RECOMMENDATION_BY_ID, 1);
+        databaseAction(QueryCommand.QUERY_USER_NAME_BY_ID, 1);
         verify(mockDatabaseEventService, times(0)).executeParameterQuery(SQL_TEMPLATE_QUERY, new Object[]{1});
     }
 
@@ -329,7 +349,7 @@ public class MicroserviceTestSuiteTest extends MicroserviceTestSuiteBaseTest {
     @Test(expected = NullPointerException.class)
     public void databaseActionInvalidQueryTest() {
         databaseController = mockDatabaseController;
-        Object response = databaseAction(QueryCommand.QUERY_MODEL_RECOMMENDATION, 1);
+        Object response = databaseAction(QueryCommand.QUERY_USER_NAME, 1);
         Assert.assertNull(response);
     }
 
