@@ -3,6 +3,7 @@ package com.pwc.core.framework.processors.rest;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.ArrayListMultimap;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
@@ -23,13 +24,22 @@ import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.methods.*;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.*;
+import org.apache.http.impl.client.BasicCredentialsProvider;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.client.LaxRedirectStrategy;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
@@ -47,6 +57,7 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -672,6 +683,19 @@ public class WebServiceProcessor {
                     wsResponse = getWebServiceResponse(response, httpEntity, stopWatch);
                     closeHttpConnections(httpclient, response);
 
+                } else if (payload instanceof ArrayListMultimap) {
+
+                    URI uri = constructUriFromPayloadMultiMap(httpGet, (ArrayListMultimap<String, Object>) payload);
+                    LOG(true, "AUTHORIZED GET URI='%s'", uri);
+                    httpGet.setURI(uri);
+                    StopWatch stopWatch = new StopWatch();
+                    stopWatch.start();
+                    CloseableHttpResponse response = httpclient.execute(httpGet);
+                    stopWatch.stop();
+                    HttpEntity httpEntity = response.getEntity();
+                    wsResponse = getWebServiceResponse(response, httpEntity, stopWatch);
+                    closeHttpConnections(httpclient, response);
+
                 } else if (isValidJson(payload.toString())) {
 
                     HttpGetWithEntity httpGetWithEntity = new HttpGetWithEntity(wsUrl);
@@ -1138,6 +1162,40 @@ public class WebServiceProcessor {
             List<NameValuePair> nameValuePairs = new ArrayList<>();
             for (Map.Entry<String, Object> entry : payload.entrySet()) {
                 nameValuePairs.add(new BasicNameValuePair(entry.getKey(), String.valueOf(entry.getValue())));
+            }
+
+            encodedUri = new URIBuilder(httpRequestBase.getURI()).addParameters(nameValuePairs).build();
+            String decoded = URLDecoder.decode(String.valueOf(encodedUri), StandardCharsets.UTF_8.toString());
+            return new URI(decoded);
+
+        } catch (Exception e) {
+            return encodedUri;
+        }
+    }
+
+    /**
+     * Construct URI from payload ArrayListMultiMap passed in used for duplicate map values.
+     *
+     * @param httpRequestBase Http request
+     * @param payload         payload to construct URI with
+     * @return hydrated, decoded URI
+     */
+    protected URI constructUriFromPayloadMultiMap(HttpRequestBase httpRequestBase, ArrayListMultimap<String, Object> payload) {
+        URI encodedUri = null;
+        try {
+            List<NameValuePair> nameValuePairs = new ArrayList<>();
+            for (Map.Entry<String, Collection<Object>> entry : payload.asMap().entrySet()) {
+                String key = entry.getKey();
+                Collection<Object> valuesForKey = entry.getValue();
+
+                if (valuesForKey.size() > 1) {
+                    valuesForKey.forEach(value -> {
+                        nameValuePairs.add(new BasicNameValuePair(key, String.valueOf(value)));
+                    });
+                } else {
+                    nameValuePairs.add(new BasicNameValuePair(key, String.valueOf(entry.getValue()).replace("[", "").replace("]", "")));
+                }
+
             }
 
             encodedUri = new URIBuilder(httpRequestBase.getURI()).addParameters(nameValuePairs).build();
