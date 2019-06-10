@@ -1,5 +1,7 @@
 package com.pwc.core.framework.processors.rest;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 import com.jayway.restassured.path.json.JsonPath;
 import com.pwc.core.framework.FrameworkConstants;
 import com.pwc.core.framework.command.WebServiceCommand;
@@ -43,6 +45,7 @@ public class WebServiceProcessorTest {
 
     private WebServiceProcessor webServiceProcessor;
     private HashMap<String, Object> mockUserNameMap = new HashMap<>();
+    private ArrayListMultimap<String, Object> mockUserNameMultiMap = ArrayListMultimap.create();
     private List<String> mockUserNameList = new ArrayList<>();
 
     private CloseableHttpClient mockCloseableHttpClient;
@@ -176,6 +179,15 @@ public class WebServiceProcessorTest {
         headerKeysMap = new HeaderKeysMap(mockHeaderMap);
         smSessionKey = new SmSessionKey("UYTYIUHIJOKL6t5ryuhiujj576576768798");
 
+    }
+
+    @Test
+    public void executeGetRequestWithMultiMapParameter() {
+        Multimap<String, String> parameters = ArrayListMultimap.create();
+        parameters.put("lastName", "Kirylava");
+        parameters.put("lastName", "Lombardo");
+        Object response = webServiceProcessor.execute("http://www.foobar.com", headerKeysMap, UsersWebServiceWebServiceCommand.GET_BY_LAST_NAME, "123", parameters);
+        Assert.assertNotNull(response);
     }
 
     @Test
@@ -361,6 +373,38 @@ public class WebServiceProcessorTest {
     public void constructUriFromPayloadMapTest() {
         URI result = webServiceProcessor.constructUriFromPayloadMap(mockHttpRequestBase, mockUserNameMap);
         Assert.assertEquals(result.toString(), mockHttpRequestBase.getURI() + "?zip=32137&lastName=Jones");
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void constructUriFromPayloadNullMultiMapTest() {
+        URI result = webServiceProcessor.constructUriFromPayloadMultiMap(mockHttpRequestBase, null);
+        Assert.assertNull(result.toString());
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void constructUriFromPayloadMultiMapNullKeyAndValueTest() {
+        String key = "lastName";
+        mockUserNameMultiMap.put(null, null);
+        mockUserNameMultiMap.put(key, "Lombardo");
+        URI result = webServiceProcessor.constructUriFromPayloadMultiMap(mockHttpRequestBase, mockUserNameMultiMap);
+        Assert.assertNull(result.toString());
+    }
+
+    @Test
+    public void constructUriFromPayloadMultiMapDuplicateKeysTest() {
+        String key = "lastName";
+        mockUserNameMultiMap.put(key, "Kirylava");
+        mockUserNameMultiMap.put(key, "Lombardo");
+        URI result = webServiceProcessor.constructUriFromPayloadMultiMap(mockHttpRequestBase, mockUserNameMultiMap);
+        Assert.assertEquals(result.toString(), mockHttpRequestBase.getURI() + "?lastName=Kirylava&lastName=Lombardo");
+    }
+
+    @Test
+    public void constructUriFromPayloadMultiMapSingleKeysTest() {
+        mockUserNameMultiMap.put("lastName", "[Kirylava]");
+        mockUserNameMultiMap.put("firstName", "Anastasiya");
+        URI result = webServiceProcessor.constructUriFromPayloadMultiMap(mockHttpRequestBase, mockUserNameMultiMap);
+        Assert.assertEquals(result.toString(), mockHttpRequestBase.getURI() + "?lastName=Kirylava&firstName=Anastasiya");
     }
 
     @Test
