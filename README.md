@@ -27,7 +27,7 @@ feature requests. Anything else, such as questions for help in using the library
 1. Java 1.8
 2. Maven 3.x
 
-# Flow Diagram
+# Architecture Diagram
 ![Sample](docs/core-microservice-flow-diagram.png "Microservice Flow Diagram")
 
 # Maven Dependency
