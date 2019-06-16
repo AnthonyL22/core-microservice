@@ -19,9 +19,9 @@ public class MatSelectableElementImpl implements MicroserviceWebElement {
     public void webAction(final WebElement webElement, final Object attributeValue) {
         try {
             LOG(true, "Choose MAT-SELECT %s", attributeValue != null ? String.format(":: value='%s'", attributeValue) : "");
-            MatSelect dropDownList = new MatSelect(webElement);
+            MatSelect matSelectDropDown = new MatSelect(webElement);
             try {
-                dropDownList.deselectAll();
+                matSelectDropDown.deselectAll();
             } catch (Exception eatMessage) {
                 eatMessage.getMessage();
             }
@@ -29,10 +29,10 @@ public class MatSelectableElementImpl implements MicroserviceWebElement {
             if (StringUtils.containsAny(attributeValue.toString(), ",")) {
                 String[] itemsToSelect = StringUtils.split(attributeValue.toString(), ",");
                 for (Object item : itemsToSelect) {
-                    dropDownList.selectByVisibleText(item.toString().trim());
+                    matSelectDropDown.selectByVisibleText(item.toString().trim());
                 }
             } else {
-                dropDownList.selectByVisibleText(attributeValue.toString());
+                matSelectDropDown.selectByVisibleText(attributeValue.toString());
             }
         } catch (Exception e) {
             assertFail("Failed to choose from MAT-SELECT due to exception=%s", e.getMessage());

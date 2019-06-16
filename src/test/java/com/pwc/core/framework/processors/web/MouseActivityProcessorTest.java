@@ -44,10 +44,10 @@ public class MouseActivityProcessorTest extends WebElementBaseTest {
         verify(mockWebElement, times(16)).getTagName();
     }
 
-    @Test
+    @Test(expected = AssertionError.class)
     public void webActionDivContainingMatOptionsTest() {
         when(mockWebElement.getAttribute(WebElementAttribute.CLASS.attribute)).thenReturn("green " + WebElementType.MAT_SELECT.type + "-highlighted");
-        when(mockWebElement.getTagName()).thenReturn(WebElementType.DIV.type);
+        when(mockWebElement.getTagName()).thenReturn(WebElementType.MAT_SELECT.type);
         when(mockWebElement.findElements(By.xpath(".//mat-option[normalize-space(.) = " + Quotes.escape(ATTRIBUTE) + "]"))).thenReturn(mockWebElementOptionList);
         mouseActivityProcessor.webAction(mockWebElement, ATTRIBUTE);
         verify(mockWebElement, times(12)).getTagName();
