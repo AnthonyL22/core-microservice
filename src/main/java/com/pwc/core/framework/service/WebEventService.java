@@ -1208,6 +1208,7 @@ public class WebEventService extends WebEventController {
      * @param elementIdentifier element to find visibly not displayed
      */
     public void waitForElementToDisappear(final String elementIdentifier) {
+
         try {
 
             record();
@@ -1269,8 +1270,6 @@ public class WebEventService extends WebEventController {
      * @param elementIdentifier element to find disabled
      */
     public void waitForElementToBecomeDisabled(final String elementIdentifier) {
-
-        long timeOutInSeconds = 0;
 
         try {
 
