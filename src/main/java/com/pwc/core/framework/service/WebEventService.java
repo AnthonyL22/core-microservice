@@ -1232,6 +1232,72 @@ public class WebEventService extends WebEventController {
     }
 
     /**
+     * Wait for an element to become enabled from it's currently disabled state.
+     *
+     * @param elementIdentifier element to find enabled
+     */
+    public void waitForElementToBecomeEnabled(final String elementIdentifier) {
+
+        try {
+
+            (new WebDriverWait(this.microserviceWebDriver, timeOutInSeconds, sleepInMillis)).until(new ExpectedCondition<Boolean>() {
+
+                boolean isElementEnabled = false;
+                int countDown = (int) timeOutInSeconds;
+
+                public Boolean apply(WebDriver d) {
+
+                    if (isVisible(elementIdentifier)) {
+                        isElementEnabled = findWebElement(elementIdentifier).isEnabled();
+                    }
+
+                    if (!isElementEnabled && countDown > 0) {
+                        LOG(true, "Waiting - Element='%s' NOT ENABLED YET, Retrying for %s seconds ****", elementIdentifier, countDown--);
+                    }
+                    return isElementEnabled;
+                }
+            });
+
+        } catch (Exception e) {
+            Assert.fail(String.format("Element='%s', didn't appear enabled in allotted time.", elementIdentifier), e);
+        }
+    }
+
+    /**
+     * Wait for an element to become disabled from it's currently enabled state.
+     *
+     * @param elementIdentifier element to find disabled
+     */
+    public void waitForElementToBecomeDisabled(final String elementIdentifier) {
+
+        long timeOutInSeconds = 0;
+
+        try {
+
+            (new WebDriverWait(this.microserviceWebDriver, timeOutInSeconds, sleepInMillis)).until(new ExpectedCondition<Boolean>() {
+
+                boolean isElementEnabled = true;
+                int countDown = (int) timeOutInSeconds;
+
+                public Boolean apply(WebDriver d) {
+
+                    if (isVisible(elementIdentifier)) {
+                        isElementEnabled = findWebElement(elementIdentifier).isEnabled();
+                    }
+
+                    if (isElementEnabled && countDown > 0) {
+                        LOG(true, "Waiting - Element='%s' ENABLED STILL, Retrying for %s seconds ****", elementIdentifier, countDown--);
+                    }
+                    return isElementEnabled;
+                }
+            });
+
+        } catch (Exception e) {
+            Assert.fail(String.format("Element='%s', didn't appear disabled in allotted time.", elementIdentifier), e);
+        }
+    }
+
+    /**
      * Wait for Element to load in browser.  Will timeout after the configurable timeout and throw a failure to fail the test.
      * NOTE: be very careful with this method.  Make sure your elementIdentifier to wait for to exist is going to surly
      * display

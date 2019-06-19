@@ -452,6 +452,28 @@ public abstract class WebTestCase extends MicroserviceTestSuite {
     }
 
     /**
+     * Wait for Element to be enabled in the browser.  Will timeout after the configurable timeout and throw a failure to fail the test.
+     * NOTE: be very careful with this method.  Make sure your elementIdentifier to wait for becoming enabled is going to surly
+     * become enabled.
+     *
+     * @param elementIdentifier element to find to be enabled
+     */
+    protected void waitForElementToBeEnabled(final String elementIdentifier) {
+        webEventController.getWebEventService().waitForElementToBecomeEnabled(elementIdentifier);
+    }
+
+    /**
+     * Wait for Element to be disabled in the browser.  Will timeout after the configurable timeout and throw a failure to fail the test.
+     * NOTE: be very careful with this method.  Make sure your elementIdentifier to wait for becoming disabled is going to surly
+     * become disabled.
+     *
+     * @param elementIdentifier element to find to be disabled
+     */
+    protected void waitForElementToBeDisabled(final String elementIdentifier) {
+        webEventController.getWebEventService().waitForElementToBecomeDisabled(elementIdentifier);
+    }
+
+    /**
      * Wait for Element to disappear in the browser.  Will timeout after the configurable timeout and throw a failure to fail the test.
      * NOTE: be very careful with this method.  Make sure your elementIdentifier to wait for to NOT display is going to surly
      * disappear
