@@ -458,7 +458,7 @@ public abstract class WebTestCase extends MicroserviceTestSuite {
      *
      * @param elementIdentifier element to find to be enabled
      */
-    protected void waitForElementToBeEnabled(final String elementIdentifier) {
+    protected void waitForElementToBecomeEnabled(final String elementIdentifier) {
         webEventController.getWebEventService().waitForElementToBecomeEnabled(elementIdentifier);
     }
 
@@ -469,7 +469,7 @@ public abstract class WebTestCase extends MicroserviceTestSuite {
      *
      * @param elementIdentifier element to find to be disabled
      */
-    protected void waitForElementToBeDisabled(final String elementIdentifier) {
+    protected void waitForElementToBecomeDisabled(final String elementIdentifier) {
         webEventController.getWebEventService().waitForElementToBecomeDisabled(elementIdentifier);
     }
 
