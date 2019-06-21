@@ -1275,19 +1275,19 @@ public class WebEventService extends WebEventController {
 
             (new WebDriverWait(this.microserviceWebDriver, timeOutInSeconds, sleepInMillis)).until(new ExpectedCondition<Boolean>() {
 
-                boolean isElementEnabled = true;
+                boolean isElementDisabled = true;
                 int countDown = (int) timeOutInSeconds;
 
                 public Boolean apply(WebDriver d) {
 
                     if (isVisible(elementIdentifier)) {
-                        isElementEnabled = findWebElement(elementIdentifier).isEnabled();
+                        isElementDisabled = !findWebElement(elementIdentifier).isEnabled();
                     }
 
-                    if (isElementEnabled && countDown > 0) {
+                    if (!isElementDisabled && countDown > 0) {
                         LOG(true, "Waiting - Element='%s' ENABLED STILL, Retrying for %s seconds ****", elementIdentifier, countDown--);
                     }
-                    return isElementEnabled;
+                    return isElementDisabled;
                 }
             });
 
