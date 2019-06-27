@@ -56,13 +56,20 @@ public class RandomStringUtils {
     }
 
     /**
-     * Get a random string of alphanumeric characters of variable length
+     * Get a random string of alphanumeric characters of variable length that will NOT
+     * begin with a ZERO.
      *
      * @param length The length of the string of random numbers
      * @return A String of random numbers
      */
     public static String randomNumeric(final int length) {
-        return org.apache.commons.lang.RandomStringUtils.randomNumeric(length);
+
+        String randomNumber = org.apache.commons.lang.RandomStringUtils.randomNumeric(length);
+        if (org.apache.commons.lang3.StringUtils.startsWith(randomNumber, "0")) {
+            String replacement = String.valueOf(new Random().nextInt((9 - 1) + 1) + 1);
+            randomNumber = org.apache.commons.lang3.StringUtils.replaceOnce(randomNumber, "0", replacement);
+        }
+        return randomNumber;
     }
 
     /**

@@ -244,7 +244,7 @@ public class DateUtilsTest {
 
     @Test
     public void getFormattedDateTest() {
-        Date result = DateUtils.getFormattedDate("2017-12-01 10:45", TEST_DATETIME_PATTERN);
+        Date result = DateUtils.getFormattedDate("2017-12-01 13:45", TEST_DATETIME_PATTERN);
         assertEquals(result, new Date(1512153900000L));
     }
 
