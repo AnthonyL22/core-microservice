@@ -18,7 +18,7 @@ public class ReadTxtUtils {
      * @param fileName     file name to read
      * @return data provider array
      */
-    public static Object[][] getDataArray(final String resourcePath, final String fileName, final int totalCols, final int totalRows) {
+    public static Object[][] getTextDataArray(final String resourcePath, final String fileName, final int totalCols, final int totalRows) {
 
         String[][] tabArray = null;
 

@@ -9,12 +9,13 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 
 import static com.pwc.logging.service.LoggerService.LOG;
 
 public class ReadExcelUtils {
 
-    private static XSSFSheet ExcelWSheet;
+    private static XSSFSheet excelWorksheet;
 
     /**
      * Read .xls into TestNG data provider multi-dimensional array.
@@ -31,16 +32,13 @@ public class ReadExcelUtils {
 
         try {
 
-            File file = PropertiesUtils.getFileFromResources(resourcePath + fileName);
-            FileInputStream excelFile = new FileInputStream(file);
-            XSSFWorkbook excelWBook = new XSSFWorkbook(excelFile);
-            ExcelWSheet = excelWBook.getSheet(sheetName);
+            readExcelWorksheet(resourcePath, fileName, sheetName);
 
             int startRow = 1;
             int startCol = 0;
             int cellIndex;
             int innerCellIndex;
-            int totalRows = ExcelWSheet.getLastRowNum();
+            int totalRows = excelWorksheet.getLastRowNum();
 
             tabArray = new String[totalRows][totalCols];
             cellIndex = 0;
@@ -66,6 +64,54 @@ public class ReadExcelUtils {
     }
 
     /**
+     * Read .xls column data
+     *
+     * @param resourcePath resource path from the /resources dir
+     * @param fileName       file name to read
+     * @param sheetName      sheet name to interrogate
+     * @param startingColumn 0 starting column index to read
+     * @param startingRow    0 starting row index to read
+     * @return data provider array
+     */
+    public static Object[][] getColumnArray(final String resourcePath, final String fileName, final String sheetName, final int startingColumn, final int startingRow) {
+
+        String[][] tabArray = null;
+
+        try {
+
+            readExcelWorksheet(resourcePath, fileName, sheetName);
+
+            if (null == excelWorksheet) {
+                LOG(true, "*** PLEASE check your Sheet enum for the sheet named '%s'", sheetName);
+            } else {
+
+                int rowIndex;
+                int innerCellIndex;
+                int totalRows = excelWorksheet.getLastRowNum();
+
+                tabArray = new String[totalRows][1];
+
+                rowIndex = 0;
+                for (int i = startingRow; i <= totalRows; i++, rowIndex++) {
+                    innerCellIndex = 0;
+                    String columnValue = getCellData(i, startingColumn);
+                    if (StringUtils.isNoneEmpty(columnValue)) {
+                        tabArray[rowIndex][innerCellIndex] = columnValue;
+                        LOG(false, "Read column value=%s", tabArray[rowIndex][innerCellIndex]);
+                    }
+                }
+
+            }
+
+        } catch (Exception e) {
+            LOG(true, "Could not read the Excel sheet due to exception=%s", e.getMessage());
+        }
+
+        return (tabArray);
+
+    }
+
+    /**
      * Read CELL data from spreadsheet.
      *
      * @param rowNumber    row number to read
@@ -75,7 +121,7 @@ public class ReadExcelUtils {
     private static String getCellData(int rowNumber, int columnNumber) {
         try {
 
-            XSSFCell cell = ExcelWSheet.getRow(rowNumber).getCell(columnNumber);
+            XSSFCell cell = excelWorksheet.getRow(rowNumber).getCell(columnNumber);
             switch (cell.getCellType()) {
                 case Cell.CELL_TYPE_STRING:
                     return (cell.getRichStringCellValue().getString());
@@ -90,4 +136,24 @@ public class ReadExcelUtils {
             return "";
         }
     }
+
+    /**
+     * Read any Excel file an its internal sheet.
+     *
+     * @param resourcePath resource path from the /resources dir
+     * @param fileName     Excel file to read
+     * @param sheetName    shee name to read
+     */
+    private static void readExcelWorksheet(final String resourcePath, final String fileName, final String sheetName) {
+
+        try {
+            File file = PropertiesUtils.getFileFromResources(resourcePath + fileName);
+            FileInputStream excelFile = new FileInputStream(file);
+            XSSFWorkbook excelWBook = new XSSFWorkbook(excelFile);
+            excelWorksheet = excelWBook.getSheet(sheetName);
+        } catch (IOException e) {
+            LOG(true, "Unable to read Excel sheet named=%s and sheet named=%s", fileName, sheetName);
+        }
+    }
+
 }
