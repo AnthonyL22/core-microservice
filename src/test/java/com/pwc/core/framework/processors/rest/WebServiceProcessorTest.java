@@ -89,6 +89,8 @@ public class WebServiceProcessorTest {
         GET_BY_LAST_NAME(FrameworkConstants.GET_REQUEST, "rest/users", "byLastName"),
         PUT_BY_LAST_NAME(FrameworkConstants.PUT_REQUEST, "rest/users", "byLastName"),
         DELETE_BY_LAST_NAME(FrameworkConstants.DELETE_REQUEST, "rest/users", "byLastName"),
+        DELETE_WITH_PAYLOAD(FrameworkConstants.DELETE_REQUEST, "rest/users", "byPayload"),
+        DELETE_WITHOUT_PAYLOAD(FrameworkConstants.DELETE_REQUEST, "rest/users", "byLastName"),
         POST_LAST_NAME(FrameworkConstants.POST_REQUEST, "rest/users", "byLastName");
 
         private String requestMethodType;
@@ -179,6 +181,21 @@ public class WebServiceProcessorTest {
         headerKeysMap = new HeaderKeysMap(mockHeaderMap);
         smSessionKey = new SmSessionKey("UYTYIUHIJOKL6t5ryuhiujj576576768798");
 
+    }
+
+    @Test
+    public void executeDeleteRequestWithEntityPayload() {
+        Object response = webServiceProcessor.execute("http://www.foobar.com", headerKeysMap, UsersWebServiceWebServiceCommand.DELETE_WITH_PAYLOAD, "device=111&home=Hatfields", SAMPLE_PAYLOAD);
+        Assert.assertNotNull(response);
+    }
+
+    @Test
+    public void executeDeleteRequestWithMapParameter() {
+        Map parameters = new HashMap();
+        parameters.put("lastName", "Wilson");
+        parameters.put("firstName", "Bruce");
+        Object response = webServiceProcessor.execute("http://www.foobar.com", headerKeysMap, UsersWebServiceWebServiceCommand.DELETE_WITHOUT_PAYLOAD, "1234567", parameters);
+        Assert.assertNotNull(response);
     }
 
     @Test

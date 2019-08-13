@@ -20,12 +20,14 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
 import org.apache.http.NameValuePair;
+import org.apache.http.annotation.NotThreadSafe;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
@@ -566,6 +568,8 @@ public class WebServiceProcessor {
             HttpGet httpGet;
             HttpPost httpPost;
             HttpPut httpPut;
+            HttpDelete httpDelete;
+            HttpDeleteWithBody httpDeleteWithBody;
 
             if (StringUtils.equals(command.methodType(), FrameworkConstants.POST_REQUEST)) {
 
@@ -665,6 +669,44 @@ public class WebServiceProcessor {
                     closeHttpConnections(httpclient, response);
 
                 }
+            } else if (StringUtils.equals(command.methodType(), FrameworkConstants.DELETE_REQUEST)) {
+
+                if (payload instanceof HashMap) {
+
+                    httpDelete = new HttpDelete(wsUrl);
+                    httpDelete = (HttpDelete) setHeaderCredentials(headerKeysMap.getAuthorizationMap(), httpDelete);
+
+                    URI uri = constructUriFromPayloadMap(httpDelete, (HashMap<String, Object>) payload);
+                    LOG(true, "AUTHORIZED DELETE URI='%s'", uri);
+                    httpDelete.setURI(uri);
+                    StopWatch stopWatch = new StopWatch();
+                    stopWatch.start();
+                    CloseableHttpResponse response = httpclient.execute(httpDelete);
+                    stopWatch.stop();
+                    HttpEntity httpEntity = response.getEntity();
+                    wsResponse = getWebServiceResponse(response, httpEntity, stopWatch);
+                    closeHttpConnections(httpclient, response);
+
+                } else if (isValidJson(payload.toString())) {
+
+                    httpDeleteWithBody = new HttpDeleteWithBody(wsUrl);
+                    httpDeleteWithBody = (HttpDeleteWithBody) setHeaderCredentials(headerKeysMap.getAuthorizationMap(), httpDeleteWithBody);
+
+                    StringEntity stringEntity = new StringEntity(payload.toString());
+                    httpDeleteWithBody.setEntity(stringEntity);
+                    httpDeleteWithBody.setHeader("Content-type", ContentType.APPLICATION_JSON.toString());
+                    LOG(true, "AUTHORIZED DELETE JSON='%s'", payload.toString());
+
+                    StopWatch stopWatch = new StopWatch();
+                    stopWatch.start();
+                    CloseableHttpResponse response = httpclient.execute(httpDeleteWithBody);
+                    stopWatch.stop();
+                    HttpEntity httpEntity = response.getEntity();
+                    wsResponse = getWebServiceResponse(response, httpEntity, stopWatch);
+                    closeHttpConnections(httpclient, response);
+
+                }
+
             } else {
 
                 httpGet = new HttpGet(wsUrl);
@@ -1378,6 +1420,29 @@ public class WebServiceProcessor {
                 .build();
 
         return httpclient;
+    }
+
+    @NotThreadSafe
+    class HttpDeleteWithBody extends HttpEntityEnclosingRequestBase {
+        public static final String METHOD_NAME = "DELETE";
+
+        public String getMethod() {
+            return METHOD_NAME;
+        }
+
+        public HttpDeleteWithBody(final String uri) {
+            super();
+            setURI(URI.create(uri));
+        }
+
+        public HttpDeleteWithBody(final URI uri) {
+            super();
+            setURI(uri);
+        }
+
+        public HttpDeleteWithBody() {
+            super();
+        }
     }
 
 }
