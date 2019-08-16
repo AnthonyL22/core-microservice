@@ -462,7 +462,7 @@ public class WebServiceProcessorTest {
         Assert.assertEquals("Method Not Allowed", response.getString(FrameworkConstants.HTTP_STATUS_REASON_PHRASE_KEY));
     }
 
-    @Test
+    @Test(expected = AssertionError.class)
     public void executeWithParametersDELETETest() throws IOException {
         when(webServiceProcessor.getAuthenticatedClient(URL_PATH, USER, PASS)).thenReturn(mockCloseableHttpClient);
         HttpDelete mockHttpDelete = mock(HttpDelete.class);
