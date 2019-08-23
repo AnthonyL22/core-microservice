@@ -58,6 +58,7 @@ public class CollectionUtils {
      *
      * @param sourceList    source list to remove items from
      * @param itemsToRemove items to remove from sourceList by their value
+     * @return cleaned list based on blacklisted items
      */
     public static List removeBlacklistedItems(List sourceList, final List<String> itemsToRemove) {
 

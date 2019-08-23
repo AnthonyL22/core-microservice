@@ -306,13 +306,13 @@ system configurations.
 
 Simply define the following at runtime via **-D** system variables:
 
-| User Defined Command  | Options                                                                                 | Default     | Example                      |
-| ----------------------|-----------------------------------------------------------------------------------------|-------------|------------------------------|
-| -Dbrowser             | ch, headless_ch, ff, headless_ff, ie, safari                                            | Chrome      | -Dbrowser=ff                 |
-| -Dbrowser.version     | any available                                                                           | 44          | -Dbrowser.version=38.0       |
-| -Dbrowser.resolution  | 800x600, 1024x768, 1152x864, 1280x800, 1280x960, 1280x1024, others                      | 1024x768    | -Dbrowser.resolution=800x600 |
-| -Dplatform            | mac, osx, linux, windows, windows 10, windows 8, windows 8.1, windows 7, windows xp, xp | linux       | -Dplatform=xp                |
-| -Dtime.zone           | Los Angeles, Honolulu, New_York                                                         | Los Angeles | -Dtime.zone=Los Angeles      |
+| User Defined Command  | Options                                                                                           | Default     | Example                      |
+| ----------------------|---------------------------------------------------------------------------------------------------|-------------|------------------------------|
+| -Dbrowser             | ch, headless_ch, ff, headless_ff, ie, safari                                                      | Chrome      | -Dbrowser=ff                 |
+| -Dbrowser.version     | any available                                                                                     | 44          | -Dbrowser.version=38.0       |
+| -Dbrowser.resolution  | 800x600, 1024x768, 1152x864, 1280x800, 1280x960, 1280x1024, all mobile resolutions in Chrome      | 1024x768    | -Dbrowser.resolution=360x640 |
+| -Dplatform            | mac, osx, linux, windows, windows 10, windows 8, windows 8.1, windows 7, windows xp, xp           | linux       | -Dplatform=xp                |
+| -Dtime.zone           | Los Angeles, Honolulu, New_York                                                                   | Los Angeles | -Dtime.zone=Los Angeles      |
 
 **IMPORTANT:**
 Defining any of the following variables will result in your test being executed using default Sauce Labs settings:

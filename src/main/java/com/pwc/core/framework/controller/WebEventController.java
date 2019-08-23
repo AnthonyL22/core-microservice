@@ -19,6 +19,7 @@ import com.pwc.core.framework.util.DebuggingUtils;
 import com.pwc.core.framework.util.GridUtils;
 import com.pwc.core.framework.util.PropertiesUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxBinary;
@@ -154,6 +155,14 @@ public class WebEventController {
             webEventService = new WebEventService(remoteWebDriver);
             if (isSiteMinderEnabled()) {
                 webEventService.authenticateSiteMinder(webUrl, credentials, siteMinderOpenUrl, false);
+            }
+
+            try {
+                int width = Integer.parseInt(StringUtils.substringBefore(capabilities.getCapability(FrameworkConstants.SCREEN_RESOLUTION_CAPABILITY).toString(), "x"));
+                int height = Integer.parseInt(StringUtils.substringAfter(capabilities.getCapability(FrameworkConstants.SCREEN_RESOLUTION_CAPABILITY).toString(), "x"));
+                this.remoteWebDriver.manage().window().setSize(new Dimension(width, height));
+            } catch (Exception e) {
+                LOG(false, "unable to set window size");
             }
 
             webEventService.setTimeOutInSeconds(defaultWaitForElementTimeoutInSeconds);
@@ -374,6 +383,8 @@ public class WebEventController {
         ChromeOptions chromeOptions = new ChromeOptions();
         chromeOptions.addArguments("--start-maximized");
         chromeOptions.addArguments("--disable-dev-shm-usage");
+        chromeOptions.addArguments("--disable-web-security");
+        chromeOptions.addArguments("--allow-running-insecure-content");
         capabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
         capabilities.setCapability(CapabilityType.BROWSER_NAME, BrowserType.CHROME);
         capabilities.setCapability("video", "True");

@@ -658,7 +658,8 @@ public class WebEventService extends WebEventController {
             microserviceWebDriver.get(getUrl());
             sw.stop();
 
-            if (!StringUtils.equalsIgnoreCase(microserviceWebDriver.getCapabilities().getBrowserName(), "android")) {
+            if (!StringUtils.equalsIgnoreCase(microserviceWebDriver.getCapabilities().getBrowserName(), "android") &&
+                    StringUtils.isEmpty(System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_RESOLUTION_PROPERTY))) {
                 microserviceWebDriver.manage().window().maximize();
             }
 

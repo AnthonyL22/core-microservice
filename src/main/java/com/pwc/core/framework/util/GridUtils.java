@@ -240,6 +240,33 @@ public class GridUtils {
         }
 
         switch (property) {
+            case (FrameworkConstants.GALAXY_S5_RESOLUTION): {
+                return FrameworkConstants.GALAXY_S5_RESOLUTION;
+            }
+            case (FrameworkConstants.PIXEL_2_RESOLUTION): {
+                return FrameworkConstants.PIXEL_2_RESOLUTION;
+            }
+            case (FrameworkConstants.PIXEL_2_XL_RESOLUTION): {
+                return FrameworkConstants.PIXEL_2_XL_RESOLUTION;
+            }
+            case (FrameworkConstants.IPHONE_5_SE_RESOLUTION): {
+                return FrameworkConstants.IPHONE_5_SE_RESOLUTION;
+            }
+            case (FrameworkConstants.IPHONE_6_7_8_RESOLUTION): {
+                return FrameworkConstants.IPHONE_6_7_8_RESOLUTION;
+            }
+            case (FrameworkConstants.IPHONE_6_7_8_PLUS_RESOLUTION): {
+                return FrameworkConstants.IPHONE_6_7_8_PLUS_RESOLUTION;
+            }
+            case (FrameworkConstants.IPHONE_X_RESOLUTION): {
+                return FrameworkConstants.IPHONE_X_RESOLUTION;
+            }
+            case (FrameworkConstants.IPAD_RESOLUTION): {
+                return FrameworkConstants.IPAD_RESOLUTION;
+            }
+            case (FrameworkConstants.IPAD_PRO_RESOLUTION): {
+                return FrameworkConstants.IPAD_PRO_RESOLUTION;
+            }
             case (FrameworkConstants.BROWSER_RESOLUTION_800X600): {
                 return FrameworkConstants.BROWSER_RESOLUTION_800X600;
             }

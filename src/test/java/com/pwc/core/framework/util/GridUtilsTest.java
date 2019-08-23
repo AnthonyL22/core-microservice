@@ -477,6 +477,69 @@ public class GridUtilsTest {
     }
 
     @Test
+    public void initBrowserResolutionGalaxyS5Test() {
+        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_RESOLUTION_PROPERTY, FrameworkConstants.GALAXY_S5_RESOLUTION);
+        String actualResolution = GridUtils.initBrowserResolution();
+        Assert.assertEquals(FrameworkConstants.GALAXY_S5_RESOLUTION, actualResolution);
+    }
+
+    @Test
+    public void initBrowserResolutionPixel2Test() {
+        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_RESOLUTION_PROPERTY, FrameworkConstants.PIXEL_2_RESOLUTION);
+        String actualResolution = GridUtils.initBrowserResolution();
+        Assert.assertEquals(FrameworkConstants.PIXEL_2_RESOLUTION, actualResolution);
+    }
+
+    @Test
+    public void initBrowserResolutionPixel2XlTest() {
+        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_RESOLUTION_PROPERTY, FrameworkConstants.PIXEL_2_XL_RESOLUTION);
+        String actualResolution = GridUtils.initBrowserResolution();
+        Assert.assertEquals(FrameworkConstants.PIXEL_2_XL_RESOLUTION, actualResolution);
+    }
+
+    @Test
+    public void initBrowserResolutionIPhone5SeTest() {
+        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_RESOLUTION_PROPERTY, FrameworkConstants.IPHONE_5_SE_RESOLUTION);
+        String actualResolution = GridUtils.initBrowserResolution();
+        Assert.assertEquals(FrameworkConstants.IPHONE_5_SE_RESOLUTION, actualResolution);
+    }
+
+    @Test
+    public void initBrowserResolutionIPhone678Test() {
+        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_RESOLUTION_PROPERTY, FrameworkConstants.IPHONE_6_7_8_RESOLUTION);
+        String actualResolution = GridUtils.initBrowserResolution();
+        Assert.assertEquals(FrameworkConstants.IPHONE_6_7_8_RESOLUTION, actualResolution);
+    }
+
+    @Test
+    public void initBrowserResolutionIPhone678PlusTest() {
+        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_RESOLUTION_PROPERTY, FrameworkConstants.IPHONE_6_7_8_PLUS_RESOLUTION);
+        String actualResolution = GridUtils.initBrowserResolution();
+        Assert.assertEquals(FrameworkConstants.IPHONE_6_7_8_PLUS_RESOLUTION, actualResolution);
+    }
+
+    @Test
+    public void initBrowserResolutionIPhoneXTest() {
+        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_RESOLUTION_PROPERTY, FrameworkConstants.IPHONE_X_RESOLUTION);
+        String actualResolution = GridUtils.initBrowserResolution();
+        Assert.assertEquals(FrameworkConstants.IPHONE_X_RESOLUTION, actualResolution);
+    }
+
+    @Test
+    public void initBrowserResolutionIPadTest() {
+        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_RESOLUTION_PROPERTY, FrameworkConstants.IPAD_RESOLUTION);
+        String actualResolution = GridUtils.initBrowserResolution();
+        Assert.assertEquals(FrameworkConstants.IPAD_RESOLUTION, actualResolution);
+    }
+
+    @Test
+    public void initBrowserResolutionIPadProTest() {
+        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_RESOLUTION_PROPERTY, FrameworkConstants.IPAD_PRO_RESOLUTION);
+        String actualResolution = GridUtils.initBrowserResolution();
+        Assert.assertEquals(FrameworkConstants.IPAD_PRO_RESOLUTION, actualResolution);
+    }
+
+    @Test
     public void initBrowserResolution800X600Test() {
         System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_RESOLUTION_PROPERTY, FrameworkConstants.BROWSER_RESOLUTION_800X600);
         String actualResolution = GridUtils.initBrowserResolution();

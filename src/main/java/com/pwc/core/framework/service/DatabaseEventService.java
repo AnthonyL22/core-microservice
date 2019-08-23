@@ -141,6 +141,7 @@ public class DatabaseEventService {
      * Execute a parameter query that returns List of Maps.
      *
      * @param sqlTemplateQuery SQL query to run, with ? placeholders for parameters
+     * @param includeColumns   include columns flag
      * @return returns a Object of Maps
      */
     public Object executeParameterQueryMap(final String sqlTemplateQuery, final boolean includeColumns) {

@@ -23,6 +23,13 @@ public class ContinuousIntegrationLogExporter {
 
     private static Map constants;
 
+    /**
+     * Maven utility to transform class that has all TestNG groups defined into a comma separated list that can be
+     * used in Jenkins jobs.
+     *
+     * @param args application arguements
+     * @throws Exception
+     */
     public static void main(String[] args) throws Exception {
 
         if (args.length < 3) {
@@ -56,8 +63,9 @@ public class ContinuousIntegrationLogExporter {
     }
 
     /**
-     * Get constant values for a given Interface file
+     * Get constant values for a given Interface file.
      *
+     * @param directory     directory where TestNG group interface resides
      * @param constantFiles list of .java files that contain name/value pairs (ex: Constants.java)
      * @return full path to source directory
      */
@@ -100,7 +108,7 @@ public class ContinuousIntegrationLogExporter {
      * Generate manual test output report
      *
      * @param sourceTestFileDirectory source file directory
-     * @param testReportFile  destination report File
+     * @param testReportFile          destination report File
      * @return list of files processed
      */
     protected static List<File> generateManualTestOutput(String sourceTestFileDirectory, File testReportFile) {
@@ -279,8 +287,9 @@ public class ContinuousIntegrationLogExporter {
     }
 
     /**
-     * Get the base src/test/java directory location
+     * Get the base src/test/java directory location.
      *
+     * @param directory base java directory
      * @return base test class source code directory
      */
     protected static StringBuilder getJavaDirectory(final String directory) {

@@ -19,6 +19,8 @@ public class ExcelUtils {
     /**
      * Read and return all data from a column in the given sheet.
      *
+     * @param directoryName    directory where Excel file is located
+     * @param fileName         file name of Excel file
      * @param sheetName        sheet name to read from
      * @param column           starting column to begin reading data (1 based)
      * @param startingRowIndex starting row to begin reading data (1 based)
@@ -42,8 +44,10 @@ public class ExcelUtils {
     /**
      * Read and return all data from an entire row in the given sheet.
      *
-     * @param sheetName sheet name to read from
-     * @param rowIndex  starting column to begin reading data (1 based)
+     * @param directoryName directory where Excel file is located
+     * @param fileName      file name of Excel file
+     * @param sheetName     sheet name to read from
+     * @param rowIndex      starting column to begin reading data (1 based)
      * @return complete list of all data read from a row
      */
     public static List<String> readRowFromSheet(final String directoryName, final String fileName, final String sheetName, final int rowIndex) {

@@ -16,6 +16,8 @@ public class ReadTxtUtils {
      *
      * @param resourcePath resource path from the /resources dir
      * @param fileName     file name to read
+     * @param totalCols    total number of columns to read
+     * @param totalRows    total number of rows to read
      * @return data provider array
      */
     public static Object[][] getTextDataArray(final String resourcePath, final String fileName, final int totalCols, final int totalRows) {

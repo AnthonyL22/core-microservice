@@ -269,8 +269,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
 
         Assert.assertEquals(webEventService.getUrl(), DEFAULT_URL + "myDetails/777");
         verify(mockWebDriverService, times(2)).getCurrentUrl();
-        verify(mockWebDriverService, times(3)).manage();
-        verify(mockOptions, times(1)).window();
+        verify(mockWebDriverService, times(2)).manage();
     }
 
     @Test
@@ -439,8 +438,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
 
         Assert.assertEquals(webEventService.getUrl(), DEFAULT_URL + "myDetails/1234");
         verify(mockWebDriverService, times(2)).getCurrentUrl();
-        verify(mockWebDriverService, times(3)).manage();
-        verify(mockOptions, times(1)).window();
+        verify(mockWebDriverService, times(2)).manage();
     }
 
     @Test
@@ -453,8 +451,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
 
         Assert.assertEquals(webEventService.getUrl(), DEFAULT_URL + "myDetails/777");
         verify(mockWebDriverService, times(2)).getCurrentUrl();
-        verify(mockWebDriverService, times(3)).manage();
-        verify(mockOptions, times(1)).window();
+        verify(mockWebDriverService, times(2)).manage();
     }
 
     @Test
@@ -467,8 +464,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
 
         Assert.assertEquals(webEventService.getUrl(), DEFAULT_URL + "foobar");
         verify(mockWebDriverService, times(2)).getCurrentUrl();
-        verify(mockWebDriverService, times(3)).manage();
-        verify(mockOptions, times(1)).window();
+        verify(mockWebDriverService, times(2)).manage();
     }
 
     @Test
