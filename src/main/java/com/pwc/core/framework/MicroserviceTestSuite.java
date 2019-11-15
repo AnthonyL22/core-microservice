@@ -6,6 +6,7 @@ import com.pwc.assertion.AssertService;
 import com.pwc.core.framework.command.DatabaseCommand;
 import com.pwc.core.framework.command.WebServiceCommand;
 import com.pwc.core.framework.controller.DatabaseController;
+import com.pwc.core.framework.controller.JiraController;
 import com.pwc.core.framework.controller.WebEventController;
 import com.pwc.core.framework.controller.WebServiceController;
 import com.pwc.core.framework.data.Credentials;
@@ -50,6 +51,9 @@ public abstract class MicroserviceTestSuite {
 
     @Autowired
     protected DatabaseController databaseController;
+
+    @Autowired
+    protected static JiraController jiraController;
 
     private String currentJobId;
 
@@ -118,6 +122,10 @@ public abstract class MicroserviceTestSuite {
             ctx = new ClassPathXmlApplicationContext(automationContext);
             ctx.registerShutdownHook();
             setUpAssertionModel();
+
+            if (jiraController == null) {
+                jiraController = (JiraController) ctx.getBean("jiraController");
+            }
         } catch (Throwable e) {
             e.printStackTrace();
             LOG(true, "setUpRunner() FAILED. TEST='%s' EXCEPTION='%s'", StringUtils.substringAfterLast(this.getClass().getName(), "."), e.getMessage());
@@ -608,6 +616,10 @@ public abstract class MicroserviceTestSuite {
 
     public void setCurrentJobId(String currentJobId) {
         this.currentJobId = currentJobId;
+    }
+
+    public static JiraController getJiraController(){
+        return jiraController;
     }
 
 }

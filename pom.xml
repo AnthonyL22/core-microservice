@@ -57,6 +57,7 @@
     <junit.version>4.11</junit.version>
     <log4j.version>1.2.17</log4j.version>
     <logging-microservice.version>1.0.4</logging-microservice.version>
+    <lombok.version>1.18.4</lombok.version>
     <maven-clean-plugin.version>2.4.1</maven-clean-plugin.version>
     <maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
     <maven-dependency-plugin.version>2.10</maven-dependency-plugin.version>
@@ -222,6 +223,11 @@
       <groupId>org.mongodb</groupId>
       <artifactId>mongodb-driver</artifactId>
       <version>${mongodb-driver.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>${lombok.version}</version>
     </dependency>
     <dependency>
       <groupId>org.seleniumhq.selenium</groupId>

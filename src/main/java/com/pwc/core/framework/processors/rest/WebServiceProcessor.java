@@ -556,7 +556,7 @@ public class WebServiceProcessor {
      * @param payload       Request body payload
      * @return JsonPath json payload
      */
-    protected Object execute(final String url, final HeaderKeysMap headerKeysMap, final WebServiceCommand command, final Object pathParameter, final Object payload) {
+    public Object execute(final String url, final HeaderKeysMap headerKeysMap, final WebServiceCommand command, final Object pathParameter, final Object payload) {
 
         Object wsResponse = null;
         String wsUrl = constructRestUrl(url, command, pathParameter);
@@ -1274,7 +1274,7 @@ public class WebServiceProcessor {
      * @param stopWatch  current StopWatch
      * @return json representation of HttpResponse
      */
-    protected Object getWebServiceResponse(CloseableHttpResponse response, HttpEntity httpEntity, StopWatch stopWatch) {
+    public Object getWebServiceResponse(CloseableHttpResponse response, HttpEntity httpEntity, StopWatch stopWatch) {
         String wsResponse = convertHttpResponseToJson(response, httpEntity, stopWatch);
         if (isValidJson(wsResponse)) {
             return new JsonPath(wsResponse).using(new JsonPathConfig("UTF-8"));

@@ -1,9 +1,12 @@
 package com.pwc.core.framework.listeners;
 
+import com.jayway.restassured.path.json.JsonPath;
 import com.pwc.core.framework.FrameworkConstants;
 import com.pwc.core.framework.MicroserviceTestSuite;
 import com.pwc.core.framework.annotations.Issue;
+import com.pwc.core.framework.annotations.TestCase;
 import com.pwc.core.framework.data.PropertiesFile;
+import com.pwc.core.framework.data.TestExecute;
 import com.pwc.core.framework.util.BrowserStackREST;
 import com.pwc.core.framework.util.PropertiesUtils;
 import com.pwc.logging.helper.LoggerHelper;
@@ -58,6 +61,34 @@ public class MicroserviceTestListener extends TestListenerAdapter implements ITe
                 String.format("config/%s/%s", System.getProperty(FrameworkConstants.AUTOMATION_TEST_ENVIRONMENT), PropertiesFile.GRID_PROPERTIES_FILE.fileName), "grid.enabled"));
     }
 
+    /**
+     * Report Zephyr results to Jira.
+     *
+     * @param tr current test result
+     */
+    private void publishJiraTestResults(final ITestResult tr) {
+
+        Method method = tr.getMethod().getConstructorOrMethod().getMethod();
+        TestCase testCaseMetadata = method.getAnnotation(TestCase.class);
+        if (StringUtils.isNotEmpty(testCaseMetadata.value()) && MicroserviceTestSuite.getJiraController().isJiraEnabled()) {
+
+            String jiraId = MicroserviceTestSuite.getJiraController().getJiraStoryId(testCaseMetadata.value());
+            HashMap cycleEntity = MicroserviceTestSuite.getJiraController().getCycleEntity(MicroserviceTestSuite.getJiraController().getCycleName());
+
+            TestExecute testExecute = new TestExecute.Builder() //
+                    .setExecutionId("12345") //
+                    .setStatus(tr.getStatus()) //
+                    .setIssueId(jiraId) //
+                    .setCycleId(cycleEntity.get("cycleId").toString()) //
+                    .setProjectId(cycleEntity.get("projectId").toString()) //
+                    .setVersionId("-1") //
+                    .build();
+            JsonPath response = MicroserviceTestSuite.getJiraController().reportJiraResult(testExecute);
+            System.out.println();
+        }
+
+    }
+
     @Override
     public void afterInvocation(IInvokedMethod iInvokedMethod, ITestResult iTestResult) {
     }
@@ -80,6 +111,7 @@ public class MicroserviceTestListener extends TestListenerAdapter implements ITe
     public void onTestFailure(ITestResult tr) {
         sessionIdProvider = (MicroserviceTestSuite) tr.getInstance();
         logIssueAnnotationInformation(tr);
+        publishJiraTestResults(tr);
         LOG(true, "%s--Description: %s", tr.getName(), !StringUtils.isEmpty(tr.getMethod().getDescription()) ? tr.getMethod().getDescription() : "N/A");
         LOG(true, "%s--Executed on Date/Time: %s", tr.getName(), LoggerHelper.getDateTime(FrameworkConstants.DATETIME_LOGGER_DATETIME_PATTER, FrameworkConstants.SYSTEM_DEFAULT_TIMEZONE, 0));
         LOG(true, "%s--Test Failed", tr.getName());
@@ -90,6 +122,7 @@ public class MicroserviceTestListener extends TestListenerAdapter implements ITe
         sessionIdProvider = (MicroserviceTestSuite) tr.getInstance();
         markJobResults(tr, sessionIdProvider.getCurrentJobId(), false);
         logIssueAnnotationInformation(tr);
+        publishJiraTestResults(tr);
         LOG(true, "%s--Description: %s", tr.getName(), !StringUtils.isEmpty(tr.getMethod().getDescription()) ? tr.getMethod().getDescription() : "N/A");
         LOG(true, "%s--Executed on Date/Time: %s", tr.getName(), LoggerHelper.getDateTime(FrameworkConstants.DATETIME_LOGGER_DATETIME_PATTER, FrameworkConstants.SYSTEM_DEFAULT_TIMEZONE, 0));
         LOG(true, "%s--Test Skipped", tr.getName());
@@ -100,6 +133,7 @@ public class MicroserviceTestListener extends TestListenerAdapter implements ITe
         sessionIdProvider = (MicroserviceTestSuite) tr.getInstance();
         markJobResults(tr, sessionIdProvider.getCurrentJobId(), true);
         logIssueAnnotationInformation(tr);
+        publishJiraTestResults(tr);
         LOG(true, "%s--Description: %s", tr.getName(), !StringUtils.isEmpty(tr.getMethod().getDescription()) ? tr.getMethod().getDescription() : "N/A");
         LOG(true, "%s--Executed on Date/Time: %s", tr.getName(), LoggerHelper.getDateTime(FrameworkConstants.DATETIME_LOGGER_DATETIME_PATTER, FrameworkConstants.SYSTEM_DEFAULT_TIMEZONE, 0));
         LOG(true, "%s--Test Passed", tr.getName());
