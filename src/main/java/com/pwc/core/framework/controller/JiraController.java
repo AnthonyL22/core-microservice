@@ -17,6 +17,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 
+import static com.pwc.logging.service.LoggerService.LOG;
+
 @Component
 public class JiraController extends JiraProcessor {
 
@@ -98,7 +100,7 @@ public class JiraController extends JiraProcessor {
         try {
             encodedQuery = URLEncoder.encode(String.format("=\"%s\"", cycleName), StandardCharsets.UTF_8.toString());
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            LOG(true, "Failed to get test cycle by name '%s'", cycleName);
         }
         JsonPath response = (JsonPath) executeGet(String.format("%scycleName%s", ZQL_QUERY_BASE_URL, encodedQuery));
         JsonPath entity = new JsonPath(response.get(FrameworkConstants.HTTP_ENTITY_KEY).toString());
