@@ -2,9 +2,11 @@ package com.pwc.core.framework.controller;
 
 import com.jayway.restassured.path.json.JsonPath;
 import com.pwc.core.framework.FrameworkConstants;
+import com.pwc.core.framework.data.TestCycle;
 import com.pwc.core.framework.data.TestExecute;
 import com.pwc.core.framework.processors.rest.JiraProcessor;
 import com.pwc.core.framework.util.JsonUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -51,12 +53,36 @@ public class JiraController extends JiraProcessor {
     }
 
     /**
+     * Add the given test to a test cycle to prepare for test execution.
+     *
+     * @param issueKey Issue key
+     * @param cycleMap Test Cycle object
+     * @return test cycle id
+     */
+    public String includeTestInCycle(final String issueKey, final HashMap cycleMap) {
+
+        TestCycle testCycle = new TestCycle.Builder() //
+                .setIssueId(issueKey) //
+                .setCycleId(cycleMap.get("cycleId").toString()) //
+                .setAssignee(cycleMap.get("assigneeUserName").toString()) //
+                .setAssigneeType(cycleMap.get("assigneeDisplay").toString()) //
+                .setProjectId(cycleMap.get("projectId").toString()) //
+                .setVersionId(cycleMap.get("versionId").toString()) //
+                .build();
+
+        JSONObject payload = JsonUtils.convertObjectToJson(testCycle);
+        JsonPath response = (JsonPath) executePost(ZAPI_EXECUTE_BASE_URL, payload.toString());
+        JsonPath entity = new JsonPath(response.get(FrameworkConstants.HTTP_ENTITY_KEY).toString());
+        return StringUtils.substringBetween(entity.get().toString(), "{", "=").trim();
+    }
+
+    /**
      * Get first Cycle found based on Cycle Name provided.
      *
      * @param cycleName Cycle name to find
      * @return first cycle name entity
      */
-    public HashMap getCycleEntity(final String cycleName) {
+    public HashMap getTestCycleByName(final String cycleName) {
 
         String encodedQuery = null;
         try {

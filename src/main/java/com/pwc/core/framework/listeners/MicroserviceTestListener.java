@@ -1,6 +1,5 @@
 package com.pwc.core.framework.listeners;
 
-import com.jayway.restassured.path.json.JsonPath;
 import com.pwc.core.framework.FrameworkConstants;
 import com.pwc.core.framework.MicroserviceTestSuite;
 import com.pwc.core.framework.annotations.Issue;
@@ -73,20 +72,19 @@ public class MicroserviceTestListener extends TestListenerAdapter implements ITe
         if (StringUtils.isNotEmpty(testCaseMetadata.value()) && MicroserviceTestSuite.getJiraController().isJiraEnabled()) {
 
             String jiraId = MicroserviceTestSuite.getJiraController().getJiraStoryId(testCaseMetadata.value());
-            HashMap cycleEntity = MicroserviceTestSuite.getJiraController().getCycleEntity(MicroserviceTestSuite.getJiraController().getCycleName());
+            HashMap cycle = MicroserviceTestSuite.getJiraController().getTestCycleByName(MicroserviceTestSuite.getJiraController().getCycleName());
+            String executionId = MicroserviceTestSuite.getJiraController().includeTestInCycle(jiraId, cycle);
 
             TestExecute testExecute = new TestExecute.Builder() //
-                    .setExecutionId("12345") //
+                    .setExecutionId(executionId) //
                     .setStatus(tr.getStatus()) //
                     .setIssueId(jiraId) //
-                    .setCycleId(cycleEntity.get("cycleId").toString()) //
-                    .setProjectId(cycleEntity.get("projectId").toString()) //
+                    .setCycleId(cycle.get("cycleId").toString()) //
+                    .setProjectId(cycle.get("projectId").toString()) //
                     .setVersionId("-1") //
                     .build();
-            JsonPath response = MicroserviceTestSuite.getJiraController().reportJiraResult(testExecute);
-            System.out.println();
+            MicroserviceTestSuite.getJiraController().reportJiraResult(testExecute);
         }
-
     }
 
     @Override
