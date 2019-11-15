@@ -57,7 +57,7 @@ public class JiraController extends JiraProcessor {
      *
      * @param issueKey Issue key
      * @param cycleMap Test Cycle object
-     * @return test cycle id
+     * @return test cycle execution id needed to execute a test case
      */
     public String includeTestInCycle(final String issueKey, final HashMap cycleMap) {
 
