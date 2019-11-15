@@ -70,19 +70,10 @@ public class MicroserviceTestListener extends TestListenerAdapter implements ITe
         Method method = tr.getMethod().getConstructorOrMethod().getMethod();
         TestCase testCaseMetadata = method.getAnnotation(TestCase.class);
         if (StringUtils.isNotEmpty(testCaseMetadata.value()) && MicroserviceTestSuite.getJiraController().isJiraEnabled()) {
-
             String jiraId = MicroserviceTestSuite.getJiraController().getJiraStoryId(testCaseMetadata.value());
             HashMap cycle = MicroserviceTestSuite.getJiraController().getTestCycleByName(MicroserviceTestSuite.getJiraController().getCycleName());
-            String executionId = MicroserviceTestSuite.getJiraController().includeTestInCycle(jiraId, cycle);
-
-            TestExecute testExecute = new TestExecute.Builder() //
-                    .setExecutionId(executionId) //
-                    .setStatus(tr.getStatus()) //
-                    .setIssueId(jiraId) //
-                    .setCycleId(cycle.get("cycleId").toString()) //
-                    .setProjectId(cycle.get("projectId").toString()) //
-                    .setVersionId("-1") //
-                    .build();
+            TestExecute testExecute = MicroserviceTestSuite.getJiraController().includeTestInCycle(jiraId, cycle);
+            testExecute.setStatus(tr.getStatus());
             MicroserviceTestSuite.getJiraController().reportJiraResult(testExecute);
         }
     }

@@ -57,9 +57,9 @@ public class JiraController extends JiraProcessor {
      *
      * @param issueKey Issue key
      * @param cycleMap Test Cycle object
-     * @return test cycle execution id needed to execute a test case
+     * @return test execution object
      */
-    public String includeTestInCycle(final String issueKey, final HashMap cycleMap) {
+    public TestExecute includeTestInCycle(final String issueKey, final HashMap cycleMap) {
 
         TestCycle testCycle = new TestCycle.Builder() //
                 .setIssueId(issueKey) //
@@ -73,7 +73,17 @@ public class JiraController extends JiraProcessor {
         JSONObject payload = JsonUtils.convertObjectToJson(testCycle);
         JsonPath response = (JsonPath) executePost(ZAPI_EXECUTE_BASE_URL, payload.toString());
         JsonPath entity = new JsonPath(response.get(FrameworkConstants.HTTP_ENTITY_KEY).toString());
-        return StringUtils.substringBetween(entity.get().toString(), "{", "=").trim();
+        String executionId = StringUtils.substringBetween(entity.get().toString(), "{", "=").trim();
+
+        TestExecute testExecute = new TestExecute.Builder() //
+                .setExecutionId(executionId) //
+                .setIssueId(issueKey) //
+                .setCycleId(cycleMap.get("cycleId").toString()) //
+                .setProjectId(cycleMap.get("projectId").toString()) //
+                .setVersionId("-1") //
+                .build();
+
+        return testExecute;
     }
 
     /**
