@@ -77,6 +77,30 @@ public void testSolrSearch() {
 }
 ```
 
+## Zephyr Test Case Annotation
+The @TestCase annotation is a custom annotation for automatically updating Zephyr test case status' in Jira based on the test case
+ID(s) included in the tests.  This service will update the test case execution status' for all Zephyr test case identifiers 
+included in the @TestCase annotation.  The list of identifiers must be comma or space separated and match the exact ID displayed
+in Jira/Zephyr.   
+```
+@TestCase("CIA-14677, JIRA-12245 ANT-777")
+@Test(retryAnalyzer = Retry.class, groups = {Groups.WEB_SERVICE_TEST, Groups.REGRESSION_TEST})
+public void testSolrSearch() {
+    My Test Here
+}
+```
+
+Simply, add the following items in the automation.properties file in your configuration to 
+begin updating your Zephyr test cases status':
+
+```
+jira.zapi.enabled=true
+jira.zapi.url=https://jira.pwc.com/rest
+jira.zapi.username=anthony
+jira.zapi.password=pass1234
+jira.zapi.cycle.name=MyProject-1.0.0
+```
+
 ## Issue Annotation
 The @Issue annotation is a customized annotation for automatically adding logging information which identify the 
 issue or story numbers relevant to your test.  Very useful for Jira integration.  
