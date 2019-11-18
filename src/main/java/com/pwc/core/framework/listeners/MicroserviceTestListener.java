@@ -10,6 +10,7 @@ import com.pwc.core.framework.util.BrowserStackREST;
 import com.pwc.core.framework.util.PropertiesUtils;
 import com.pwc.logging.helper.LoggerHelper;
 import com.saucelabs.saucerest.SauceREST;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.IInvokedMethod;
 import org.testng.IInvokedMethodListener;
@@ -20,13 +21,19 @@ import org.testng.TestListenerAdapter;
 import org.testng.annotations.Listeners;
 
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import static com.pwc.logging.service.LoggerService.LOG;
 
 @Listeners
 public class MicroserviceTestListener extends TestListenerAdapter implements ITestListener, IInvokedMethodListener {
+
+    private static final String TEST_CASE_ID_REGEX = "[\\s,;]+";
+    private static final Pattern TEST_CASE_PATTERN = Pattern.compile(TEST_CASE_ID_REGEX);
 
     private MicroserviceTestSuite sessionIdProvider;
     private SauceREST sauceInstance;
@@ -70,11 +77,20 @@ public class MicroserviceTestListener extends TestListenerAdapter implements ITe
         Method method = tr.getMethod().getConstructorOrMethod().getMethod();
         TestCase testCaseMetadata = method.getAnnotation(TestCase.class);
         if (StringUtils.isNotEmpty(testCaseMetadata.value()) && MicroserviceTestSuite.getJiraController().isJiraEnabled()) {
-            String jiraId = MicroserviceTestSuite.getJiraController().getJiraStoryId(testCaseMetadata.value());
-            HashMap cycle = MicroserviceTestSuite.getJiraController().getTestCycleByName(MicroserviceTestSuite.getJiraController().getCycleName());
-            TestExecute testExecute = MicroserviceTestSuite.getJiraController().includeTestInCycle(jiraId, cycle);
-            testExecute.setStatus(tr.getStatus());
-            MicroserviceTestSuite.getJiraController().reportJiraResult(testExecute);
+
+            List<String> testCaseIdList = Arrays.asList(TEST_CASE_PATTERN.split(testCaseMetadata.value()));
+            if (CollectionUtils.isNotEmpty(testCaseIdList)) {
+
+                testCaseIdList.forEach(testCaseId -> {
+                    String jiraId = MicroserviceTestSuite.getJiraController().getJiraStoryId(testCaseId);
+                    HashMap cycle = MicroserviceTestSuite.getJiraController().getTestCycleByName(MicroserviceTestSuite.getJiraController().getCycleName());
+                    TestExecute testExecute = MicroserviceTestSuite.getJiraController().includeTestInCycle(jiraId, cycle);
+                    testExecute.setStatus(tr.getStatus());
+                    MicroserviceTestSuite.getJiraController().reportJiraResult(testExecute);
+                });
+
+            }
+
         }
     }
 
