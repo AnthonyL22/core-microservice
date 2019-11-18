@@ -35,11 +35,11 @@ public class JiraProcessor {
      *
      * @param endpoint web service endpoint descriptor
      * @param payload  request payload
-     * @return
+     * @return POST response
      */
     protected Object executePost(String endpoint, String payload) {
 
-        LOG(true, "HTTP action for url='%s'", getJiraUrl() + endpoint);
+        LOG(false, "HTTP action for url='%s'", getJiraUrl() + endpoint);
         Object wsResponse = null;
 
         int timeout = 3;
@@ -54,7 +54,7 @@ public class JiraProcessor {
             HttpEntity httpEntity = response.getEntity();
             wsResponse = JiraProcessor.getWebServiceProcessorInstance().getWebServiceResponse(response, httpEntity, null);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG(true, "Failed to perform POST to url='%s'", endpoint);
         }
         return wsResponse;
     }
@@ -64,11 +64,11 @@ public class JiraProcessor {
      *
      * @param endpoint web service endpoint descriptor
      * @param payload  request payload
-     * @return
+     * @return PUT response
      */
     protected Object executePut(String endpoint, String payload) {
 
-        LOG(true, "HTTP action for url='%s'", getJiraUrl() + endpoint);
+        LOG(false, "HTTP action for url='%s'", getJiraUrl() + endpoint);
         Object wsResponse = null;
 
         int timeout = 3;
@@ -92,24 +92,24 @@ public class JiraProcessor {
      * Perform GET to Jira endpoint.
      *
      * @param endpoint web service endpoint descriptor
-     * @return
+     * @return GET response
      */
     protected Object executeGet(String endpoint) {
 
-        LOG(true, "HTTP action for url='%s'", getJiraUrl() + endpoint);
+        LOG(false, "HTTP action for url='%s'", getJiraUrl() + endpoint);
         Object wsResponse = null;
 
         int timeout = 3;
         RequestConfig config = RequestConfig.custom().setConnectTimeout(timeout * 1000).setConnectionRequestTimeout(timeout * 1000).setSocketTimeout(timeout * 1000).build();
         try (CloseableHttpClient httpclient = HttpClientBuilder.create().setDefaultRequestConfig(config).build()) {
-            HttpGet http = new HttpGet(getJiraUrl()+ endpoint);
+            HttpGet http = new HttpGet(getJiraUrl() + endpoint);
             http.setHeader("Content-Type", ContentType.APPLICATION_JSON.getMimeType());
             http.setHeader("Authorization", generateCredentials());
             CloseableHttpResponse response = httpclient.execute(http);
             HttpEntity httpEntity = response.getEntity();
             wsResponse = JiraProcessor.getWebServiceProcessorInstance().getWebServiceResponse(response, httpEntity, null);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG(true, "Failed to perform GET to url='%s'", endpoint);
         }
         return wsResponse;
     }

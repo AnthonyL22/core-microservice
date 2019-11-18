@@ -68,7 +68,8 @@ public class MicroserviceTestListener extends TestListenerAdapter implements ITe
     }
 
     /**
-     * Report Zephyr results to Jira.
+     * Report Zephyr results to Jira.  Comma or space seperated list of Zephyr IDs must be defined in the
+     * @@TestCase() annotation.
      *
      * @param tr current test result
      */
@@ -84,9 +85,12 @@ public class MicroserviceTestListener extends TestListenerAdapter implements ITe
                 testCaseIdList.forEach(testCaseId -> {
                     String jiraId = MicroserviceTestSuite.getJiraController().getJiraStoryId(testCaseId);
                     HashMap cycle = MicroserviceTestSuite.getJiraController().getTestCycleByName(MicroserviceTestSuite.getJiraController().getCycleName());
-                    TestExecute testExecute = MicroserviceTestSuite.getJiraController().includeTestInCycle(jiraId, cycle);
-                    testExecute.setStatus(tr.getStatus());
-                    MicroserviceTestSuite.getJiraController().reportJiraResult(testExecute);
+                    if(StringUtils.isNotEmpty(jiraId) && null != cycle) {
+                        TestExecute testExecute = MicroserviceTestSuite.getJiraController().includeTestInCycle(jiraId, cycle);
+                        testExecute.setStatus(tr.getStatus());
+                        MicroserviceTestSuite.getJiraController().reportJiraResult(testExecute);
+                    }
+
                 });
 
             }

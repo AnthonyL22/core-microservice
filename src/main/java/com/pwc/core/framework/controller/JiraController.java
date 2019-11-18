@@ -6,14 +6,15 @@ import com.pwc.core.framework.data.TestCycle;
 import com.pwc.core.framework.data.TestExecute;
 import com.pwc.core.framework.processors.rest.JiraProcessor;
 import com.pwc.core.framework.util.JsonUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class JiraController extends JiraProcessor {
     private static final String ZAPI_EXECUTE_BASE_URL = "/zapi/latest/execution/";
     private static final String ZQL_QUERY_BASE_URL = "/zapi/latest/zql/executeSearch/?zqlQuery=";
 
-    @Value("${jira.zapi.enabled}")
+    @Value("${jira.zapi.enabled:false}")
     private boolean jiraEnabled;
 
     @Value("${jira.zapi.url}")
@@ -49,9 +50,15 @@ public class JiraController extends JiraProcessor {
      */
     public String getJiraStoryId(final String issueKey) {
 
-        JsonPath response = (JsonPath) executeGet(GET_ISSUE_BASE_URL + issueKey);
-        JsonPath entity = new JsonPath(response.get(FrameworkConstants.HTTP_ENTITY_KEY).toString());
-        return entity.get("id");
+        String jiraId = null;
+        try {
+            JsonPath response = (JsonPath) executeGet(GET_ISSUE_BASE_URL + issueKey);
+            JsonPath entity = new JsonPath(response.get(FrameworkConstants.HTTP_ENTITY_KEY).toString());
+            jiraId = entity.get("id");
+        } catch (Exception e) {
+            LOG(false, "Failed to get Jira Story ID '%s'", issueKey);
+        }
+        return jiraId;
     }
 
     /**
@@ -77,15 +84,13 @@ public class JiraController extends JiraProcessor {
         JsonPath entity = new JsonPath(response.get(FrameworkConstants.HTTP_ENTITY_KEY).toString());
         String executionId = StringUtils.substringBetween(entity.get().toString(), "{", "=").trim();
 
-        TestExecute testExecute = new TestExecute.Builder() //
+        return new TestExecute.Builder() //
                 .setExecutionId(executionId) //
                 .setIssueId(issueKey) //
                 .setCycleId(cycleMap.get("cycleId").toString()) //
                 .setProjectId(cycleMap.get("projectId").toString()) //
                 .setVersionId("-1") //
                 .build();
-
-        return testExecute;
     }
 
     /**
@@ -96,29 +101,29 @@ public class JiraController extends JiraProcessor {
      */
     public HashMap getTestCycleByName(final String cycleName) {
 
-        String encodedQuery = null;
+        List executionList = new ArrayList();
+        String encodedQuery;
         try {
             encodedQuery = URLEncoder.encode(String.format("=\"%s\"", cycleName), StandardCharsets.UTF_8.toString());
-        } catch (UnsupportedEncodingException e) {
+            JsonPath response = (JsonPath) executeGet(String.format("%scycleName%s", ZQL_QUERY_BASE_URL, encodedQuery));
+            JsonPath entity = new JsonPath(response.get(FrameworkConstants.HTTP_ENTITY_KEY).toString());
+            executionList = entity.get("executions");
+        } catch (Exception e) {
             LOG(true, "Failed to get test cycle by name '%s'", cycleName);
         }
-        JsonPath response = (JsonPath) executeGet(String.format("%scycleName%s", ZQL_QUERY_BASE_URL, encodedQuery));
-        JsonPath entity = new JsonPath(response.get(FrameworkConstants.HTTP_ENTITY_KEY).toString());
-        List executionList = entity.get("executions");
-        return (HashMap) executionList.get(0);
+
+        return CollectionUtils.isNotEmpty(executionList) ? (HashMap) executionList.get(0) : null;
     }
 
     /**
      * Execute a Jira test case and update it's status in Jira/Zephyr.
      *
      * @param execute hydrated TestExecution object
-     * @return Jira update response
      */
-    public JsonPath reportJiraResult(final TestExecute execute) {
+    public void reportJiraResult(final TestExecute execute) {
 
         JSONObject payload = JsonUtils.convertObjectToJson(execute);
-        JsonPath response = (JsonPath) executePut(ZAPI_EXECUTE_BASE_URL + execute.getExecutionId() + "/execute", payload.toString());
-        return new JsonPath(response.get(FrameworkConstants.HTTP_ENTITY_KEY).toString());
+        executePut(ZAPI_EXECUTE_BASE_URL + execute.getExecutionId() + "/execute", payload.toString());
     }
 
     @Override
