@@ -14,6 +14,8 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 
+import java.util.Base64;
+
 import static com.pwc.logging.service.LoggerService.LOG;
 
 @Data
@@ -120,7 +122,7 @@ public class JiraProcessor {
      * @return Base64 encoded credentials
      */
     private String generateCredentials() {
-        return "Basic " + java.util.Base64.getEncoder().encodeToString(String.format("%s:%s", getJiraUsername(), getJiraPassword()).getBytes());
+        return "Basic " + Base64.getEncoder().encodeToString(String.format("%s:%s", getJiraUsername(), getJiraPassword()).getBytes());
     }
 
     /**

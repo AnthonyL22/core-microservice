@@ -56,7 +56,7 @@ public class JiraController extends JiraProcessor {
             JsonPath entity = new JsonPath(response.get(FrameworkConstants.HTTP_ENTITY_KEY).toString());
             jiraId = entity.get("id");
         } catch (Exception e) {
-            LOG(false, "Failed to get Jira Story ID '%s'", issueKey);
+            LOG(true, "Failed to get story by ID '%s'", issueKey);
         }
         return jiraId;
     }
