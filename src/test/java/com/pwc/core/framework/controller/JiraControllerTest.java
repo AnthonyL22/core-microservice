@@ -1,6 +1,5 @@
 package com.pwc.core.framework.controller;
 
-import com.jayway.restassured.path.json.exception.JsonPathException;
 import com.pwc.core.framework.data.TestExecute;
 import org.junit.Assert;
 import org.junit.Before;
@@ -67,7 +66,7 @@ public class JiraControllerTest {
         Assert.assertEquals("Verify Test Cycle", null, cycleFound);
     }
 
-    @Test(expected = JsonPathException.class)
+    @Test(expected = Exception.class)
     public void includeTestInCycleTest() {
         TestExecute liveTestExecute = jiraController.includeTestInCycle(JIRA_KEY, BASE_CYCLE);
         Assert.assertEquals("Verify Test Execute", testExecute, liveTestExecute);
