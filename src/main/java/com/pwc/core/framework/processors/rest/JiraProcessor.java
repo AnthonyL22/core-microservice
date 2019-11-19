@@ -39,7 +39,7 @@ public class JiraProcessor {
      * @param payload  request payload
      * @return POST response
      */
-    protected Object executePost(String endpoint, String payload) {
+    public Object executePost(String endpoint, String payload) {
 
         LOG(false, "HTTP action for url='%s'", getJiraUrl() + endpoint);
         Object wsResponse = null;
@@ -68,7 +68,7 @@ public class JiraProcessor {
      * @param payload  request payload
      * @return PUT response
      */
-    protected Object executePut(String endpoint, String payload) {
+    public Object executePut(String endpoint, String payload) {
 
         LOG(false, "HTTP action for url='%s'", getJiraUrl() + endpoint);
         Object wsResponse = null;
@@ -96,7 +96,7 @@ public class JiraProcessor {
      * @param endpoint web service endpoint descriptor
      * @return GET response
      */
-    protected Object executeGet(String endpoint) {
+    public Object executeGet(String endpoint) {
 
         LOG(false, "HTTP action for url='%s'", getJiraUrl() + endpoint);
         Object wsResponse = null;
@@ -121,7 +121,7 @@ public class JiraProcessor {
      *
      * @return Base64 encoded credentials
      */
-    private String generateCredentials() {
+    protected String generateCredentials() {
         return "Basic " + Base64.getEncoder().encodeToString(String.format("%s:%s", getJiraUsername(), getJiraPassword()).getBytes());
     }
 
