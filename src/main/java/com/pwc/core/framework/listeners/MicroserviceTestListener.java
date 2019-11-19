@@ -69,7 +69,7 @@ public class MicroserviceTestListener extends TestListenerAdapter implements ITe
 
     /**
      * Report Zephyr results to Jira.  Comma or space seperated list of Zephyr IDs must be defined in the
-     * @@TestCase() annotation.
+     * TestCase() annotation.
      *
      * @param tr current test result
      */
@@ -77,24 +77,19 @@ public class MicroserviceTestListener extends TestListenerAdapter implements ITe
 
         Method method = tr.getMethod().getConstructorOrMethod().getMethod();
         TestCase testCaseMetadata = method.getAnnotation(TestCase.class);
-        if (StringUtils.isNotEmpty(testCaseMetadata.value()) && MicroserviceTestSuite.getJiraController().isJiraEnabled()) {
-
+        if (null != MicroserviceTestSuite.getJiraController() && null != testCaseMetadata && StringUtils.isNotEmpty(testCaseMetadata.value())) {
             List<String> testCaseIdList = Arrays.asList(TEST_CASE_PATTERN.split(testCaseMetadata.value()));
-            if (CollectionUtils.isNotEmpty(testCaseIdList)) {
-
+            if (MicroserviceTestSuite.getJiraController().isJiraEnabled() && CollectionUtils.isNotEmpty(testCaseIdList)) {
                 testCaseIdList.forEach(testCaseId -> {
                     String jiraId = MicroserviceTestSuite.getJiraController().getJiraStoryId(testCaseId);
                     HashMap cycle = MicroserviceTestSuite.getJiraController().getTestCycleByName(MicroserviceTestSuite.getJiraController().getCycleName());
-                    if(StringUtils.isNotEmpty(jiraId) && null != cycle) {
+                    if (StringUtils.isNotEmpty(jiraId) && null != cycle) {
                         TestExecute testExecute = MicroserviceTestSuite.getJiraController().includeTestInCycle(jiraId, cycle);
                         testExecute.setStatus(tr.getStatus());
                         MicroserviceTestSuite.getJiraController().reportJiraResult(testExecute);
                     }
-
                 });
-
             }
-
         }
     }
 

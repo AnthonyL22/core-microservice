@@ -2,6 +2,7 @@ package com.pwc.core.framework.listeners;
 
 import com.pwc.core.framework.annotations.Issue;
 import com.pwc.core.framework.annotations.MaxRetryCount;
+import com.pwc.core.framework.annotations.TestCase;
 
 @Issue("STORY-1234")
 public class SampleTest {
@@ -12,6 +13,8 @@ public class SampleTest {
         return name;
     }
 
+    @TestCase("TC-1234")
+    @Issue("ISS-12345")
     @MaxRetryCount(3)
     public String testLoginWithAnnotationTest() {
         return name;

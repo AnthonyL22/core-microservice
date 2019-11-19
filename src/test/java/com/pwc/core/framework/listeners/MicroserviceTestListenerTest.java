@@ -37,13 +37,13 @@ public class MicroserviceTestListenerTest extends MicroserviceTestListener {
     private static final String VALID_JOB_ID = "43b82b9bdff54c5086ff5de86dcfbda5";
     private static final String INVALID_JOB_ID = "123456789";
     private ITestResult mockITestResult;
-    private  SauceREST mockSauceREST;
+    private SauceREST mockSauceREST;
     private TestRunner testRunner;
     private ITestNGMethod mockITestNGMethod;
     private MicroserviceTestSuite mockMicroserviceTestSuite;
 
     @Before
-    public void setUp() {
+    public void setUp() throws NoSuchMethodException {
 
         mockMicroserviceTestSuite = mock(MicroserviceTestSuite.class);
         setSessionIdProvider(mockMicroserviceTestSuite);
@@ -86,6 +86,14 @@ public class MicroserviceTestListenerTest extends MicroserviceTestListener {
 
         ConstructorOrMethod mockConstructorOrMethod = mock(ConstructorOrMethod.class);
         when(mockITestNGMethod.getConstructorOrMethod()).thenReturn(mockConstructorOrMethod);
+
+        SampleTest mockTest = new SampleTest();
+        Method mockMethod = mockTest.getClass().getMethod("testLoginWithAnnotationTest");
+        when(mockITestNGMethod.getConstructorOrMethod()).thenReturn(mockConstructorOrMethod);
+        when(mockConstructorOrMethod.getMethod()).thenReturn(mockMethod);
+
+//        TestCase mockTestCase = mockMethod.getAnnotation(TestCase.class);
+//        when(mockMethod.getAnnotation(TestCase.class)).thenReturn(mockTestCase);
 
         doNothing().when(mockSauceREST).updateJobInfo(VALID_JOB_ID, null);
 
@@ -151,14 +159,14 @@ public class MicroserviceTestListenerTest extends MicroserviceTestListener {
     public void jobDoesNotExistInSauceLabsTest() {
         when(mockMicroserviceTestSuite.getCurrentJobId()).thenReturn(INVALID_JOB_ID);
         onTestSuccess(mockITestResult);
-        verify(mockITestResult, times(3)).getName();
+        verify(mockITestResult, times(4)).getName();
     }
 
     @Test
     public void jobDoesExistsInSauceLabsTest() {
         when(mockMicroserviceTestSuite.getCurrentJobId()).thenReturn(VALID_JOB_ID);
         onTestSkipped(mockITestResult);
-        verify(mockITestResult, times(3)).getName();
+        verify(mockITestResult, times(4)).getName();
     }
 
     @Test
@@ -171,33 +179,33 @@ public class MicroserviceTestListenerTest extends MicroserviceTestListener {
     public void onTestFailureTest() {
         System.setProperty(FrameworkConstants.AUTOMATION_TEST_ENVIRONMENT, "dev-env");
         onTestFailure(mockITestResult);
-        verify(mockITestResult, times(3)).getName();
+        verify(mockITestResult, times(4)).getName();
     }
 
     @Test
     public void onTestSkippedTest() {
         onTestSkipped(mockITestResult);
-        verify(mockITestResult, times(3)).getName();
+        verify(mockITestResult, times(4)).getName();
     }
 
     @Test
     public void onTestSuccessTest() {
         onTestSuccess(mockITestResult);
-        verify(mockITestResult, times(3)).getName();
+        verify(mockITestResult, times(4)).getName();
     }
 
     @Test
     public void onTestSuccessNullDescriptionTest() {
         when(mockITestNGMethod.getDescription()).thenReturn(null);
         onTestSuccess(mockITestResult);
-        verify(mockITestResult, times(3)).getName();
+        verify(mockITestResult, times(4)).getName();
     }
 
     @Test
     public void onTestSuccessEmptyDescriptionTest() {
         when(mockITestNGMethod.getDescription()).thenReturn("");
         onTestSuccess(mockITestResult);
-        verify(mockITestResult, times(3)).getName();
+        verify(mockITestResult, times(4)).getName();
     }
 
 }
