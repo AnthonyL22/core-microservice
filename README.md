@@ -77,10 +77,10 @@ public void testSolrSearch() {
 }
 ```
 
-## Zephyr Test Case Annotation
+## Zephyr Test Case Annotation & ZAPI Connectivity
 The @TestCase annotation is a custom annotation for automatically updating Zephyr test case status' in Jira based on the test case
-ID(s) defined in the tests.  The list of identifiers must be comma or space separated and match the exact ID displayed
-in Jira/Zephyr.  For example:
+ID(s) defined in individual tests.  The test case ID(s) defined in the annotation must be comma or space separated and match the 
+exact ID displayed in Jira/Zephyr.  For example:
 ```
 @TestCase("CIA-14677, JIRA-12245 ANT-777")
 @Test(retryAnalyzer = Retry.class, groups = {Groups.WEB_SERVICE_TEST, Groups.REGRESSION_TEST})
