@@ -3,11 +3,14 @@ package com.pwc.core.framework.listeners;
 import com.pwc.core.framework.FrameworkConstants;
 import com.pwc.core.framework.MicroserviceTestSuite;
 import com.pwc.core.framework.annotations.Issue;
+import com.pwc.core.framework.annotations.TestCase;
 import com.pwc.core.framework.data.PropertiesFile;
+import com.pwc.core.framework.data.TestExecute;
 import com.pwc.core.framework.util.BrowserStackREST;
 import com.pwc.core.framework.util.PropertiesUtils;
 import com.pwc.logging.helper.LoggerHelper;
 import com.saucelabs.saucerest.SauceREST;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.IInvokedMethod;
 import org.testng.IInvokedMethodListener;
@@ -18,13 +21,19 @@ import org.testng.TestListenerAdapter;
 import org.testng.annotations.Listeners;
 
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import static com.pwc.logging.service.LoggerService.LOG;
 
 @Listeners
 public class MicroserviceTestListener extends TestListenerAdapter implements ITestListener, IInvokedMethodListener {
+
+    private static final String TEST_CASE_ID_REGEX = "[\\s,;]+";
+    private static final Pattern TEST_CASE_PATTERN = Pattern.compile(TEST_CASE_ID_REGEX);
 
     private MicroserviceTestSuite sessionIdProvider;
     private SauceREST sauceInstance;
@@ -58,6 +67,32 @@ public class MicroserviceTestListener extends TestListenerAdapter implements ITe
                 String.format("config/%s/%s", System.getProperty(FrameworkConstants.AUTOMATION_TEST_ENVIRONMENT), PropertiesFile.GRID_PROPERTIES_FILE.fileName), "grid.enabled"));
     }
 
+    /**
+     * Report Zephyr results to Jira.  Comma or space seperated list of Zephyr IDs must be defined in the
+     * TestCase() annotation.
+     *
+     * @param tr current test result
+     */
+    private void publishJiraTestResults(final ITestResult tr) {
+
+        Method method = tr.getMethod().getConstructorOrMethod().getMethod();
+        TestCase testCaseMetadata = method.getAnnotation(TestCase.class);
+        if (null != MicroserviceTestSuite.getJiraController() && null != testCaseMetadata && StringUtils.isNotEmpty(testCaseMetadata.value())) {
+            List<String> testCaseIdList = Arrays.asList(TEST_CASE_PATTERN.split(testCaseMetadata.value()));
+            if (MicroserviceTestSuite.getJiraController().isJiraEnabled() && CollectionUtils.isNotEmpty(testCaseIdList)) {
+                testCaseIdList.forEach(testCaseId -> {
+                    String jiraId = MicroserviceTestSuite.getJiraController().getJiraStoryId(testCaseId);
+                    HashMap cycle = MicroserviceTestSuite.getJiraController().getTestCycleByName(MicroserviceTestSuite.getJiraController().getCycleName());
+                    if (StringUtils.isNotEmpty(jiraId) && null != cycle) {
+                        TestExecute testExecute = MicroserviceTestSuite.getJiraController().includeTestInCycle(jiraId, cycle);
+                        testExecute.setStatus(tr.getStatus());
+                        MicroserviceTestSuite.getJiraController().reportJiraResult(testExecute);
+                    }
+                });
+            }
+        }
+    }
+
     @Override
     public void afterInvocation(IInvokedMethod iInvokedMethod, ITestResult iTestResult) {
     }
@@ -80,6 +115,7 @@ public class MicroserviceTestListener extends TestListenerAdapter implements ITe
     public void onTestFailure(ITestResult tr) {
         sessionIdProvider = (MicroserviceTestSuite) tr.getInstance();
         logIssueAnnotationInformation(tr);
+        publishJiraTestResults(tr);
         LOG(true, "%s--Description: %s", tr.getName(), !StringUtils.isEmpty(tr.getMethod().getDescription()) ? tr.getMethod().getDescription() : "N/A");
         LOG(true, "%s--Executed on Date/Time: %s", tr.getName(), LoggerHelper.getDateTime(FrameworkConstants.DATETIME_LOGGER_DATETIME_PATTER, FrameworkConstants.SYSTEM_DEFAULT_TIMEZONE, 0));
         LOG(true, "%s--Test Failed", tr.getName());
@@ -90,6 +126,7 @@ public class MicroserviceTestListener extends TestListenerAdapter implements ITe
         sessionIdProvider = (MicroserviceTestSuite) tr.getInstance();
         markJobResults(tr, sessionIdProvider.getCurrentJobId(), false);
         logIssueAnnotationInformation(tr);
+        publishJiraTestResults(tr);
         LOG(true, "%s--Description: %s", tr.getName(), !StringUtils.isEmpty(tr.getMethod().getDescription()) ? tr.getMethod().getDescription() : "N/A");
         LOG(true, "%s--Executed on Date/Time: %s", tr.getName(), LoggerHelper.getDateTime(FrameworkConstants.DATETIME_LOGGER_DATETIME_PATTER, FrameworkConstants.SYSTEM_DEFAULT_TIMEZONE, 0));
         LOG(true, "%s--Test Skipped", tr.getName());
@@ -100,6 +137,7 @@ public class MicroserviceTestListener extends TestListenerAdapter implements ITe
         sessionIdProvider = (MicroserviceTestSuite) tr.getInstance();
         markJobResults(tr, sessionIdProvider.getCurrentJobId(), true);
         logIssueAnnotationInformation(tr);
+        publishJiraTestResults(tr);
         LOG(true, "%s--Description: %s", tr.getName(), !StringUtils.isEmpty(tr.getMethod().getDescription()) ? tr.getMethod().getDescription() : "N/A");
         LOG(true, "%s--Executed on Date/Time: %s", tr.getName(), LoggerHelper.getDateTime(FrameworkConstants.DATETIME_LOGGER_DATETIME_PATTER, FrameworkConstants.SYSTEM_DEFAULT_TIMEZONE, 0));
         LOG(true, "%s--Test Passed", tr.getName());

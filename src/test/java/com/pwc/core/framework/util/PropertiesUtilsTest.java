@@ -18,6 +18,7 @@ public class PropertiesUtilsTest {
 
     private final String PROPERTIES_FILE = "automation.properties";
     private final String STATIC_FILE = "training.docx";
+    private static final int EXPECTED_NUM_OF_PROPERTIES = 22;
 
     @Before
     public void setUp() {
@@ -26,7 +27,7 @@ public class PropertiesUtilsTest {
     @Test
     public void readResourceFileTest() {
         List<String> lines = PropertiesUtils.readResourceFile("config/dev-env/" + PROPERTIES_FILE);
-        Assert.assertEquals(17, lines.size());
+        Assert.assertEquals(EXPECTED_NUM_OF_PROPERTIES, lines.size());
         Assert.assertEquals(lines.get(0), "web.url=http://my-web-application.mywebsite.com");
         Assert.assertEquals(lines.get(1), "web.services.url=http://my-web-services.com");
         Assert.assertEquals(lines.get(2), "web.services.user=foobar");
@@ -96,7 +97,7 @@ public class PropertiesUtilsTest {
         Assert.assertTrue(StringUtils.contains(file.getPath(), PROPERTIES_FILE));
         try {
             List<String> lines = FileUtils.readLines(file, StandardCharsets.UTF_8);
-            Assert.assertEquals(17, lines.size());
+            Assert.assertEquals(EXPECTED_NUM_OF_PROPERTIES, lines.size());
             Assert.assertEquals(lines.get(0), "web.url=http://my-web-application.mywebsite.com");
             Assert.assertEquals(lines.get(1), "web.services.url=http://my-web-services.com");
             Assert.assertEquals(lines.get(2), "web.services.user=foobar");
@@ -140,7 +141,7 @@ public class PropertiesUtilsTest {
     @Test
     public void getPropertiesFromPropertyFileTest() {
         Properties properties = PropertiesUtils.getPropertiesFromPropertyFile("config/dev-env/" + PROPERTIES_FILE);
-        Assert.assertEquals(17, properties.size());
+        Assert.assertEquals(EXPECTED_NUM_OF_PROPERTIES, properties.size());
     }
 
     @Test
