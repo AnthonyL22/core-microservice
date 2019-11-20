@@ -67,32 +67,6 @@ public class MicroserviceTestListener extends TestListenerAdapter implements ITe
                 String.format("config/%s/%s", System.getProperty(FrameworkConstants.AUTOMATION_TEST_ENVIRONMENT), PropertiesFile.GRID_PROPERTIES_FILE.fileName), "grid.enabled"));
     }
 
-    /**
-     * Report Zephyr results to Jira.  Comma or space seperated list of Zephyr IDs must be defined in the
-     * TestCase() annotation.
-     *
-     * @param tr current test result
-     */
-    private void publishJiraTestResults(final ITestResult tr) {
-
-        Method method = tr.getMethod().getConstructorOrMethod().getMethod();
-        TestCase testCaseMetadata = method.getAnnotation(TestCase.class);
-        if (null != MicroserviceTestSuite.getJiraController() && null != testCaseMetadata && StringUtils.isNotEmpty(testCaseMetadata.value())) {
-            List<String> testCaseIdList = Arrays.asList(TEST_CASE_PATTERN.split(testCaseMetadata.value()));
-            if (MicroserviceTestSuite.getJiraController().isJiraEnabled() && CollectionUtils.isNotEmpty(testCaseIdList)) {
-                testCaseIdList.forEach(testCaseId -> {
-                    String jiraId = MicroserviceTestSuite.getJiraController().getJiraStoryId(testCaseId);
-                    HashMap cycle = MicroserviceTestSuite.getJiraController().getTestCycleByName(MicroserviceTestSuite.getJiraController().getCycleName());
-                    if (StringUtils.isNotEmpty(jiraId) && null != cycle) {
-                        TestExecute testExecute = MicroserviceTestSuite.getJiraController().includeTestInCycle(jiraId, cycle);
-                        testExecute.setStatus(tr.getStatus());
-                        MicroserviceTestSuite.getJiraController().reportJiraResult(testExecute);
-                    }
-                });
-            }
-        }
-    }
-
     @Override
     public void afterInvocation(IInvokedMethod iInvokedMethod, ITestResult iTestResult) {
     }
@@ -144,7 +118,7 @@ public class MicroserviceTestListener extends TestListenerAdapter implements ITe
     }
 
     /**
-     * Get the issue or story information from the @Issue annotation
+     * Get the issue or story information from the @Issue annotation.
      *
      * @param tr active test result
      */
@@ -161,7 +135,7 @@ public class MicroserviceTestListener extends TestListenerAdapter implements ITe
     }
 
     /**
-     * Report test results to Saucelabs via their REST api
+     * Report test results to Saucelabs via their REST api.
      *
      * @param tr          current test result
      * @param didTestPass test result status
@@ -193,7 +167,7 @@ public class MicroserviceTestListener extends TestListenerAdapter implements ITe
 
     /**
      * Check if the current job ID exists in Saucelabs environment.  If it does then the
-     * job will be updated with the current test results for this test execution
+     * job will be updated with the current test results for this test execution.
      *
      * @return job exists in Saucelabs
      */
@@ -212,7 +186,7 @@ public class MicroserviceTestListener extends TestListenerAdapter implements ITe
 
     /**
      * Check if the current job ID exists in BrowserStack environment.  If it does then the
-     * job will be updated with the current test results for this test execution
+     * job will be updated with the current test results for this test execution.
      *
      * @return job exists in BrowserStack
      */
@@ -227,6 +201,32 @@ public class MicroserviceTestListener extends TestListenerAdapter implements ITe
             return false;
         }
         return false;
+    }
+
+    /**
+     * Report Zephyr results to Jira.  Comma or space seperated list of Zephyr IDs must be defined in the
+     * TestCase() annotation.
+     *
+     * @param tr current test result
+     */
+    private void publishJiraTestResults(final ITestResult tr) {
+
+        Method method = tr.getMethod().getConstructorOrMethod().getMethod();
+        TestCase testCaseMetadata = method.getAnnotation(TestCase.class);
+        if (null != MicroserviceTestSuite.getJiraController() && null != testCaseMetadata && StringUtils.isNotEmpty(testCaseMetadata.value())) {
+            List<String> testCaseIdList = Arrays.asList(TEST_CASE_PATTERN.split(testCaseMetadata.value()));
+            if (MicroserviceTestSuite.getJiraController().isJiraEnabled() && CollectionUtils.isNotEmpty(testCaseIdList)) {
+                testCaseIdList.forEach(testCaseId -> {
+                    String jiraId = MicroserviceTestSuite.getJiraController().getJiraStoryId(testCaseId);
+                    HashMap cycle = MicroserviceTestSuite.getJiraController().getTestCycleByName(MicroserviceTestSuite.getJiraController().getCycleName());
+                    if (StringUtils.isNotEmpty(jiraId) && null != cycle) {
+                        TestExecute testExecute = MicroserviceTestSuite.getJiraController().includeTestInCycle(jiraId, cycle);
+                        testExecute.setStatus(tr.getStatus());
+                        MicroserviceTestSuite.getJiraController().reportJiraResult(testExecute);
+                    }
+                });
+            }
+        }
     }
 
     public void setSauceInstance(SauceREST sauceInstance) {
