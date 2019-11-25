@@ -11,7 +11,6 @@ import org.openqa.selenium.ie.InternetExplorerDriverService;
 import org.openqa.selenium.phantomjs.PhantomJSDriverService;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import org.openqa.selenium.safari.SafariOptions;
 import org.testng.Assert;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -21,7 +20,6 @@ public class MicroserviceDriversTest {
     private RemoteWebDriver driver;
     private DesiredCapabilities requiredCapabilities;
     private EdgeOptions edgeOptions;
-    private SafariOptions safariOptions;
 
     @Before
     public void setUp() {
@@ -34,20 +32,6 @@ public class MicroserviceDriversTest {
         edgeOptions = new EdgeOptions();
         edgeOptions.setPageLoadStrategy("fast");
 
-        safariOptions = new SafariOptions();
-
-    }
-
-    @Test(expected = Exception.class)
-    public void safariDriverTest() {
-        MicroserviceSafariDriver driver = new MicroserviceSafariDriver(desiredCapabilities);
-        Assert.assertNotNull(driver);
-    }
-
-    @Test(expected = Exception.class)
-    public void safariOptionsSafariDriverTest() {
-        MicroserviceSafariDriver driver = new MicroserviceSafariDriver(safariOptions);
-        Assert.assertNotNull(driver);
     }
 
     @Test(expected = Exception.class)

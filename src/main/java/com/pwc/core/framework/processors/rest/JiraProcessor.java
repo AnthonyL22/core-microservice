@@ -41,7 +41,7 @@ public class JiraProcessor {
      */
     public Object executePost(String endpoint, String payload) {
 
-        LOG(false, "HTTP action for url='%s'", getJiraUrl() + endpoint);
+        LOG(false, "AUTHORIZED POST URI='%s'", getJiraUrl() + endpoint);
         Object wsResponse = null;
 
         int timeout = 3;
@@ -70,7 +70,7 @@ public class JiraProcessor {
      */
     public Object executePut(String endpoint, String payload) {
 
-        LOG(false, "HTTP action for url='%s'", getJiraUrl() + endpoint);
+        LOG(false, "AUTHORIZED PUT URI='%s'", getJiraUrl() + endpoint);
         Object wsResponse = null;
 
         int timeout = 3;
@@ -98,7 +98,7 @@ public class JiraProcessor {
      */
     public Object executeGet(String endpoint) {
 
-        LOG(false, "HTTP action for url='%s'", getJiraUrl() + endpoint);
+        LOG(false, "AUTHORIZED GET URI='%s'", getJiraUrl() + endpoint);
         Object wsResponse = null;
 
         int timeout = 3;
