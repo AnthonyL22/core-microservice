@@ -8,9 +8,11 @@ import com.pwc.core.framework.processors.rest.JiraProcessor;
 import com.pwc.core.framework.util.JsonUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpStatus;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.testng.ITestResult;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -118,12 +120,32 @@ public class JiraController extends JiraProcessor {
     /**
      * Execute a Jira test case and update it's status in Jira/Zephyr.
      *
-     * @param execute hydrated TestExecution object
+     * @param tr         Test result
+     * @param execute    hydrated TestExecution object
+     * @param testCaseId Jira ID
      */
-    public void reportJiraResult(final TestExecute execute) {
+    public void reportJiraResult(final ITestResult tr, final TestExecute execute, final String testCaseId) {
 
         JSONObject payload = JsonUtils.convertObjectToJson(execute);
-        executePut(ZAPI_EXECUTE_BASE_URL + execute.getExecutionId() + "/execute", payload.toString());
+        JsonPath response = (JsonPath) executePut(ZAPI_EXECUTE_BASE_URL + execute.getExecutionId() + "/execute", payload.toString());
+        if (response.get(FrameworkConstants.HTTP_STATUS_VALUE_KEY).equals(HttpStatus.SC_OK)) {
+            String status = "UNEXECUTED";
+            switch (tr.getStatus()) {
+                case 1:
+                    status = "PASS";
+                    break;
+                case 2:
+                    status = "FAIL";
+                    break;
+                case 3:
+                    status = "WIP";
+                    break;
+                case 4:
+                    status = "BLOCKED";
+                    break;
+            }
+            LOG(true, "%s--Published Zephyr '%s' status for issue: %s", tr.getName(), status, testCaseId);
+        }
     }
 
     @Override

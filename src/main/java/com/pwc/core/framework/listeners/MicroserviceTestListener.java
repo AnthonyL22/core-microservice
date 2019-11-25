@@ -222,7 +222,7 @@ public class MicroserviceTestListener extends TestListenerAdapter implements ITe
                     if (StringUtils.isNotEmpty(jiraId) && null != cycle) {
                         TestExecute testExecute = MicroserviceTestSuite.getJiraController().includeTestInCycle(jiraId, cycle);
                         testExecute.setStatus(tr.getStatus());
-                        MicroserviceTestSuite.getJiraController().reportJiraResult(testExecute);
+                        MicroserviceTestSuite.getJiraController().reportJiraResult(tr, testExecute, testCaseId);
                     }
                 });
             }
