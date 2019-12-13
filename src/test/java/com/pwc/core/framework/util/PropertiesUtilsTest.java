@@ -18,7 +18,7 @@ public class PropertiesUtilsTest {
 
     private final String PROPERTIES_FILE = "automation.properties";
     private final String STATIC_FILE = "training.docx";
-    private static final int EXPECTED_NUM_OF_PROPERTIES = 22;
+    private static final int EXPECTED_NUM_OF_PROPERTIES = 23;
 
     @Before
     public void setUp() {
@@ -44,7 +44,8 @@ public class PropertiesUtilsTest {
         Assert.assertEquals(lines.get(13), "browserstack.username=browserstack-user");
         Assert.assertEquals(lines.get(14), "browserstack.accesskey=AAB1234567rdytP32hoZ");
         Assert.assertEquals(lines.get(15), "browserstack.local=false");
-        Assert.assertEquals(lines.get(16), "capture.video=false");
+        Assert.assertEquals(lines.get(16), "experitest.accesskey=asdfadsfasdfasdfasdfacC5tIjoiTVRVM");
+        Assert.assertEquals(lines.get(17), "capture.video=false");
     }
 
     @Test
@@ -114,7 +115,8 @@ public class PropertiesUtilsTest {
             Assert.assertEquals(lines.get(13), "browserstack.username=browserstack-user");
             Assert.assertEquals(lines.get(14), "browserstack.accesskey=AAB1234567rdytP32hoZ");
             Assert.assertEquals(lines.get(15), "browserstack.local=false");
-            Assert.assertEquals(lines.get(16), "capture.video=false");
+            Assert.assertEquals(lines.get(16), "experitest.accesskey=asdfadsfasdfasdfasdfacC5tIjoiTVRVM");
+            Assert.assertEquals(lines.get(17), "capture.video=false");
         } catch (IOException e) {
             Assert.fail("test failed due to exception=" + e.getMessage());
         }

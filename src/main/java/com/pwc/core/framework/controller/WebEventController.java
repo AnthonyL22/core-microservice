@@ -88,6 +88,9 @@ public class WebEventController {
     @Value("${browserstack.local:true}")
     private String browserstackLocal;
 
+    @Value("${experitest.accesskey}")
+    private String experitestAccesskey;
+
     private MicroserviceWebDriver remoteWebDriver;
     private WebEventService webEventService;
     private DesiredCapabilities capabilities;
@@ -388,6 +391,10 @@ public class WebEventController {
         capabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
         capabilities.setCapability(CapabilityType.BROWSER_NAME, BrowserType.CHROME);
         capabilities.setCapability("video", "True");
+        if (StringUtils.isNotEmpty(experitestAccesskey)) {
+            capabilities.setCapability("accessKey", experitestAccesskey);
+            capabilities.setCapability("testName", this.currentTestName);
+        }
 
         if (gridEnabled) {
             if (this.remoteWebDriver == null) {
@@ -420,6 +427,10 @@ public class WebEventController {
         capabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
         capabilities.setCapability(CapabilityType.BROWSER_NAME, BrowserType.CHROME);
         capabilities.setCapability("video", "True");
+        if (StringUtils.isNotEmpty(experitestAccesskey)) {
+            capabilities.setCapability("accessKey", experitestAccesskey);
+            capabilities.setCapability("testName", this.currentTestName);
+        }
 
         if (gridEnabled) {
             if (this.remoteWebDriver == null) {
@@ -447,6 +458,10 @@ public class WebEventController {
         LOG("starting android browser");
         setDriverExecutable();
         capabilities.setCapability(CapabilityType.BROWSER_NAME, BrowserType.ANDROID);
+        if (StringUtils.isNotEmpty(experitestAccesskey)) {
+            capabilities.setCapability("accessKey", experitestAccesskey);
+            capabilities.setCapability("testName", this.currentTestName);
+        }
         if (gridEnabled) {
             if (this.remoteWebDriver == null) {
                 MicroserviceRemoteWebDriver microserviceRemoteWebDriver = new MicroserviceRemoteWebDriver(new URL(gridUrl), capabilities);
@@ -472,6 +487,11 @@ public class WebEventController {
         LOG("starting microsoft edge browser");
         setDriverExecutable();
         capabilities.setCapability(CapabilityType.BROWSER_NAME, BrowserType.EDGE);
+        if (StringUtils.isNotEmpty(experitestAccesskey)) {
+            capabilities.setCapability("accessKey", experitestAccesskey);
+            capabilities.setCapability("testName", this.currentTestName);
+        }
+
         if (gridEnabled) {
             if (this.remoteWebDriver == null) {
                 MicroserviceRemoteWebDriver microserviceRemoteWebDriver = new MicroserviceRemoteWebDriver(new URL(gridUrl), capabilities);
@@ -497,6 +517,11 @@ public class WebEventController {
         LOG("starting internet explorer browser");
         setDriverExecutable();
         capabilities.setCapability(CapabilityType.BROWSER_NAME, BrowserType.IE);
+        if (StringUtils.isNotEmpty(experitestAccesskey)) {
+            capabilities.setCapability("accessKey", experitestAccesskey);
+            capabilities.setCapability("testName", this.currentTestName);
+        }
+
         if (gridEnabled) {
             if (this.remoteWebDriver == null) {
                 MicroserviceRemoteWebDriver microserviceRemoteWebDriver = new MicroserviceRemoteWebDriver(new URL(gridUrl), capabilities);
@@ -522,6 +547,11 @@ public class WebEventController {
         LOG("starting safari browser");
         setDriverExecutable();
         capabilities.setCapability(CapabilityType.BROWSER_NAME, BrowserType.SAFARI);
+        if (StringUtils.isNotEmpty(experitestAccesskey)) {
+            capabilities.setCapability("accessKey", experitestAccesskey);
+            capabilities.setCapability("testName", this.currentTestName);
+        }
+
         if (gridEnabled) {
             if (this.remoteWebDriver == null) {
                 MicroserviceRemoteWebDriver microserviceRemoteWebDriver = new MicroserviceRemoteWebDriver(new URL(gridUrl), capabilities);
@@ -552,6 +582,11 @@ public class WebEventController {
                 "--ssl-protocol=any",
                 "--ignore-ssl-errors=true",
                 "--webdriver-loglevel=DEBUG"});
+        if (StringUtils.isNotEmpty(experitestAccesskey)) {
+            capabilities.setCapability("accessKey", experitestAccesskey);
+            capabilities.setCapability("testName", this.currentTestName);
+        }
+
         if (gridEnabled) {
             if (this.remoteWebDriver == null) {
                 MicroserviceRemoteWebDriver microserviceRemoteWebDriver = new MicroserviceRemoteWebDriver(new URL(gridUrl), capabilities);

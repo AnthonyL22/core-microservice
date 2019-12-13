@@ -351,6 +351,21 @@ If you choose not to override ANY of the settings above the following runtime se
 * Linux
 * Chrome (latest version) 
 
+## Experitest Execution
+To utilize Experitest as your test execution platform the following configurations must be set:
+1. **automation.properties** must contain 
+```
+experitest.accesskey=YOUR_KEY_HERE
+```
+2. Your Experitest grid url must be defined in **grid.properties**
+```
+grid.hub.url=https://my_company.experitest.com/wd/hub
+```
+3. Optional:  [Local tunnel configuration](https://docs.experitest.com/display/LT/Network+Tunnel+Client)  
+
+
+
+
 ## Adjustable BrowserStack Execution Settings
 The following settings can be modified at any stage of the automation execution process to run tests in the desired
 testing environment.  Full list of options can be found in the 
