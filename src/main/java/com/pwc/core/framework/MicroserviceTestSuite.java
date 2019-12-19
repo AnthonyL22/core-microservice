@@ -7,6 +7,7 @@ import com.pwc.core.framework.command.DatabaseCommand;
 import com.pwc.core.framework.command.WebServiceCommand;
 import com.pwc.core.framework.controller.DatabaseController;
 import com.pwc.core.framework.controller.JiraController;
+import com.pwc.core.framework.controller.MobileEventController;
 import com.pwc.core.framework.controller.WebEventController;
 import com.pwc.core.framework.controller.WebServiceController;
 import com.pwc.core.framework.data.Credentials;
@@ -45,6 +46,9 @@ public abstract class MicroserviceTestSuite {
 
     @Autowired
     protected WebEventController webEventController;
+
+    @Autowired
+    protected MobileEventController mobileEventController;
 
     @Autowired
     protected WebServiceController webServiceController;
@@ -211,6 +215,56 @@ public abstract class MicroserviceTestSuite {
         WebElement webElement = webEventController.getWebEventService().findWebElement(elementIdentifier);
         if (webElement != null) {
             return webEventController.webAction(webElement, attributeValue);
+        } else {
+            assertFail(String.format("Unable to find element=%s", elementIdentifier));
+        }
+        return 0L;
+    }
+
+    /**
+     * Mobile action on an element that does not require any supporting
+     * data.  Typically a button click
+     *
+     * @param elementIdentifier unique identifier for an mobile element
+     * @return time in milliseconds for mouse-based action
+     */
+    protected long mobileAction(final String elementIdentifier) {
+
+        return mobileAction(elementIdentifier, null);
+    }
+
+    /**
+     * Mobile action on an element that requires a true/false switch.  Typically,
+     * a checkbox or radio button element type
+     *
+     * @param elementIdentifier unique identifier for an mobile element
+     * @param attributeValue    toggled state of an element
+     * @return time in milliseconds for mouse-based action
+     */
+    protected long mobileAction(final String elementIdentifier, final boolean attributeValue) {
+
+        return mobileAction(elementIdentifier, String.valueOf(attributeValue));
+    }
+
+    /**
+     * Mobile action for all Mobile elements
+     *
+     * @param elementIdentifier unique identifier for an mobile element
+     * @param attributeValue    element value to alter in the active DOM
+     * @return time in milliseconds for mouse-based action
+     */
+    protected long mobileAction(final String elementIdentifier, final Object attributeValue) {
+
+        if (mobileEventController == null) {
+            mobileEventController = (MobileEventController) ctx.getBean("MobileEventController");
+            mobileEventController.initiateDevice();
+            setCurrentJobId(webEventController.getCurrentJobId());
+        }
+        mobileEventController.getMobileEventService().waitForBrowserToLoad();
+        mobileEventController.getMobileEventService().waitForElementToDisplay(elementIdentifier);
+        WebElement webElement = mobileEventController.getMobileEventService().findWebElement(elementIdentifier);
+        if (webElement != null) {
+            return mobileEventController.webAction(webElement, attributeValue);
         } else {
             assertFail(String.format("Unable to find element=%s", elementIdentifier));
         }

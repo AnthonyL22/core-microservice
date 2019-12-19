@@ -276,6 +276,11 @@ public class WebEventController {
     public MicroserviceWebDriver getIOSBrowser() throws Exception {
         LOG("starting iOS browser");
         capabilities.setCapability(CapabilityType.BROWSER_NAME, BrowserType.SAFARI);
+        if (StringUtils.isNotEmpty(experitestAccesskey)) {
+            capabilities.setCapability("accessKey", experitestAccesskey);
+            capabilities.setCapability("testName", this.currentTestName);
+        }
+
         if (gridEnabled) {
             if (this.remoteWebDriver == null) {
                 MicroserviceRemoteWebDriver microserviceRemoteWebDriver = new MicroserviceRemoteWebDriver(new URL(gridUrl), capabilities);
@@ -303,6 +308,10 @@ public class WebEventController {
         capabilities.setCapability("marionette", true);
         capabilities.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
         capabilities.setCapability(CapabilityType.BROWSER_NAME, BrowserType.FIREFOX);
+        if (StringUtils.isNotEmpty(experitestAccesskey)) {
+            capabilities.setCapability("accessKey", experitestAccesskey);
+            capabilities.setCapability("testName", this.currentTestName);
+        }
 
         if (gridEnabled) {
             if (this.remoteWebDriver == null) {
@@ -338,6 +347,10 @@ public class WebEventController {
         capabilities.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
         capabilities.setCapability(CapabilityType.BROWSER_NAME, BrowserType.FIREFOX);
         capabilities.setCapability("video", "True");
+        if (StringUtils.isNotEmpty(experitestAccesskey)) {
+            capabilities.setCapability("accessKey", experitestAccesskey);
+            capabilities.setCapability("testName", this.currentTestName);
+        }
 
         if (gridEnabled) {
             if (this.remoteWebDriver == null) {
