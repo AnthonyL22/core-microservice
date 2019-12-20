@@ -3,7 +3,7 @@ package com.pwc.core.framework.data;
 
 public enum IOSElementType {
 
-    APPLICATION("XCUIElementTypeApplicationImpl"),
+    APPLICATION("XCUIElementTypeApplication"),
     BUTTON("XCUIElementTypeButton"),
     CELL("XCUIElementTypeCell"),
     STATIC_TEXT("XCUIElementTypeStaticText"),
