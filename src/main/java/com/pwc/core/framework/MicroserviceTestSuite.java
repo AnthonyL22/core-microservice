@@ -671,7 +671,7 @@ public abstract class MicroserviceTestSuite {
         this.currentJobId = currentJobId;
     }
 
-    public static JiraController getJiraController(){
+    public static JiraController getJiraController() {
         return jiraController;
     }
 

@@ -66,7 +66,7 @@ public class ReadExcelUtils {
     /**
      * Read .xls column data
      *
-     * @param resourcePath resource path from the /resources dir
+     * @param resourcePath   resource path from the /resources dir
      * @param fileName       file name to read
      * @param sheetName      sheet name to interrogate
      * @param startingColumn 0 starting column index to read

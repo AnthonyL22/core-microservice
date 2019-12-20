@@ -1,8 +1,6 @@
 package com.pwc.core.framework.processors.mobile.elements;
 
 import com.pwc.core.framework.data.IOSElementType;
-import com.pwc.core.framework.data.WebElementType;
-import com.pwc.core.framework.processors.web.elements.MicroserviceWebElement;
 import io.appium.java_client.MobileElement;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.WebElement;

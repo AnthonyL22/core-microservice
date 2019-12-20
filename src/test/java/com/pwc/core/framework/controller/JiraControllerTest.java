@@ -11,7 +11,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.testng.ITestClass;
 import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
-import org.testng.internal.TestResult;
 
 import java.util.HashMap;
 

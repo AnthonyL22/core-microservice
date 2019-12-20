@@ -13,6 +13,5 @@ public interface MicroserviceWebDriver extends
         org.openqa.selenium.internal.FindsByCssSelector,
         org.openqa.selenium.internal.FindsByTagName,
         org.openqa.selenium.internal.FindsByClassName,
-        org.openqa.selenium.HasCapabilities
-{
+        org.openqa.selenium.HasCapabilities {
 }
