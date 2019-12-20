@@ -743,6 +743,23 @@ public class WebEventService extends WebEventController {
     }
 
     /**
+     * Execute Javascript via selenium to send the click directly on the element.
+     *
+     * @param javaScript js String to execute
+     * @param element WebElement to click
+     * @return resulting object
+     */
+    public Object executeJavascript(String javaScript,WebElement element) {
+        try {
+            return this.microserviceWebDriver.executeScript(javaScript,element);
+        } catch (Exception e) {
+            e.getMessage();
+        }
+        return null;
+    }
+
+
+    /**
      * Execute blur Event on a given element via xPath or by ID
      *
      * @param elementIdentifier element identifier (xPath or explicite Element ID)

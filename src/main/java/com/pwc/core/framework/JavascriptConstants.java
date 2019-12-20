@@ -19,6 +19,7 @@ public final class JavascriptConstants {
     public static final String SELECT_VALUE_BY_IDENTIFIER_INDEX_IDENTIFIER_EXT_COMBO = "Ext.ComponentQuery.query('combo#%s')[%s].setValue(Ext.ComponentQuery.query('combo#%s')[%s].getStore().findRecord('name','%s'))";
 
     // CLICK Actions
+    public static final String CLICK_BY_ELEMNT = "arguments[0].click();";
     public static final String CLICK_BY_XPATH = "var element = document.evaluate(\"%s\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue; element.click();";
     public static final String DOUBLE_CLICK_BY_XPATH = "var element = document.evaluate(\"%s\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue; var clickEvent = document.createEvent('MouseEvents'); clickEvent.initEvent('dblclick', true, true); element.dispatchEvent (clickEvent)";
     public static final String CLICK_ELEMENT_BY_ID = "document.getElementById('%s').click();";
@@ -51,7 +52,7 @@ public final class JavascriptConstants {
     public static final String SCROLL_TO_ELEMENT_ACTION = "arguments[0].scrollIntoView(true);";
     public static final String SCROLL_TO_TOP_OF_WINDOW_ACTION = "window.scrollTo(document.body.scrollHeight,0);";
     public static final String SCROLL_TO_BOTTOM_OF_WINDOW_ACTION = "window.scrollTo(0,document.body.scrollHeight);";
-    public static final String SCROLL_TO_POSITION_ELEMENT = "window.scrollTo('%s','%s');";
+    public static final String SCROLL_TO_ELEMENT_POSITION_ACTION = "window.scrollTo('%s','%s');";
     public static final String URL_REDIRECT_ACTION = "window.location.replace('%s')";
 
     private JavascriptConstants() {

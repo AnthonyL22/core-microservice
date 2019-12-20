@@ -77,6 +77,27 @@ public void testSolrSearch() {
 }
 ```
 
+## Zephyr Test Case Annotation & ZAPI Connectivity
+The @TestCase annotation is a custom annotation for automatically updating Zephyr test case status' in Jira based on the test case
+ID(s) defined in individual tests.  The test case ID(s) defined in the annotation must be comma or space separated and match the 
+exact ID displayed in Jira/Zephyr.  For example:
+```
+@TestCase("CIA-14677, JIRA-12245 ANT-777")
+@Test(retryAnalyzer = Retry.class, groups = {Groups.WEB_SERVICE_TEST, Groups.REGRESSION_TEST})
+public void testSolrSearch() {
+    My Test Here
+}
+```
+
+Simply, add the following items in the automation.properties file in your configuration to begin updating your Zephyr test cases status':
+```
+jira.zapi.enabled=true
+jira.zapi.url=https://jira.pwc.com/rest
+jira.zapi.username=anthony
+jira.zapi.password=pass1234
+jira.zapi.cycle.name=MyProject-1.0.0
+```
+
 ## Issue Annotation
 The @Issue annotation is a customized annotation for automatically adding logging information which identify the 
 issue or story numbers relevant to your test.  Very useful for Jira integration.  
@@ -329,6 +350,21 @@ If you choose not to override ANY of the settings above the following runtime se
 
 * Linux
 * Chrome (latest version) 
+
+## Experitest Execution
+To utilize Experitest as your test execution platform the following configurations must be set:
+1. **automation.properties** must contain 
+```
+experitest.accesskey=YOUR_KEY_HERE
+```
+2. Your Experitest grid url must be defined in **grid.properties**
+```
+grid.hub.url=https://my_company.experitest.com/wd/hub
+```
+3. Optional:  [Local tunnel configuration](https://docs.experitest.com/display/LT/Network+Tunnel+Client)  
+
+
+
 
 ## Adjustable BrowserStack Execution Settings
 The following settings can be modified at any stage of the automation execution process to run tests in the desired
