@@ -5,11 +5,11 @@ import com.pwc.core.framework.driver.MicroserviceAndroidMobileDriver;
 import com.pwc.core.framework.driver.MicroserviceIOSMobileDriver;
 import com.pwc.core.framework.driver.MicroserviceMobileDriver;
 import com.pwc.core.framework.driver.MicroserviceRemoteMobileDriver;
+import com.pwc.core.framework.processors.mobile.TapActivityProcessor;
+import com.pwc.core.framework.processors.mobile.ViewActivityProcessor;
 import com.pwc.core.framework.service.MobileEventService;
-import com.pwc.core.framework.util.DebuggingUtils;
 import com.pwc.core.framework.util.GridUtils;
 import io.appium.java_client.MobileElement;
-import io.appium.java_client.ios.IOSDriver;
 import io.appium.java_client.remote.MobileCapabilityType;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.remote.BrowserType;
@@ -19,6 +19,7 @@ import org.openqa.selenium.remote.LocalFileDetector;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StopWatch;
 import org.testng.Assert;
 import org.testng.Reporter;
 
@@ -233,7 +234,7 @@ public class MobileEventController {
     }
 
     /**
-     * Core web element action sorting logic
+     * Core mobile element action sorting logic
      *
      * @param mobileElement      DOM element to act upon
      * @param mobileElementValue DOM element value to alter
@@ -241,20 +242,15 @@ public class MobileEventController {
      */
     public long mobileAction(final MobileElement mobileElement, final Object mobileElementValue) {
 
-        System.out.println();
-//        if (MouseActivityProcessor.applies(mobileElement)) {
-//            StopWatch stopWatch = new StopWatch();
-//            stopWatch.start();
-//            MouseActivityProcessor.getInstance().webAction(mobileElement, mobileElementValue);
-//            getWebEventService().waitForBrowserToLoad();
-//            stopWatch.stop();
-//            return stopWatch.getTotalTimeMillis();
-//        } else if (KeyboardActivityProcessor.applies(mobileElement)) {
-//            KeyboardActivityProcessor.getInstance().webAction(mobileElement, mobileElementValue);
-//            getWebEventService().waitForBrowserToLoad();
-//        } else if (ViewActivityProcessor.applies(mobileElement)) {
-//            ViewActivityProcessor.getInstance().webAction(mobileElement, mobileElementValue);
-//        }
+        if (TapActivityProcessor.applies(mobileElement)) {
+            StopWatch stopWatch = new StopWatch();
+            stopWatch.start();
+            TapActivityProcessor.getInstance().mobileAction(mobileElement, mobileElementValue);
+            stopWatch.stop();
+            return stopWatch.getTotalTimeMillis();
+        } else if (ViewActivityProcessor.applies(mobileElement)) {
+            ViewActivityProcessor.getInstance().mobileAction(mobileElement, mobileElementValue);
+        }
         return 0L;
     }
 

@@ -261,11 +261,9 @@ public abstract class MicroserviceTestSuite {
             mobileEventController.initiateDevice();
             setCurrentJobId(mobileEventController.getCurrentJobId());
         }
-        //mobileEventController.getMobileEventService().waitForBrowserToLoad();
-        //mobileEventController.getMobileEventService().waitForElementToDisplay(elementIdentifier);
-        MobileElement webElement = mobileEventController.getMobileEventService().findWebElement(elementIdentifier);
-        if (webElement != null) {
-            return mobileEventController.mobileAction(webElement, attributeValue);
+        MobileElement mobileElement = mobileEventController.getMobileEventService().findWebElement(elementIdentifier);
+        if (mobileElement != null) {
+            return mobileEventController.mobileAction(mobileElement, attributeValue);
         } else {
             assertFail(String.format("Unable to find element=%s", elementIdentifier));
         }

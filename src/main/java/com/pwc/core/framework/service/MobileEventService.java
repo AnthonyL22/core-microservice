@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static com.pwc.logging.service.LoggerService.LOG;
 
@@ -46,9 +45,13 @@ public class MobileEventService extends WebEventController {
 
         MobileElement mobileElement = null;
         if (StringUtils.startsWith(elementIdentifier, "//") && elementIdentifier.matches(REGEX_XPATH_FINDER)) {
+
             mobileElement = findElementByXPath(elementIdentifier);
+
         } else if (elementIdentifier.matches(PREDICATE_XPATH_FINDER)) {
+
             mobileElement = findElementByIosNsPredicate(Arrays.asList(elementIdentifier));
+
         } else {
 
             List<String> elementXPathLocators = new ArrayList<>();
@@ -62,6 +65,7 @@ public class MobileEventService extends WebEventController {
             elementXPathLocators.add("enabled == '" + elementIdentifier + "'");
             elementXPathLocators.add("visible == '" + elementIdentifier + "'");
             mobileElement = findElementByIosNsPredicate(elementXPathLocators);
+
         }
         return mobileElement;
     }
@@ -74,26 +78,23 @@ public class MobileEventService extends WebEventController {
      */
     private MobileElement findElementByIosNsPredicate(List<String> idsNsPredicateIdentifiers) {
 
-        AtomicReference<MobileElement> mobileElement = null;
-
-        idsNsPredicateIdentifiers.forEach(identifier -> {
-            MobileElement x = (MobileElement) this.microserviceMobileDriver.findElementByIosNsPredicate(identifier);
-            System.out.println();
-
-        });
-
-        idsNsPredicateIdentifiers.stream().fil(identifier -> {
-            MobileElement x = (MobileElement) this.microserviceMobileDriver.findElementByIosNsPredicate(identifier);
-            System.out.println();
-
-        });
-
+        String elementIdentifier = null;
+        MobileElement element = null;
         try {
-            idsNsPredicateIdentifiers.forEach(identifier -> mobileElement.set((MobileElement) this.microserviceMobileDriver.findElementByIosNsPredicate(identifier)));
+            for (String identifier : idsNsPredicateIdentifiers) {
+                try {
+                    element = (MobileElement) this.microserviceMobileDriver.findElementByIosNsPredicate(identifier);
+                } catch (Exception elementNotFound) {
+                    elementNotFound.getMessage();
+                }
+                if (null != element) {
+                    return element;
+                }
+            }
         } catch (Exception e) {
-            LOG(false, "Unable to find element by iOSNsPredicate due to exception %s", e.getCause());
+            LOG(false, "Unable to find element '%s' by Predicate", elementIdentifier);
         }
-        return mobileElement.get();
+        return element;
     }
 
     /**
