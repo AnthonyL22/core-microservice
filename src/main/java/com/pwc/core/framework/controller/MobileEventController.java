@@ -6,7 +6,10 @@ import com.pwc.core.framework.driver.MicroserviceIOSMobileDriver;
 import com.pwc.core.framework.driver.MicroserviceMobileDriver;
 import com.pwc.core.framework.driver.MicroserviceRemoteMobileDriver;
 import com.pwc.core.framework.service.MobileEventService;
+import com.pwc.core.framework.util.DebuggingUtils;
 import com.pwc.core.framework.util.GridUtils;
+import io.appium.java_client.MobileElement;
+import io.appium.java_client.ios.IOSDriver;
 import io.appium.java_client.remote.MobileCapabilityType;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.remote.BrowserType;
@@ -20,6 +23,7 @@ import org.testng.Assert;
 import org.testng.Reporter;
 
 import java.net.URL;
+import java.util.concurrent.TimeUnit;
 
 import static com.pwc.logging.service.LoggerService.LOG;
 
@@ -30,7 +34,7 @@ public class MobileEventController {
     @Value("${app.path}")
     private String appPath;
 
-    @Value("${app.claspath}")
+    @Value("${app.classpath}")
     private String appActivateClasspath;
 
     @Value("${grid.enabled:true}")
@@ -110,17 +114,6 @@ public class MobileEventController {
     }
 
     /**
-     * Check if Browser Stack is being used by the downstream user based on the username and password being defined.
-     *
-     * @return browser stack enabled | disabled flag
-     */
-    private boolean isBrowserStackEnabled() {
-
-        return StringUtils.isNotEmpty(browserstackUser)
-                && StringUtils.isNotEmpty(browserstackAccesskey);
-    }
-
-    /**
      * Set all browser based runtime capabilities for:
      * - browser type
      * - browser version
@@ -158,6 +151,8 @@ public class MobileEventController {
             capabilities.setCapability(MobileCapabilityType.PLATFORM_NAME, StringUtils.trim(System.getProperty(FrameworkConstants.AUTOMATION_PLATFORM_PROPERTY)));
             capabilities.setCapability(MobileCapabilityType.PLATFORM_VERSION, StringUtils.trim(System.getProperty(FrameworkConstants.AUTOMATION_LONG_VERSION_PROPERTY)));
             capabilities.setCapability(MobileCapabilityType.DEVICE_NAME, StringUtils.trim(System.getProperty(FrameworkConstants.AUTOMATION_DEVICE_NAME_PROPERTY)));
+            capabilities.setCapability(MobileCapabilityType.APP, StringUtils.trim(appPath));
+            capabilities.setCapability("useNewWDA", false);
         }
 
         if (!StringUtils.isEmpty(System.getenv(FrameworkConstants.SAUCELABS_TUNNEL_IDENTIFIER_PROPERTY))) {
@@ -179,18 +174,26 @@ public class MobileEventController {
      * @throws java.net.MalformedURLException url exception
      */
     public MicroserviceMobileDriver getIOSDriver() throws Exception {
+
         LOG("starting iOS driver");
-        //setDriverExecutable();
-        capabilities.setCapability(CapabilityType.BROWSER_NAME, BrowserType.SAFARI);
         if (StringUtils.isNotEmpty(experitestAccesskey)) {
             capabilities.setCapability("accessKey", experitestAccesskey);
             capabilities.setCapability("testName", this.currentTestName);
         }
         if (gridEnabled) {
             if (this.remoteMobileDriver == null) {
+//                IOSDriver iosDriver = new IOSDriver(new URL(gridUrl), capabilities);
+//                iosDriver.findElementByIosNsPredicate("type == 'XCUIElementTypeStaticText' and name == 'General'");
+
                 MicroserviceRemoteMobileDriver microserviceRemoteMobileDriver = new MicroserviceRemoteMobileDriver(new URL(gridUrl), capabilities);
-                microserviceRemoteMobileDriver.setFileDetector(new LocalFileDetector());
+                microserviceRemoteMobileDriver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
                 return microserviceRemoteMobileDriver;
+
+                //This works!!!
+//                MicroserviceRemoteMobileDriver microserviceRemoteMobileDriver = new MicroserviceRemoteMobileDriver(new URL(gridUrl), capabilities);
+//                microserviceRemoteMobileDriver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+//                MobileElement element = (MobileElement) microserviceRemoteMobileDriver.findElementByIosNsPredicate("type == 'XCUIElementTypeStaticText' and name == 'General'");
+//                System.out.println();
             }
         } else {
             if (this.remoteMobileDriver == null) {
@@ -230,6 +233,32 @@ public class MobileEventController {
     }
 
     /**
+     * Core web element action sorting logic
+     *
+     * @param mobileElement      DOM element to act upon
+     * @param mobileElementValue DOM element value to alter
+     * @return time in milliseconds for Mouse-specific web event to execute
+     */
+    public long mobileAction(final MobileElement mobileElement, final Object mobileElementValue) {
+
+        System.out.println();
+//        if (MouseActivityProcessor.applies(mobileElement)) {
+//            StopWatch stopWatch = new StopWatch();
+//            stopWatch.start();
+//            MouseActivityProcessor.getInstance().webAction(mobileElement, mobileElementValue);
+//            getWebEventService().waitForBrowserToLoad();
+//            stopWatch.stop();
+//            return stopWatch.getTotalTimeMillis();
+//        } else if (KeyboardActivityProcessor.applies(mobileElement)) {
+//            KeyboardActivityProcessor.getInstance().webAction(mobileElement, mobileElementValue);
+//            getWebEventService().waitForBrowserToLoad();
+//        } else if (ViewActivityProcessor.applies(mobileElement)) {
+//            ViewActivityProcessor.getInstance().webAction(mobileElement, mobileElementValue);
+//        }
+        return 0L;
+    }
+
+    /**
      * Build current test name from TestNG Reporter
      */
     private void constructTestName() {
@@ -243,6 +272,17 @@ public class MobileEventController {
         } catch (Exception e) {
             this.currentTestName = "";
         }
+    }
+
+    /**
+     * Check if Browser Stack is being used by the downstream user based on the username and password being defined.
+     *
+     * @return browser stack enabled | disabled flag
+     */
+    private boolean isBrowserStackEnabled() {
+
+        return StringUtils.isNotEmpty(browserstackUser)
+                && StringUtils.isNotEmpty(browserstackAccesskey);
     }
 
     public MobileEventService getMobileEventService() {
@@ -263,6 +303,14 @@ public class MobileEventController {
 
     public void setAppActivateClasspath(String appActivateClasspath) {
         this.appActivateClasspath = appActivateClasspath;
+    }
+
+    public String getAppPath() {
+        return appPath;
+    }
+
+    public String getAppActivateClasspath() {
+        return appActivateClasspath;
     }
 
     public void setGridEnabled(boolean gridEnabled) {

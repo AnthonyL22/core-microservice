@@ -1,89 +1,51 @@
 package com.pwc.core.framework.driver;
 
+import io.appium.java_client.ios.IOSDriver;
+import io.appium.java_client.service.local.AppiumDriverLocalService;
+import io.appium.java_client.service.local.AppiumServiceBuilder;
 import org.openqa.selenium.Capabilities;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.remote.CommandExecutor;
-import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.remote.HttpCommandExecutor;
+import org.openqa.selenium.remote.http.HttpClient;
 
 import java.net.URL;
-import java.util.List;
 
 
-public class MicroserviceRemoteMobileDriver extends RemoteWebDriver implements MicroserviceMobileDriver {
+public class MicroserviceRemoteMobileDriver extends IOSDriver implements MicroserviceMobileDriver {
 
-    protected MicroserviceRemoteMobileDriver() {
-        super();
-    }
-
-    public MicroserviceRemoteMobileDriver(CommandExecutor executor, Capabilities desiredCapabilities) {
-        super(executor, desiredCapabilities);
-    }
-
-    public MicroserviceRemoteMobileDriver(Capabilities desiredCapabilities) {
-        super(desiredCapabilities);
+    public MicroserviceRemoteMobileDriver(HttpCommandExecutor executor, Capabilities capabilities) {
+        super(executor, capabilities);
     }
 
     public MicroserviceRemoteMobileDriver(URL remoteAddress, Capabilities desiredCapabilities) {
         super(remoteAddress, desiredCapabilities);
     }
 
-    @Override
-    public WebElement findElement(String by, String using) {
-        return null;
+    public MicroserviceRemoteMobileDriver(URL remoteAddress, HttpClient.Factory httpClientFactory, Capabilities desiredCapabilities) {
+        super(remoteAddress, httpClientFactory, desiredCapabilities);
     }
 
-    @Override
-    public List findElements(String by, String using) {
-        return null;
+    public MicroserviceRemoteMobileDriver(AppiumDriverLocalService service, Capabilities desiredCapabilities) {
+        super(service, desiredCapabilities);
     }
 
-    @Override
-    public WebElement findElementByAccessibilityId(String using) {
-        return null;
+    public MicroserviceRemoteMobileDriver(AppiumDriverLocalService service, HttpClient.Factory httpClientFactory, Capabilities desiredCapabilities) {
+        super(service, httpClientFactory, desiredCapabilities);
     }
 
-    @Override
-    public List findElementsByAccessibilityId(String using) {
-        return null;
+    public MicroserviceRemoteMobileDriver(AppiumServiceBuilder builder, Capabilities desiredCapabilities) {
+        super(builder, desiredCapabilities);
     }
 
-    @Override
-    public WebElement findElementByAndroidUIAutomator(String using) {
-        return null;
+    public MicroserviceRemoteMobileDriver(AppiumServiceBuilder builder, HttpClient.Factory httpClientFactory, Capabilities desiredCapabilities) {
+        super(builder, httpClientFactory, desiredCapabilities);
     }
 
-    @Override
-    public List findElementsByAndroidUIAutomator(String using) {
-        return null;
+    public MicroserviceRemoteMobileDriver(HttpClient.Factory httpClientFactory, Capabilities desiredCapabilities) {
+        super(httpClientFactory, desiredCapabilities);
     }
 
-    @Override
-    public WebElement findElementByIosClassChain(String using) {
-        return null;
+    public MicroserviceRemoteMobileDriver(Capabilities desiredCapabilities) {
+        super(desiredCapabilities);
     }
 
-    @Override
-    public List findElementsByIosClassChain(String using) {
-        return null;
-    }
-
-    @Override
-    public WebElement findElementByIosNsPredicate(String using) {
-        return null;
-    }
-
-    @Override
-    public List findElementsByIosNsPredicate(String using) {
-        return null;
-    }
-
-    @Override
-    public WebElement findElementByWindowsUIAutomation(String selector) {
-        return null;
-    }
-
-    @Override
-    public List findElementsByWindowsUIAutomation(String selector) {
-        return null;
-    }
 }

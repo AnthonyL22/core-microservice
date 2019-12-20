@@ -399,7 +399,8 @@ public class WebEventService extends WebEventController {
      * @param xpathSearchList list of xpaths to search for element with
      * @return WebElement to then be used to interact with the AUT
      */
-    public WebElement seleniumFindElementByXPath(List<String> xpathSearchList) {
+    public WebElement
+    seleniumFindElementByXPath(List<String> xpathSearchList) {
         try {
             for (String xpathSearch : xpathSearchList) {
                 WebElement webElement = null;

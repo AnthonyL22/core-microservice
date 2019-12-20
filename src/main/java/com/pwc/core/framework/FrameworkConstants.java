@@ -48,8 +48,8 @@ public final class FrameworkConstants {
     public static final String HEADLESS_FIREFOX_BROWSER_MODE = "headless_ff";
     public static final String CHROME_BROWSER_MODE = "chrome";
     public static final String HEADLESS_CHROME_BROWSER_MODE = "headless_ch";
-    public static final String ANDROID_MODE = "android";
-    public static final String IOS_MODE = "ios";
+    public static final String ANDROID_MODE = "Android";
+    public static final String IOS_MODE = "iOS";
     public static final String INTERNET_EXPLORER_BROWSER_MODE = "ie";
     public static final String EDGE_BROWSER_MODE = "edge";
     public static final String SAFARI_BROWSER_MODE = "safari";

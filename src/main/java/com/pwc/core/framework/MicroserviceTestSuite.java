@@ -17,6 +17,7 @@ import com.pwc.core.framework.data.PropertiesFile;
 import com.pwc.core.framework.data.SmSessionKey;
 import com.pwc.core.framework.listeners.MicroserviceTestListener;
 import com.pwc.core.framework.util.PropertiesUtils;
+import io.appium.java_client.MobileElement;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.experimental.categories.Category;
 import org.openqa.selenium.WebElement;
@@ -256,15 +257,15 @@ public abstract class MicroserviceTestSuite {
     protected long mobileAction(final String elementIdentifier, final Object attributeValue) {
 
         if (mobileEventController == null) {
-            mobileEventController = (MobileEventController) ctx.getBean("MobileEventController");
+            mobileEventController = (MobileEventController) ctx.getBean("mobileEventController");
             mobileEventController.initiateDevice();
-            setCurrentJobId(webEventController.getCurrentJobId());
+            setCurrentJobId(mobileEventController.getCurrentJobId());
         }
-        mobileEventController.getMobileEventService().waitForBrowserToLoad();
-        mobileEventController.getMobileEventService().waitForElementToDisplay(elementIdentifier);
-        WebElement webElement = mobileEventController.getMobileEventService().findWebElement(elementIdentifier);
+        //mobileEventController.getMobileEventService().waitForBrowserToLoad();
+        //mobileEventController.getMobileEventService().waitForElementToDisplay(elementIdentifier);
+        MobileElement webElement = mobileEventController.getMobileEventService().findWebElement(elementIdentifier);
         if (webElement != null) {
-            return mobileEventController.webAction(webElement, attributeValue);
+            return mobileEventController.mobileAction(webElement, attributeValue);
         } else {
             assertFail(String.format("Unable to find element=%s", elementIdentifier));
         }
