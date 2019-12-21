@@ -1,6 +1,6 @@
 package com.pwc.core.framework.processors.mobile.elements;
 
-import com.pwc.core.framework.data.IOSElementType;
+import com.pwc.core.framework.data.XCUIElementType;
 import com.pwc.core.framework.data.WebElementAttribute;
 import io.appium.java_client.MobileElement;
 import org.apache.commons.lang3.StringUtils;
@@ -11,7 +11,7 @@ import static com.pwc.logging.service.LoggerService.LOG;
 public class XCUIElementTypeCellImpl implements MicroserviceMobileElement {
 
     public static boolean applies(MobileElement element) {
-        return StringUtils.equalsIgnoreCase(element.getTagName(), IOSElementType.CELL.type);
+        return StringUtils.equalsIgnoreCase(element.getTagName(), XCUIElementType.CELL.type);
     }
 
     public void mobileAction(final MobileElement webElement, final Object attributeValue) {

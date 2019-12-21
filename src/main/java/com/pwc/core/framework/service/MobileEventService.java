@@ -1,6 +1,8 @@
 package com.pwc.core.framework.service;
 
 import com.pwc.core.framework.controller.WebEventController;
+import com.pwc.core.framework.data.XCUIElementAttribute;
+import com.pwc.core.framework.data.XCUIElementType;
 import com.pwc.core.framework.driver.MicroserviceMobileDriver;
 import io.appium.java_client.MobileElement;
 import lombok.Data;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static com.pwc.logging.service.LoggerService.LOG;
 
@@ -36,14 +39,17 @@ public class MobileEventService extends WebEventController {
     }
 
     /**
-     * Find WebElement by either XPath or CSS Selector.
+     * Find WebElement by either XPath or IosNsPredicate.
      *
      * @param elementIdentifier unique element identifying string
      * @return MobileElement to then be used to interact with the AUT
      */
     public MobileElement findWebElement(final String elementIdentifier) {
 
-        MobileElement mobileElement = null;
+        final String VARIABLE_ELEMENT_TYPE_PATH = "type == '%s' and (name == '%s' or label == '%s' or elementId == '%s')";
+        final String VARIABLE_ELEMENT_ATTRIBUTE_PATH = "%s == '%s'";
+
+        MobileElement mobileElement;
         if (StringUtils.startsWith(elementIdentifier, "//") && elementIdentifier.matches(REGEX_XPATH_FINDER)) {
 
             mobileElement = findElementByXPath(elementIdentifier);
@@ -54,31 +60,24 @@ public class MobileEventService extends WebEventController {
 
         } else {
 
-            List<String> elementXPathLocators = new ArrayList<>();
-            elementXPathLocators.add(elementIdentifier);
-            elementXPathLocators.add("type == 'XCUIElementTypeStaticText' and name == '" + elementIdentifier + "'");
-            elementXPathLocators.add("type == 'XCUIElementTypeApplication' and name == '" + elementIdentifier + "'");
-            elementXPathLocators.add("elementId == '" + elementIdentifier + "'");
-            elementXPathLocators.add("type == '" + elementIdentifier + "'");
-            elementXPathLocators.add("name == '" + elementIdentifier + "'");
-            elementXPathLocators.add("label == '" + elementIdentifier + "'");
-            elementXPathLocators.add("enabled == '" + elementIdentifier + "'");
-            elementXPathLocators.add("visible == '" + elementIdentifier + "'");
-            mobileElement = findElementByIosNsPredicate(elementXPathLocators);
+            List<String> predicateLocatorList = new ArrayList<>();
+            Stream.of(XCUIElementAttribute.values()).forEach(elementAttribute -> predicateLocatorList.add(String.format(VARIABLE_ELEMENT_ATTRIBUTE_PATH, elementAttribute.attribute, elementIdentifier)));
+            Stream.of(XCUIElementType.values()).forEach(elementType -> predicateLocatorList.add(String.format(VARIABLE_ELEMENT_TYPE_PATH, elementType.type, elementIdentifier, elementIdentifier, elementIdentifier)));
+            mobileElement = findElementByIosNsPredicate(predicateLocatorList);
 
         }
         return mobileElement;
     }
 
     /**
-     * Find WebElement by IosNsPredicate
+     * Find WebElement by IosNsPredicate based on a given list of possible matches.
      *
      * @param idsNsPredicateIdentifiers list of Predicate paths to search for element with
      * @return MobileElement to then be used to interact with the AUT
      */
     private MobileElement findElementByIosNsPredicate(List<String> idsNsPredicateIdentifiers) {
 
-        String elementIdentifier = null;
+        String elementIdentifier = "";
         MobileElement element = null;
         try {
             for (String identifier : idsNsPredicateIdentifiers) {
@@ -98,7 +97,7 @@ public class MobileEventService extends WebEventController {
     }
 
     /**
-     * Backup way of getting a <code>WebElement</code> which uses Selenium's parser
+     * Backup way of getting a <code>WebElement</code> which uses Selenium's parser.
      *
      * @param elementIdentifier xpath to search for element with
      * @return MobileElement to then be used to interact with the AUT
@@ -107,11 +106,40 @@ public class MobileEventService extends WebEventController {
 
         MobileElement mobileElement = null;
         try {
-//            mobileElement = this.microserviceMobileDriver.findElementByXPath(elementIdentifier);
+            mobileElement = this.microserviceMobileDriver.findElementByXPath(elementIdentifier);
         } catch (Exception e) {
             LOG(false, "Unable to find element '%s' by xPath", elementIdentifier);
         }
         return mobileElement;
+    }
+
+    /**
+     * Activates the given app if it installed, but not running or if it is running in the
+     * background.
+     *
+     * @param bundleId the bundle identifier (or app id) of the app to activate.
+     */
+    public void activateApp(final String bundleId) {
+
+        this.microserviceMobileDriver.activateApp(bundleId);
+    }
+
+    /**
+     * Resets the currently running app together with the session.
+     */
+    public void resetApp() {
+
+        this.microserviceMobileDriver.resetApp();
+    }
+
+    /**
+     * Remove the specified app from the device (uninstall).
+     *
+     * @param bundleId the bundle identifier (or app id) of the app to remove.
+     */
+    public void removeApp(final String bundleId) {
+
+        this.microserviceMobileDriver.removeApp(bundleId);
     }
 
 }

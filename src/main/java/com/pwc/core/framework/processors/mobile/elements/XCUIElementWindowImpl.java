@@ -1,6 +1,6 @@
 package com.pwc.core.framework.processors.mobile.elements;
 
-import com.pwc.core.framework.data.IOSElementType;
+import com.pwc.core.framework.data.XCUIElementType;
 import io.appium.java_client.MobileElement;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.WebElement;
@@ -12,7 +12,7 @@ import static com.pwc.logging.service.LoggerService.LOG;
 public class XCUIElementWindowImpl implements MicroserviceMobileElement {
 
     public static boolean applies(WebElement element) {
-        return StringUtils.equalsIgnoreCase(element.getTagName(), IOSElementType.APPLICATION.type);
+        return StringUtils.equalsIgnoreCase(element.getTagName(), XCUIElementType.APPLICATION.type);
     }
 
     public void mobileAction(final MobileElement element, final Object attributeValue) {
