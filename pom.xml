@@ -53,6 +53,7 @@
     <jackson.json.version>2.10.0.pr1</jackson.json.version>
     <jacoco.version>0.7.5.201505241946</jacoco.version>
     <java_code.version>1.8</java_code.version>
+    <javatuples.version>1.2</javatuples.version>
     <jsoup.version>1.8.2</jsoup.version>
     <junit.version>4.11</junit.version>
     <log4j.version>1.2.17</log4j.version>
@@ -217,6 +218,11 @@
       <groupId>org.bitbucket.mstrobel</groupId>
       <artifactId>procyon-compilertools</artifactId>
       <version>${procyon.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.javatuples</groupId>
+      <artifactId>javatuples</artifactId>
+      <version>${javatuples.version}</version>
     </dependency>
     <dependency>
       <groupId>org.jsoup</groupId>

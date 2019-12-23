@@ -19,6 +19,7 @@ import com.pwc.core.framework.listeners.MicroserviceTestListener;
 import com.pwc.core.framework.util.PropertiesUtils;
 import io.appium.java_client.MobileElement;
 import org.apache.commons.lang3.StringUtils;
+import org.javatuples.Pair;
 import org.junit.experimental.categories.Category;
 import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -227,9 +228,9 @@ public abstract class MicroserviceTestSuite {
      * data.  Typically a button click
      *
      * @param elementIdentifier unique identifier for an mobile element
-     * @return time in milliseconds for mouse-based action
+     * @return tuple with MobileElement and time in milliseconds for action
      */
-    protected long mobileAction(final String elementIdentifier) {
+    protected Pair mobileAction(final String elementIdentifier) {
 
         return mobileAction(elementIdentifier, null);
     }
@@ -240,9 +241,9 @@ public abstract class MicroserviceTestSuite {
      *
      * @param elementIdentifier unique identifier for an mobile element
      * @param attributeValue    toggled state of an element
-     * @return time in milliseconds for mouse-based action
+     * @return tuple with MobileElement and time in milliseconds for action
      */
-    protected long mobileAction(final String elementIdentifier, final boolean attributeValue) {
+    protected Pair mobileAction(final String elementIdentifier, final boolean attributeValue) {
 
         return mobileAction(elementIdentifier, String.valueOf(attributeValue));
     }
@@ -252,10 +253,11 @@ public abstract class MicroserviceTestSuite {
      *
      * @param elementIdentifier unique identifier for an mobile element
      * @param attributeValue    element value to alter in the active DOM
-     * @return time in milliseconds for mouse-based action
+     * @return tuple with MobileElement and time in milliseconds for action
      */
-    protected long mobileAction(final String elementIdentifier, final Object attributeValue) {
+    protected Pair mobileAction(final String elementIdentifier, final Object attributeValue) {
 
+        long duration = 0L;
         if (mobileEventController == null) {
             mobileEventController = (MobileEventController) ctx.getBean("mobileEventController");
             mobileEventController.initiateDevice();
@@ -263,11 +265,12 @@ public abstract class MicroserviceTestSuite {
         }
         MobileElement mobileElement = mobileEventController.getMobileEventService().findWebElement(elementIdentifier);
         if (mobileElement != null) {
-            return mobileEventController.mobileAction(mobileElement, attributeValue);
+            duration = mobileEventController.mobileAction(mobileElement, attributeValue);
         } else {
             assertFail(String.format("Unable to find element=%s", elementIdentifier));
         }
-        return 0L;
+
+        return Pair.with(mobileElement, duration);
     }
 
     /**
