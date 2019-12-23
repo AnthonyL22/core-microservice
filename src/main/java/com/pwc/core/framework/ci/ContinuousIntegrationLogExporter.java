@@ -1,13 +1,20 @@
 package com.pwc.core.framework.ci;
 
 import com.pwc.core.framework.FrameworkConstants;
+import com.pwc.core.framework.util.PropertiesUtils;
 import com.pwc.logging.helper.LoggerHelper;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.util.Units;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.XWPFRun;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -122,39 +129,64 @@ public class ContinuousIntegrationLogExporter {
                 List<String> writeLines = new ArrayList<>();
 
                 for (String readLine : readingLines) {
-                    if (StringUtils.contains(readLine, "FEATURE")) {
+                    if (StringUtils.contains(readLine, "FEATURE(")) {
                         writeLines.add(LoggerHelper.formatGherkinMessage("Feature: " + StringUtils.substringBetween(processArguments(readLine), "\"", "\"")));
                     }
 
-                    if (StringUtils.contains(readLine, "SCENARIO")) {
+                    if (StringUtils.contains(readLine, "SCENARIO(")) {
                         writeLines.add(LoggerHelper.formatGherkinMessage("Scenario: " + StringUtils.substringBetween(processArguments(readLine), "\"", "\"")));
                     }
 
-                    if (StringUtils.contains(readLine, "GIVEN")) {
+                    if (StringUtils.contains(readLine, "GIVEN(")) {
                         writeLines.add(LoggerHelper.formatGherkinMessage("Given " + StringUtils.substringBetween(processArguments(readLine), "\"", "\"")));
                     }
 
-                    if (StringUtils.contains(readLine, "WHEN")) {
+                    if (StringUtils.contains(readLine, "WHEN(")) {
                         writeLines.add(LoggerHelper.formatGherkinMessage("When " + StringUtils.substringBetween(processArguments(readLine), "\"", "\"")));
                     }
 
-                    if (StringUtils.contains(readLine, "THEN")) {
+                    if (StringUtils.contains(readLine, "THEN(")) {
                         writeLines.add(LoggerHelper.formatGherkinMessage("Then " + StringUtils.substringBetween(processArguments(readLine), "\"", "\"")));
                     }
 
-                    if (StringUtils.contains(readLine, "AND")) {
+                    if (StringUtils.contains(readLine, "AND(")) {
                         writeLines.add(LoggerHelper.formatGherkinMessage("And " + StringUtils.substringBetween(processArguments(readLine), "\"", "\"")));
                     }
 
-                    if (StringUtils.contains(readLine, "BUT")) {
+                    if (StringUtils.contains(readLine, "BUT(")) {
                         writeLines.add(LoggerHelper.formatGherkinMessage("But " + StringUtils.substringBetween(processArguments(readLine), "\"", "\"")));
+                    }
+
+                    if (StringUtils.contains(readLine, "OR(")) {
+                        writeLines.add(LoggerHelper.formatGherkinMessage("Or " + StringUtils.substringBetween(processArguments(readLine), "\"", "\"")));
+                    }
+
+                    if (StringUtils.contains(readLine, "IF(")) {
+                        writeLines.add(LoggerHelper.formatGherkinMessage("If " + StringUtils.substringBetween(processArguments(readLine), "\"", "\"")));
+                    }
+
+                    if (StringUtils.contains(readLine, "NOT(")) {
+                        writeLines.add(LoggerHelper.formatGherkinMessage("Not " + StringUtils.substringBetween(processArguments(readLine), "\"", "\"")));
+                    }
+
+                    if (StringUtils.contains(readLine, "FINALLY(")) {
+                        writeLines.add(LoggerHelper.formatGherkinMessage("Finally " + StringUtils.substringBetween(processArguments(readLine), "\"", "\"")));
+                    }
+
+                    if (StringUtils.contains(readLine, "IMAGE(")) {
+                        writeLines.add(LoggerHelper.formatGherkinMessage(StringUtils.substringBetween(processArguments(readLine), "\"", "\"")));
                     }
 
                 }
 
                 writeLines.add(org.apache.commons.lang.StringUtils.repeat("-", 60));
                 writeLines.add("\n");
-                FileUtils.writeLines(testReportFile, writeLines, true);
+
+                if (StringUtils.containsIgnoreCase(testReportFile.getName(), ".doc")) {
+                    writeLinesToWordDoc(testReportFile.getName(), writeLines);
+                } else {
+                    FileUtils.writeLines(testReportFile, writeLines, true);
+                }
 
             }
         } catch (IOException e) {
@@ -195,9 +227,48 @@ public class ContinuousIntegrationLogExporter {
                 adminLines.add(packageName);
             }
 
-            FileUtils.writeLines(outputFile, adminLines, true);
+            if (!StringUtils.containsIgnoreCase(outputFile.getName(), ".doc")) {
+                FileUtils.writeLines(outputFile, adminLines, true);
+            }
         } catch (IOException e) {
             LOG(true, "Error processing statistics report");
+        }
+    }
+
+    /**
+     * Process all logging into a Word document.
+     *
+     * @param filename Word document to create
+     * @param lines    all lines to write to document
+     */
+    private static void writeLinesToWordDoc(final String filename, final List<String> lines) {
+
+        try {
+            XWPFDocument document = new XWPFDocument();
+            XWPFParagraph paragraph = document.createParagraph();
+            XWPFRun wordRun = paragraph.createRun();
+            wordRun.setFontSize(10);
+
+            for (String line : lines) {
+                wordRun.setText(line);
+                wordRun.addCarriageReturn();
+
+                if (StringUtils.containsIgnoreCase(line, ".png")) {
+                    line = line.trim();
+                    File imageFile = PropertiesUtils.getFirstFileFromTestResources("screenshots/" + line);
+                    FileInputStream imageInputStream = new FileInputStream(imageFile);
+                    wordRun.addCarriageReturn();
+                    wordRun.addPicture(imageInputStream, XWPFDocument.PICTURE_TYPE_PNG, line, Units.toEMU(200), Units.toEMU(200));
+                    wordRun.addCarriageReturn();
+                    imageInputStream.close();
+                }
+            }
+
+            FileOutputStream fos = new FileOutputStream(new File(filename));
+            document.write(fos);
+            fos.close();
+        } catch (Exception e) {
+            LOG(true, "Error processing statistics Word Document report");
         }
     }
 
