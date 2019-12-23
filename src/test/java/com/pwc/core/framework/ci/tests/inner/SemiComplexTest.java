@@ -16,27 +16,19 @@ import static com.pwc.logging.service.LoggerService.SCENARIO;
 import static com.pwc.logging.service.LoggerService.THEN;
 import static com.pwc.logging.service.LoggerService.WHEN;
 
-public class ComplexTest {
+public class SemiComplexTest {
 
-    public void testComplex() {
+    public void testSemiComplex() {
 
-        FEATURE("Inner Complex Test");
+        FEATURE("Semi Complex Test");
         SCENARIO("Basic Functionality");
-        GIVEN("I am logged in page=%s and authenticated user=%s", "home", "anthony");
+        GIVEN("I am not logged in page=%s and authenticated user=%s", "home", "anthony");
 
-        WHEN("I view the page named=%s", "HOME");
+        WHEN("I different page named=%s", "Login");
 
         THEN("Complex component=%s in page=%s are present in body of page=%s", Data.BUTTON, "loadit", TestConstants.PAGE_TITLE);
 
-        AND("I can click the BACK button");
-
         BUT("I go back to the Home page");
-
-        OR("I see this image?");
-
-        IF("I can click the BACK button");
-
-        NOT("Able to go forward");
 
         FINALLY("I am able to complete the transaction");
 

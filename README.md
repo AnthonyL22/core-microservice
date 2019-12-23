@@ -325,9 +325,7 @@ mvn clean install -PoutputManualTestCaseReport
 ```
 
 #### Sample Manual Test Export Output
-Depending on your configuration the default **Manual_Test_Cases.txt** file output will resemble the following.  The IMAGE(); 
-attribute is special in that you define a unique .PNG file name within this method and store the corresponding image file
-in the test **/resources/screenshots** directory.
+Depending on your configuration the default **Manual_Test_Cases.txt** file output will resemble the following:
 
 ```
   Feature: Smoke Test
@@ -341,7 +339,6 @@ in the test **/resources/screenshots** directory.
     If I can click the BACK button
     Not Able to go forward
     Finally I am able to complete the transaction
-    <IMAGE(error.png file)>
 ------------------------------------------------------------
 
 ------------------------------------------------------------
