@@ -271,6 +271,17 @@ public class MobileEventController {
     }
 
     /**
+     * Close the Mobile App
+     */
+    public void closeApp() {
+        try {
+            this.remoteMobileDriver.closeApp();
+        } catch (Exception e) {
+            e.getMessage();
+        }
+    }
+
+    /**
      * Check if Browser Stack is being used by the downstream user based on the username and password being defined.
      *
      * @return browser stack enabled | disabled flag

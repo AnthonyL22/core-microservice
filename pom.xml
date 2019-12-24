@@ -57,7 +57,7 @@
     <jsoup.version>1.8.2</jsoup.version>
     <junit.version>4.11</junit.version>
     <log4j.version>1.2.17</log4j.version>
-    <logging-microservice.version>1.0.6-SNAPSHOT</logging-microservice.version>
+    <logging-microservice.version>1.0.6</logging-microservice.version>
     <lombok.version>1.18.4</lombok.version>
     <maven-clean-plugin.version>2.4.1</maven-clean-plugin.version>
     <maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>

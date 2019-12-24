@@ -143,16 +143,18 @@ public abstract class MicroserviceTestSuite {
     public void tearDownClass() {
 
         try {
-            if (webEventController != null) {
+            if (null != webEventController) {
                 webEventController.performQuit();
             }
-            if (databaseController != null) {
+
+            if (null != mobileEventController) {
+                mobileEventController.closeApp();
+            }
+            if (null != databaseController) {
                 if (databaseController.getDatabaseEventService() != null) {
                     databaseController.closeDatabaseConnection();
                 }
             }
-
-            //ToDo: kill httpEventController sessions?
 
         } catch (Throwable e) {
             LOG(true, "tearDownClass() FAILED. TEST='%s' EXCEPTION='%s'", StringUtils.substringAfterLast(this.getClass().getName(), "."), e.getMessage());
@@ -253,7 +255,7 @@ public abstract class MicroserviceTestSuite {
      *
      * @param elementIdentifier unique identifier for an mobile element
      * @param attributeValue    element value to alter in the active DOM
-     * @return tuple with MobileElement and time in milliseconds for action
+     * @return tuple with MobileElement and response time in milliseconds for user action
      */
     protected Pair mobileAction(final String elementIdentifier, final Object attributeValue) {
 
