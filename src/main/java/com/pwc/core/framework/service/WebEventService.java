@@ -749,9 +749,9 @@ public class WebEventService extends WebEventController {
      * @param element WebElement to click
      * @return resulting object
      */
-    public Object executeJavascript(String javaScript,WebElement element) {
+    public Object executeJavascript(String javaScript, WebElement element) {
         try {
-            return this.microserviceWebDriver.executeScript(javaScript,element);
+            return this.microserviceWebDriver.executeScript(javaScript, element);
         } catch (Exception e) {
             e.getMessage();
         }
