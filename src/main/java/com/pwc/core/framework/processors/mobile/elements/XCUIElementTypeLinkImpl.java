@@ -18,14 +18,14 @@ public class XCUIElementTypeLinkImpl implements MicroserviceMobileElement {
     public void mobileAction(final MobileElement mobileElement, final Object attributeValue) {
         try {
             if (attributeValue == null) {
-                LOG(true, "Click BUTTON %s", getElementText(mobileElement));
+                LOG(true, "Click LINK %s", getElementText(mobileElement));
                 mobileElement.click();
             } else {
-                LOG(true, "Verify BUTTON :: value='%s'", attributeValue);
+                LOG(true, "Verify LINK :: value='%s'", attributeValue);
                 Assert.assertEquals(mobileElement.getText(), attributeValue);
             }
         } catch (Exception e) {
-            assertFail("Failed BUTTON action due to exception=%s", e.getMessage());
+            assertFail("Failed LINK action due to exception=%s", e.getMessage());
         }
     }
 

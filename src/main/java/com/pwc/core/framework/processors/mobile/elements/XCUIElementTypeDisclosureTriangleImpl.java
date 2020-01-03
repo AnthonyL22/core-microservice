@@ -18,14 +18,14 @@ public class XCUIElementTypeDisclosureTriangleImpl implements MicroserviceMobile
     public void mobileAction(final MobileElement mobileElement, final Object attributeValue) {
         try {
             if (attributeValue == null) {
-                LOG(true, "Click BUTTON %s", getElementText(mobileElement));
+                LOG(true, "Click DISCLOSURE TRIANGLE %s", getElementText(mobileElement));
                 mobileElement.click();
             } else {
-                LOG(true, "Verify BUTTON :: value='%s'", attributeValue);
+                LOG(true, "Verify DISCLOSURE TRIANGLE :: value='%s'", attributeValue);
                 Assert.assertEquals(mobileElement.getText(), attributeValue);
             }
         } catch (Exception e) {
-            assertFail("Failed BUTTON action due to exception=%s", e.getMessage());
+            assertFail("Failed DISCLOSURE TRIANGLE action due to exception=%s", e.getMessage());
         }
     }
 

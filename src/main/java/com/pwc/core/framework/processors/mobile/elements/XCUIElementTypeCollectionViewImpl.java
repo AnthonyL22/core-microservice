@@ -18,14 +18,14 @@ public class XCUIElementTypeCollectionViewImpl implements MicroserviceMobileElem
     public void mobileAction(final MobileElement mobileElement, final Object attributeValue) {
         try {
             if (attributeValue == null) {
-                LOG(true, "Click APPLICATION %s", getElementText(mobileElement));
+                LOG(true, "Click COLLECTION VIEW %s", getElementText(mobileElement));
                 mobileElement.click();
             } else {
-                LOG(true, "Verify APPLICATION :: value='%s'", attributeValue);
+                LOG(true, "Verify COLLECTION VIEW :: value='%s'", attributeValue);
                 Assert.assertEquals(mobileElement.getText(), attributeValue);
             }
         } catch (Exception e) {
-            assertFail("Failed APPLICATION action due to exception=%s", e.getMessage());
+            assertFail("Failed COLLECTION VIEW action due to exception=%s", e.getMessage());
         }
     }
 

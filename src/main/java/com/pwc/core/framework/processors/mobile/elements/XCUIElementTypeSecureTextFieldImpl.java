@@ -18,14 +18,14 @@ public class XCUIElementTypeSecureTextFieldImpl implements MicroserviceMobileEle
     public void mobileAction(final MobileElement mobileElement, final Object attributeValue) {
         try {
             if (attributeValue == null) {
-                LOG(true, "Click BUTTON %s", getElementText(mobileElement));
+                LOG(true, "Click SECURE TEXT %s", getElementText(mobileElement));
                 mobileElement.click();
             } else {
-                LOG(true, "Verify BUTTON :: value='%s'", attributeValue);
+                LOG(true, "Verify SECURE TEXT :: value='%s'", attributeValue);
                 Assert.assertEquals(mobileElement.getText(), attributeValue);
             }
         } catch (Exception e) {
-            assertFail("Failed BUTTON action due to exception=%s", e.getMessage());
+            assertFail("Failed SECURE TEXT action due to exception=%s", e.getMessage());
         }
     }
 

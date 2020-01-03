@@ -18,10 +18,10 @@ public class XCUIElementTypeComboBoxImpl implements MicroserviceMobileElement {
     public void mobileAction(final MobileElement mobileElement, final Object attributeValue) {
         try {
             if (attributeValue == null) {
-                LOG(true, "Click APPLICATION %s", getElementText(mobileElement));
+                LOG(true, "Click COMBO BOX %s", getElementText(mobileElement));
                 mobileElement.click();
             } else {
-                LOG(true, "Verify APPLICATION :: value='%s'", attributeValue);
+                LOG(true, "Verify COMBO BOX :: value='%s'", attributeValue);
                 Assert.assertEquals(mobileElement.getText(), attributeValue);
             }
         } catch (Exception e) {

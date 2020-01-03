@@ -18,14 +18,14 @@ public class XCUIElementTypeKeyImpl implements MicroserviceMobileElement {
     public void mobileAction(final MobileElement mobileElement, final Object attributeValue) {
         try {
             if (attributeValue == null) {
-                LOG(true, "Click BUTTON %s", getElementText(mobileElement));
+                LOG(true, "Click KEY %s", getElementText(mobileElement));
                 mobileElement.click();
             } else {
-                LOG(true, "Verify BUTTON :: value='%s'", attributeValue);
+                LOG(true, "Verify KEY :: value='%s'", attributeValue);
                 Assert.assertEquals(mobileElement.getText(), attributeValue);
             }
         } catch (Exception e) {
-            assertFail("Failed BUTTON action due to exception=%s", e.getMessage());
+            assertFail("Failed KEY action due to exception=%s", e.getMessage());
         }
     }
 

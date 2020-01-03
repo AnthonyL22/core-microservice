@@ -18,14 +18,14 @@ public class XCUIElementTypeCheckBoxImpl implements MicroserviceMobileElement {
     public void mobileAction(final MobileElement mobileElement, final Object attributeValue) {
         try {
             if (attributeValue == null) {
-                LOG(true, "Click APPLICATION %s", getElementText(mobileElement));
+                LOG(true, "Click CHECK BOX %s", getElementText(mobileElement));
                 mobileElement.click();
             } else {
-                LOG(true, "Verify APPLICATION :: value='%s'", attributeValue);
+                LOG(true, "Verify CHECK BOX :: value='%s'", attributeValue);
                 Assert.assertEquals(mobileElement.getText(), attributeValue);
             }
         } catch (Exception e) {
-            assertFail("Failed APPLICATION action due to exception=%s", e.getMessage());
+            assertFail("Failed CHECK BOX action due to exception=%s", e.getMessage());
         }
     }
 
