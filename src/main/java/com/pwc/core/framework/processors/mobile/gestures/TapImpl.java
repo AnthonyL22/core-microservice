@@ -1,5 +1,7 @@
 package com.pwc.core.framework.processors.mobile.gestures;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.pwc.core.framework.data.MobileGesture;
 import io.appium.java_client.MobileElement;
 import org.apache.commons.lang3.StringUtils;
@@ -10,28 +12,33 @@ import java.util.Map;
 import static com.pwc.assertion.AssertService.assertFail;
 import static com.pwc.logging.service.LoggerService.LOG;
 
-public class TapImpl implements MicroserviceMobileElementGesture {
+public class TapImpl {
 
     public static boolean applies(MobileGesture gesture) {
         return (StringUtils.equalsIgnoreCase(gesture.gesture, MobileGesture.TAP.gesture));
     }
 
-    public Map buildParameters(final MobileElement element, MobileGesture mobileGesture, Object customParameters) {
+    public Map buildParameters(final MobileElement element, MobileGesture mobileGesture, Tap tapParameters) {
 
-        Map defaultParameters = new HashMap();
+        Map<String, Object> convertedParameters = new HashMap();
         try {
             LOG(true, "Perform '%s' GESTURE", mobileGesture.gesture);
-            defaultParameters.put("element", element.getId());
-            if (null == customParameters) {
-                defaultParameters.put("x", 1.0);
-                defaultParameters.put("y", 1.0);
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+            if (null == tapParameters) {
+                tapParameters = Tap.builder()  //
+                        .element(element.getId())  //
+                        .x(1.0f)  //
+                        .y(1.0f)  //
+                        .build();
             } else {
-                defaultParameters.putAll((Map) customParameters);
+                tapParameters.setElement(element.getId());
             }
+            convertedParameters = mapper.convertValue(tapParameters, Map.class);
         } catch (Exception e) {
             assertFail("Failed to perform GESTURE '%s' due to exception=%s", mobileGesture.gesture, e.getMessage());
         }
-        return defaultParameters;
+        return convertedParameters;
     }
 
 }

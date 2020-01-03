@@ -270,9 +270,9 @@ public class MobileEventController {
 
         if (GestureActivityProcessor.applies(gesture)) {
             StopWatch stopWatch = new StopWatch();
+            Map gestureOptions = GestureActivityProcessor.getInstance().buildParameters(mobileElement, gesture, parameters);
             stopWatch.start();
-            Map map = GestureActivityProcessor.getInstance().buildParameters(mobileElement, gesture, parameters);
-            mobileEventService.executeJavascript(gesture, map);
+            mobileEventService.executeJavascript(gesture, gestureOptions);
             stopWatch.stop();
             return stopWatch.getTotalTimeMillis();
         } else if (TapActivityProcessor.applies(mobileElement)) {

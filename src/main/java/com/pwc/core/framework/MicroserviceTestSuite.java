@@ -257,7 +257,7 @@ public abstract class MicroserviceTestSuite {
      * @param elementIdentifier unique identifier for an mobile element
      * @return tuple with MobileElement and response time in milliseconds for user action
      */
-    protected Pair mobileAction(final String elementIdentifier, MobileGesture gesture, final Map parameters) {
+    protected Pair mobileAction(final String elementIdentifier, MobileGesture gesture, final Object parameters) {
 
         long duration = 0L;
         if (mobileEventController == null) {
