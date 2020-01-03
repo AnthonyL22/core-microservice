@@ -22,7 +22,7 @@ public class TwoFingerTapImpl {
 
         Map<String, Object> convertedParameters = new HashMap();
         try {
-            LOG(true, "Perform '%s' GESTURE", mobileGesture.gesture);
+            LOG(true, "Perform '%s' GESTURE to '%s' element", mobileGesture.gesture, element.getText());
             ObjectMapper mapper = new ObjectMapper();
             mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
             if (null == twoFingerTapParameters) {
