@@ -1,12 +1,14 @@
 package com.pwc.core.framework.controller;
 
 import com.pwc.core.framework.FrameworkConstants;
+import com.pwc.core.framework.data.MobileGesture;
 import com.pwc.core.framework.driver.MicroserviceAndroidMobileDriver;
 import com.pwc.core.framework.driver.MicroserviceIOSMobileDriver;
 import com.pwc.core.framework.driver.MicroserviceMobileDriver;
 import com.pwc.core.framework.driver.MicroserviceRemoteMobileDriver;
+import com.pwc.core.framework.processors.mobile.GestureActivityProcessor;
+import com.pwc.core.framework.processors.mobile.KeypadActivityProcessor;
 import com.pwc.core.framework.processors.mobile.TapActivityProcessor;
-import com.pwc.core.framework.processors.mobile.ViewActivityProcessor;
 import com.pwc.core.framework.service.MobileEventService;
 import com.pwc.core.framework.util.GridUtils;
 import io.appium.java_client.MobileElement;
@@ -24,6 +26,7 @@ import org.testng.Assert;
 import org.testng.Reporter;
 
 import java.net.URL;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import static com.pwc.logging.service.LoggerService.LOG;
@@ -234,7 +237,7 @@ public class MobileEventController {
     }
 
     /**
-     * Core mobile element action sorting logic
+     * Core mobile element TAP (CLICKABLE) action logic.
      *
      * @param mobileElement      DOM element to act upon
      * @param mobileElementValue DOM element value to alter
@@ -248,16 +251,38 @@ public class MobileEventController {
             TapActivityProcessor.getInstance().mobileAction(mobileElement, mobileElementValue);
             stopWatch.stop();
             return stopWatch.getTotalTimeMillis();
-        } else if (ViewActivityProcessor.applies(mobileElement)) {
-            ViewActivityProcessor.getInstance().mobileAction(mobileElement, mobileElementValue);
         }
         return 0L;
     }
 
     /**
-     * Build current test name from TestNG Reporter
+     * Core mobile element Gesture action logic.
+     *
+     * @param mobileElement DOM element to act upon
+     * @return time in milliseconds for Mouse-specific web event to execute
+     */
+    public long mobileAction(final MobileElement mobileElement, final MobileGesture gesture, final Object parameters) {
+
+        if (GestureActivityProcessor.applies(gesture)) {
+            StopWatch stopWatch = new StopWatch();
+            stopWatch.start();
+            Map map = GestureActivityProcessor.getInstance().buildParameters(mobileElement, gesture, parameters);
+            mobileEventService.executeJavascript(gesture, map);
+            stopWatch.stop();
+            return stopWatch.getTotalTimeMillis();
+        } else if (TapActivityProcessor.applies(mobileElement)) {
+            return mobileAction(mobileElement, parameters);
+        } else if (KeypadActivityProcessor.applies(mobileElement)) {
+            return mobileAction(mobileElement, parameters);
+        }
+        return 0L;
+    }
+
+    /**
+     * Build current test name from TestNG Reporter.
      */
     private void constructTestName() {
+
         try {
             if (Reporter.getCurrentTestResult() != null) {
                 this.currentTestName = StringUtils.substringAfterLast(Reporter.getCurrentTestResult().getTestClass().getName(), ".");

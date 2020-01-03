@@ -1,7 +1,36 @@
 package com.pwc.core.framework;
 
 
+import com.pwc.core.framework.data.MobileGesture;
+
+import java.util.Map;
+
 public abstract class MobileTestCase extends MicroserviceTestSuite {
+
+    /**
+     * Executes JSONWP command and returns a response.
+     *
+     * @param elementIdentifier unique element identifying locator
+     * @param mobileGesture     Mobile Gesture to perform
+     * @param parameters        gesture parameters to execute
+     * @return a result response
+     */
+    public Object executeJavascript(final String elementIdentifier, MobileGesture mobileGesture, Map<String, Object> parameters) {
+
+        return mobileEventController.getMobileEventService().executeJavascript(elementIdentifier, mobileGesture, parameters);
+    }
+
+    /**
+     * Executes JSONWP command and returns a response.
+     *
+     * @param mobileGesture Mobile Gesture to perform
+     * @param parameters    gesture parameters to execute
+     * @return a result response
+     */
+    public Object executeJavascript(MobileGesture mobileGesture, Map<String, Object> parameters) {
+
+        return mobileEventController.getMobileEventService().executeJavascript(mobileGesture, parameters);
+    }
 
     /**
      * Activates the given app if it installed, but not running or if it is running in the

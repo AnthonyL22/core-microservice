@@ -12,6 +12,7 @@ import com.pwc.core.framework.controller.WebEventController;
 import com.pwc.core.framework.controller.WebServiceController;
 import com.pwc.core.framework.data.Credentials;
 import com.pwc.core.framework.data.HeaderKeysMap;
+import com.pwc.core.framework.data.MobileGesture;
 import com.pwc.core.framework.data.OAuthKey;
 import com.pwc.core.framework.data.PropertiesFile;
 import com.pwc.core.framework.data.SmSessionKey;
@@ -33,6 +34,7 @@ import org.testng.annotations.Listeners;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.pwc.assertion.AssertService.assertFail;
 import static com.pwc.logging.service.LoggerService.LOG;
@@ -234,7 +236,7 @@ public abstract class MicroserviceTestSuite {
      */
     protected Pair mobileAction(final String elementIdentifier) {
 
-        return mobileAction(elementIdentifier, null);
+        return mobileAction(elementIdentifier, MobileGesture.TAP, null);
     }
 
     /**
@@ -242,22 +244,20 @@ public abstract class MicroserviceTestSuite {
      * a checkbox or radio button element type
      *
      * @param elementIdentifier unique identifier for an mobile element
-     * @param attributeValue    toggled state of an element
      * @return tuple with MobileElement and time in milliseconds for action
      */
-    protected Pair mobileAction(final String elementIdentifier, final boolean attributeValue) {
+    protected Pair mobileAction(final String elementIdentifier, final MobileGesture gesture) {
 
-        return mobileAction(elementIdentifier, String.valueOf(attributeValue));
+        return mobileAction(elementIdentifier, gesture, null);
     }
 
     /**
      * Mobile action for all Mobile elements
      *
      * @param elementIdentifier unique identifier for an mobile element
-     * @param attributeValue    element value to alter in the active DOM
      * @return tuple with MobileElement and response time in milliseconds for user action
      */
-    protected Pair mobileAction(final String elementIdentifier, final Object attributeValue) {
+    protected Pair mobileAction(final String elementIdentifier, MobileGesture gesture, final Map parameters) {
 
         long duration = 0L;
         if (mobileEventController == null) {
@@ -265,9 +265,9 @@ public abstract class MicroserviceTestSuite {
             mobileEventController.initiateDevice();
             setCurrentJobId(mobileEventController.getCurrentJobId());
         }
-        MobileElement mobileElement = mobileEventController.getMobileEventService().findWebElement(elementIdentifier);
+        MobileElement mobileElement = mobileEventController.getMobileEventService().findMobileElement(elementIdentifier);
         if (mobileElement != null) {
-            duration = mobileEventController.mobileAction(mobileElement, attributeValue);
+            duration = mobileEventController.mobileAction(mobileElement, gesture, parameters);
         } else {
             assertFail(String.format("Unable to find element=%s", elementIdentifier));
         }

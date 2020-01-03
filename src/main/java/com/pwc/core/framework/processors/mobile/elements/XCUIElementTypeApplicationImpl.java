@@ -1,5 +1,6 @@
 package com.pwc.core.framework.processors.mobile.elements;
 
+import com.pwc.core.framework.data.WebElementAttribute;
 import com.pwc.core.framework.data.XCUIElementType;
 import io.appium.java_client.MobileElement;
 import org.apache.commons.lang3.StringUtils;
@@ -17,7 +18,7 @@ public class XCUIElementTypeApplicationImpl implements MicroserviceMobileElement
     public void mobileAction(final MobileElement mobileElement, final Object attributeValue) {
         try {
             if (attributeValue == null) {
-                LOG(true, "Click APPLICATION %s", !StringUtils.isEmpty(mobileElement.getText()) ? String.format(":: text='%s'", mobileElement.getText()) : "");
+                LOG(true, "Click APPLICATION %s", getElementText(mobileElement));
                 mobileElement.click();
             } else {
                 LOG(true, "Verify APPLICATION :: value='%s'", attributeValue);
@@ -26,6 +27,19 @@ public class XCUIElementTypeApplicationImpl implements MicroserviceMobileElement
         } catch (Exception e) {
             assertFail("Failed APPLICATION action due to exception=%s", e.getMessage());
         }
+    }
+
+    public String getElementText(MobileElement mobileElement) {
+
+        String elementText = "";
+        if (!StringUtils.isEmpty(mobileElement.getText())) {
+            elementText = String.format(":: text='%s'", mobileElement.getText());
+        } else if (!StringUtils.isEmpty(mobileElement.getAttribute(WebElementAttribute.VALUE.attribute))) {
+            elementText = String.format(":: value='%s'", mobileElement.getAttribute(WebElementAttribute.VALUE.attribute));
+        } else if (!StringUtils.isEmpty(mobileElement.getAttribute(WebElementAttribute.ID.attribute))) {
+            elementText = String.format(":: id='%s'", mobileElement.getAttribute(WebElementAttribute.ID.attribute));
+        }
+        return elementText;
     }
 
 }

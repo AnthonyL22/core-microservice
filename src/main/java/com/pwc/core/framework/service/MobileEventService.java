@@ -1,17 +1,20 @@
 package com.pwc.core.framework.service;
 
 import com.pwc.core.framework.controller.WebEventController;
+import com.pwc.core.framework.data.MobileGesture;
 import com.pwc.core.framework.data.XCUIElementAttribute;
 import com.pwc.core.framework.data.XCUIElementType;
 import com.pwc.core.framework.driver.MicroserviceMobileDriver;
 import io.appium.java_client.MobileElement;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
+import org.openqa.selenium.JavascriptExecutor;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 import static com.pwc.logging.service.LoggerService.LOG;
@@ -35,16 +38,17 @@ public class MobileEventService extends WebEventController {
     }
 
     public MobileEventService(MicroserviceMobileDriver driver) {
+
         this.microserviceMobileDriver = driver;
     }
 
     /**
      * Find WebElement by either XPath or IosNsPredicate.
      *
-     * @param elementIdentifier unique element identifying string
+     * @param elementIdentifier unique element identifying locator
      * @return MobileElement to then be used to interact with the AUT
      */
-    public MobileElement findWebElement(final String elementIdentifier) {
+    public MobileElement findMobileElement(final String elementIdentifier) {
 
         final String VARIABLE_ELEMENT_TYPE_PATH = "type == '%s' and (name == '%s' or label == '%s' or elementId == '%s')";
         final String VARIABLE_ELEMENT_ATTRIBUTE_PATH = "%s == '%s'";
@@ -111,6 +115,46 @@ public class MobileEventService extends WebEventController {
             LOG(false, "Unable to find element '%s' by xPath", elementIdentifier);
         }
         return mobileElement;
+    }
+
+    /**
+     * Executes JSONWP command and returns a response.
+     *
+     * @param elementIdentifier unique element identifying locator
+     * @param mobileGesture     Mobile Gesture to perform
+     * @param parameters        gesture parameters to execute
+     * @return a result response
+     */
+    public Object executeJavascript(final String elementIdentifier, MobileGesture mobileGesture, Map<String, Object> parameters) {
+
+        Object response = null;
+        try {
+            MobileElement mobileElement = findMobileElement(elementIdentifier);
+            parameters.put("element", mobileElement.getId());
+            response = executeJavascript(mobileGesture, parameters);
+        } catch (Exception e) {
+            e.getMessage();
+        }
+        return response;
+    }
+
+    /**
+     * Executes JSONWP command and returns a response.
+     *
+     * @param mobileGesture Mobile Gesture to perform
+     * @param parameters    gesture parameters to execute
+     * @return a result response
+     */
+    public Object executeJavascript(MobileGesture mobileGesture, Map<String, Object> parameters) {
+
+        Object response = null;
+        try {
+            JavascriptExecutor js = (JavascriptExecutor) this.microserviceMobileDriver;
+            response = js.executeScript("mobile: " + mobileGesture.gesture, parameters);
+        } catch (Exception e) {
+            e.getMessage();
+        }
+        return response;
     }
 
     /**

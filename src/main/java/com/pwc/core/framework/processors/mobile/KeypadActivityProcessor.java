@@ -5,14 +5,14 @@ import com.pwc.core.framework.processors.mobile.elements.XCUIElementTypeCellImpl
 import com.pwc.core.framework.processors.mobile.elements.XCUIElementTypeStaticTextImpl;
 import io.appium.java_client.MobileElement;
 
-public class TapActivityProcessor {
+public class KeypadActivityProcessor {
 
-    private static TapActivityProcessor instance = new TapActivityProcessor();
+    private static KeypadActivityProcessor instance = new KeypadActivityProcessor();
 
-    private TapActivityProcessor() {
+    private KeypadActivityProcessor() {
     }
 
-    public static TapActivityProcessor getInstance() {
+    public static KeypadActivityProcessor getInstance() {
         return instance;
     }
 

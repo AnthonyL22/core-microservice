@@ -1,9 +1,10 @@
 package com.pwc.core.framework.processors.mobile.elements;
 
-import com.pwc.core.framework.data.XCUIElementType;
 import com.pwc.core.framework.data.WebElementAttribute;
+import com.pwc.core.framework.data.XCUIElementType;
 import io.appium.java_client.MobileElement;
 import org.apache.commons.lang3.StringUtils;
+import org.testng.Assert;
 
 import static com.pwc.assertion.AssertService.assertFail;
 import static com.pwc.logging.service.LoggerService.LOG;
@@ -14,28 +15,31 @@ public class XCUIElementTypeCellImpl implements MicroserviceMobileElement {
         return StringUtils.equalsIgnoreCase(element.getTagName(), XCUIElementType.CELL.type);
     }
 
-    public void mobileAction(final MobileElement webElement, final Object attributeValue) {
-        mobileAction(webElement);
-    }
-
-    public void mobileAction(final MobileElement mobileElement) {
+    public void mobileAction(final MobileElement mobileElement, final Object attributeValue) {
         try {
-            LOG(true, "Click CELL %s", getElementText(mobileElement));
-            mobileElement.click();
+            if (attributeValue == null) {
+                LOG(true, "Click CELL %s", getElementText(mobileElement));
+                mobileElement.click();
+            } else {
+                LOG(true, "Verify CELL :: value='%s'", attributeValue);
+                Assert.assertEquals(mobileElement.getText(), attributeValue);
+            }
         } catch (Exception e) {
-            assertFail("Failed to Click CELL due to exception=%s", e.getMessage());
+            assertFail("Failed CELL action due to exception=%s", e.getMessage());
         }
     }
 
     public String getElementText(MobileElement mobileElement) {
-        String buttonText = "";
+
+        String elementText = "";
         if (!StringUtils.isEmpty(mobileElement.getText())) {
-            buttonText = String.format(":: text='%s'", mobileElement.getText());
+            elementText = String.format(":: text='%s'", mobileElement.getText());
         } else if (!StringUtils.isEmpty(mobileElement.getAttribute(WebElementAttribute.VALUE.attribute))) {
-            buttonText = String.format(":: value='%s'", mobileElement.getAttribute(WebElementAttribute.VALUE.attribute));
+            elementText = String.format(":: value='%s'", mobileElement.getAttribute(WebElementAttribute.VALUE.attribute));
         } else if (!StringUtils.isEmpty(mobileElement.getAttribute(WebElementAttribute.ID.attribute))) {
-            buttonText = String.format(":: id='%s'", mobileElement.getAttribute(WebElementAttribute.ID.attribute));
+            elementText = String.format(":: id='%s'", mobileElement.getAttribute(WebElementAttribute.ID.attribute));
         }
-        return buttonText;
+        return elementText;
     }
+
 }
