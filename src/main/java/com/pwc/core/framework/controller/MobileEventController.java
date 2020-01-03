@@ -252,6 +252,8 @@ public class MobileEventController {
             TapActivityProcessor.getInstance().mobileAction(mobileElement, mobileElementValue);
             stopWatch.stop();
             return stopWatch.getTotalTimeMillis();
+        } else if (KeypadActivityProcessor.applies(mobileElement)) {
+            KeypadActivityProcessor.getInstance().mobileAction(mobileElement, mobileElementValue);
         } else if (ViewActivityProcessor.applies(mobileElement)) {
             ViewActivityProcessor.getInstance().mobileAction(mobileElement, mobileElementValue);
         }
