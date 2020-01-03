@@ -33,6 +33,7 @@ public enum XCUIElementType {
     LAYOUT_ITEM("XCUIElementTypeLayoutItem"),
     LEVEL_INDICATOR("XCUIElementTypeLevelIndicator"),
     LINK("XCUIElementTypeLink"),
+    MAP("XCUIElementTypeMap"),
     MATTE("XCUIElementTypeMatte"),
     MENU("XCUIElementTypeMenu"),
     MENU_BAR("XCUIElementTypeMenuBar"),

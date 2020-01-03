@@ -1,7 +1,7 @@
 package com.pwc.core.framework.processors.mobile.elements;
 
-import com.pwc.core.framework.data.XCUIElementType;
 import com.pwc.core.framework.data.WebElementAttribute;
+import com.pwc.core.framework.data.XCUIElementType;
 import io.appium.java_client.MobileElement;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.Assert;
@@ -9,10 +9,10 @@ import org.testng.Assert;
 import static com.pwc.assertion.AssertService.assertFail;
 import static com.pwc.logging.service.LoggerService.LOG;
 
-public class XCUIElementTypeButtonElementImpl implements MicroserviceMobileElement {
+public class XCUIElementTypeSearchFieldImpl implements MicroserviceMobileElement {
 
     public static boolean applies(MobileElement element) {
-        return (StringUtils.equalsIgnoreCase(element.getTagName(), XCUIElementType.BUTTON.type));
+        return (StringUtils.equalsIgnoreCase(element.getTagName(), XCUIElementType.SEARCH_FIELD.type));
     }
 
     public void mobileAction(final MobileElement mobileElement, final Object attributeValue) {
