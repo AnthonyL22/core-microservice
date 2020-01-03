@@ -9,6 +9,7 @@ import com.pwc.core.framework.driver.MicroserviceRemoteMobileDriver;
 import com.pwc.core.framework.processors.mobile.GestureActivityProcessor;
 import com.pwc.core.framework.processors.mobile.KeypadActivityProcessor;
 import com.pwc.core.framework.processors.mobile.TapActivityProcessor;
+import com.pwc.core.framework.processors.mobile.ViewActivityProcessor;
 import com.pwc.core.framework.service.MobileEventService;
 import com.pwc.core.framework.util.GridUtils;
 import io.appium.java_client.MobileElement;
@@ -251,6 +252,8 @@ public class MobileEventController {
             TapActivityProcessor.getInstance().mobileAction(mobileElement, mobileElementValue);
             stopWatch.stop();
             return stopWatch.getTotalTimeMillis();
+        } else if (ViewActivityProcessor.applies(mobileElement)) {
+            ViewActivityProcessor.getInstance().mobileAction(mobileElement, mobileElementValue);
         }
         return 0L;
     }
@@ -273,6 +276,8 @@ public class MobileEventController {
         } else if (TapActivityProcessor.applies(mobileElement)) {
             return mobileAction(mobileElement, parameters);
         } else if (KeypadActivityProcessor.applies(mobileElement)) {
+            return mobileAction(mobileElement, parameters);
+        } else if (ViewActivityProcessor.applies(mobileElement)) {
             return mobileAction(mobileElement, parameters);
         }
         return 0L;
