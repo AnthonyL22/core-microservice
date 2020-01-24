@@ -21,7 +21,7 @@ public class ContinuousIntegrationLogExporterTest {
     private final static String MAIN_SOURCE_PATH = "src.test.java.com.pwc.core.framework.ci.parent";
     private final static String REPORT_FILE_NAME = "output.txt";
     private final static String TESTNG_GROUP_CLASS_NAME = "Groups.java";
-    private final static String TESTNG_GROUP_NAME_TO_FOCUS_ON = "Manual";
+    private final static String TESTNG_GROUP_NAME_TO_FOCUS_ON = "Smoke";
     private String[] fullyDecoratedArgs = new String[5];
 
     @Before
@@ -36,7 +36,7 @@ public class ContinuousIntegrationLogExporterTest {
     @Test()
     public void mainMinimalNumberOfArgumentsTest() throws Exception {
 
-        ContinuousIntegrationLogExporter.main(new String[]{TEST_SOURCE_PATH, MAIN_SOURCE_PATH, REPORT_FILE_NAME});
+        ContinuousIntegrationLogExporter.main(new String[]{TEST_SOURCE_PATH, MAIN_SOURCE_PATH, REPORT_FILE_NAME, TESTNG_GROUP_CLASS_NAME, TESTNG_GROUP_NAME_TO_FOCUS_ON});
 
         File testReportFileWithStatistics = new File(REPORT_FILE_NAME);
         List<String> linesRead = FileUtils.readLines(testReportFileWithStatistics, StandardCharsets.UTF_8);
@@ -71,7 +71,7 @@ public class ContinuousIntegrationLogExporterTest {
 
     @Test
     public void replaceAllConstantsWithMapValuesNullConstantsTest() {
-        String[] trimmedList = new String[]{"home", "TestConstants.USER_NAME"};
+        String[] trimmedList = new String[]{"home", "nicole"};
         ContinuousIntegrationLogExporter.setConstants(null);
         ContinuousIntegrationLogExporter.replaceAllConstantsWithMapValues(trimmedList);
     }
@@ -80,7 +80,7 @@ public class ContinuousIntegrationLogExporterTest {
     public void processArgumentsTest() {
 
         String simpleLogLine = "        FEATURE(\"Smoke Test\");";
-        String complexLogLine = "        GIVEN(\"I am logged in page=%s and authenticated user=%s\", \"home\", TestConstants.USER_NAME);";
+        String complexLogLine = "        GIVEN(\"I am logged in page=%s and authenticated user=%s\", \"home\", \"nicole\");";
 
         String simpleResult = ContinuousIntegrationLogExporter.processArguments(simpleLogLine);
         Assert.assertEquals("\"Smoke Test\"", simpleResult);

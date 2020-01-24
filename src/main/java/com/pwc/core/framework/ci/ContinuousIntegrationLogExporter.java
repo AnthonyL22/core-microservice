@@ -214,9 +214,8 @@ public class ContinuousIntegrationLogExporter {
                 trimmedList[i] = temp[i].trim();
             }
 
-            if (CollectionUtils.isEmpty(Arrays.asList(trimmedList))) {
-                replaceAllConstantsWithMapValues(trimmedList);
-                return LoggerHelper.formatMessage(readLine, trimmedList);
+            if (CollectionUtils.isNotEmpty(Arrays.asList(trimmedList))) {
+                return String.format(readLine, trimmedList);
             }
 
         } else {
