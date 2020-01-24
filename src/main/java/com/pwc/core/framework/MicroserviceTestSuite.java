@@ -34,7 +34,6 @@ import org.testng.annotations.Listeners;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static com.pwc.assertion.AssertService.assertFail;
 import static com.pwc.logging.service.LoggerService.LOG;

@@ -20,8 +20,8 @@ public class ContinuousIntegrationLogExporterTest {
     private final static String TEST_SOURCE_PATH = "src.test.java.com.pwc.core.framework.ci.tests";
     private final static String MAIN_SOURCE_PATH = "src.test.java.com.pwc.core.framework.ci.parent";
     private final static String REPORT_FILE_NAME = "output.txt";
-    private final static String CONSTANT_FILE_ONE = "TestConstants.java";
-    private final static String CONSTANT_FILE_TWO = "Data.java";
+    private final static String TESTNG_GROUP_CLASS_NAME = "Groups.java";
+    private final static String TESTNG_GROUP_NAME_TO_FOCUS_ON = "Manual";
     private String[] fullyDecoratedArgs = new String[5];
 
     @Before
@@ -29,8 +29,8 @@ public class ContinuousIntegrationLogExporterTest {
         fullyDecoratedArgs[0] = TEST_SOURCE_PATH;
         fullyDecoratedArgs[1] = MAIN_SOURCE_PATH;
         fullyDecoratedArgs[2] = REPORT_FILE_NAME;
-        fullyDecoratedArgs[3] = CONSTANT_FILE_ONE;
-        fullyDecoratedArgs[4] = CONSTANT_FILE_TWO;
+        fullyDecoratedArgs[3] = TESTNG_GROUP_CLASS_NAME;
+        fullyDecoratedArgs[4] = TESTNG_GROUP_NAME_TO_FOCUS_ON;
     }
 
     @Test()
@@ -95,7 +95,7 @@ public class ContinuousIntegrationLogExporterTest {
         StringBuilder sourceDirectory = ContinuousIntegrationLogExporter.getJavaDirectory(TEST_SOURCE_PATH);
         File testReportFile = new File(REPORT_FILE_NAME);
         List<File> files = ContinuousIntegrationLogExporter.generateManualTestOutput(sourceDirectory.toString(), testReportFile);
-        ContinuousIntegrationLogExporter.appendStatisticsToReport(testReportFile, files);
+        ContinuousIntegrationLogExporter.generateReportWithStatistics(testReportFile, files);
 
         File testReportFileWithStatistics = new File(REPORT_FILE_NAME);
         List<String> linesRead = FileUtils.readLines(testReportFileWithStatistics, StandardCharsets.UTF_8);

@@ -129,7 +129,7 @@ public class ContinuousIntegrationLogExporter {
     }
 
     /**
-     * Append some admin statistics to the generated reprot
+     * Append some admin statistics to the generated report.
      *
      * @param outputFile report file
      * @param files      files to process
@@ -159,7 +159,7 @@ public class ContinuousIntegrationLogExporter {
      * @param filename Word document to create
      * @param lines    all lines to write to document
      */
-    private static void writeWordDoc(final String filename, final List<String> lines) {
+    public static void writeWordDoc(final String filename, final List<String> lines) {
 
         try {
             if (null != document) {
@@ -191,7 +191,7 @@ public class ContinuousIntegrationLogExporter {
     }
 
     /**
-     * Process logging that may contain arguments from String.format()
+     * Process logging that may contain arguments from String.format().
      *
      * @param readLine line to process
      * @return formatted line
@@ -230,7 +230,7 @@ public class ContinuousIntegrationLogExporter {
     }
 
     /**
-     * Updated shared Map with key/value pairs
+     * Updated shared Map with key/value pairs.
      *
      * @param trimmedList items
      */
@@ -253,7 +253,7 @@ public class ContinuousIntegrationLogExporter {
     }
 
     /**
-     * Get Source directory where classes are defined
+     * Get Source directory where classes are defined.
      *
      * @param arg source directory
      * @return full path to source directory
