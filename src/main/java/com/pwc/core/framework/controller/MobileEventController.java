@@ -264,6 +264,8 @@ public class MobileEventController {
      * Core mobile element Gesture action logic.
      *
      * @param mobileElement DOM element to act upon
+     * @param gesture       gesture to use
+     * @param parameters    mobile gesture parameters
      * @return time in milliseconds for Mouse-specific web event to execute
      */
     public long mobileAction(final MobileElement mobileElement, final MobileGesture gesture, final Object parameters) {
