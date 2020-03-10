@@ -55,7 +55,6 @@
     <java_code.version>1.8</java_code.version>
     <jsoup.version>1.8.2</jsoup.version>
     <junit.version>4.11</junit.version>
-    <log4j.version>1.2.17</log4j.version>
     <logging-microservice.version>1.0.4</logging-microservice.version>
     <lombok.version>1.18.4</lombok.version>
     <maven-clean-plugin.version>2.4.1</maven-clean-plugin.version>
@@ -192,11 +191,6 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>${junit.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
-      <version>${log4j.version}</version>
     </dependency>
     <dependency>
       <groupId>net.bytebuddy</groupId>
