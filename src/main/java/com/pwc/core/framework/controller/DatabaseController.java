@@ -22,7 +22,7 @@ public class DatabaseController {
     }
 
     /**
-     * Establish database connection in service layer from Spring
+     * Establish database connection in service layer from Spring.
      *
      * @param ctx Application context
      */
@@ -36,7 +36,7 @@ public class DatabaseController {
     }
 
     /**
-     * Establish Mongo database connection in service layer from Spring
+     * Establish Mongo database connection in service layer from Spring.
      *
      * @param ctx Application context
      */
@@ -50,7 +50,7 @@ public class DatabaseController {
     }
 
     /**
-     * Close the current database connection in the service layer
+     * Close the current database connection in the service layer.
      */
     public void closeDatabaseConnection() {
         try {
@@ -71,4 +71,5 @@ public class DatabaseController {
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
+
 }

@@ -9,7 +9,6 @@ import static com.pwc.logging.service.LoggerService.FEATURE;
 import static com.pwc.logging.service.LoggerService.FINALLY;
 import static com.pwc.logging.service.LoggerService.GIVEN;
 import static com.pwc.logging.service.LoggerService.IF;
-import static com.pwc.logging.service.LoggerService.IMAGE;
 import static com.pwc.logging.service.LoggerService.NOT;
 import static com.pwc.logging.service.LoggerService.OR;
 import static com.pwc.logging.service.LoggerService.SCENARIO;

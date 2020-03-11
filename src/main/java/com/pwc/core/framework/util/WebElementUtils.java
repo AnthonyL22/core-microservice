@@ -21,5 +21,18 @@ public class WebElementUtils {
         return xpath.toString();
     }
 
+    /**
+     * Pause thread based on duration.
+     *
+     * @param pauseDuration time in MS to pause
+     */
+    public static void pauseForMilliseconds(final long pauseDuration) {
+
+        long now = 0L;
+        long start = System.currentTimeMillis();
+        while (now < start + pauseDuration) {
+            now = System.currentTimeMillis();
+        }
+    }
 
 }

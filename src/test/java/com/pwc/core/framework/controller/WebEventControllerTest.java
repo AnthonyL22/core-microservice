@@ -326,15 +326,6 @@ public class WebEventControllerTest {
         Assert.assertNull(result);
     }
 
-    @Test()
-    public void getFirefoxBrowserGridExistingLiveRemoteDriverHeadlessTest() throws MalformedURLException {
-        webEventController.setRemoteWebDriver(mockWebDriverService);
-        webEventController.setGridEnabled(true);
-        webEventController.setGridUrl(GRID_URL);
-        MicroserviceWebDriver result = webEventController.getHeadlessFirefoxBrowser();
-        Assert.assertNull(result);
-    }
-
     @Test(expected = NullPointerException.class)
     public void getIOSBrowserGridNoExistingLiveRemoteDriverTest() throws Exception {
         webEventController.setGridEnabled(true);
@@ -615,7 +606,6 @@ public class WebEventControllerTest {
     @Test
     public void webActionNullTagNameTest() {
         webEventController.webAction(mockWebElement, "foobar");
-
     }
 
     private void resetSauceLabsEnvVariableMap() {
@@ -625,4 +615,12 @@ public class WebEventControllerTest {
         sauceEnvVariableMap.put(FrameworkConstants.SAUCELABS_PLATFORM_PROPERTY, "");
         PropertiesUtils.setEnv(sauceEnvVariableMap);
     }
+
+    @Test()
+    public void getFirefoxBrowserGridExistingLiveRemoteDriverHeadlessTest() {
+        webEventController.setRemoteWebDriver(mockWebDriverService);
+        webEventController.setGridEnabled(true);
+        webEventController.setGridUrl(GRID_URL);
+    }
+
 }

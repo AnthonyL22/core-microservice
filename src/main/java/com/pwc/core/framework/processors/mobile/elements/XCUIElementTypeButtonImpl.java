@@ -1,7 +1,7 @@
 package com.pwc.core.framework.processors.mobile.elements;
 
-import com.pwc.core.framework.data.XCUIElementType;
 import com.pwc.core.framework.data.WebElementAttribute;
+import com.pwc.core.framework.data.XCUIElementType;
 import io.appium.java_client.MobileElement;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.Assert;
