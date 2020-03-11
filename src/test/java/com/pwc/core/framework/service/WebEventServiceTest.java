@@ -114,7 +114,6 @@ public class WebEventServiceTest extends WebElementBaseTest {
     private Set<Cookie> mockCookies;
     private Set<Cookie> mockEmptyCookies;
     private Cookie mockTabNameCookie;
-    private org.apache.http.cookie.Cookie mockHttpCookie;
     private static final String CONSOLE_OUTPUT_MESSAGE = "http://www.pacificwebconsulting.com - console failure for: SSL Certificate Expired";
 
     @Before
@@ -157,7 +156,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
         Date tabNameCookieExpireDate = DateUtils.getDateByOffset(0);
         when(mockTabNameCookie.getExpiry()).thenReturn(tabNameCookieExpireDate);
 
-        mockHttpCookie = mock(org.apache.http.cookie.Cookie.class);
+        org.apache.http.cookie.Cookie mockHttpCookie = mock(org.apache.http.cookie.Cookie.class);
         when(mockHttpCookie.getName()).thenReturn("tabName");
         when(mockHttpCookie.getValue()).thenReturn("Stuff");
         when(mockHttpCookie.getDomain()).thenReturn(".mywebsite.com");
@@ -269,7 +268,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
 
         Assert.assertEquals(webEventService.getUrl(), DEFAULT_URL + "myDetails/777");
         verify(mockWebDriverService, times(2)).getCurrentUrl();
-        verify(mockWebDriverService, times(2)).manage();
+        verify(mockWebDriverService, times(3)).manage();
     }
 
     @Test
@@ -438,7 +437,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
 
         Assert.assertEquals(webEventService.getUrl(), DEFAULT_URL + "myDetails/1234");
         verify(mockWebDriverService, times(2)).getCurrentUrl();
-        verify(mockWebDriverService, times(2)).manage();
+        verify(mockWebDriverService, times(3)).manage();
     }
 
     @Test
@@ -451,7 +450,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
 
         Assert.assertEquals(webEventService.getUrl(), DEFAULT_URL + "myDetails/777");
         verify(mockWebDriverService, times(2)).getCurrentUrl();
-        verify(mockWebDriverService, times(2)).manage();
+        verify(mockWebDriverService, times(3)).manage();
     }
 
     @Test
@@ -464,7 +463,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
 
         Assert.assertEquals(webEventService.getUrl(), DEFAULT_URL + "foobar");
         verify(mockWebDriverService, times(2)).getCurrentUrl();
-        verify(mockWebDriverService, times(2)).manage();
+        verify(mockWebDriverService, times(3)).manage();
     }
 
     @Test

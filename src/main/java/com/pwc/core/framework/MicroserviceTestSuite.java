@@ -243,6 +243,7 @@ public abstract class MicroserviceTestSuite {
      * a checkbox or radio button element type
      *
      * @param elementIdentifier unique identifier for an mobile element
+     * @param gesture           gesture to use
      * @return tuple with MobileElement and time in milliseconds for action
      */
     protected Pair mobileAction(final String elementIdentifier, final MobileGesture gesture) {
@@ -254,6 +255,8 @@ public abstract class MicroserviceTestSuite {
      * Mobile action for all Mobile elements
      *
      * @param elementIdentifier unique identifier for an mobile element
+     * @param gesture           gesture to use
+     * @param parameters        gesture parameters to leverage
      * @return tuple with MobileElement and response time in milliseconds for user action
      */
     protected Pair mobileAction(final String elementIdentifier, MobileGesture gesture, final Object parameters) {
@@ -275,7 +278,7 @@ public abstract class MicroserviceTestSuite {
     }
 
     /**
-     * Initialize a headless page based on user defined URL.  Typically used for testing custom web page endpoints
+     * Initialize a headless page based on user defined URL.  Typically used for testing custom web page endpoints.
      *
      * @param url web service URL
      * @return http/web service response
