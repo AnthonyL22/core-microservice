@@ -438,7 +438,8 @@ public class WebEventController {
         chromeOptions.addArguments("headless");
         chromeOptions.addArguments("window-size=1920,1080");
         chromeOptions.addArguments("--disable-web-security");
-        chromeOptions.addArguments("--ignore-ssl-errors=true");
+        chromeOptions.addArguments("--ignore-ssl-errors=yes");
+        chromeOptions.addArguments("--ignore-certificate-errors");
         chromeOptions.addArguments("--allow-running-insecure-content");
         capabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
         capabilities.setCapability(CapabilityType.BROWSER_NAME, BrowserType.CHROME);
