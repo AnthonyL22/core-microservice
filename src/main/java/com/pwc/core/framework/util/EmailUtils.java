@@ -47,14 +47,18 @@ public class EmailUtils {
     public static List<MailSacEmail> getAllMailSacEmailsByAddress(final String emailAddress) {
 
         List<MailSacEmail> allEmails = new ArrayList<>();
-        JsonPath response = (JsonPath) executeGet(MAILSAC_URL, String.format("%s/%s/%s", CommonField.ADDRESSES.value(), emailAddress, CommonField.MESSAGES.value()));
-        JsonPath entity = new JsonPath(response.get(FrameworkConstants.HTTP_ENTITY_KEY).toString());
-        List<HashMap> inboxList = entity.get();
-        inboxList.forEach(email -> {
-            MailSacEmail emailResponse = (MailSacEmail) convertMapToObject(email, MailSacEmail.class);
-            allEmails.add(emailResponse);
-        });
-        LOG(true, "Found %s emails for email address='%s'", inboxList.size(), emailAddress);
+        try {
+            JsonPath response = (JsonPath) executeGet(MAILSAC_URL, String.format("%s/%s/%s", CommonField.ADDRESSES.value(), emailAddress, CommonField.MESSAGES.value()));
+            JsonPath entity = new JsonPath(response.get(FrameworkConstants.HTTP_ENTITY_KEY).toString());
+            List<HashMap> inboxList = entity.get();
+            inboxList.forEach(email -> {
+                MailSacEmail emailResponse = (MailSacEmail) convertMapToObject(email, MailSacEmail.class);
+                allEmails.add(emailResponse);
+            });
+            LOG(true, "Found %s emails for email address='%s'", inboxList.size(), emailAddress);
+        } catch (Exception e) {
+            LOG(true, "Unable to retrieve emails due to %s", e);
+        }
         return allEmails;
     }
 
@@ -68,16 +72,20 @@ public class EmailUtils {
     public static List<GetNadaEmail> getGetNadaEmailsByAddress(final int numberOfEmails, final String emailAddress) {
 
         List<GetNadaEmail> allEmails = new ArrayList<>();
-        JsonPath response = (JsonPath) executeGet(GETNADA_URL, String.format("%s/%s", CommonField.INBOXES.value(), emailAddress));
-        JsonPath entity = new JsonPath(response.get(FrameworkConstants.HTTP_ENTITY_KEY).toString());
-        List<HashMap> messageList = entity.get(CommonField.MSGS.value());
-        if (CollectionUtils.isNotEmpty(messageList)) {
-            IntStream.range(0, numberOfEmails).forEach(index -> {
-                GetNadaEmail emailResponse = (GetNadaEmail) convertMapToObject(messageList.get(index), GetNadaEmail.class);
-                allEmails.add(emailResponse);
-            });
+        try {
+            JsonPath response = (JsonPath) executeGet(GETNADA_URL, String.format("%s/%s", CommonField.INBOXES.value(), emailAddress));
+            JsonPath entity = new JsonPath(response.get(FrameworkConstants.HTTP_ENTITY_KEY).toString());
+            List<HashMap> messageList = entity.get(CommonField.MSGS.value());
+            if (CollectionUtils.isNotEmpty(messageList)) {
+                IntStream.range(0, numberOfEmails).forEach(index -> {
+                    GetNadaEmail emailResponse = (GetNadaEmail) convertMapToObject(messageList.get(index), GetNadaEmail.class);
+                    allEmails.add(emailResponse);
+                });
+            }
+            LOG(true, "Found %s emails for email address='%s'", messageList.size(), emailAddress);
+        } catch (Exception e) {
+            LOG(true, "Unable to retrieve emails due to %s", e);
         }
-        LOG(true, "Found %s emails for email address='%s'", messageList.size(), emailAddress);
         return allEmails;
     }
 

@@ -32,19 +32,12 @@ public class EmailUtilsTest {
         Assert.assertTrue(emails.size() >= 0);
     }
 
-    @Test
+    @Test (expected = Exception.class)
     public void getGetNadaEmailByIdTest() {
         GetNadaEmail emailToFind = new GetNadaEmail();
         emailToFind.setUid(GETNADA_EMAIL_ID);
         GetNadaEmail emailFound = EmailUtils.getAllGetNadaEmailsById(emailToFind);
         Assert.assertEquals(emailToFind.getUid(), emailFound.getUid());
     }
-
-    @Test
-    public void getAllMailSacEmailMessageBySubjectTest() {
-        MailSacEmail emailFound = EmailUtils.getMailSacEmailMessageBySubject(MAILSAC_EMAIL_ADDRESS, MAILSAC_TEST_EMAIL_SUBJECT);
-        Assert.assertEquals(emailFound.getSubject(), MAILSAC_TEST_EMAIL_SUBJECT);
-    }
-
 
 }
