@@ -274,6 +274,7 @@ public class WebEventController {
      * @throws MalformedURLException url exception
      */
     public MicroserviceWebDriver getIOSBrowser() throws Exception {
+
         LOG("starting iOS browser");
         capabilities.setCapability(CapabilityType.BROWSER_NAME, BrowserType.SAFARI);
         if (StringUtils.isNotEmpty(experitestAccesskey)) {
@@ -400,6 +401,7 @@ public class WebEventController {
         chromeOptions.addArguments("--start-maximized");
         chromeOptions.addArguments("--disable-dev-shm-usage");
         chromeOptions.addArguments("--disable-web-security");
+        chromeOptions.addArguments("--ignore-ssl-errors=true");
         chromeOptions.addArguments("--allow-running-insecure-content");
         capabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
         capabilities.setCapability(CapabilityType.BROWSER_NAME, BrowserType.CHROME);
@@ -437,6 +439,9 @@ public class WebEventController {
         ChromeOptions chromeOptions = new ChromeOptions();
         chromeOptions.addArguments("headless");
         chromeOptions.addArguments("window-size=1920,1080");
+        chromeOptions.addArguments("--disable-web-security");
+        chromeOptions.addArguments("--ignore-ssl-errors=true");
+        chromeOptions.addArguments("--allow-running-insecure-content");
         capabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
         capabilities.setCapability(CapabilityType.BROWSER_NAME, BrowserType.CHROME);
         capabilities.setCapability("video", "True");
@@ -490,7 +495,7 @@ public class WebEventController {
     }
 
     /**
-     * Get Microsoft Edge Web Driver for local or RemoteWebDriver capability
+     * Get Microsoft Edge Web Driver for local or RemoteWebDriver capability.
      *
      * @return MicroserviceWebDriver instance
      * @throws MalformedURLException url exception
@@ -520,7 +525,7 @@ public class WebEventController {
     }
 
     /**
-     * Get Internet Explorer Web Driver for local or RemoteWebDriver capability
+     * Get Internet Explorer Web Driver for local or RemoteWebDriver capability.
      *
      * @return MicroserviceWebDriver instance
      * @throws MalformedURLException url exception
@@ -550,7 +555,7 @@ public class WebEventController {
     }
 
     /**
-     * Get Safari Web Driver for local or RemoteWebDriver capability
+     * Get Safari Web Driver for local or RemoteWebDriver capability.
      *
      * @return MicroserviceWebDriver instance
      * @throws MalformedURLException url exception
@@ -580,7 +585,7 @@ public class WebEventController {
     }
 
     /**
-     * Get PhantomJS Web Driver for local or RemoteWebDriver capability
+     * Get PhantomJS Web Driver for local or RemoteWebDriver capability.
      *
      * @return MicroserviceWebDriver instance
      * @throws MalformedURLException url exception
