@@ -12,8 +12,8 @@ import static org.mockito.Mockito.mock;
 @RunWith(MockitoJUnitRunner.class)
 public class JiraProcessorTest {
 
-    private final String URL_PATH = "http://jira.pwc.com/api/2/issue/ANT-14677";
-    private final String POST_PAYLOAD = "{\"issueId\":\"328613\",\"versionId\":\"18596\",\"cycleId\":\"9420\",\"assignee\":\"\",\"assigneeType\":\"\",\"projectId\":\"12400\"}";
+    private static final String URL_PATH = "http://jira.pwc.com/api/2/issue/ANT-14677";
+    private static final String POST_PAYLOAD = "{\"issueId\":\"328613\",\"versionId\":\"18596\",\"cycleId\":\"9420\",\"assignee\":\"\",\"assigneeType\":\"\",\"projectId\":\"12400\"}";
     private JiraProcessor jiraProcessor;
 
     @Before

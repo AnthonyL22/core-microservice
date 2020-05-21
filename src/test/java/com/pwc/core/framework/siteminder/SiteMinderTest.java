@@ -84,6 +84,7 @@ public class SiteMinderTest extends Authenticator {
 
     @Test(expected = AssertionError.class)
     public void retryAuthenticationRuntimeExceptionTest() throws Exception {
+
         when(mockHttpGet.getURI()).thenReturn(URI.create(APPLICATION_WEB_URL));
         when(mockCloseableHttpResponse.getStatusLine()).thenThrow(Exception.class);
         HttpClientContext context = spyAuthenticator.retryAuthentication(mockCloseableHttpResponse, mockHttpGet, mockDefaultHttpClient);
@@ -106,12 +107,14 @@ public class SiteMinderTest extends Authenticator {
 
     @Test(expected = Exception.class)
     public void getAuthenticationCookiesTest() throws Exception {
+
         List<Cookie> cookies = spyAuthenticator.getAuthenticationCookies(APPLICATION_WEB_URL, USERNAME, PASSWORD);
         Assert.assertEquals(0, cookies.size());
     }
 
     @Test(expected = Exception.class)
     public void getAuthenticationOtherCookiesTest() throws Exception {
+
         cookies.clear();
         BasicClientCookie cookie = new BasicClientCookie("SESSIONID", "unit test");
         cookies.add(cookie);
@@ -120,7 +123,8 @@ public class SiteMinderTest extends Authenticator {
     }
 
     @Test(expected = Exception.class)
-    public void removeJSESSIONIDCookieTest() throws Exception {
+    public void removeSessionIdCookieTest() throws Exception {
+
         cookies.clear();
         BasicClientCookie cookie = new BasicClientCookie("JSESSIONID", "unit test");
         cookies.add(cookie);
@@ -130,12 +134,14 @@ public class SiteMinderTest extends Authenticator {
 
     @Test(expected = Exception.class)
     public void getAuthenticationCookiesFailedToAuthenticateTest() throws Exception {
+
         List<Cookie> cookies = spyAuthenticator.getAuthenticationCookies(APPLICATION_WEB_URL, "SMSESSION", "unit test");
         Assert.assertEquals(0, cookies.size());
     }
 
     @Test(expected = Exception.class)
     public void getAuthenticationNoCookiesExceptionTest() throws Exception {
+
         cookies.clear();
         List<Cookie> cookies = spyAuthenticator.getAuthenticationCookies(APPLICATION_WEB_URL, USERNAME, PASSWORD);
         Assert.assertEquals(0, cookies.size());
@@ -143,6 +149,7 @@ public class SiteMinderTest extends Authenticator {
 
     @Test(expected = Exception.class)
     public void getAuthenticationCookiesExceptionTest() throws Exception {
+
         doReturn(null).when(spyAuthenticator).generateHttpGet(APPLICATION_WEB_URL);
         List<Cookie> cookies = spyAuthenticator.getAuthenticationCookies(APPLICATION_WEB_URL, USERNAME, PASSWORD);
         Assert.assertEquals(0, cookies.size());

@@ -12,8 +12,8 @@ import static com.pwc.logging.service.LoggerService.LOG;
 public class MatSelectableElementImpl implements MicroserviceWebElement {
 
     public static boolean applies(WebElement element) {
-        return StringUtils.equalsIgnoreCase(element.getTagName(), WebElementType.MAT_SELECT.type) ||
-                StringUtils.containsIgnoreCase(element.getAttribute(WebElementAttribute.CLASS.attribute), WebElementType.MAT_SELECT.type);
+        return StringUtils.equalsIgnoreCase(element.getTagName(), WebElementType.MAT_SELECT.type)
+                        || StringUtils.containsIgnoreCase(element.getAttribute(WebElementAttribute.CLASS.attribute), WebElementType.MAT_SELECT.type);
     }
 
     public void webAction(final WebElement webElement, final Object attributeValue) {

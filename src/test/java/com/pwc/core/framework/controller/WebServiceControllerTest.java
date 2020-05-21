@@ -20,18 +20,9 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class WebServiceControllerTest extends BaseWebServiceTest {
 
-    private static final JsonPath JSON_USER_RESPONSE = new JsonPath("{\n" +
-            "  \"id\": 23850994,\n" +
-            "  \"qcguid\": 478182,\n" +
-            "  \"firstName\": \"John N.\",\n" +
-            "  \"lastName\": \"Doe\",\n" +
-            "  \"emailAddress\": \"johnd@mywebsite.com\",\n" +
-            "  \"fullName\": \"John N. Doe\",\n" +
-            "  \"userName\": \"johnd\",\n" +
-            "  \"displayFullName\": \"John N. Doe\",\n" +
-            "  \"identifyingValue\": \"23850994\",\n" +
-            "  \"displayValue\": \"John N. Doe\"\n" +
-            "}");
+    private static final JsonPath JSON_USER_RESPONSE = new JsonPath("{\n" + "  \"id\": 23850994,\n" + "  \"qcguid\": 478182,\n" + "  \"firstName\": \"John N.\",\n" + "  \"lastName\": \"Doe\",\n"
+                    + "  \"emailAddress\": \"johnd@mywebsite.com\",\n" + "  \"fullName\": \"John N. Doe\",\n" + "  \"userName\": \"johnd\",\n" + "  \"displayFullName\": \"John N. Doe\",\n"
+                    + "  \"identifyingValue\": \"23850994\",\n" + "  \"displayValue\": \"John N. Doe\"\n" + "}");
 
     private HashMap<String, Object> parameters;
     private WebServiceController mockWebServiceController;

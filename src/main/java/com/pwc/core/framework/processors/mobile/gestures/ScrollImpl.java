@@ -26,10 +26,10 @@ public class ScrollImpl {
             ObjectMapper mapper = new ObjectMapper();
             mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
             if (null == scrollParameters) {
-                scrollParameters = Scroll.builder()  //
-                        .element(element.getId())  //
-                        .direction("down")  //
-                        .build();
+                scrollParameters = Scroll.builder() //
+                                .element(element.getId()) //
+                                .direction("down") //
+                                .build();
             } else {
                 scrollParameters.setElement(element.getId());
             }

@@ -17,11 +17,9 @@ import static org.junit.Assert.assertTrue;
 @RunWith(MockitoJUnitRunner.class)
 public class CollectionUtilsTest {
 
-    private static final List<String> BEST_PLACES_ON_EARTH_LIST = new ArrayList<>(
-            Arrays.asList("Flagler", "Hossegor", "Auckland", "Hatsfield Beach", "Matakana", "Gisborne"));
+    private static final List<String> BEST_PLACES_ON_EARTH_LIST = new ArrayList<>(Arrays.asList("Flagler", "Hossegor", "Auckland", "Hatsfield Beach", "Matakana", "Gisborne"));
 
-    private static final Set<String> HOMES_SET = new HashSet<>(
-            Arrays.asList("Flagler", "San Diego", "Paris", "Napa", "Fontainebleau"));
+    private static final Set<String> HOMES_SET = new HashSet<>(Arrays.asList("Flagler", "San Diego", "Paris", "Napa", "Fontainebleau"));
 
     @Test
     public void getRandomSubListTest() {

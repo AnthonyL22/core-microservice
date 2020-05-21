@@ -19,22 +19,27 @@ import static com.pwc.logging.service.LoggerService.LOG;
 public class DebuggingUtils {
 
     /**
-     * Capture and store the active screen under test and store in '.../target/test-classes/screenshots' directory
+     * Capture and store the active screen under test and store in '.../target/test-classes/screenshots' directory.
      *
      * @param webDriver           active WebDriver to take screenshot of
      * @param videoLoggingEnabled flag to take screen shot or not
      */
     public static void takeScreenShot(MicroserviceWebDriver webDriver, boolean videoLoggingEnabled) {
+
         if (videoLoggingEnabled) {
             takeScreenShot(webDriver);
         }
     }
 
+    /**
+     * Take a screenshot.
+     *
+     * @param webDriver active WebDriver to take screenshot of
+     */
     public static void takeScreenShot(MicroserviceWebDriver webDriver) {
 
         try {
 
-            File tempScreenShotFile = ((TakesScreenshot) webDriver).getScreenshotAs(OutputType.FILE);
             URL url = ClassLoader.getSystemClassLoader().getResource(FrameworkConstants.SYSTEM_TEST_ENVIRONMENT_DIR + "../");
 
             StringBuilder localHostScreenCapPath = new StringBuilder();
@@ -51,6 +56,8 @@ public class DebuggingUtils {
             remoteHostScreenCapPath.append(LoggerHelper.getClassName(Reporter.getCurrentTestResult()));
             localHostScreenCapPath.append("_");
             remoteHostScreenCapPath.append("_");
+
+            File tempScreenShotFile = ((TakesScreenshot) webDriver).getScreenshotAs(OutputType.FILE);
             localHostScreenCapPath.append(tempScreenShotFile.getName());
             remoteHostScreenCapPath.append(tempScreenShotFile.getName());
             File targetScreenCap = new File(StringUtils.replace(localHostScreenCapPath.toString(), "%20", " "));
@@ -78,18 +85,18 @@ public class DebuggingUtils {
 
     /**
      * Check if there is a previous ScreenShot for this test and not take or save another image
-     * Due to space concerns on Jenkins
+     * Due to space concerns on Jenkins.
      *
      * @param targetScreenShot Screen shot file to look for
      * @return flag if it found a similar PNG file for the test
      */
     public static boolean doesSimilarScreenShotExist(File targetScreenShot) {
+
         boolean previousScreenShotExists = false;
         try {
             File dir = new File(targetScreenShot.getParent());
-            Collection<File> activeScreenShots = FileUtils.listFiles(dir, new String[]{"png"}, true);
+            Collection<File> activeScreenShots = FileUtils.listFiles(dir, new String[] {"png"}, true);
             for (File activeScreenShot : activeScreenShots) {
-//                previousScreenShotExists = activeScreenShot.getName().matches(StringUtils.substringBefore(targetScreenShot.getName(), "_") + "_screenshot.*?\\.png$");
                 previousScreenShotExists = activeScreenShot.getName().equalsIgnoreCase(targetScreenShot.getName());
                 if (previousScreenShotExists) {
                     break;
@@ -103,7 +110,7 @@ public class DebuggingUtils {
 
     /**
      * Get debug information for the calling method to decorate it's LOG statement as
-     * to what page the Assertion failure occurred on
+     * to what page the Assertion failure occurred on.
      *
      * @param webDriver WebDriver to get debugging information from
      * @return formatted debug message including the page title of failure

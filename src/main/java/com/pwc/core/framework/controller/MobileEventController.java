@@ -85,7 +85,7 @@ public class MobileEventController {
     private String currentJobId;
 
     /**
-     * Start and configure mobile devices and Driver instance
+     * Start and configure mobile devices and Driver instance.
      */
     public void initiateDevice() {
         try {
@@ -99,6 +99,10 @@ public class MobileEventController {
                 }
                 case FrameworkConstants.ANDROID_MODE: {
                     this.remoteMobileDriver = getAndroidDriver();
+                    break;
+                }
+                default: {
+                    this.remoteMobileDriver = getIOSDriver();
                     break;
                 }
             }
@@ -119,7 +123,7 @@ public class MobileEventController {
     }
 
     /**
-     * Set all browser based runtime capabilities for:
+     * Set all browser based runtime capabilities for.
      * - browser type
      * - browser version
      * - screen resolution
@@ -131,14 +135,13 @@ public class MobileEventController {
 
         capabilities = new DesiredCapabilities();
 
-        if (!StringUtils.isEmpty(System.getenv(FrameworkConstants.SAUCELABS_BROWSER_PROPERTY)) &&
-                !StringUtils.isEmpty(System.getenv(FrameworkConstants.SAUCELABS_BROWSER_VERSION_PROPERTY)) &&
-                !StringUtils.isEmpty(System.getenv(FrameworkConstants.SAUCELABS_PLATFORM_PROPERTY))) {
+        if (!StringUtils.isEmpty(System.getenv(FrameworkConstants.SAUCELABS_BROWSER_PROPERTY)) && !StringUtils.isEmpty(System.getenv(FrameworkConstants.SAUCELABS_BROWSER_VERSION_PROPERTY))
+                        && !StringUtils.isEmpty(System.getenv(FrameworkConstants.SAUCELABS_PLATFORM_PROPERTY))) {
 
             //ToDo: add correct Saucelabs capabilities here
 
-            LOG(true, "Initiating Sauce-OnDemand test execution with browser='%s', version='%s', platform='%s'",
-                    System.getenv(FrameworkConstants.SAUCELABS_BROWSER_PROPERTY), System.getenv(FrameworkConstants.SAUCELABS_BROWSER_VERSION_PROPERTY), System.getenv(FrameworkConstants.SAUCELABS_PLATFORM_PROPERTY));
+            LOG(true, "Initiating Sauce-OnDemand test execution with browser='%s', version='%s', platform='%s'", System.getenv(FrameworkConstants.SAUCELABS_BROWSER_PROPERTY),
+                            System.getenv(FrameworkConstants.SAUCELABS_BROWSER_VERSION_PROPERTY), System.getenv(FrameworkConstants.SAUCELABS_PLATFORM_PROPERTY));
 
 
         } else if (isBrowserStackEnabled()) {
@@ -147,9 +150,8 @@ public class MobileEventController {
 
             //ToDo: add correct Browserstack capabilities here
 
-            LOG(true, "Initiating BrowserStack test execution with browser='%s', platform='%s'",
-                    capabilities.getCapability(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY),
-                    capabilities.getCapability(FrameworkConstants.BROWSER_STACK_OS_PROPERTY));
+            LOG(true, "Initiating BrowserStack test execution with browser='%s', platform='%s'", capabilities.getCapability(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY),
+                            capabilities.getCapability(FrameworkConstants.BROWSER_STACK_OS_PROPERTY));
 
         } else {
             LOG(true, "Initiating User Defined test execution");
@@ -187,18 +189,18 @@ public class MobileEventController {
         }
         if (gridEnabled) {
             if (this.remoteMobileDriver == null) {
-//                IOSDriver iosDriver = new IOSDriver(new URL(gridUrl), capabilities);
-//                iosDriver.findElementByIosNsPredicate("type == 'XCUIElementTypeStaticText' and name == 'General'");
+                //                IOSDriver iosDriver = new IOSDriver(new URL(gridUrl), capabilities);
+                //                iosDriver.findElementByIosNsPredicate("type == 'XCUIElementTypeStaticText' and name == 'General'");
 
                 MicroserviceRemoteMobileDriver microserviceRemoteMobileDriver = new MicroserviceRemoteMobileDriver(new URL(gridUrl), capabilities);
                 microserviceRemoteMobileDriver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
                 return microserviceRemoteMobileDriver;
 
                 //This works!!!
-//                MicroserviceRemoteMobileDriver microserviceRemoteMobileDriver = new MicroserviceRemoteMobileDriver(new URL(gridUrl), capabilities);
-//                microserviceRemoteMobileDriver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
-//                MobileElement element = (MobileElement) microserviceRemoteMobileDriver.findElementByIosNsPredicate("type == 'XCUIElementTypeStaticText' and name == 'General'");
-//                System.out.println();
+                //                MicroserviceRemoteMobileDriver microserviceRemoteMobileDriver = new MicroserviceRemoteMobileDriver(new URL(gridUrl), capabilities);
+                //                microserviceRemoteMobileDriver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+                //                MobileElement element = (MobileElement) microserviceRemoteMobileDriver.findElementByIosNsPredicate("type == 'XCUIElementTypeStaticText' and name == 'General'");
+                //                System.out.println();
             }
         } else {
             if (this.remoteMobileDriver == null) {
@@ -296,8 +298,7 @@ public class MobileEventController {
             if (Reporter.getCurrentTestResult() != null) {
                 this.currentTestName = StringUtils.substringAfterLast(Reporter.getCurrentTestResult().getTestClass().getName(), ".");
             } else {
-                this.currentTestName = StringUtils.appendIfMissing(StringUtils.removeStart(
-                        currentTestName, "test"), "Test");
+                this.currentTestName = StringUtils.appendIfMissing(StringUtils.removeStart(currentTestName, "test"), "Test");
             }
         } catch (Exception e) {
             this.currentTestName = "";
@@ -305,9 +306,10 @@ public class MobileEventController {
     }
 
     /**
-     * Close the Mobile App
+     * Close the Mobile App.
      */
     public void closeApp() {
+
         try {
             this.remoteMobileDriver.closeApp();
         } catch (Exception e) {
@@ -322,8 +324,7 @@ public class MobileEventController {
      */
     private boolean isBrowserStackEnabled() {
 
-        return StringUtils.isNotEmpty(browserstackUser)
-                && StringUtils.isNotEmpty(browserstackAccesskey);
+        return StringUtils.isNotEmpty(browserstackUser) && StringUtils.isNotEmpty(browserstackAccesskey);
     }
 
     public MobileEventService getMobileEventService() {

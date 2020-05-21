@@ -126,7 +126,7 @@ public class JiraProcessor {
     }
 
     /**
-     * Singleton WebServiceProcessor provider
+     * Singleton WebServiceProcessor provider.
      *
      * @return one WebServiceProcessor
      */

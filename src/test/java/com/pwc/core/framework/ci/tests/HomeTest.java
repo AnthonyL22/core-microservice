@@ -1,6 +1,5 @@
 package com.pwc.core.framework.ci.tests;
 
-import com.pwc.core.framework.ci.parent.Data;
 import com.pwc.core.framework.ci.parent.Groups;
 import org.testng.annotations.Test;
 

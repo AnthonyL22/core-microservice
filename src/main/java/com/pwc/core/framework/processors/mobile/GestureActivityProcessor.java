@@ -38,16 +38,9 @@ public class GestureActivityProcessor {
     }
 
     public static boolean applies(MobileGesture gesture) {
-        return TapImpl.applies(gesture) ||
-                ScrollImpl.applies(gesture) ||
-                AlertImpl.applies(gesture) ||
-                DoubleTapImpl.applies(gesture) ||
-                DragFromToForDurationImpl.applies(gesture) ||
-                PinchImpl.applies(gesture) ||
-                SelectPickerWheelValueImpl.applies(gesture) ||
-                SwipeImpl.applies(gesture) ||
-                TouchAndHoldImpl.applies(gesture) ||
-                TwoFingerTapImpl.applies(gesture);
+        return TapImpl.applies(gesture) || ScrollImpl.applies(gesture) || AlertImpl.applies(gesture) || DoubleTapImpl.applies(gesture) || DragFromToForDurationImpl.applies(gesture)
+                        || PinchImpl.applies(gesture) || SelectPickerWheelValueImpl.applies(gesture) || SwipeImpl.applies(gesture) || TouchAndHoldImpl.applies(gesture)
+                        || TwoFingerTapImpl.applies(gesture);
     }
 
     public Map buildParameters(MobileElement mobileElement, MobileGesture gesture, Object customParameters) {

@@ -51,7 +51,28 @@ public class DatabaseEventService {
     }
 
     /**
-     * Execute a MongoDB query for collections
+     * Execute a parameter query that takes an array of parameters.
+     *
+     * @param sqlTemplateQuery   SQL query to run, with ? placeholders for parameters
+     * @param valuesToSubstitute Array of parameters to replace in query
+     * @return returns a <code>PreparedStatement</code> to then be processed by calling DatabaseController method
+     */
+    private PreparedStatement executeQuery(final String sqlTemplateQuery, final Object[] valuesToSubstitute) {
+
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = databaseServiceConnection.prepareStatement(sqlTemplateQuery);
+            preparedStatement = substituteQueryValues(preparedStatement, sqlTemplateQuery, valuesToSubstitute);
+            preparedStatement.executeQuery();
+        } catch (final SQLException e) {
+            e.printStackTrace();
+            LOG("Error executing QUERY", e);
+        }
+        return preparedStatement;
+    }
+
+    /**
+     * Execute a MongoDB query for collections.
      *
      * @param collectionName MongoDB collection name
      * @param query          MongoDB Query
@@ -69,7 +90,7 @@ public class DatabaseEventService {
     }
 
     /**
-     * Execute a standard query and returns a single <code>String</code> result value
+     * Execute a standard query and returns a single <code>String</code> result value.
      *
      * @param sqlTemplateQuery SQL query to run, with no parameter placeholders
      * @return returns a single <code>ResultSet</code>
@@ -88,7 +109,7 @@ public class DatabaseEventService {
 
     /**
      * Execute a parameter query that takes an array of parameters and returns a single
-     * <code>String</code> result value
+     * <code>String</code> result value.
      *
      * @param sqlTemplateQuery   SQL query to run, with ? placeholders for parameters
      * @param valuesToSubstitute Array of parameters to replace in query
@@ -96,9 +117,7 @@ public class DatabaseEventService {
      */
     public Object executeParameterQuery(final String sqlTemplateQuery, final Object[] valuesToSubstitute) {
         try {
-            if (StringUtils.startsWith(sqlTemplateQuery, "update") ||
-                    StringUtils.startsWith(sqlTemplateQuery, "delete") ||
-                    StringUtils.startsWith(sqlTemplateQuery, "insert")) {
+            if (StringUtils.startsWith(sqlTemplateQuery, "update") || StringUtils.startsWith(sqlTemplateQuery, "delete") || StringUtils.startsWith(sqlTemplateQuery, "insert")) {
                 return executeParameterUpdate(sqlTemplateQuery, valuesToSubstitute);
             } else {
                 PreparedStatement preparedStatement = executeQuery(sqlTemplateQuery, valuesToSubstitute);
@@ -148,9 +167,7 @@ public class DatabaseEventService {
 
         List<Map> rows = new ArrayList<>();
         try {
-            if (!StringUtils.startsWith(sqlTemplateQuery, "update") ||
-                    !StringUtils.startsWith(sqlTemplateQuery, "delete") ||
-                    !StringUtils.startsWith(sqlTemplateQuery, "insert") && includeColumns) {
+            if (!StringUtils.startsWith(sqlTemplateQuery, "update") || !StringUtils.startsWith(sqlTemplateQuery, "delete") || !StringUtils.startsWith(sqlTemplateQuery, "insert") && includeColumns) {
                 ResultSet resultSet = executeQuery(sqlTemplateQuery);
                 ResultSetMetaData rsmd = resultSet.getMetaData();
                 while (resultSet.next()) {
@@ -174,12 +191,12 @@ public class DatabaseEventService {
     }
 
     /**
-     * Executes a parameter SQL update statement given. Normally used for UPDATE, INSERT or DELETE actions
+     * Executes a parameter SQL update statement given. Normally used for UPDATE, INSERT or DELETE actions.
      *
      * @param sqlTemplateQuery   parameter query to run
      * @param valuesToSubstitute Array of parameters to replace in query
      * @return either (1) the row count for SQL Data Manipulation Language (DML) statements or
-     * (2) 0 for SQL statements that return nothing or (-1) if an error occurred
+     *      (2) 0 for SQL statements that return nothing or (-1) if an error occurred
      */
     public int executeParameterUpdate(final String sqlTemplateQuery, final Object[] valuesToSubstitute) {
         try {
@@ -196,7 +213,7 @@ public class DatabaseEventService {
 
     /**
      * Executes the SQL update statement given. Normally used for UPDATE or INSERT actions without
-     * parameters to be substituted
+     * parameters to be substituted.
      *
      * @param sqlTemplateQuery standard query to run
      */
@@ -211,34 +228,14 @@ public class DatabaseEventService {
     }
 
     /**
-     * Execute a parameter query that takes an array of parameters
-     *
-     * @param sqlTemplateQuery   SQL query to run, with ? placeholders for parameters
-     * @param valuesToSubstitute Array of parameters to replace in query
-     * @return returns a <code>PreparedStatement</code> to then be processed by calling DatabaseController method
-     */
-    private PreparedStatement executeQuery(final String sqlTemplateQuery, final Object[] valuesToSubstitute) {
-
-        PreparedStatement preparedStatement = null;
-        try {
-            preparedStatement = databaseServiceConnection.prepareStatement(sqlTemplateQuery);
-            preparedStatement = substituteQueryValues(preparedStatement, sqlTemplateQuery, valuesToSubstitute);
-            preparedStatement.executeQuery();
-        } catch (final SQLException e) {
-            e.printStackTrace();
-            LOG("Error executing QUERY", e);
-        }
-        return preparedStatement;
-    }
-
-    /**
-     * Substitute all ? query arguments
+     * Substitute all ? query arguments.
      *
      * @param preparedStatement  SQL statement
      * @param valuesToSubstitute values to substitute in the query
      * @throws SQLException prepared statement SQL exception
      */
     private PreparedStatement substituteQueryValues(PreparedStatement preparedStatement, final String sqlTemplateQuery, final Object[] valuesToSubstitute) throws SQLException {
+
         if (valuesToSubstitute != null) {
             for (int i = 0; i < valuesToSubstitute.length; i++) {
                 if (valuesToSubstitute[i] instanceof String) {
@@ -277,12 +274,13 @@ public class DatabaseEventService {
     }
 
     /**
-     * Process a SQL <code>ResultSet</code> object into a list or single object
+     * Process a SQL <code>ResultSet</code> object into a list or single object.
      *
      * @param resultSet SQL ResultSet
      * @return processed Result set
      */
     public Object processResultSetOutput(ResultSet resultSet) {
+
         try {
             List results = new ArrayList();
             Object[] record = null;

@@ -42,92 +42,100 @@ public class MicroserviceTestListener extends TestListenerAdapter implements ITe
     private String gridUrl;
 
     @Override
-    public void beforeInvocation(IInvokedMethod iInvokedMethod, ITestResult iTestResult) {
+    public void beforeInvocation(IInvokedMethod invokedMethod, ITestResult testResult) {
 
         String gridToUse = PropertiesUtils.getPropertyFromPropertiesFile(
-                String.format("config/%s/%s", System.getProperty(FrameworkConstants.AUTOMATION_TEST_ENVIRONMENT),
-                        PropertiesFile.GRID_PROPERTIES_FILE.fileName), "grid.hub.url");
+                        String.format("config/%s/%s", System.getProperty(FrameworkConstants.AUTOMATION_TEST_ENVIRONMENT), PropertiesFile.GRID_PROPERTIES_FILE.fileName), "grid.hub.url");
 
         if (sauceInstance == null && StringUtils.containsIgnoreCase(gridToUse, "saucelabs")) {
             String username = PropertiesUtils.getPropertyFromPropertiesFile(
-                    String.format("config/%s/%s", System.getProperty(FrameworkConstants.AUTOMATION_TEST_ENVIRONMENT), PropertiesFile.AUTOMATION_PROPERTIES_FILE.fileName), "saucelabs.username");
+                            String.format("config/%s/%s", System.getProperty(FrameworkConstants.AUTOMATION_TEST_ENVIRONMENT), PropertiesFile.AUTOMATION_PROPERTIES_FILE.fileName),
+                            "saucelabs.username");
             String accessKey = PropertiesUtils.getPropertyFromPropertiesFile(
-                    String.format("config/%s/%s", System.getProperty(FrameworkConstants.AUTOMATION_TEST_ENVIRONMENT), PropertiesFile.AUTOMATION_PROPERTIES_FILE.fileName), "saucelabs.accesskey");
+                            String.format("config/%s/%s", System.getProperty(FrameworkConstants.AUTOMATION_TEST_ENVIRONMENT), PropertiesFile.AUTOMATION_PROPERTIES_FILE.fileName),
+                            "saucelabs.accesskey");
             sauceInstance = new SauceREST(username, accessKey);
         } else if (browserStackInstance == null && StringUtils.containsIgnoreCase(gridToUse, "browserstack")) {
             String username = PropertiesUtils.getPropertyFromPropertiesFile(
-                    String.format("config/%s/%s", System.getProperty(FrameworkConstants.AUTOMATION_TEST_ENVIRONMENT), PropertiesFile.AUTOMATION_PROPERTIES_FILE.fileName), "browserstack.username");
+                            String.format("config/%s/%s", System.getProperty(FrameworkConstants.AUTOMATION_TEST_ENVIRONMENT), PropertiesFile.AUTOMATION_PROPERTIES_FILE.fileName),
+                            "browserstack.username");
             String accessKey = PropertiesUtils.getPropertyFromPropertiesFile(
-                    String.format("config/%s/%s", System.getProperty(FrameworkConstants.AUTOMATION_TEST_ENVIRONMENT), PropertiesFile.AUTOMATION_PROPERTIES_FILE.fileName), "browserstack.accesskey");
+                            String.format("config/%s/%s", System.getProperty(FrameworkConstants.AUTOMATION_TEST_ENVIRONMENT), PropertiesFile.AUTOMATION_PROPERTIES_FILE.fileName),
+                            "browserstack.accesskey");
             browserStackInstance = new BrowserStackREST(username, accessKey);
         }
         gridUrl = PropertiesUtils.getPropertyFromPropertiesFile(
-                String.format("config/%s/%s", System.getProperty(FrameworkConstants.AUTOMATION_TEST_ENVIRONMENT), PropertiesFile.GRID_PROPERTIES_FILE.fileName), "grid.hub.url");
+                        String.format("config/%s/%s", System.getProperty(FrameworkConstants.AUTOMATION_TEST_ENVIRONMENT), PropertiesFile.GRID_PROPERTIES_FILE.fileName), "grid.hub.url");
         gridEnabled = Boolean.valueOf(PropertiesUtils.getPropertyFromPropertiesFile(
-                String.format("config/%s/%s", System.getProperty(FrameworkConstants.AUTOMATION_TEST_ENVIRONMENT), PropertiesFile.GRID_PROPERTIES_FILE.fileName), "grid.enabled"));
+                        String.format("config/%s/%s", System.getProperty(FrameworkConstants.AUTOMATION_TEST_ENVIRONMENT), PropertiesFile.GRID_PROPERTIES_FILE.fileName), "grid.enabled"));
     }
 
     @Override
-    public void afterInvocation(IInvokedMethod iInvokedMethod, ITestResult iTestResult) {
+    public void afterInvocation(IInvokedMethod invokedMethod, ITestResult testResult) {
     }
 
     @Override
-    public void onTestStart(ITestResult iTestResult) {
+    public void onTestStart(ITestResult testResult) {
     }
 
     @Override
-    public void onFinish(ITestContext iTestContext) {
+    public void onFinish(ITestContext testContext) {
+
         LOG(true, StringUtils.repeat("\n", 2));
         LOG(true, StringUtils.repeat("-", 100));
         LOG(true, "TEST EXECUTION COMPLETE");
-        LOG(true, "%s--Executed in Environment: %s", iTestContext.getName(), System.getProperty(FrameworkConstants.AUTOMATION_TEST_ENVIRONMENT).toUpperCase());
-        LOG(true, "%s--Executed on Date/Time: %s", iTestContext.getName(), LoggerHelper.getDateTime(FrameworkConstants.DATETIME_LOGGER_DATETIME_PATTER, FrameworkConstants.SYSTEM_DEFAULT_TIMEZONE, 0));
+        LOG(true, "%s--Executed in Environment: %s", testContext.getName(), System.getProperty(FrameworkConstants.AUTOMATION_TEST_ENVIRONMENT).toUpperCase());
+        LOG(true, "%s--Executed on Date/Time: %s", testContext.getName(), LoggerHelper.getDateTime(FrameworkConstants.DATETIME_LOGGER_DATETIME_PATTER, FrameworkConstants.SYSTEM_DEFAULT_TIMEZONE, 0));
         LOG(true, StringUtils.repeat("-", 100));
     }
 
     @Override
-    public void onTestFailure(ITestResult tr) {
-        sessionIdProvider = (MicroserviceTestSuite) tr.getInstance();
-        logIssueAnnotationInformation(tr);
-        publishJiraTestResults(tr);
-        LOG(true, "%s--Description: %s", tr.getName(), !StringUtils.isEmpty(tr.getMethod().getDescription()) ? tr.getMethod().getDescription() : "N/A");
-        LOG(true, "%s--Executed on Date/Time: %s", tr.getName(), LoggerHelper.getDateTime(FrameworkConstants.DATETIME_LOGGER_DATETIME_PATTER, FrameworkConstants.SYSTEM_DEFAULT_TIMEZONE, 0));
-        LOG(true, "%s--Test Failed", tr.getName());
+    public void onTestFailure(ITestResult testResult) {
+
+        sessionIdProvider = (MicroserviceTestSuite) testResult.getInstance();
+        logIssueAnnotationInformation(testResult);
+        publishJiraTestResults(testResult);
+        LOG(true, "%s--Description: %s", testResult.getName(), !StringUtils.isEmpty(testResult.getMethod().getDescription()) ? testResult.getMethod().getDescription() : "N/A");
+        LOG(true, "%s--Executed on Date/Time: %s", testResult.getName(), LoggerHelper.getDateTime(FrameworkConstants.DATETIME_LOGGER_DATETIME_PATTER, FrameworkConstants.SYSTEM_DEFAULT_TIMEZONE, 0));
+        LOG(true, "%s--Test Failed", testResult.getName());
     }
 
     @Override
-    public void onTestSkipped(ITestResult tr) {
-        sessionIdProvider = (MicroserviceTestSuite) tr.getInstance();
-        markJobResults(tr, sessionIdProvider.getCurrentJobId(), false);
-        logIssueAnnotationInformation(tr);
-        publishJiraTestResults(tr);
-        LOG(true, "%s--Description: %s", tr.getName(), !StringUtils.isEmpty(tr.getMethod().getDescription()) ? tr.getMethod().getDescription() : "N/A");
-        LOG(true, "%s--Executed on Date/Time: %s", tr.getName(), LoggerHelper.getDateTime(FrameworkConstants.DATETIME_LOGGER_DATETIME_PATTER, FrameworkConstants.SYSTEM_DEFAULT_TIMEZONE, 0));
-        LOG(true, "%s--Test Skipped", tr.getName());
+    public void onTestSkipped(ITestResult testResult) {
+
+        sessionIdProvider = (MicroserviceTestSuite) testResult.getInstance();
+        markJobResults(testResult, sessionIdProvider.getCurrentJobId(), false);
+        logIssueAnnotationInformation(testResult);
+        publishJiraTestResults(testResult);
+        LOG(true, "%s--Description: %s", testResult.getName(), !StringUtils.isEmpty(testResult.getMethod().getDescription()) ? testResult.getMethod().getDescription() : "N/A");
+        LOG(true, "%s--Executed on Date/Time: %s", testResult.getName(), LoggerHelper.getDateTime(FrameworkConstants.DATETIME_LOGGER_DATETIME_PATTER, FrameworkConstants.SYSTEM_DEFAULT_TIMEZONE, 0));
+        LOG(true, "%s--Test Skipped", testResult.getName());
     }
 
     @Override
-    public void onTestSuccess(ITestResult tr) {
-        sessionIdProvider = (MicroserviceTestSuite) tr.getInstance();
-        markJobResults(tr, sessionIdProvider.getCurrentJobId(), true);
-        logIssueAnnotationInformation(tr);
-        publishJiraTestResults(tr);
-        LOG(true, "%s--Description: %s", tr.getName(), !StringUtils.isEmpty(tr.getMethod().getDescription()) ? tr.getMethod().getDescription() : "N/A");
-        LOG(true, "%s--Executed on Date/Time: %s", tr.getName(), LoggerHelper.getDateTime(FrameworkConstants.DATETIME_LOGGER_DATETIME_PATTER, FrameworkConstants.SYSTEM_DEFAULT_TIMEZONE, 0));
-        LOG(true, "%s--Test Passed", tr.getName());
+    public void onTestSuccess(ITestResult testResult) {
+
+        sessionIdProvider = (MicroserviceTestSuite) testResult.getInstance();
+        markJobResults(testResult, sessionIdProvider.getCurrentJobId(), true);
+        logIssueAnnotationInformation(testResult);
+        publishJiraTestResults(testResult);
+        LOG(true, "%s--Description: %s", testResult.getName(), !StringUtils.isEmpty(testResult.getMethod().getDescription()) ? testResult.getMethod().getDescription() : "N/A");
+        LOG(true, "%s--Executed on Date/Time: %s", testResult.getName(), LoggerHelper.getDateTime(FrameworkConstants.DATETIME_LOGGER_DATETIME_PATTER, FrameworkConstants.SYSTEM_DEFAULT_TIMEZONE, 0));
+        LOG(true, "%s--Test Passed", testResult.getName());
     }
 
     /**
      * Get the issue or story information from the @Issue annotation.
      *
-     * @param tr active test result
+     * @param testResult active test result
      */
-    protected void logIssueAnnotationInformation(ITestResult tr) {
+    protected void logIssueAnnotationInformation(ITestResult testResult) {
+
         try {
-            Method method = tr.getMethod().getConstructorOrMethod().getMethod();
+            Method method = testResult.getMethod().getConstructorOrMethod().getMethod();
             Issue issueMetadata = method.getAnnotation(Issue.class);
             if (StringUtils.isNotEmpty(issueMetadata.value())) {
-                LOG(true, "%s--Issue(s): %s", tr.getName(), issueMetadata.value());
+                LOG(true, "%s--Issue(s): %s", testResult.getName(), issueMetadata.value());
             }
         } catch (Exception e) {
             e.getMessage();
@@ -137,12 +145,13 @@ public class MicroserviceTestListener extends TestListenerAdapter implements ITe
     /**
      * Report test results to Saucelabs via their REST api.
      *
-     * @param tr          current test result
+     * @param testResult          current test result
      * @param didTestPass test result status
      */
-    private void markJobResults(ITestResult tr, String jobId, boolean didTestPass) {
+    private void markJobResults(ITestResult testResult, String jobId, boolean didTestPass) {
+
         try {
-            String testName = LoggerHelper.getClassNameFromClasspath(tr.getMethod());
+            String testName = LoggerHelper.getClassNameFromClasspath(testResult.getMethod());
             Map<String, Object> updates = new HashMap<>();
             updates.put("name", testName);
             updates.put("passed", didTestPass);

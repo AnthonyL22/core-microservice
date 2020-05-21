@@ -19,7 +19,7 @@ import java.util.regex.Pattern;
 public class StringUtils {
 
     /**
-     * Convert a CLOB object to a <code>String</code> representation
+     * Convert a CLOB object to a <code>String</code> representation.
      *
      * @param clobObject java.sql Clob object
      * @return A string representation of Clob
@@ -39,7 +39,7 @@ public class StringUtils {
     }
 
     /**
-     * toJSON - Helper method to convert domain objects into JSON
+     * toJSON - Helper method to convert domain objects into JSON.
      *
      * @param domainObject domain object
      * @param jsonFeatures JSON configuration features
@@ -65,7 +65,7 @@ public class StringUtils {
     }
 
     /**
-     * objectFromJSON - Helper method to convert JSON string to domainObject
+     * objectFromJSON - Helper method to convert JSON string to domainObject.
      *
      * @param clazz      Class of the resulting object
      * @param jsonString JSON String to be converted

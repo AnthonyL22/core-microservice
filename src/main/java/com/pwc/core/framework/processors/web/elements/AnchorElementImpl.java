@@ -12,12 +12,10 @@ public class AnchorElementImpl implements MicroserviceWebElement {
 
     public static boolean applies(WebElement element) {
 
-        if (StringUtils.equalsIgnoreCase(element.getTagName(), WebElementType.SELECT.type) ||
-                StringUtils.equalsIgnoreCase(element.getTagName(), WebElementType.INPUT.type)) {
+        if (StringUtils.equalsIgnoreCase(element.getTagName(), WebElementType.SELECT.type) || StringUtils.equalsIgnoreCase(element.getTagName(), WebElementType.INPUT.type)) {
             return false;
         } else {
-            return (StringUtils.equalsIgnoreCase(element.getTagName(), WebElementType.ANCHOR.type) ||
-                    StringUtils.isNotBlank(element.getAttribute(WebElementAttribute.HREF.attribute)));
+            return (StringUtils.equalsIgnoreCase(element.getTagName(), WebElementType.ANCHOR.type) || StringUtils.isNotBlank(element.getAttribute(WebElementAttribute.HREF.attribute)));
         }
 
     }

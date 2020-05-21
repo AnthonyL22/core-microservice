@@ -45,54 +45,19 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class WebEventServiceTest extends WebElementBaseTest {
 
-    private static final String RAW_HTML = "<!DOCTYPE html>\n" +
-            "<html>\n" +
-            "<head lang=\"en\">\n" +
-            "    <meta charset=\"UTF-8\">\n" +
-            "    <title></title>\n" +
-            "</head>\n" +
-            "<body>\n" +
-            "\n" +
-            "<div id=\"777\">Hi there</div>\n" +
-            "<button id=\"saveButton\">Save Changes</button>\n" +
-            "</body>\n" +
-            "</html>";
+    private static final String RAW_HTML = "<!DOCTYPE html>\n" + "<html>\n" + "<head lang=\"en\">\n" + "    <meta charset=\"UTF-8\">\n" + "    <title></title>\n" + "</head>\n" + "<body>\n" + "\n"
+                    + "<div id=\"777\">Hi there</div>\n" + "<button id=\"saveButton\">Save Changes</button>\n" + "</body>\n" + "</html>";
 
-    private static final String TABLE_HTML = "<!DOCTYPE html>\n" +
-            "<html>\n" +
-            "<head lang=\"en\">\n" +
-            "    <meta charset=\"UTF-8\">\n" +
-            "    <title></title>\n" +
-            "</head>\n" +
-            "<body>\n" +
-            "\n" +
-            "<table id=\"datatable\" class=\"table dataTable no-footer dtr-inline display no-wrap collapse\" role=\"grid\" aria-describedby=\"datatable_info\">\n" +
-            "<thead>\n" +
-            "<tbody>\n" +
-            "<tr class=\"odd\" role=\"row\">\n" +
-            "<td class=\"sorting_1\">ABDC</td>\n" +
-            "<td>My Table Row Information Here</td>\n" +
-            "<td class=\" min-tablet-l\">John Do</td>\n" +
-            "<td class=\" desktop\">123456789</td>\n" +
-            "</tr>" +
-            "<tr class=\"even\" role=\"row\">\n" +
-            "<tr class=\"odd\" role=\"row\">\n" +
-            "<tr class=\"even\" role=\"row\">\n" +
-            "<tr class=\"odd\" role=\"row\">\n" +
-            "</tbody>\n" +
-            "</table>" +
-            "</html>";
+    private static final String TABLE_HTML = "<!DOCTYPE html>\n" + "<html>\n" + "<head lang=\"en\">\n" + "    <meta charset=\"UTF-8\">\n" + "    <title></title>\n" + "</head>\n" + "<body>\n" + "\n"
+                    + "<table id=\"datatable\" class=\"table dataTable no-footer dtr-inline display no-wrap collapse\" role=\"grid\" aria-describedby=\"datatable_info\">\n" + "<thead>\n" + "<tbody>\n"
+                    + "<tr class=\"odd\" role=\"row\">\n" + "<td class=\"sorting_1\">ABDC</td>\n" + "<td>My Table Row Information Here</td>\n" + "<td class=\" min-tablet-l\">John Do</td>\n"
+                    + "<td class=\" desktop\">123456789</td>\n" + "</tr>" + "<tr class=\"even\" role=\"row\">\n" + "<tr class=\"odd\" role=\"row\">\n" + "<tr class=\"even\" role=\"row\">\n"
+                    + "<tr class=\"odd\" role=\"row\">\n" + "</tbody>\n" + "</table>" + "</html>";
 
-    private static final String PARTIAL_HTML = "<!DOCTYPE html>\n" +
-            "<html>\n" +
-            "<head lang=\"en\">\n" +
-            "    <meta charset=\"UTF-8\">\n" +
-            "    >" +
-            "</html>";
-
+    private static final String PARTIAL_HTML = "<!DOCTYPE html>\n" + "<html>\n" + "<head lang=\"en\">\n" + "    <meta charset=\"UTF-8\">\n" + "    >" + "</html>";
     private static final String XPATH_LOCATOR = "//div[@id='777']";
     private static final String DEFAULT_URL = "https://mywebsite.com/";
-    private final String ALERT_TEXT = "This is a warning shot";
+    private static final String ALERT_TEXT = "This is a warning shot";
 
     private WebEventService webEventService;
 
@@ -119,8 +84,6 @@ public class WebEventServiceTest extends WebElementBaseTest {
     @Before
     public void setUp() {
 
-        Credentials mockCredentials = new Credentials("foo", "bar");
-
         webEventService = new WebEventService();
 
         WebElement mockWebElement = mock(WebElement.class);
@@ -146,7 +109,6 @@ public class WebEventServiceTest extends WebElementBaseTest {
         ELEMENT_XPATHS.add("//div[@id='777']");
 
         mockOptions = mock(WebDriver.Options.class);
-        Logs mockLogs = mock(Logs.class);
         mockWindow = mock(WebDriver.Window.class);
 
         mockTabNameCookie = mock(Cookie.class);
@@ -166,8 +128,8 @@ public class WebEventServiceTest extends WebElementBaseTest {
         when(mockJSessionIDCookie.getName()).thenReturn("JSESSIONID");
         when(mockJSessionIDCookie.getValue()).thenReturn("B98EDA58E524D5D3151E6CAD22CCEF3D.worker1");
         when(mockJSessionIDCookie.getDomain()).thenReturn(".mywebsite.com");
-        Date jSessionCookieExpireDate = DateUtils.getDateByOffset(0);
-        when(mockJSessionIDCookie.getExpiry()).thenReturn(jSessionCookieExpireDate);
+        Date cookieExpireDate = DateUtils.getDateByOffset(0);
+        when(mockJSessionIDCookie.getExpiry()).thenReturn(cookieExpireDate);
 
         mockEmptyCookies = new HashSet<>();
         mockCookies = new HashSet<>();
@@ -175,11 +137,13 @@ public class WebEventServiceTest extends WebElementBaseTest {
         mockCookies.add(mockJSessionIDCookie);
 
         webEventService.setUrl(DEFAULT_URL);
+        Credentials mockCredentials = new Credentials("foo", "bar");
         webEventService.setCredentials(mockCredentials);
 
         BasicCookieStore mockBasicCookieStore = mock(BasicCookieStore.class);
         webEventService.setCookieStore(mockBasicCookieStore);
 
+        Logs mockLogs = mock(Logs.class);
         when(mockOptions.logs()).thenReturn(mockLogs);
         when(mockWebDriverService.manage()).thenReturn(mockOptions);
         when(mockWebDriverService.manage().logs()).thenReturn(mockLogs);
@@ -311,8 +275,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
         when(mockOptions.getCookies()).thenReturn(mockCookies);
 
         doNothing().when(mockOptions).addCookie(mockTabNameCookie);
-        webEventService.addCookie(mockTabNameCookie.getName(), mockTabNameCookie.getValue(),
-                mockTabNameCookie.getDomain(), mockTabNameCookie.getPath(), 1, true);
+        webEventService.addCookie(mockTabNameCookie.getName(), mockTabNameCookie.getValue(), mockTabNameCookie.getDomain(), mockTabNameCookie.getPath(), 1, true);
     }
 
     @Test
@@ -322,23 +285,18 @@ public class WebEventServiceTest extends WebElementBaseTest {
         when(mockOptions.getCookies()).thenReturn(mockCookies);
 
         doNothing().when(mockOptions).addCookie(mockTabNameCookie);
-        webEventService.addCookie(mockTabNameCookie.getName(), mockTabNameCookie.getValue(),
-                mockTabNameCookie.getDomain(), mockTabNameCookie.getPath(), null, true);
+        webEventService.addCookie(mockTabNameCookie.getName(), mockTabNameCookie.getValue(), mockTabNameCookie.getDomain(), mockTabNameCookie.getPath(), null, true);
     }
 
     @Test
     public void modifyCookieTest() {
 
         when(mockWebDriverService.manage()).thenReturn(mockOptions);
-        when(mockOptions.getCookies()).
-                thenReturn(mockCookies).
-                thenReturn(mockEmptyCookies).
-                thenReturn(mockCookies);
+        when(mockOptions.getCookies()).thenReturn(mockCookies).thenReturn(mockEmptyCookies).thenReturn(mockCookies);
 
         doNothing().when(mockOptions).deleteCookie(mockTabNameCookie);
         doNothing().when(mockOptions).addCookie(mockTabNameCookie);
-        webEventService.modifyCookie(mockTabNameCookie.getName(), mockTabNameCookie.getValue(),
-                mockTabNameCookie.getDomain(), mockTabNameCookie.getPath(), null, true);
+        webEventService.modifyCookie(mockTabNameCookie.getName(), mockTabNameCookie.getValue(), mockTabNameCookie.getDomain(), mockTabNameCookie.getPath(), null, true);
     }
 
     @Test(expected = AssertionError.class)
@@ -882,7 +840,6 @@ public class WebEventServiceTest extends WebElementBaseTest {
 
     }
 
-
     @Test
     public void gridRowCountMatchingCountTest() {
         when(mockWebDriverService.getPageSource()).thenReturn(TABLE_HTML);
@@ -1396,7 +1353,8 @@ public class WebEventServiceTest extends WebElementBaseTest {
 
     @Test
     public void webElementBlurByElementXPathTest() {
-        when(mockWebDriverService.executeScript("(document.evaluate('.//*[@id='777']', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;).blur();")).thenReturn(specialMockWebElement);
+        when(mockWebDriverService.executeScript("(document.evaluate('.//*[@id='777']', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;).blur();"))
+                        .thenReturn(specialMockWebElement);
         webEventService.elementBlur(".//*[@id='777']");
     }
 
@@ -1410,7 +1368,6 @@ public class WebEventServiceTest extends WebElementBaseTest {
 
         webEventService.elementTextExists("777", "Save Button", false);
     }
-
 
     @Test(expected = AssertionError.class)
     public void elementTextExistsFindCheckboxTest() {

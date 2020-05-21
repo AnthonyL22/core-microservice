@@ -24,29 +24,31 @@ import static com.pwc.logging.service.LoggerService.LOG;
 public class JsonUtils {
 
     /**
-     * Create new <code>JsonPath</code> from JSON String representation
+     * Create new <code>JsonPath</code> from JSON String representation.
      *
      * @param json String of JSON
      * @return Hydrated JsonPath
      */
     public static JsonPath parseJson(final String json) {
+
         JsonPath jsonPath = new JsonPath(json);
         return jsonPath;
     }
 
     /**
-     * Create List representation of JSON
+     * Create List representation of JSON.
      *
      * @param json String of JSON
      * @return List representation of JSON
      */
     public static List<HashMap> getJsonList(final String json) {
+
         JsonPath jsonPath = new JsonPath(json);
         return jsonPath.getList("");
     }
 
     /**
-     * Create String representation of JSON from a Collection type
+     * Create String representation of JSON from a Collection type.
      *
      * @param obj List or Set collection object
      * @return String of JSON
@@ -67,12 +69,13 @@ public class JsonUtils {
     }
 
     /**
-     * Check if Object is valid JSON
+     * Check if Object is valid JSON.
      *
      * @param jsonInString JSON to check
      * @return valid JSON flag
      */
     public static boolean isJSONValid(Object jsonInString) {
+
         try {
             String json = jsonInString.toString();
             if (!json.contains(":")) {

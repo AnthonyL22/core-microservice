@@ -13,7 +13,7 @@ import static com.pwc.logging.service.LoggerService.LOG;
 public class FileUtils {
 
     /**
-     * Create new, empty file in the target/test-classes directory in your local workspace
+     * Create new, empty file in the target/test-classes directory in your local workspace.
      *
      * @param fileName file name
      */
@@ -22,7 +22,7 @@ public class FileUtils {
     }
 
     /**
-     * Create new file in the target/test-classes directory in your local workspace
+     * Create new file in the target/test-classes directory in your local workspace.
      *
      * @param fileName file name
      * @param content  content to write to disk
@@ -32,7 +32,7 @@ public class FileUtils {
     }
 
     /**
-     * Create new file in the specified directory in your local workspace
+     * Create new file in the specified directory in your local workspace.
      *
      * @param file     File to create
      * @param fileName file name
@@ -67,7 +67,7 @@ public class FileUtils {
     }
 
     /**
-     * Read any first file found in path matching the file name provided
+     * Read any first file found in path matching the file name provided.
      *
      * @param fileName file name
      * @return ArrayList of lines read from file
@@ -77,7 +77,7 @@ public class FileUtils {
     }
 
     /**
-     * Read any first file found in path matching the file name provided
+     * Read any first file found in path matching the file name provided.
      *
      * @param file     File to read
      * @param fileName file name to read
@@ -99,7 +99,7 @@ public class FileUtils {
     }
 
     /**
-     * Read any first file found in path matching the file provided
+     * Read any first file found in path matching the file provided.
      *
      * @param file File to read
      * @return ArrayList of lines read from file
@@ -116,7 +116,7 @@ public class FileUtils {
     }
 
     /**
-     * Copy file
+     * Copy file.
      *
      * @param sourceFileName source file to copy
      * @param targetFileName destination file to copy to
@@ -171,7 +171,7 @@ public class FileUtils {
     }
 
     /**
-     * Append file contents
+     * Append file contents.
      *
      * @param fileName        file to append to
      * @param contentToAppend contents to append
@@ -190,7 +190,7 @@ public class FileUtils {
     }
 
     /**
-     * Delete file from target dir
+     * Delete file from target dir.
      *
      * @param fileName file to delete
      */
@@ -199,7 +199,7 @@ public class FileUtils {
     }
 
     /**
-     * Delete file from target dir
+     * Delete file from target dir.
      *
      * @param file     file to delete
      * @param fileName file name to delete

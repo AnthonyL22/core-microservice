@@ -112,7 +112,7 @@ public abstract class MicroserviceTestSuite {
     }
 
     /**
-     * Set any system environment variables to default settings
+     * Set any system environment variables to default settings.
      */
     private void setEnvironmentDefaults() {
 
@@ -163,7 +163,7 @@ public abstract class MicroserviceTestSuite {
     }
 
     /**
-     * Initialize a web page with no default interaction. Typically used for SiteMinder log-in page
+     * Initialize a web page with no default interaction. Typically used for SiteMinder log-in page.
      *
      * @param credentials Credentials to authenticate with
      */
@@ -177,8 +177,7 @@ public abstract class MicroserviceTestSuite {
     }
 
     /**
-     * DOM action on an element that does not require any supporting
-     * data.  Typically a button click
+     * DOM action on an element that does not require any supporting data.  Typically a button click.
      *
      * @param elementIdentifier unique identifier for an element
      * @return time in milliseconds for mouse-based action
@@ -189,8 +188,7 @@ public abstract class MicroserviceTestSuite {
     }
 
     /**
-     * DOM action on an element that requires a true/false switch.  Typically,
-     * a checkbox or radio button element type
+     * DOM action on an element that requires a true/false switch.  Typically, a checkbox or radio button element type.
      *
      * @param elementIdentifier unique identifier for an element
      * @param attributeValue    toggled state of an element
@@ -202,7 +200,7 @@ public abstract class MicroserviceTestSuite {
     }
 
     /**
-     * DOM action for all elements
+     * DOM action for all elements.
      *
      * @param elementIdentifier unique identifier for an element
      * @param attributeValue    element value to alter in the active DOM
@@ -228,7 +226,7 @@ public abstract class MicroserviceTestSuite {
 
     /**
      * Mobile action on an element that does not require any supporting
-     * data.  Typically a button click
+     * data.  Typically a button click.
      *
      * @param elementIdentifier unique identifier for an mobile element
      * @return tuple with MobileElement and time in milliseconds for action
@@ -240,7 +238,7 @@ public abstract class MicroserviceTestSuite {
 
     /**
      * Mobile action on an element that requires a true/false switch.  Typically,
-     * a checkbox or radio button element type
+     * a checkbox or radio button element type.
      *
      * @param elementIdentifier unique identifier for an mobile element
      * @param gesture           gesture to use
@@ -252,7 +250,7 @@ public abstract class MicroserviceTestSuite {
     }
 
     /**
-     * Mobile action for all Mobile elements
+     * Mobile action for all Mobile elements.
      *
      * @param elementIdentifier unique identifier for an mobile element
      * @param gesture           gesture to use
@@ -292,13 +290,14 @@ public abstract class MicroserviceTestSuite {
     }
 
     /**
-     * Initialize a headless page based on user defined URL.  Typically used for testing custom web page endpoints
+     * Initialize a headless page based on user defined URL.  Typically used for testing custom web page endpoints.
      *
      * @param credentials Credentials to authenticate with
      * @param url         web service URL
      * @return http/web service response
      */
     protected Object httpAction(final Credentials credentials, final String url) {
+
         if (webServiceController == null) {
             webServiceController = (WebServiceController) ctx.getBean("webServiceController");
         }
@@ -307,13 +306,14 @@ public abstract class MicroserviceTestSuite {
 
     /**
      * Initialize a headless page based on user defined URL that returns all HTML for the given request.
-     * Typically used for testing custom web page endpoints
+     * Typically used for testing custom web page endpoints.
      *
      * @param credentials nullable Credentials to authenticate with
      * @param url         web service URL
      * @return HTML for the given URL
      */
     protected String htmlAction(final Credentials credentials, final String url) {
+
         if (webServiceController == null) {
             webServiceController = (WebServiceController) ctx.getBean("webServiceController");
         }
@@ -322,13 +322,14 @@ public abstract class MicroserviceTestSuite {
 
     /**
      * Initialize a headless page based on the web.services.url property defined in automation.properties file.
-     * Typically used for testing a single page endpoint(s)
+     * Typically used for testing a single page endpoint(s).
      *
      * @param credentials Credentials to authenticate with
      * @param url         web service URL
      * @return web service response
      */
     protected Object webServiceAction(final Credentials credentials, final String url) {
+
         if (webServiceController == null) {
             webServiceController = (WebServiceController) ctx.getBean("webServiceController");
         }
@@ -336,23 +337,25 @@ public abstract class MicroserviceTestSuite {
     }
 
     /**
-     * Send a REST ws action to a service End Point
+     * Send a REST ws action to a service End Point.
      *
      * @param command BaseGetCommand command type
      * @return web service response
      */
     protected Object webServiceAction(final WebServiceCommand command) {
+
         return webServiceAction(command, null);
     }
 
     /**
-     * Send a REST ws action to a service End Point
+     * Send a REST ws action to a service End Point.
      *
      * @param command     BaseGetCommand command type
      * @param requestBody POST request body
      * @return web service response
      */
     protected Object webServiceAction(final WebServiceCommand command, final Object requestBody) {
+
         if (requestBody instanceof HashMap || requestBody instanceof List) {
             return webServiceAction(command, null, requestBody);
         } else {
@@ -361,18 +364,19 @@ public abstract class MicroserviceTestSuite {
     }
 
     /**
-     * Send a REST ws action to a service End Point
+     * Send a REST ws action to a service End Point.
      *
      * @param command      BaseGetCommand command type
      * @param parameterMap Name-Value pair filled map of parameters to send in HTTP request
      * @return web service response
      */
     protected Object webServiceAction(final WebServiceCommand command, final HashMap<String, Object> parameterMap) {
+
         return webServiceAction((Credentials) null, command, null, parameterMap);
     }
 
     /**
-     * Send a REST ws action to a service End Point
+     * Send a REST ws action to a service End Point.
      *
      * @param command       BaseGetCommand command type
      * @param pathParameter web service path parameter(s)
@@ -380,22 +384,24 @@ public abstract class MicroserviceTestSuite {
      * @return web service response
      */
     protected Object webServiceAction(final WebServiceCommand command, final Object pathParameter, final Object parameter) {
+
         return webServiceAction((Credentials) null, command, pathParameter, parameter);
     }
 
     /**
-     * Send a REST ws action to a service End Point
+     * Send a REST ws action to a service End Point.
      *
      * @param credentials Credentials to authenticate with
      * @param command     BaseGetCommand command type
      * @return web service response
      */
     protected Object webServiceAction(final Credentials credentials, final WebServiceCommand command) {
+
         return webServiceAction(credentials, command, null);
     }
 
     /**
-     * Send a REST ws action to a service End Point
+     * Send a REST ws action to a service End Point.
      *
      * @param credentials Credentials to authenticate with
      * @param command     BaseGetCommand command type
@@ -403,6 +409,7 @@ public abstract class MicroserviceTestSuite {
      * @return web service response
      */
     protected Object webServiceAction(final Credentials credentials, final WebServiceCommand command, final Object requestBody) {
+
         if (requestBody instanceof HashMap || requestBody instanceof List) {
             return webServiceAction(credentials, command, null, requestBody);
         } else {
@@ -411,7 +418,7 @@ public abstract class MicroserviceTestSuite {
     }
 
     /**
-     * Send a REST ws action to a service End Point
+     * Send a REST ws action to a service End Point.
      *
      * @param credentials  Credentials to authenticate with
      * @param command      BaseGetCommand command type
@@ -419,11 +426,12 @@ public abstract class MicroserviceTestSuite {
      * @return web service response
      */
     protected Object webServiceAction(final Credentials credentials, final WebServiceCommand command, final HashMap<String, Object> parameterMap) {
+
         return webServiceAction(credentials, command, null, parameterMap);
     }
 
     /**
-     * Send a REST ws action to a service End Point
+     * Send a REST ws action to a service End Point.
      *
      * @param credentials   Credentials to authenticate with
      * @param command       BaseGetCommand command type
@@ -432,6 +440,7 @@ public abstract class MicroserviceTestSuite {
      * @return web service response
      */
     protected Object webServiceAction(final Credentials credentials, final WebServiceCommand command, final Object pathParameter, final Object parameter) {
+
         if (webServiceController == null) {
             webServiceController = (WebServiceController) ctx.getBean("webServiceController");
         }
@@ -439,73 +448,77 @@ public abstract class MicroserviceTestSuite {
     }
 
     /**
-     * Send a REST ws action to a service End Point
+     * Send a REST ws action to a service End Point.
      *
-     * @param oAuthKey OAuth key
-     * @param command  BaseGetCommand command type
+     * @param authKey OAuth key
+     * @param command BaseGetCommand command type
      * @return web service response
      */
-    protected Object webServiceAction(final OAuthKey oAuthKey, final WebServiceCommand command) {
-        return webServiceAction(oAuthKey, command, null);
+    protected Object webServiceAction(final OAuthKey authKey, final WebServiceCommand command) {
+
+        return webServiceAction(authKey, command, null);
     }
 
     /**
-     * Send a REST ws action to a service End Point
+     * Send a REST ws action to a service End Point.
      *
-     * @param oAuthKey    OAuth key
+     * @param authKey     OAuth key
      * @param command     BaseGetCommand command type
      * @param requestBody POST request body
      * @return web service response
      */
-    protected Object webServiceAction(final OAuthKey oAuthKey, final WebServiceCommand command, final Object requestBody) {
+    protected Object webServiceAction(final OAuthKey authKey, final WebServiceCommand command, final Object requestBody) {
+
         if (requestBody instanceof HashMap || requestBody instanceof List) {
-            return webServiceAction(oAuthKey, command, null, requestBody);
+            return webServiceAction(authKey, command, null, requestBody);
         } else {
-            return webServiceAction(oAuthKey, command, requestBody, null);
+            return webServiceAction(authKey, command, requestBody, null);
         }
     }
 
     /**
-     * Send a REST ws action to a service End Point
+     * Send a REST ws action to a service End Point.
      *
-     * @param oAuthKey     OAuth key
+     * @param authKey      OAuth key
      * @param command      BaseGetCommand command type
      * @param parameterMap Name-Value pair filled map of parameters to send in HTTP request
      * @return web service response
      */
-    protected Object webServiceAction(final OAuthKey oAuthKey, final WebServiceCommand command, final HashMap<String, Object> parameterMap) {
-        return webServiceAction(oAuthKey, command, null, parameterMap);
+    protected Object webServiceAction(final OAuthKey authKey, final WebServiceCommand command, final HashMap<String, Object> parameterMap) {
+
+        return webServiceAction(authKey, command, null, parameterMap);
     }
 
     /**
-     * Send a REST ws action to a service End Point
+     * Send a REST ws action to a service End Point.
      *
-     * @param oAuthKey      OAuth key
+     * @param authKey       OAuth key
      * @param command       BaseGetCommand command type
      * @param pathParameter web service path parameter(s)
      * @param parameter     HashMap or simple request body arg to send in HTTP request
      * @return web service response
      */
-    protected Object webServiceAction(final OAuthKey oAuthKey, final WebServiceCommand command, final Object pathParameter, final Object parameter) {
+    protected Object webServiceAction(final OAuthKey authKey, final WebServiceCommand command, final Object pathParameter, final Object parameter) {
         if (webServiceController == null) {
             webServiceController = (WebServiceController) ctx.getBean("webServiceController");
         }
-        return webServiceController.webServiceAction(oAuthKey, command, pathParameter, parameter);
+        return webServiceController.webServiceAction(authKey, command, pathParameter, parameter);
     }
 
     /**
-     * Send a REST ws action to a service End Point
+     * Send a REST ws action to a service End Point.
      *
      * @param headerKeysMap map of header key/value pairs necessary for authorization
      * @param command       BaseGetCommand command type
      * @return web service response
      */
     protected Object webServiceAction(final HeaderKeysMap headerKeysMap, final WebServiceCommand command) {
+
         return webServiceAction(headerKeysMap, command, null);
     }
 
     /**
-     * Send a REST ws action to a service End Point
+     * Send a REST ws action to a service End Point.
      *
      * @param headerKeysMap map of header key/value pairs necessary for authorization
      * @param command       BaseGetCommand command type
@@ -513,6 +526,7 @@ public abstract class MicroserviceTestSuite {
      * @return web service response
      */
     protected Object webServiceAction(final HeaderKeysMap headerKeysMap, final WebServiceCommand command, final Object requestBody) {
+
         if (requestBody instanceof HashMap || requestBody instanceof List) {
             return webServiceAction(headerKeysMap, command, null, requestBody);
         } else {
@@ -521,7 +535,7 @@ public abstract class MicroserviceTestSuite {
     }
 
     /**
-     * Send a REST ws action to a service End Point
+     * Send a REST ws action to a service End Point.
      *
      * @param headerKeysMap map of header key/value pairs necessary for authorization
      * @param command       BaseGetCommand command type
@@ -529,11 +543,12 @@ public abstract class MicroserviceTestSuite {
      * @return web service response
      */
     protected Object webServiceAction(final HeaderKeysMap headerKeysMap, final WebServiceCommand command, final HashMap<String, Object> parameterMap) {
+
         return webServiceAction(headerKeysMap, command, null, parameterMap);
     }
 
     /**
-     * Send a REST ws action to a service End Point
+     * Send a REST ws action to a service End Point.
      *
      * @param headerKeysMap map of header key/value pairs necessary for authorization
      * @param command       BaseGetCommand command type
@@ -542,6 +557,7 @@ public abstract class MicroserviceTestSuite {
      * @return web service response
      */
     protected Object webServiceAction(final HeaderKeysMap headerKeysMap, final WebServiceCommand command, final Object pathParameter, final Object parameter) {
+
         if (webServiceController == null) {
             webServiceController = (WebServiceController) ctx.getBean("webServiceController");
         }
@@ -549,18 +565,19 @@ public abstract class MicroserviceTestSuite {
     }
 
     /**
-     * Send a REST ws action to a service End Point
+     * Send a REST ws action to a service End Point.
      *
      * @param smSessionKey SMSESSION key
      * @param command      BaseGetCommand command type
      * @return web service response
      */
     protected Object webServiceAction(final SmSessionKey smSessionKey, final WebServiceCommand command) {
+
         return webServiceAction(smSessionKey, command, null);
     }
 
     /**
-     * Send a REST ws action to a service End Point
+     * Send a REST ws action to a service End Point.
      *
      * @param smSessionKey SMSESSION key
      * @param command      BaseGetCommand command type
@@ -568,6 +585,7 @@ public abstract class MicroserviceTestSuite {
      * @return web service response
      */
     protected Object webServiceAction(final SmSessionKey smSessionKey, final WebServiceCommand command, final Object requestBody) {
+
         if (requestBody instanceof HashMap || requestBody instanceof List) {
             return webServiceAction(smSessionKey, command, null, requestBody);
         } else {
@@ -576,7 +594,7 @@ public abstract class MicroserviceTestSuite {
     }
 
     /**
-     * Send a REST ws action to a service End Point
+     * Send a REST ws action to a service End Point.
      *
      * @param smSessionKey SMSESSION key
      * @param command      BaseGetCommand command type
@@ -584,11 +602,12 @@ public abstract class MicroserviceTestSuite {
      * @return web service response
      */
     protected Object webServiceAction(final SmSessionKey smSessionKey, final WebServiceCommand command, final HashMap<String, Object> parameterMap) {
+
         return webServiceAction(smSessionKey, command, null, parameterMap);
     }
 
     /**
-     * Send a REST ws action to a service End Point
+     * Send a REST ws action to a service End Point.
      *
      * @param smSessionKey  SMSESSION key
      * @param command       BaseGetCommand command type
@@ -597,6 +616,7 @@ public abstract class MicroserviceTestSuite {
      * @return web service response
      */
     protected Object webServiceAction(final SmSessionKey smSessionKey, final WebServiceCommand command, final Object pathParameter, final Object parameter) {
+
         if (webServiceController == null) {
             webServiceController = (WebServiceController) ctx.getBean("webServiceController");
         }
@@ -604,13 +624,14 @@ public abstract class MicroserviceTestSuite {
     }
 
     /**
-     * Ability to update, insert, delete, and query the database under test
+     * Ability to update, insert, delete, and query the database under test.
      *
      * @param sqlCommand      Parameter-decorated SQL Statement
      * @param queryParameters query parameters for substitution
      * @return result set
      */
     protected Object databaseAction(final DatabaseCommand sqlCommand, final Object... queryParameters) {
+
         if (databaseController == null) {
             databaseController = (DatabaseController) ctx.getBean("databaseController");
         }
@@ -627,6 +648,7 @@ public abstract class MicroserviceTestSuite {
      * @return result potentially a List of Maps
      */
     protected Object databaseAction(final DatabaseCommand sqlCommand, boolean includeColumns) {
+
         if (databaseController == null) {
             databaseController = (DatabaseController) ctx.getBean("databaseController");
         }
@@ -635,13 +657,14 @@ public abstract class MicroserviceTestSuite {
     }
 
     /**
-     * Ability to query a MongoDB database under test
+     * Ability to query a MongoDB database under test.
      *
      * @param collectionName database collection name
      * @param query          BasicDBObject query
      * @return DBCursor database result cursor
      */
     protected DBCursor databaseAction(final String collectionName, final BasicDBObject query) {
+
         if (databaseController == null) {
             databaseController = (DatabaseController) ctx.getBean("databaseController");
         }
@@ -651,9 +674,10 @@ public abstract class MicroserviceTestSuite {
 
     /**
      * Set the assertion to be either HARD or SOFT assertions based on automation.properties file settings for
-     * the profile under test
+     * the profile under test.
      */
     private void setUpAssertionModel() {
+
         assertService = (AssertService) ctx.getBean("assertService");
         StringBuilder props = new StringBuilder("config/");
         props.append(System.getProperty(FrameworkConstants.AUTOMATION_TEST_ENVIRONMENT));

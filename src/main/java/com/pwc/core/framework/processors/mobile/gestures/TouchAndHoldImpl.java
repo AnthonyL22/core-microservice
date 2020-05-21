@@ -26,12 +26,12 @@ public class TouchAndHoldImpl {
             ObjectMapper mapper = new ObjectMapper();
             mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
             if (null == touchAndHoldParameters) {
-                touchAndHoldParameters = TouchAndHold.builder()  //
-                        .element(element.getId())  //
-                        .duration(3.0f)  //
-                        .x(1.0f)  //
-                        .y(1.0f)  //
-                        .build();
+                touchAndHoldParameters = TouchAndHold.builder() //
+                                .element(element.getId()) //
+                                .duration(3.0f) //
+                                .x(1.0f) //
+                                .y(1.0f) //
+                                .build();
             } else {
                 touchAndHoldParameters.setElement(element.getId());
             }

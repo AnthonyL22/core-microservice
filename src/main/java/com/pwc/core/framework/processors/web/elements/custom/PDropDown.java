@@ -29,7 +29,7 @@ public class PDropDown {
     }
 
     /**
-     * Select an item by its visible text in the p-dropdown list
+     * Select an item by its visible text in the p-dropdown list.
      *
      * @param text text option to select
      */
@@ -52,7 +52,7 @@ public class PDropDown {
     }
 
     /**
-     * Select an item by its index in the p-dropdown list
+     * Select an item by its index in the p-dropdown list.
      *
      * @param dropDownIndex index to select
      */
@@ -61,8 +61,7 @@ public class PDropDown {
         WebElement option;
         List allOptions = this.getOptions();
 
-        if (allOptions.isEmpty() || dropDownIndex < 0 ||
-                allOptions.size() == dropDownIndex || dropDownIndex > allOptions.size()) {
+        if (allOptions.isEmpty() || dropDownIndex < 0 || allOptions.size() == dropDownIndex || dropDownIndex > allOptions.size()) {
             throw new NoSuchElementException("Cannot locate option with index: " + dropDownIndex);
         } else {
             option = (WebElement) allOptions.get(dropDownIndex);
@@ -71,7 +70,7 @@ public class PDropDown {
     }
 
     /**
-     * Get all list items in the inner child ordered or unordered list
+     * Get all list items in the inner child ordered or unordered list.
      *
      * @return list of list items
      */

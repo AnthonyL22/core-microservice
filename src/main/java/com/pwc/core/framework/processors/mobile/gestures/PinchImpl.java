@@ -26,11 +26,11 @@ public class PinchImpl {
             ObjectMapper mapper = new ObjectMapper();
             mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
             if (null == pinchParameters) {
-                pinchParameters = Pinch.builder()  //
-                        .element(element.getId())  //
-                        .scale(0.1f)  //
-                        .velocity(1.1f)  //
-                        .build();
+                pinchParameters = Pinch.builder() //
+                                .element(element.getId()) //
+                                .scale(0.1f) //
+                                .velocity(1.1f) //
+                                .build();
             } else {
                 pinchParameters.setElement(element.getId());
             }

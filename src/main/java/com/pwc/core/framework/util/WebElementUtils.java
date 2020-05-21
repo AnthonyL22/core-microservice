@@ -5,7 +5,7 @@ import org.openqa.selenium.WebElement;
 public class WebElementUtils {
 
     /**
-     * Utility method which returns the XPATH for a given WebElement
+     * Utility method which returns the XPATH for a given WebElement.
      *
      * @param webElement WebElement to interrogate it's xPath out of
      * @return webElement xPath of WebElement

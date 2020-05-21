@@ -33,7 +33,7 @@ public class GridUtils {
     public static final String DEFAULT_OSX_PLATFORM_STRING = "OS X 10.11";
 
     /**
-     * Get and set the browser type potentially defined by the user
+     * Get and set the browser type potentially defined by the user.
      */
     public static void initBrowserType() {
 
@@ -104,7 +104,7 @@ public class GridUtils {
     }
 
     /**
-     * Get the Browser version in which the user would like to run against
+     * Get the Browser version in which the user would like to run against.
      *
      * @return cleaned version number
      */
@@ -135,7 +135,7 @@ public class GridUtils {
     }
 
     /**
-     * Get the Platform name in which the user would like to run on
+     * Get the Platform name in which the user would like to run on.
      *
      * @return Platform name
      */
@@ -165,10 +165,6 @@ public class GridUtils {
                     return property;
                 }
             }
-
-            /**
-             * if osx is set then use 'os x VERSION here"
-             */
 
             platformMatcher = LINUX_PLATFORMS_REGEX.matcher(property);
             if (platformMatcher.find()) {
@@ -227,13 +223,14 @@ public class GridUtils {
 
     /**
      * Get the Browser resolution in which the user would like to run against based on
-     * seven common resolutions currently supported
+     * seven common resolutions currently supported.
      * <p>
      * Default resolution is 1024 x 768
      *
      * @return matching browser resolution
      */
     public static String initBrowserResolution() {
+
         String property = StringUtils.remove(StringUtils.trim(StringUtils.lowerCase(System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_RESOLUTION_PROPERTY))), " ");
         if (StringUtils.isEmpty(property)) {
             return FrameworkConstants.BROWSER_RESOLUTION_DEFAULT;
@@ -295,13 +292,14 @@ public class GridUtils {
     }
 
     /**
-     * Get the Timezone in which the user would like to run tests in on the Sauce Labs VMs
+     * Get the Timezone in which the user would like to run tests in on the Sauce Labs VMs.
      * <p>
      * Default resolution is "Los Angeles"
      *
      * @return matching browser resolution
      */
     public static String initTimeZone() {
+
         String property = System.getProperty(FrameworkConstants.AUTOMATION_TIME_ZONE_ENVIRONMENT);
         if (isValidTimeZone(property)) {
             property = StringUtils.replace(StringUtils.trim(property), "_", " ");
@@ -315,15 +313,17 @@ public class GridUtils {
     }
 
     /**
-     * Validate if the timezone entered is valid
+     * Validate if the timezone entered is valid.
      *
      * @param id time zone entered
      * @return true/false is valid
      */
     private static boolean isValidTimeZone(String id) {
+
         for (String timeZoneId : TimeZone.getAvailableIDs()) {
-            if (timeZoneId.equals(id))
+            if (timeZoneId.equals(id)) {
                 return true;
+            }
         }
         return false;
     }

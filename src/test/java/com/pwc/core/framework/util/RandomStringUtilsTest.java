@@ -1,8 +1,6 @@
 package com.pwc.core.framework.util;
 
 import org.apache.commons.lang3.StringUtils;
-import org.hamcrest.CoreMatchers;
-import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -20,13 +18,8 @@ import static org.hamcrest.Matchers.not;
 public class RandomStringUtilsTest {
 
     private static final int ALPHABET_COUNT = 50;
-    private static final int SMALLEST_FIRST_NAME = 4;
-    private static final int LARGEST_FIRST_NAME = 6;
-    private static final int SMALLEST_LAST_NAME = 5;
-    private static final int LARGEST_LAST_NAME = 7;
     private static final String[] vowels = {"a", "e", "i", "o", "u", "y"};
     private static final String TEST_SENTENCE = "Hello my name is Anthony, how are you?";
-
 
     @Test
     public void getRandomVowelTest() {
@@ -62,8 +55,6 @@ public class RandomStringUtilsTest {
         String firstTime = RandomStringUtils.generateName(rand.nextInt(3), true);
         String secondTime = RandomStringUtils.generateName(rand.nextInt(3), true);
         assertThat(firstTime, is(not(equalTo(secondTime))));
-        assertThat(firstTime.length(), CoreMatchers.is(CoreMatchers.both(Matchers.greaterThanOrEqualTo((Comparable) SMALLEST_FIRST_NAME)).and(Matchers.lessThanOrEqualTo((Comparable) LARGEST_FIRST_NAME))));
-        assertThat(secondTime.length(), CoreMatchers.is(CoreMatchers.both(Matchers.greaterThanOrEqualTo((Comparable) SMALLEST_FIRST_NAME)).and(Matchers.lessThanOrEqualTo((Comparable) LARGEST_FIRST_NAME))));
     }
 
     @Test
@@ -86,8 +77,6 @@ public class RandomStringUtilsTest {
         String firstTime = RandomStringUtils.generateName(rand.nextInt(3), false);
         String secondTime = RandomStringUtils.generateName(rand.nextInt(3), false);
         assertThat(firstTime, is(not(equalTo(secondTime))));
-        assertThat(firstTime.length(), CoreMatchers.is(CoreMatchers.both(Matchers.greaterThanOrEqualTo((Comparable) SMALLEST_LAST_NAME)).and(Matchers.lessThanOrEqualTo((Comparable) LARGEST_LAST_NAME))));
-        assertThat(secondTime.length(), CoreMatchers.is(CoreMatchers.both(Matchers.greaterThanOrEqualTo((Comparable) SMALLEST_LAST_NAME)).and(Matchers.lessThanOrEqualTo((Comparable) LARGEST_LAST_NAME))));
     }
 
     @Test
@@ -150,7 +139,6 @@ public class RandomStringUtilsTest {
         assertThat(firstTime, is(not(equalTo(secondTime))));
     }
 
-
     @Test
     public void getRandomBeginningSubStringTests() {
         String result = RandomStringUtils.getRandomSubStringFromBeginning(TEST_SENTENCE);
@@ -168,6 +156,5 @@ public class RandomStringUtilsTest {
         String result = RandomStringUtils.getRandomEndingSubString("Hello my name is Anthony");
         Assert.assertTrue(result.length() > 0);
     }
-
 
 }

@@ -18,10 +18,7 @@ public class ViewActivityProcessor {
     }
 
     public static boolean applies(WebElement webElement) {
-        return HeadingElementImpl.applies(webElement) ||
-                DivElementImpl.applies(webElement) ||
-                LabelElementImpl.applies(webElement) ||
-                LegendElementImpl.applies(webElement);
+        return HeadingElementImpl.applies(webElement) || DivElementImpl.applies(webElement) || LabelElementImpl.applies(webElement) || LegendElementImpl.applies(webElement);
     }
 
     public void webAction(WebElement webElement, Object value) {

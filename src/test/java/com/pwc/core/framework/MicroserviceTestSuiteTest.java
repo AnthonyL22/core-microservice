@@ -82,8 +82,7 @@ public class MicroserviceTestSuiteTest extends MicroserviceTestSuiteBaseTest {
 
     private enum QueryCommand implements DatabaseCommand {
 
-        QUERY_USER_NAME_BY_ID("select * from user_name where id = ?"),
-        QUERY_USER_NAME("select * from user_name");
+        QUERY_USER_NAME_BY_ID("select * from user_name where id = ?"), QUERY_USER_NAME("select * from user_name");
 
         private String sqlStatement;
 
@@ -181,16 +180,16 @@ public class MicroserviceTestSuiteTest extends MicroserviceTestSuiteBaseTest {
     public void databaseActionTest() {
         databaseController = mockDatabaseController;
         when(databaseController.getDatabaseEventService()).thenReturn(mockDatabaseEventService);
-        when(mockDatabaseEventService.executeParameterQuery(SQL_TEMPLATE_QUERY, new Object[]{1})).thenReturn(new Object());
+        when(mockDatabaseEventService.executeParameterQuery(SQL_TEMPLATE_QUERY, new Object[] {1})).thenReturn(new Object());
         databaseAction(QueryCommand.QUERY_USER_NAME_BY_ID, 1);
-        verify(mockDatabaseEventService, times(1)).executeParameterQuery(SQL_TEMPLATE_QUERY, new Object[]{1});
+        verify(mockDatabaseEventService, times(1)).executeParameterQuery(SQL_TEMPLATE_QUERY, new Object[] {1});
     }
 
     @Test(expected = NullPointerException.class)
     public void databaseActionNullControllerTest() {
-        when(mockDatabaseEventService.executeParameterQuery(SQL_TEMPLATE_QUERY, new Object[]{1})).thenReturn(new Object());
+        when(mockDatabaseEventService.executeParameterQuery(SQL_TEMPLATE_QUERY, new Object[] {1})).thenReturn(new Object());
         databaseAction(QueryCommand.QUERY_USER_NAME_BY_ID, 1);
-        verify(mockDatabaseEventService, times(0)).executeParameterQuery(SQL_TEMPLATE_QUERY, new Object[]{1});
+        verify(mockDatabaseEventService, times(0)).executeParameterQuery(SQL_TEMPLATE_QUERY, new Object[] {1});
     }
 
     @Test(expected = NullPointerException.class)
@@ -248,16 +247,14 @@ public class MicroserviceTestSuiteTest extends MicroserviceTestSuiteBaseTest {
     public void setUpClassDefaultSystemUnderTest() {
         System.setProperty(FrameworkConstants.AUTOMATION_TEST_ENVIRONMENT, "");
         setUpClass();
-        Assert.assertEquals(System.getProperty(FrameworkConstants.AUTOMATION_TEST_ENVIRONMENT),
-                FrameworkConstants.DEV_ENVIRONMENT_KEY, "Verify default env is DEV");
+        Assert.assertEquals(System.getProperty(FrameworkConstants.AUTOMATION_TEST_ENVIRONMENT), FrameworkConstants.DEV_ENVIRONMENT_KEY, "Verify default env is DEV");
     }
 
     @Test
     public void setUpClassDefinedSystemUnderTest() {
         System.setProperty(FrameworkConstants.AUTOMATION_TEST_ENVIRONMENT, "FOOBAR");
         setUpClass();
-        Assert.assertEquals(System.getProperty(FrameworkConstants.AUTOMATION_TEST_ENVIRONMENT),
-                "FOOBAR", "Verify default env is DEV");
+        Assert.assertEquals(System.getProperty(FrameworkConstants.AUTOMATION_TEST_ENVIRONMENT), "FOOBAR", "Verify default env is DEV");
     }
 
     @Test

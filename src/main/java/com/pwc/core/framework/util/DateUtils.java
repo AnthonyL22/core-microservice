@@ -12,7 +12,7 @@ import java.util.TimeZone;
 public class DateUtils {
 
     /**
-     * Switch the date format from one pattern to another pattern
+     * Switch the date format from one pattern to another pattern.
      *
      * @param sourceDateTime source date/time value
      * @param sourceFormat   Originating date/time Pattern
@@ -35,7 +35,7 @@ public class DateUtils {
     }
 
     /**
-     * Utility method which returns a Date and time <code>String</code> for a specified DATE offset
+     * Utility method which returns a Date and time <code>String</code> for a specified DATE offset.
      *
      * @param dateOffset date and time offset
      * @return dateOffset date and time
@@ -46,7 +46,7 @@ public class DateUtils {
     }
 
     /**
-     * Utility method which returns a Date and time <code>String</code> for a specified DATE offset
+     * Utility method which returns a Date and time <code>String</code> for a specified DATE offset.
      *
      * @param dateOffset date and time offset
      * @param pattern    date/time pattern
@@ -58,7 +58,7 @@ public class DateUtils {
     }
 
     /**
-     * Utility method which returns a Date and time <code>String</code> for a specified DATE offset
+     * Utility method which returns a Date and time <code>String</code> for a specified DATE offset.
      *
      * @param pattern date/time pattern
      * @return offset date and time offset
@@ -70,7 +70,7 @@ public class DateUtils {
 
     /**
      * Utility method which returns a Date and time <code>String</code> for a specified DATE offset in a
-     * given date formatted pattern for a particular TimeZone <code>String</code>
+     * given date formatted pattern for a particular TimeZone <code>String</code>.
      *
      * @param pattern  date/time pattern
      * @param timeZone timezone to use for date generation
@@ -83,7 +83,7 @@ public class DateUtils {
 
     /**
      * Utility method which returns a Date and time <code>String</code> for a specified DATE offset in a
-     * given date formatted pattern for a particular TimeZone <code>String</code>
+     * given date formatted pattern for a particular TimeZone <code>String</code>.
      *
      * @param pattern    date/time pattern
      * @param timeZone   timezone to use for date generation
@@ -134,7 +134,7 @@ public class DateUtils {
     }
 
     /**
-     * Utility method which returns a Date and time <code>Date</code> for a specified DATE offset
+     * Utility method which returns a Date and time <code>Date</code> for a specified DATE offset.
      *
      * @param dateOffset date and time offset
      * @return dateOffset date and time

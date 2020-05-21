@@ -190,7 +190,8 @@ public class EmailUtils {
     public static void deleteSingleMailSacEmailMessage(final MailSacEmail emailToDelete) {
 
         try {
-            JsonPath response = (JsonPath) executeDelete(MAILSAC_URL, String.format("%s/%s/%s/%s", CommonField.ADDRESSES.value(), emailToDelete.getOriginalInbox(), CommonField.MESSAGES.value(), emailToDelete.get_id()));
+            JsonPath response = (JsonPath) executeDelete(MAILSAC_URL,
+                            String.format("%s/%s/%s/%s", CommonField.ADDRESSES.value(), emailToDelete.getOriginalInbox(), CommonField.MESSAGES.value(), emailToDelete.get_id()));
             JsonPath entity = new JsonPath(response.get(FrameworkConstants.HTTP_ENTITY_KEY).toString());
             String message = entity.get(CommonField.MESSAGE.value());
             LOG(true, "%s (%s) - %s", emailToDelete.getOriginalInbox(), emailToDelete.get_id(), message);
@@ -277,7 +278,7 @@ public class EmailUtils {
     }
 
     /**
-     * Singleton WebServiceProcessor provider
+     * Singleton WebServiceProcessor provider.
      *
      * @return one WebServiceProcessor
      */

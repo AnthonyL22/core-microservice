@@ -11,8 +11,8 @@ import static com.pwc.logging.service.LoggerService.LOG;
 public class RadioButtonElementImpl implements MicroserviceWebElement {
 
     public static boolean applies(WebElement element) {
-        return StringUtils.equalsIgnoreCase(element.getTagName(), WebElementType.INPUT.type) &&
-                StringUtils.equalsIgnoreCase(element.getAttribute(WebElementAttribute.TYPE.attribute), WebElementType.RADIO.type);
+        return StringUtils.equalsIgnoreCase(element.getTagName(), WebElementType.INPUT.type)
+                        && StringUtils.equalsIgnoreCase(element.getAttribute(WebElementAttribute.TYPE.attribute), WebElementType.RADIO.type);
     }
 
     public void webAction(final WebElement webElement, final Object state) {

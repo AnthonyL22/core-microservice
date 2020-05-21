@@ -78,7 +78,7 @@ public class ExcelUtils {
     }
 
     /**
-     * Read .xls row data
+     * Read .xls row data.
      *
      * @param fileName    file name to read
      * @param sheetName   sheet name to interrogate
@@ -125,7 +125,7 @@ public class ExcelUtils {
     }
 
     /**
-     * Read .xls column data
+     * Read .xls column data.
      *
      * @param fileName       file name to read
      * @param sheetName      sheet name to interrogate

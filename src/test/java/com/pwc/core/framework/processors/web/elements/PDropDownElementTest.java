@@ -20,7 +20,7 @@ public class PDropDownElementTest extends WebElementBaseTest {
 
     private static final String DROP_DOWN_VALUE = "Unit Test Name";
     private static final String P_DROP_DOWN_MULTI_SELECT_VALUE = "A, B, C, D";
-    private PDropDownElementImpl pDropDownElement;
+    private static PDropDownElementImpl pDropDownElement;
 
     @Before
     public void setUp() {
@@ -28,14 +28,14 @@ public class PDropDownElementTest extends WebElementBaseTest {
     }
 
     @Test
-    public void pDropDownElementAppliesTest() {
+    public void dropDownElementAppliesTest() {
         createMockElement("777", WebElementAttribute.ID, WebElementType.P_DROP_DOWN, true);
         boolean result = PDropDownElementImpl.applies(getMockWebElement());
         Assert.assertTrue(result);
     }
 
     @Test
-    public void pDropDownElementAppliesNoMatchTest() {
+    public void dropDownElementAppliesNoMatchTest() {
         createMockElement("777", WebElementAttribute.ID, WebElementType.INPUT, true);
         boolean result = PDropDownElementImpl.applies(getMockWebElement());
         Assert.assertFalse(result);

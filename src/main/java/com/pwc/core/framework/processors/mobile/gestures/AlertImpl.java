@@ -26,10 +26,10 @@ public class AlertImpl {
             ObjectMapper mapper = new ObjectMapper();
             mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
             if (null == alertParameters) {
-                alertParameters = Alert.builder()  //
-                        .element(element.getId())  //
-                        .buttonLabel("Hello World")  //
-                        .build();
+                alertParameters = Alert.builder() //
+                                .element(element.getId()) //
+                                .buttonLabel("Hello World") //
+                                .build();
             } else {
                 alertParameters.setElement(element.getId());
             }

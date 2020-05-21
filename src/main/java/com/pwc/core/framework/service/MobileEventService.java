@@ -65,8 +65,10 @@ public class MobileEventService extends WebEventController {
         } else {
 
             List<String> predicateLocatorList = new ArrayList<>();
-            Stream.of(XCUIElementAttribute.values()).forEach(elementAttribute -> predicateLocatorList.add(String.format(VARIABLE_ELEMENT_ATTRIBUTE_PATH, elementAttribute.attribute, elementIdentifier)));
-            Stream.of(XCUIElementType.values()).forEach(elementType -> predicateLocatorList.add(String.format(VARIABLE_ELEMENT_TYPE_PATH, elementType.type, elementIdentifier, elementIdentifier, elementIdentifier)));
+            Stream.of(XCUIElementAttribute.values())
+                            .forEach(elementAttribute -> predicateLocatorList.add(String.format(VARIABLE_ELEMENT_ATTRIBUTE_PATH, elementAttribute.attribute, elementIdentifier)));
+            Stream.of(XCUIElementType.values())
+                            .forEach(elementType -> predicateLocatorList.add(String.format(VARIABLE_ELEMENT_TYPE_PATH, elementType.type, elementIdentifier, elementIdentifier, elementIdentifier)));
             mobileElement = findElementByIosNsPredicate(predicateLocatorList);
 
         }

@@ -26,11 +26,11 @@ public class DoubleTapImpl {
             ObjectMapper mapper = new ObjectMapper();
             mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
             if (null == doubleTapParameters) {
-                doubleTapParameters = DoubleTap.builder()  //
-                        .element(element.getId())  //
-                        .x(1.0f)  //
-                        .y(1.0f)  //
-                        .build();
+                doubleTapParameters = DoubleTap.builder() //
+                                .element(element.getId()) //
+                                .x(1.0f) //
+                                .y(1.0f) //
+                                .build();
             } else {
                 doubleTapParameters.setElement(element.getId());
             }

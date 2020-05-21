@@ -32,7 +32,7 @@ public class WebServiceController extends WebServiceProcessor {
     private String password;
 
     /**
-     * Web service execution based on web service URL defined in automation.properties
+     * Web service execution based on web service URL defined in automation.properties.
      *
      * @param credentials   user credentials
      * @param command       web service command
@@ -62,7 +62,7 @@ public class WebServiceController extends WebServiceProcessor {
 
     /**
      * Web service execution based on web service URL defined in automation.properties.  Typically, accessing a
-     * direct url
+     * direct url.
      *
      * @param credentials user credentials
      * @param url         web service url segment
@@ -80,49 +80,50 @@ public class WebServiceController extends WebServiceProcessor {
     }
 
     /**
-     * Send a REST ws action to a service End Point
+     * Send a REST ws action to a service End Point.
      *
-     * @param oAuthKey OAuth key
+     * @param authKey OAuth key
      * @param command  BaseGetCommand command type
      * @return web service response
      */
-    protected Object webServiceAction(final OAuthKey oAuthKey, final WebServiceCommand command) {
-        return webServiceAction(oAuthKey, command, null, null);
+    protected Object webServiceAction(final OAuthKey authKey, final WebServiceCommand command) {
+        return webServiceAction(authKey, command, null, null);
     }
 
     /**
-     * Send a REST ws action to a service End Point
+     * Send a REST ws action to a service End Point.
      *
-     * @param oAuthKey    OAuth key
+     * @param authKey    OAuth key
      * @param command     BaseGetCommand command type
      * @param requestBody POST request body
      * @return web service response
      */
-    protected Object webServiceAction(final OAuthKey oAuthKey, final WebServiceCommand command, final Object requestBody) {
-        return webServiceAction(oAuthKey, command, requestBody, null);
+    protected Object webServiceAction(final OAuthKey authKey, final WebServiceCommand command, final Object requestBody) {
+        return webServiceAction(authKey, command, requestBody, null);
     }
 
     /**
-     * Web service execution based on web service URL defined in automation.properties
+     * Web service execution based on web service URL defined in automation.properties.
      *
-     * @param oAuthKey      OAuth key
+     * @param authKey      OAuth key
      * @param command       web service command
      * @param pathParameter web service path parameter(s)
      * @param parameterMap  web service parameter map
      * @return web service response
      */
-    public Object webServiceAction(final OAuthKey oAuthKey, final WebServiceCommand command, final Object pathParameter, final Object parameterMap) {
+    public Object webServiceAction(final OAuthKey authKey, final WebServiceCommand command, final Object pathParameter, final Object parameterMap) {
+
         if (pathParameter == null && parameterMap == null) {
-            return execute(url, oAuthKey, command);
+            return execute(url, authKey, command);
         } else if (parameterMap == null && pathParameter != null) {
-            return execute(url, oAuthKey, command, pathParameter);
+            return execute(url, authKey, command, pathParameter);
         } else {
-            return execute(url, oAuthKey, command, pathParameter, parameterMap);
+            return execute(url, authKey, command, pathParameter, parameterMap);
         }
     }
 
     /**
-     * Send a REST ws action to a service End Point
+     * Send a REST ws action to a service End Point.
      *
      * @param headerKeysMap map of header key/value pairs necessary for authorization
      * @param command       BaseGetCommand command type
@@ -130,22 +131,24 @@ public class WebServiceController extends WebServiceProcessor {
      * @return web service response
      */
     protected Object webServiceAction(final HeaderKeysMap headerKeysMap, final WebServiceCommand command, final Object requestBody) {
+
         return webServiceAction(headerKeysMap, command, requestBody, null);
     }
 
     /**
-     * Send a REST ws action to a service End Point
+     * Send a REST ws action to a service End Point.
      *
      * @param headerKeysMap map of header key/value pairs necessary for authorization
      * @param command       BaseGetCommand command type
      * @return web service response
      */
     protected Object webServiceAction(final HeaderKeysMap headerKeysMap, final WebServiceCommand command) {
+
         return webServiceAction(headerKeysMap, command, null, null);
     }
 
     /**
-     * Web service execution based on web service URL defined in automation.properties
+     * Web service execution based on web service URL defined in automation.properties.
      *
      * @param headerKeysMap map of header key/value pairs necessary for authorization
      * @param command       web service command
@@ -154,6 +157,7 @@ public class WebServiceController extends WebServiceProcessor {
      * @return web service response
      */
     public Object webServiceAction(final HeaderKeysMap headerKeysMap, final WebServiceCommand command, final Object pathParameter, final Object parameterMap) {
+
         if (pathParameter == null && parameterMap == null) {
             return execute(url, headerKeysMap, command);
         } else if (parameterMap == null && pathParameter != null) {
@@ -164,18 +168,19 @@ public class WebServiceController extends WebServiceProcessor {
     }
 
     /**
-     * Send a REST ws action to a service End Point
+     * Send a REST ws action to a service End Point.
      *
      * @param smSessionKey SMSESSION key
      * @param command      BaseGetCommand command type
      * @return web service response
      */
     protected Object webServiceAction(final SmSessionKey smSessionKey, final WebServiceCommand command) {
+
         return webServiceAction(smSessionKey, command, null, null);
     }
 
     /**
-     * Send a REST ws action to a service End Point
+     * Send a REST ws action to a service End Point.
      *
      * @param smSessionKey SMSESSION key
      * @param command      BaseGetCommand command type
@@ -183,11 +188,12 @@ public class WebServiceController extends WebServiceProcessor {
      * @return web service response
      */
     protected Object webServiceAction(final SmSessionKey smSessionKey, final WebServiceCommand command, final Object requestBody) {
+
         return webServiceAction(smSessionKey, command, requestBody, null);
     }
 
     /**
-     * Web service execution based on web service URL defined in automation.properties
+     * Web service execution based on web service URL defined in automation.properties.
      *
      * @param smSessionKey  SMSESSION key
      * @param command       web service command
@@ -196,6 +202,7 @@ public class WebServiceController extends WebServiceProcessor {
      * @return web service response
      */
     public Object webServiceAction(final SmSessionKey smSessionKey, final WebServiceCommand command, final Object pathParameter, final Object parameterMap) {
+
         if (pathParameter == null && parameterMap == null) {
             return execute(url, smSessionKey, command);
         } else if (parameterMap == null && pathParameter != null) {
@@ -206,7 +213,7 @@ public class WebServiceController extends WebServiceProcessor {
     }
 
     /**
-     * Http execution based on a direct url
+     * Http execution based on a direct url.
      *
      * @param credentials user credentials
      * @param url         user defined url
@@ -231,7 +238,7 @@ public class WebServiceController extends WebServiceProcessor {
     }
 
     /**
-     * Http execution based on a direct url that returns the resulting HTML for a headless page
+     * Http execution based on a direct url that returns the resulting HTML for a headless page.
      *
      * @param credentials user credentials
      * @param url         user defined url

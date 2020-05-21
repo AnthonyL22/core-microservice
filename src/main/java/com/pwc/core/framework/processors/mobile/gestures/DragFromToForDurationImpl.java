@@ -26,13 +26,13 @@ public class DragFromToForDurationImpl {
             ObjectMapper mapper = new ObjectMapper();
             mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
             if (null == dragFromToForDurationParameters) {
-                dragFromToForDurationParameters = DragFromToForDuration.builder()  //
-                        .element(element.getId())  //
-                        .duration(5)  //
-                        .fromX(100)  //
-                        .fromY(100)  //
-                        .toX(200)  //
-                        .toY(100).build();
+                dragFromToForDurationParameters = DragFromToForDuration.builder() //
+                                .element(element.getId()) //
+                                .duration(5) //
+                                .fromX(100) //
+                                .fromY(100) //
+                                .toX(200) //
+                                .toY(100).build();
             } else {
                 dragFromToForDurationParameters.setElement(element.getId());
             }

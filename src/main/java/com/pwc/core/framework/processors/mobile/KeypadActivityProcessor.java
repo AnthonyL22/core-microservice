@@ -17,9 +17,7 @@ public class KeypadActivityProcessor {
     }
 
     public static boolean applies(MobileElement mobileElement) {
-        return XCUIElementTypeCellImpl.applies(mobileElement) ||
-                XCUIElementTypeStaticTextImpl.applies(mobileElement) ||
-                XCUIElementTypeButtonImpl.applies(mobileElement);
+        return XCUIElementTypeCellImpl.applies(mobileElement) || XCUIElementTypeStaticTextImpl.applies(mobileElement) || XCUIElementTypeButtonImpl.applies(mobileElement);
     }
 
     public void mobileAction(MobileElement mobileElement, Object value) {

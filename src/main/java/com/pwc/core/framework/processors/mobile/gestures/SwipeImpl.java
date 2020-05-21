@@ -26,10 +26,10 @@ public class SwipeImpl {
             ObjectMapper mapper = new ObjectMapper();
             mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
             if (null == swipeParameters) {
-                swipeParameters = Swipe.builder()  //
-                        .element(element.getId())  //
-                        .direction("down")  //
-                        .build();
+                swipeParameters = Swipe.builder() //
+                                .element(element.getId()) //
+                                .direction("down") //
+                                .build();
             } else {
                 swipeParameters.setElement(element.getId());
             }

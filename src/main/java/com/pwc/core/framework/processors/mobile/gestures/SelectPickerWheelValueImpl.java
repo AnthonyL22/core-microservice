@@ -26,11 +26,11 @@ public class SelectPickerWheelValueImpl {
             ObjectMapper mapper = new ObjectMapper();
             mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
             if (null == selectPickerWheelValueParameters) {
-                selectPickerWheelValueParameters = SelectPickerWheelValue.builder()  //
-                        .element(element.getId())  //
-                        .order("next")  //
-                        .offset(0.1f)  //
-                        .build();
+                selectPickerWheelValueParameters = SelectPickerWheelValue.builder() //
+                                .element(element.getId()) //
+                                .order("next") //
+                                .offset(0.1f) //
+                                .build();
             } else {
                 selectPickerWheelValueParameters.setElement(element.getId());
             }

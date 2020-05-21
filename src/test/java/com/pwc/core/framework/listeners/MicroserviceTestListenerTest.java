@@ -59,7 +59,7 @@ public class MicroserviceTestListenerTest extends MicroserviceTestListener {
         IConfiguration mockIConfiguration = mock(IConfiguration.class);
         XmlSuite xmlSuite = new XmlSuite();
         xmlSuite.setName("unitTestSuiteName");
-        ISuite iSuite = new SuiteRunner(mockIConfiguration, xmlSuite, "/");
+        ISuite suiteRunner = new SuiteRunner(mockIConfiguration, xmlSuite, "/");
 
         XmlTest xmlTest = new XmlTest();
         xmlTest.setName(TEST_NAME);
@@ -70,7 +70,7 @@ public class MicroserviceTestListenerTest extends MicroserviceTestListener {
         IInvokedMethodListener listener = new MicroserviceTestListener();
         List<IInvokedMethodListener> methodListeners = new ArrayList<>();
         methodListeners.add(listener);
-        testRunner = new TestRunner(mockIConfiguration, iSuite, xmlTest, true, methodListeners, null);
+        testRunner = new TestRunner(mockIConfiguration, suiteRunner, xmlTest, true, methodListeners, null);
 
         ITestClass mockITestClass = mock(ITestClass.class);
         when(mockITestClass.getTestName()).thenReturn("[TestClass name=class com.pwc.automation.tests.web.BasicTest]");
@@ -92,8 +92,8 @@ public class MicroserviceTestListenerTest extends MicroserviceTestListener {
         when(mockITestNGMethod.getConstructorOrMethod()).thenReturn(mockConstructorOrMethod);
         when(mockConstructorOrMethod.getMethod()).thenReturn(mockMethod);
 
-//        TestCase mockTestCase = mockMethod.getAnnotation(TestCase.class);
-//        when(mockMethod.getAnnotation(TestCase.class)).thenReturn(mockTestCase);
+        //        TestCase mockTestCase = mockMethod.getAnnotation(TestCase.class);
+        //        when(mockMethod.getAnnotation(TestCase.class)).thenReturn(mockTestCase);
 
         doNothing().when(mockSauceREST).updateJobInfo(VALID_JOB_ID, null);
 

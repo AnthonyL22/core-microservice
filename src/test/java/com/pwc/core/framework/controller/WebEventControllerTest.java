@@ -150,8 +150,7 @@ public class WebEventControllerTest {
         DesiredCapabilities actualDesiredCapabilities = webEventController.getCapabilities();
         Assert.assertTrue(actualDesiredCapabilities.isJavascriptEnabled());
         Assert.assertTrue((Boolean) actualDesiredCapabilities.getCapability("takesScreenshot"));
-        Assert.assertEquals(System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY),
-                FrameworkConstants.CHROME_BROWSER_MODE);
+        Assert.assertEquals(System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY), FrameworkConstants.CHROME_BROWSER_MODE);
     }
 
     @Test
@@ -220,8 +219,7 @@ public class WebEventControllerTest {
         webEventController.setRemoteWebDriver(mockWebDriverService);
         System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, "");
         webEventController.initiateBrowser(null);
-        Assert.assertEquals(System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY),
-                FrameworkConstants.FIREFOX_BROWSER_MODE);
+        Assert.assertEquals(System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY), FrameworkConstants.FIREFOX_BROWSER_MODE);
     }
 
     @Test(expected = AssertionError.class)
@@ -251,8 +249,7 @@ public class WebEventControllerTest {
         Assert.assertNull(System.getProperty(FrameworkConstants.AUTOMATION_PLATFORM_PROPERTY));
         System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.CHROME_BROWSER_MODE);
         webEventController.initiateBrowser(null);
-        Assert.assertEquals(System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY),
-                FrameworkConstants.CHROME_BROWSER_MODE);
+        Assert.assertEquals(System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY), FrameworkConstants.CHROME_BROWSER_MODE);
         Assert.assertNotNull(System.getProperty(FrameworkConstants.AUTOMATION_PLATFORM_PROPERTY));
         Assert.assertNotNull(webEventController.getCapabilities().getCapability(CapabilityType.PLATFORM));
         Assert.assertTrue(webEventController.getCapabilities().isJavascriptEnabled());

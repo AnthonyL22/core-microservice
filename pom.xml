@@ -48,6 +48,7 @@
     <automate-client-java.version>0.4</automate-client-java.version>
     <byte-buddy.version>1.7.7</byte-buddy.version>
     <commonsdbcp2.version>2.0</commonsdbcp2.version>
+    <format-maven-plugin.version>2.0.1</format-maven-plugin.version>
     <gagawa.version>1.0.1</gagawa.version>
     <httpclient.version>3.1</httpclient.version>
     <jackson.json.version>2.10.0.pr1</jackson.json.version>
@@ -70,6 +71,7 @@
     <maven-scm-provider-gitxexe.version>1.9</maven-scm-provider-gitxexe.version>
     <maven-source-plugin.version>3.0.1</maven-source-plugin.version>
     <maven-surefire-plugin.version>2.14</maven-surefire-plugin.version>
+    <maven.checkstyle.plugin.version>2.17</maven.checkstyle.plugin.version>
     <mockito.version>1.10.19</mockito.version>
     <mongodb-driver.version>3.0.2</mongodb-driver.version>
     <opera.version>1.5</opera.version>
@@ -80,6 +82,7 @@
     <saucelabs-java.version>2.1.23</saucelabs-java.version>
     <saucelabs.version>1.0.35</saucelabs.version>
     <selenium.version>3.141.59</selenium.version>
+    <skip.plugins>false</skip.plugins>
     <sortpom-maven-plugin.version>2.6.0</sortpom-maven-plugin.version>
     <spring-mongodb.version>1.2.0.RELEASE</spring-mongodb.version>
     <spring.version>5.1.0.RELEASE</spring.version>
@@ -560,6 +563,57 @@
         <groupId>com.github.ekryd.sortpom</groupId>
         <artifactId>sortpom-maven-plugin</artifactId>
         <version>${sortpom-maven-plugin.version}</version>
+      </plugin>
+      <plugin>
+        <groupId>net.revelc.code.formatter</groupId>
+        <artifactId>formatter-maven-plugin</artifactId>
+        <version>${format-maven-plugin.version}</version>
+        <configuration>
+          <skip>${skip.plugins}</skip>
+          <encoding>UTF-8</encoding>
+          <compilerSource>${java.version}</compilerSource>
+          <compilerCompliance>${java.version}</compilerCompliance>
+          <compilerTargetPlatform>${java.version}</compilerTargetPlatform>
+          <configFile>${project.basedir}/eclipse-java-pwc-style.xml</configFile>
+          <excludes>
+            <exclude>**/framework/data/**/*.java</exclude>
+            <exclude>**/enums/**/*.java</exclude>
+            <exclude>**/provider/*.java</exclude>
+          </excludes>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>validate</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>${maven.checkstyle.plugin.version}</version>
+        <configuration>
+          <skip>${skip.plugins}</skip>
+          <configLocation>checkstyle.xml</configLocation>
+          <consoleOutput>true</consoleOutput>
+          <failsOnError>true</failsOnError>
+          <failOnViolation>true</failOnViolation>
+          <violationSeverity>warning</violationSeverity>
+          <includeTestSourceDirectory>true</includeTestSourceDirectory>
+          <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
+          <testSourceDirectory>${basedir}/src/test/java</testSourceDirectory>
+          <outputFile>${basedir}/target/checkstyle/checkstyle-output.xml</outputFile>
+          <cacheFile>${basedir}/target/checkstyle/checkstyle-cachefile</cacheFile>
+          <excludes>**/unit/**/*,**/resources/*,**/type/*Email*,**/gestures/*</excludes>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>

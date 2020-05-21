@@ -26,11 +26,11 @@ public class TapImpl {
             ObjectMapper mapper = new ObjectMapper();
             mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
             if (null == tapParameters) {
-                tapParameters = Tap.builder()  //
-                        .element(element.getId())  //
-                        .x(1.0f)  //
-                        .y(1.0f)  //
-                        .build();
+                tapParameters = Tap.builder() //
+                                .element(element.getId()) //
+                                .x(1.0f) //
+                                .y(1.0f) //
+                                .build();
             } else {
                 tapParameters.setElement(element.getId());
             }

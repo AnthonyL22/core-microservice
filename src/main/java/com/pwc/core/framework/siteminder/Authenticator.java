@@ -48,11 +48,12 @@ public class Authenticator {
     }
 
     public CloseableHttpClient generateClient(String username, String password, SSLContext sslcontext) {
+
         return WebServiceProcessor.buildHttpClient(username, password, sslcontext);
     }
 
     /**
-     * Build custom SSLContext
+     * Build custom SSLContext.
      *
      * @return custom, secured SSLContext
      * @throws NoSuchAlgorithmException exception
@@ -60,10 +61,8 @@ public class Authenticator {
      * @throws KeyStoreException        exception
      */
     private static SSLContext buildSSLContext() throws NoSuchAlgorithmException, KeyManagementException, KeyStoreException {
-        return custom()
-                .setSecureRandom(new SecureRandom())
-                .loadTrustMaterial(null, new TrustSelfSignedStrategy())
-                .build();
+
+        return custom().setSecureRandom(new SecureRandom()).loadTrustMaterial(null, new TrustSelfSignedStrategy()).build();
     }
 
     /**
@@ -77,6 +76,7 @@ public class Authenticator {
      * @throws IOException authenticated cookies generation failure
      */
     public List<Cookie> getAuthenticationCookies(String url, String username, String password) throws IOException {
+
         List<Cookie> cookies = null;
         CloseableHttpClient httpClient;
         CloseableHttpResponse response = null;
@@ -111,7 +111,7 @@ public class Authenticator {
     }
 
     /**
-     * Due to potential authentication issues, this retry mechanism attempts 5x to authenticate
+     * Due to potential authentication issues, this retry mechanism attempts 5x to authenticate.
      *
      * @param response   HttpResponse
      * @param get        HttpGet
@@ -120,6 +120,7 @@ public class Authenticator {
      * @throws IOException exception trying to retry authentication
      */
     protected HttpClientContext retryAuthentication(CloseableHttpResponse response, HttpGet get, CloseableHttpClient httpClient) throws IOException {
+
         int retryCount = 1;
         HttpClientContext context;
         try {
@@ -147,12 +148,13 @@ public class Authenticator {
     }
 
     /**
-     * Remove cookie by Cookie name
+     * Remove cookie by Cookie name.
      *
      * @param cookies    list of Cookie objects
      * @param cookieName Cookie name to remove
      */
     private void removeCookieByName(List<Cookie> cookies, final String cookieName) {
+
         Cookie cookieToRemove = null;
         for (Cookie cookie : cookies) {
             if (cookie.getName().equals(cookieName)) {

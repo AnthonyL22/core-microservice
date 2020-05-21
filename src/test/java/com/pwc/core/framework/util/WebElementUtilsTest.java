@@ -29,8 +29,8 @@ public class WebElementUtilsTest {
     public void getXPathOfWebElementStandardXPathTest() {
 
         when(mockWebElement.toString()).thenReturn(RAW_WEB_ELEMENT_STANDARD_XPATH);
-        String xPathOfWebElementConversion = WebElementUtils.getXPathOfWebElement(mockWebElement);
-        Assert.assertEquals(xPathOfWebElementConversion, "//nav[@class='site']");
+        String pathOfWebElementConversion = WebElementUtils.getXPathOfWebElement(mockWebElement);
+        Assert.assertEquals(pathOfWebElementConversion, "//nav[@class='site']");
 
     }
 
@@ -38,8 +38,8 @@ public class WebElementUtilsTest {
     public void getXPathOfWebElementWildcardXPathTest() {
 
         when(mockWebElement.toString()).thenReturn(RAW_WEB_ELEMENT_WILDCARD_XPATH);
-        String xPathOfWebElementConversion = WebElementUtils.getXPathOfWebElement(mockWebElement);
-        Assert.assertEquals(xPathOfWebElementConversion, "//*[text()='Hello World']");
+        String pathOfWebElementConversion = WebElementUtils.getXPathOfWebElement(mockWebElement);
+        Assert.assertEquals(pathOfWebElementConversion, "//*[text()='Hello World']");
 
     }
 
@@ -47,8 +47,8 @@ public class WebElementUtilsTest {
     public void getXPathOfWebElementContainsFunctionXPathTest() {
 
         when(mockWebElement.toString()).thenReturn(RAW_WEB_ELEMENT_CONTAINS_XPATH);
-        String xPathOfWebElementConversion = WebElementUtils.getXPathOfWebElement(mockWebElement);
-        Assert.assertEquals(xPathOfWebElementConversion, "//img[contains(@src, 'logo_home-mast.png')]");
+        String pathOfWebElementConversion = WebElementUtils.getXPathOfWebElement(mockWebElement);
+        Assert.assertEquals(pathOfWebElementConversion, "//img[contains(@src, 'logo_home-mast.png')]");
 
     }
 
@@ -56,10 +56,9 @@ public class WebElementUtilsTest {
     public void getXPathOfWebElementAnchorXPathTest() {
 
         when(mockWebElement.toString()).thenReturn(RAW_WEB_ELEMENT_ANCHOR_XPATH);
-        String xPathOfWebElementConversion = WebElementUtils.getXPathOfWebElement(mockWebElement);
-        Assert.assertEquals(xPathOfWebElementConversion, "//a[text()='Submit']");
+        String pathOfWebElementConversion = WebElementUtils.getXPathOfWebElement(mockWebElement);
+        Assert.assertEquals(pathOfWebElementConversion, "//a[text()='Submit']");
 
     }
-
 
 }

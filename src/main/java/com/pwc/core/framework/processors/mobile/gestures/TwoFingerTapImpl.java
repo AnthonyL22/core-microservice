@@ -26,9 +26,9 @@ public class TwoFingerTapImpl {
             ObjectMapper mapper = new ObjectMapper();
             mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
             if (null == twoFingerTapParameters) {
-                twoFingerTapParameters = TwoFingerTap.builder()  //
-                        .element(element.getId())  //
-                        .build();
+                twoFingerTapParameters = TwoFingerTap.builder() //
+                                .element(element.getId()) //
+                                .build();
             } else {
                 twoFingerTapParameters.setElement(element.getId());
             }

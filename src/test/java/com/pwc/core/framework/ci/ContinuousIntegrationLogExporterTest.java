@@ -17,12 +17,12 @@ import java.util.List;
 @RunWith(MockitoJUnitRunner.class)
 public class ContinuousIntegrationLogExporterTest {
 
-    private final static String TEST_SOURCE_PATH = "src.test.java.com.pwc.core.framework.ci.tests";
-    private final static String MAIN_SOURCE_PATH = "src.test.java.com.pwc.core.framework.ci.parent";
-    private final static String REPORT_FILE_NAME = "output.txt";
-    private final static String TESTNG_GROUP_CLASS_NAME = "Groups.java";
-    private final static String TESTNG_GROUP_NAME_TO_FOCUS_ON = "Smoke";
-    private String[] fullyDecoratedArgs = new String[5];
+    private static final String TEST_SOURCE_PATH = "src.test.java.com.pwc.core.framework.ci.tests";
+    private static final String MAIN_SOURCE_PATH = "src.test.java.com.pwc.core.framework.ci.parent";
+    private static final String REPORT_FILE_NAME = "output.txt";
+    private static final String TESTNG_GROUP_CLASS_NAME = "Groups.java";
+    private static final String TESTNG_GROUP_NAME_TO_FOCUS_ON = "Smoke";
+    private static String[] fullyDecoratedArgs = new String[5];
 
     @Before
     public void setUp() {
@@ -36,7 +36,7 @@ public class ContinuousIntegrationLogExporterTest {
     @Test()
     public void mainMinimalNumberOfArgumentsTest() throws Exception {
 
-        ContinuousIntegrationLogExporter.main(new String[]{TEST_SOURCE_PATH, MAIN_SOURCE_PATH, REPORT_FILE_NAME, TESTNG_GROUP_CLASS_NAME, TESTNG_GROUP_NAME_TO_FOCUS_ON});
+        ContinuousIntegrationLogExporter.main(new String[] {TEST_SOURCE_PATH, MAIN_SOURCE_PATH, REPORT_FILE_NAME, TESTNG_GROUP_CLASS_NAME, TESTNG_GROUP_NAME_TO_FOCUS_ON});
 
         File testReportFileWithStatistics = new File(REPORT_FILE_NAME);
         List<String> linesRead = FileUtils.readLines(testReportFileWithStatistics, StandardCharsets.UTF_8);
@@ -47,7 +47,7 @@ public class ContinuousIntegrationLogExporterTest {
 
     @Test(expected = Exception.class)
     public void mainTwoArgumentMinimumTest() throws Exception {
-        ContinuousIntegrationLogExporter.main(new String[]{TEST_SOURCE_PATH});
+        ContinuousIntegrationLogExporter.main(new String[] {TEST_SOURCE_PATH});
     }
 
     @Test()
@@ -65,13 +65,13 @@ public class ContinuousIntegrationLogExporterTest {
 
     @Test
     public void replaceAllConstantsWithMapValuesTest() {
-        String[] trimmedList = new String[]{"home", "TestConstants.USER_NAME"};
+        String[] trimmedList = new String[] {"home", "TestConstants.USER_NAME"};
         ContinuousIntegrationLogExporter.replaceAllConstantsWithMapValues(trimmedList);
     }
 
     @Test
     public void replaceAllConstantsWithMapValuesNullConstantsTest() {
-        String[] trimmedList = new String[]{"home", "nicole"};
+        String[] trimmedList = new String[] {"home", "nicole"};
         ContinuousIntegrationLogExporter.setConstants(null);
         ContinuousIntegrationLogExporter.replaceAllConstantsWithMapValues(trimmedList);
     }

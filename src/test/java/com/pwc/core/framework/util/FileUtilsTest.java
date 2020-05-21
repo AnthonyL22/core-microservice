@@ -12,7 +12,11 @@ import java.util.List;
 @RunWith(MockitoJUnitRunner.class)
 public class FileUtilsTest {
 
-    private static final String SAMPLE_FILE_CONTENTS = "[{\"os\":\"Windows 10\",\"platform\":\"XP\",\"browser\":\"firefox\",\"browser-version\":\"11\",\"long-name\":\"Firefox\",\"long-version\":\"11.0.\",\"url\":\"sauce-ondemand:?os=Windows 10&browser=firefox&browser-version=11&username=my-user&access-key=12345644564-7f51-4185-a3d7-5d2b413f2efa\"},{\"os\":\"Windows 10\",\"platform\":\"XP\",\"browser\":\"firefox\",\"browser-version\":\"12\",\"long-name\":\"Firefox\",\"long-version\":\"12.0.\",\"url\":\"sauce-ondemand:?os=Windows 10&browser=firefox&browser-version=12&username=my-user&access-key=12345644564-7f51-7f51-4185-a3d7-5d2b413f2efa\"}]";
+    private static final String SAMPLE_FILE_CONTENTS =
+                    "[{\"os\":\"Windows 10\",\"platform\":\"XP\",\"browser\":\"firefox\",\"browser-version\":\"11\",\"long-name\":\"Firefox\",\"long-version\":\"11.0.\",\"url\""
+                                    + ":\"sauce-ondemand:?os=Windows 10&browser=firefox&browser-version=11&username=my-user&access-key=12345644564-7f51-4185-a3d7-5d2b413f2efa\"},{\"os\""
+                                    + ":\"Windows 10\",\"platform\":\"XP\",\"browser\":\"firefox\",\"browser-version\":\"12\",\"long-name\":\"Firefox\",\"long-version\":\"12.0.\",\"url\""
+                                    + ":\"sauce-ondemand:?os=Windows 10&browser=firefox&browser-version=12&username=my-user&access-key=12345644564-7f51-7f51-4185-a3d7-5d2b413f2efa\"}]";
 
     @Before
     public void setUp() {
