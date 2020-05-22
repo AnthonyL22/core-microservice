@@ -39,9 +39,13 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class WebServiceProcessorTest {
 
-    private final String URL_PATH = "http://foobar-web-services.com";
-    private final String USER = "foo";
-    private final String PASS = "foo";
+    private static final String EXPECTED_JSON_RESPONSE = "{ \"id\": 23850994, \"lastName\": \"Doe\", \"qcguid\": 478182, \"userName\": \"johnd\", \"emailAddress\": \"johnd@mywebsite.com\","
+                    + "\"identifyingValue\": \"23850994\", \"fullName\": \"John N. Doe\", \"displayValue\": \"John N. Doe\", \"displayFullName\": \"John N. Doe\", \"firstName\": \"John N.\"}";
+    private static final String SAMPLE_PAYLOAD =
+                    "{ \"country\": \"USA\", \"hold\": false,\"userInfo\": { \"currencyCode\": \"NZD\", \"packageCode\": \"1234\", \"moveDate\": \"2018-12-30\", \"moversInitials\": \"AL\"}}";
+    private static final String URL_PATH = "http://foobar-web-services.com";
+    private static final String USER = "foo";
+    private static final String PASS = "foo";
 
     private WebServiceProcessor webServiceProcessor;
     private HashMap<String, Object> mockUserNameMap = new HashMap<>();
@@ -52,45 +56,23 @@ public class WebServiceProcessorTest {
     private CloseableHttpResponse mockCloseableHttpResponse;
     private HttpEntity mockHttpEntity;
 
-    private final String EXPECTED_JSON_RESPONSE = "{\n" +
-            "    \"id\": 23850994,\n" +
-            "    \"lastName\": \"Doe\",\n" +
-            "    \"qcguid\": 478182,\n" +
-            "    \"userName\": \"johnd\",\n" +
-            "    \"emailAddress\": \"johnd@mywebsite.com\",\n" +
-            "    \"identifyingValue\": \"23850994\",\n" +
-            "    \"fullName\": \"John N. Doe\",\n" +
-            "    \"displayValue\": \"John N. Doe\",\n" +
-            "    \"displayFullName\": \"John N. Doe\",\n" +
-            "    \"firstName\": \"John N.\"\n" +
-            "}";
-
-    private final String SAMPLE_PAYLOAD = "{" +
-            "\"country\": \"USA\"," +
-            "\"hold\": false," +
-            "\"userInfo\": {" +
-            "\"currencyCode\": \"NZD\"," +
-            "\"packageCode\": \"1234\"," +
-            "\"moveDate\": \"2018-12-30\"," +
-            "\"moversInitials\": \"AL\"}}";
-
     private HttpRequestBase mockHttpRequestBase;
-    private OAuthKey oAuthKey;
+    private OAuthKey authKey;
     private HeaderKeysMap headerKeysMap;
     private SmSessionKey smSessionKey;
 
     public enum UsersWebServiceWebServiceCommand implements WebServiceCommand {
 
-        POST_ADD_USER_ID(FrameworkConstants.POST_REQUEST, "rest/users", "addUser"),
-        GET_ADD_USER_WITH_PAYLOAD(FrameworkConstants.GET_REQUEST, "rest/users", "addUserWithPayload"),
-        PUT_WITH_PARAMETERS(FrameworkConstants.PUT_REQUEST, "rest/users", ""),
-        PUT_IS_VALID_USER_WITH_PAYLOAD(FrameworkConstants.PUT_REQUEST, "rest/users", "isValidUser"),
-        GET_ADD_USER_ID(FrameworkConstants.GET_REQUEST, "rest/users", "addUser"),
-        GET_BY_LAST_NAME(FrameworkConstants.GET_REQUEST, "rest/users", "byLastName"),
-        PUT_BY_LAST_NAME(FrameworkConstants.PUT_REQUEST, "rest/users", "byLastName"),
-        DELETE_BY_LAST_NAME(FrameworkConstants.DELETE_REQUEST, "rest/users", "byLastName"),
-        DELETE_WITH_PAYLOAD(FrameworkConstants.DELETE_REQUEST, "rest/users", "byPayload"),
-        DELETE_WITHOUT_PAYLOAD(FrameworkConstants.DELETE_REQUEST, "rest/users", "byLastName"),
+        POST_ADD_USER_ID(FrameworkConstants.POST_REQUEST, "rest/users", "addUser"), //
+        GET_ADD_USER_WITH_PAYLOAD(FrameworkConstants.GET_REQUEST, "rest/users", "addUserWithPayload"), //
+        PUT_WITH_PARAMETERS(FrameworkConstants.PUT_REQUEST, "rest/users", ""), //
+        PUT_IS_VALID_USER_WITH_PAYLOAD(FrameworkConstants.PUT_REQUEST, "rest/users", "isValidUser"), //
+        GET_ADD_USER_ID(FrameworkConstants.GET_REQUEST, "rest/users", "addUser"), //
+        GET_BY_LAST_NAME(FrameworkConstants.GET_REQUEST, "rest/users", "byLastName"), //
+        PUT_BY_LAST_NAME(FrameworkConstants.PUT_REQUEST, "rest/users", "byLastName"), //
+        DELETE_BY_LAST_NAME(FrameworkConstants.DELETE_REQUEST, "rest/users", "byLastName"), //
+        DELETE_WITH_PAYLOAD(FrameworkConstants.DELETE_REQUEST, "rest/users", "byPayload"), //
+        DELETE_WITHOUT_PAYLOAD(FrameworkConstants.DELETE_REQUEST, "rest/users", "byLastName"), //
         POST_LAST_NAME(FrameworkConstants.POST_REQUEST, "rest/users", "byLastName");
 
         private String requestMethodType;
@@ -122,8 +104,7 @@ public class WebServiceProcessorTest {
 
     public enum APIWebServiceCommand implements WebServiceCommand {
 
-        SEARCH(FrameworkConstants.GET_REQUEST, "jira/rest/api/2/search?jql=", "key="),
-        MY_CLAIMS(FrameworkConstants.GET_REQUEST, "myClaims", "");
+        SEARCH(FrameworkConstants.GET_REQUEST, "jira/rest/api/2/search?jql=", "key="), MY_CLAIMS(FrameworkConstants.GET_REQUEST, "myClaims", "");
 
         private String requestMethodType;
         private String requestMapping;
@@ -175,7 +156,7 @@ public class WebServiceProcessorTest {
         }
         when(mockHttpRequestBase.getURI()).thenReturn(expectedURI);
 
-        oAuthKey = new OAuthKey("oijkjlkjkj43lkjjuyoiyfghuiopkl67");
+        authKey = new OAuthKey("oijkjlkjkj43lkjjuyoiyfghuiopkl67");
         HashMap mockHeaderMap = new HashMap();
         mockHeaderMap.put("AppKey", "777");
         headerKeysMap = new HeaderKeysMap(mockHeaderMap);
@@ -226,7 +207,8 @@ public class WebServiceProcessorTest {
 
     @Test
     public void executePutRequestWithEntityPayload() {
-        Object response = webServiceProcessor.execute("http://www.foobar.com", headerKeysMap, UsersWebServiceWebServiceCommand.PUT_IS_VALID_USER_WITH_PAYLOAD, "device=111&home=Hatfields", SAMPLE_PAYLOAD);
+        Object response = webServiceProcessor.execute("http://www.foobar.com", headerKeysMap, UsersWebServiceWebServiceCommand.PUT_IS_VALID_USER_WITH_PAYLOAD, "device=111&home=Hatfields",
+                        SAMPLE_PAYLOAD);
         Assert.assertNotNull(response);
     }
 
@@ -256,19 +238,19 @@ public class WebServiceProcessorTest {
 
     @Test
     public void executeWithOAuthTest() {
-        Object response = webServiceProcessor.execute("http://www.foobar.com", oAuthKey, UsersWebServiceWebServiceCommand.POST_ADD_USER_ID);
+        Object response = webServiceProcessor.execute("http://www.foobar.com", authKey, UsersWebServiceWebServiceCommand.POST_ADD_USER_ID);
         Assert.assertNotNull(response);
     }
 
     @Test
     public void executeWithOAuthWithPathParameterTest() {
-        Object response = webServiceProcessor.execute("http://www.foobar.com", oAuthKey, UsersWebServiceWebServiceCommand.POST_ADD_USER_ID, "foobar");
+        Object response = webServiceProcessor.execute("http://www.foobar.com", authKey, UsersWebServiceWebServiceCommand.POST_ADD_USER_ID, "foobar");
         Assert.assertNotNull(response);
     }
 
     @Test
     public void executeWithOAuthWithAllParametersTest() {
-        Object response = webServiceProcessor.execute("http://www.foobar.com", oAuthKey, UsersWebServiceWebServiceCommand.POST_ADD_USER_ID, "foobar", Arrays.asList("hello"));
+        Object response = webServiceProcessor.execute("http://www.foobar.com", authKey, UsersWebServiceWebServiceCommand.POST_ADD_USER_ID, "foobar", Arrays.asList("hello"));
         Assert.assertNotNull(response);
     }
 

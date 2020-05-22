@@ -1,6 +1,5 @@
 package com.pwc.core.framework.data;
 
-
 public enum WebElementType {
 
     ANCHOR("a"),

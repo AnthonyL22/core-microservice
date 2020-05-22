@@ -1,6 +1,5 @@
 package com.pwc.core.framework.controller;
 
-
 import com.pwc.core.framework.service.DatabaseEventService;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -22,7 +21,7 @@ public class DatabaseController {
     }
 
     /**
-     * Establish database connection in service layer from Spring
+     * Establish database connection in service layer from Spring.
      *
      * @param ctx Application context
      */
@@ -36,7 +35,7 @@ public class DatabaseController {
     }
 
     /**
-     * Establish Mongo database connection in service layer from Spring
+     * Establish Mongo database connection in service layer from Spring.
      *
      * @param ctx Application context
      */
@@ -50,7 +49,7 @@ public class DatabaseController {
     }
 
     /**
-     * Close the current database connection in the service layer
+     * Close the current database connection in the service layer.
      */
     public void closeDatabaseConnection() {
         try {
@@ -71,4 +70,5 @@ public class DatabaseController {
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
+
 }

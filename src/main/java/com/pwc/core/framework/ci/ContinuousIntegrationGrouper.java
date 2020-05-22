@@ -18,7 +18,7 @@ public class ContinuousIntegrationGrouper {
     private static String outputFile;
 
     /**
-     * Main to be called by exec-maven-plugin Maven plugin
+     * Main to be called by exec-maven-plugin Maven plugin.
      *
      * @param args build parameters in specific order:
      *             <ul>
@@ -30,10 +30,8 @@ public class ContinuousIntegrationGrouper {
      */
     public static void main(String[] args) throws Exception {
         if (args.length < 2) {
-            throw new Exception("Missing required two arguments; " +
-                    "[0] = Canonical Class Name to Decompile, " +
-                    "[1] = Output directory location for resulting file, " +
-                    "[2] = (Optional) Name of resulting file. Default to " + DEFAULT_OUTPUT_FILE_NAME);
+            throw new Exception("Missing required two arguments; " + "[0] = Canonical Class Name to Decompile, " + "[1] = Output directory location for resulting file, "
+                            + "[2] = (Optional) Name of resulting file. Default to " + DEFAULT_OUTPUT_FILE_NAME);
         } else {
             canonicalClassName = args[0];
             destinationPropertiesFileLocation = StringUtils.appendIfMissing(args[1], FrameworkConstants.SEPARATOR);
@@ -44,7 +42,7 @@ public class ContinuousIntegrationGrouper {
     }
 
     /**
-     * Write an <code>Array</code> of strings to file
+     * Write an <code>Array</code> of strings to file.
      *
      * @param commaArrayVals array of String values to write to file
      * @throws Exception exception
@@ -70,14 +68,14 @@ public class ContinuousIntegrationGrouper {
     }
 
     /**
-     * Extract all <code>Strings</code> from a class to a <code>Array</code>
+     * Extract all <code>Strings</code> from a class to a <code>Array</code>.
      *
      * @return array of Strings from the given class
      */
     private static String[] stripStringsFromClass() {
 
-        String OPEN = "\"";
-        String CLOSE = "\"";
+        String open = "\"";
+        String close = "\"";
         String[] stringsArray = new String[0];
 
         try {
@@ -96,7 +94,7 @@ public class ContinuousIntegrationGrouper {
                 Decompiler.decompile(decompiledFilePropertiesFilePath.toString(), new PlainTextOutput(stringWriter), settings);
 
             } finally {
-                stringsArray = StringUtils.substringsBetween(stringWriter.getBuffer().toString(), OPEN, CLOSE);
+                stringsArray = StringUtils.substringsBetween(stringWriter.getBuffer().toString(), open, close);
                 stringWriter.close();
             }
         } catch (Exception e) {

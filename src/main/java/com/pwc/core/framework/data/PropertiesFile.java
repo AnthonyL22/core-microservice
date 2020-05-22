@@ -1,6 +1,10 @@
 package com.pwc.core.framework.data;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
+@Getter
+@AllArgsConstructor
 public enum PropertiesFile {
 
     LOG4J_PROPERTIES_FILE("log4j.properties"),
@@ -9,9 +13,5 @@ public enum PropertiesFile {
     GRID_PROPERTIES_FILE("grid.properties");
 
     public String fileName;
-
-    PropertiesFile(String name) {
-        fileName = name;
-    }
 
 }

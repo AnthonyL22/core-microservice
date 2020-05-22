@@ -13,8 +13,8 @@ import static com.pwc.logging.service.LoggerService.LOG;
 public class ComboBoxElementImpl implements MicroserviceWebElement {
 
     public static boolean applies(WebElement element) {
-        return (StringUtils.equalsIgnoreCase(element.getTagName(), WebElementType.INPUT.type) &&
-                StringUtils.equalsIgnoreCase(element.getAttribute(WebElementAttribute.ROLE.attribute), WebElementType.COMBOBOX.type));
+        return (StringUtils.equalsIgnoreCase(element.getTagName(), WebElementType.INPUT.type)
+                        && StringUtils.equalsIgnoreCase(element.getAttribute(WebElementAttribute.ROLE.attribute), WebElementType.COMBOBOX.type));
     }
 
     public void webAction(final WebElement webElement, final Object attributeValue) {

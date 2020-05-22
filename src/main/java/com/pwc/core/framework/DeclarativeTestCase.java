@@ -11,7 +11,7 @@ import java.util.logging.Level;
 public abstract class DeclarativeTestCase extends MicroserviceTestSuite {
 
     /**
-     * Verify the number of rows in a table
+     * Verify the number of rows in a table.
      *
      * @param elementIdentifier unique element identifying string
      * @param expectedRowCount  expected number of rows
@@ -21,7 +21,7 @@ public abstract class DeclarativeTestCase extends MicroserviceTestSuite {
     }
 
     /**
-     * Check if the current page contains an element with the expectedText displayed in it
+     * Check if the current page contains an element with the expectedText displayed in it.
      *
      * @param elementIdentifier WebElement to find
      * @param expectedText      WebElements text value
@@ -31,18 +31,8 @@ public abstract class DeclarativeTestCase extends MicroserviceTestSuite {
     }
 
     /**
-     * Check if the current page contains an element with the expectedText displayed in it
-     *
-     * @param elementIdentifier WebElement to find
-     * @param expectedText      WebElements text value
-     */
-    protected void tableNotContains(final String elementIdentifier, final String expectedText) {
-        webEventController.getWebEventService().elementTextContains(elementIdentifier, expectedText, false);
-    }
-
-    /**
      * Table search that finds and verifies a cell's text content given the row and column number
-     * Important: all index's are ZERO (0) based
+     * Important: all index's are ZERO (0) based.
      *
      * @param elementIdentifier elementIdentifier unique element identifying string
      * @param expectedText      expected text within table
@@ -55,7 +45,7 @@ public abstract class DeclarativeTestCase extends MicroserviceTestSuite {
 
     /**
      * Table search that finds and verifies a cell's text content given the row and column number
-     * Important: all index's are ZERO (0) based
+     * Important: all index's are ZERO (0) based.
      *
      * @param elementIdentifier elementIdentifier unique element identifying string
      * @param expectedText      expected text within table
@@ -67,8 +57,18 @@ public abstract class DeclarativeTestCase extends MicroserviceTestSuite {
     }
 
     /**
+     * Check if the current page contains an element with the expectedText displayed in it.
+     *
+     * @param elementIdentifier WebElement to find
+     * @param expectedText      WebElements text value
+     */
+    protected void tableNotContains(final String elementIdentifier, final String expectedText) {
+        webEventController.getWebEventService().elementTextContains(elementIdentifier, expectedText, false);
+    }
+
+    /**
      * Table search that finds and verifies a cell's text content given the row and column number
-     * Important: all index's are ZERO (0) based
+     * Important: all index's are ZERO (0) based.
      *
      * @param elementIdentifier elementIdentifier unique element identifying string
      * @param expectedText      expected text within table
@@ -81,7 +81,7 @@ public abstract class DeclarativeTestCase extends MicroserviceTestSuite {
 
     /**
      * Table search that finds and verifies a cell's text content given the row and column number
-     * Important: all index's are ZERO (0) based
+     * Important: all index's are ZERO (0) based.
      *
      * @param elementIdentifier elementIdentifier unique element identifying string
      * @param expectedText      expected text within table
@@ -93,7 +93,7 @@ public abstract class DeclarativeTestCase extends MicroserviceTestSuite {
     }
 
     /**
-     * Execute Javascript via Selenium interface
+     * Execute Javascript via Selenium interface.
      *
      * @param javascriptSnippet js String to execute
      * @return resulting object
@@ -103,7 +103,7 @@ public abstract class DeclarativeTestCase extends MicroserviceTestSuite {
     }
 
     /**
-     * Execute Javascript via Selenium interface
+     * Execute Javascript via Selenium interface.
      *
      * @param javascriptSnippet js String to execute
      * @param args              optional replaceable Javascript arguments
@@ -114,7 +114,7 @@ public abstract class DeclarativeTestCase extends MicroserviceTestSuite {
     }
 
     /**
-     * Navigate directly to a particular URL
+     * Navigate directly to a particular URL.
      *
      * @param url  base well-formed web URL or partial URL
      * @param args Optional url arguments to concatenate to base url
@@ -133,7 +133,7 @@ public abstract class DeclarativeTestCase extends MicroserviceTestSuite {
     }
 
     /**
-     * Verify a CSS value Equals for this element based on the given css property
+     * Verify a CSS value Equals for this element based on the given css property.
      *
      * @param elementIdentifier       WebElement to find via xpath or unique identifier
      * @param cssProperty             WebElement's CSS property to validate
@@ -144,7 +144,7 @@ public abstract class DeclarativeTestCase extends MicroserviceTestSuite {
     }
 
     /**
-     * Verify a CSS value Not Equals for this element based on the given css property
+     * Verify a CSS value Not Equals for this element based on the given css property.
      *
      * @param elementIdentifier       WebElement to find via xpath or unique identifier
      * @param cssProperty             WebElement's CSS property to validate
@@ -155,7 +155,7 @@ public abstract class DeclarativeTestCase extends MicroserviceTestSuite {
     }
 
     /**
-     * Verify a CSS value contains for this element based on the given css property
+     * Verify a CSS value contains for this element based on the given css property.
      *
      * @param elementIdentifier       WebElement to find via xpath or unique identifier
      * @param cssProperty             WebElement's CSS property to validate
@@ -166,7 +166,7 @@ public abstract class DeclarativeTestCase extends MicroserviceTestSuite {
     }
 
     /**
-     * Verify a CSS value not contains for this element based on the given css property
+     * Verify a CSS value not contains for this element based on the given css property.
      *
      * @param elementIdentifier       WebElement to find via xpath or unique identifier
      * @param cssProperty             WebElement's CSS property to validate
@@ -177,7 +177,7 @@ public abstract class DeclarativeTestCase extends MicroserviceTestSuite {
     }
 
     /**
-     * Check current page is the expected page based on the page title
+     * Check current page is the expected page based on the page title.
      *
      * @param expectedPageTitle expected page title
      */
@@ -186,7 +186,7 @@ public abstract class DeclarativeTestCase extends MicroserviceTestSuite {
     }
 
     /**
-     * Verify alert windows and their msg attributes then click the appropriate button
+     * Verify alert windows and their msg attributes then click the appropriate button.
      *
      * @param expectedAlertText Alert msg to verify
      * @param buttonTextToClick Alert button to select
@@ -196,7 +196,7 @@ public abstract class DeclarativeTestCase extends MicroserviceTestSuite {
     }
 
     /**
-     * Verify alert windows and their msg attributes not equals then click the appropriate button
+     * Verify alert windows and their msg attributes not equals then click the appropriate button.
      *
      * @param expectedAlertText Alert msg to verify
      * @param buttonTextToClick Alert button to select
@@ -206,7 +206,7 @@ public abstract class DeclarativeTestCase extends MicroserviceTestSuite {
     }
 
     /**
-     * Verify alert window contains text and their msg attributes then click the appropriate button
+     * Verify alert window contains text and their msg attributes then click the appropriate button.
      *
      * @param expectedAlertText  Alert msg to verify it contains
      * @param expectedButtonText Alert button to select
@@ -216,7 +216,7 @@ public abstract class DeclarativeTestCase extends MicroserviceTestSuite {
     }
 
     /**
-     * Verify alert window not contains text and their msg attributes then click the appropriate button
+     * Verify alert window not contains text and their msg attributes then click the appropriate button.
      *
      * @param expectedAlertText  Alert msg to verify it contains
      * @param expectedButtonText Alert button to select
@@ -227,7 +227,7 @@ public abstract class DeclarativeTestCase extends MicroserviceTestSuite {
 
     /**
      * Check if the current page source contains the expectedText anywhere regardless of the
-     * case
+     * case.
      *
      * @param expected expected text to locate on current page
      */
@@ -237,7 +237,7 @@ public abstract class DeclarativeTestCase extends MicroserviceTestSuite {
 
     /**
      * Check if the current page source not contains the expectedText anywhere regardless of the
-     * case
+     * case.
      *
      * @param notExpected expected text to not locate on current page
      */
@@ -246,7 +246,7 @@ public abstract class DeclarativeTestCase extends MicroserviceTestSuite {
     }
 
     /**
-     * Check if the current page contains an WebElement with the expectedText displayed in it
+     * Check if the current page contains an WebElement with the expectedText displayed in it.
      *
      * @param elementIdentifier WebElement to find
      * @param expected          WebElements text value
@@ -256,7 +256,7 @@ public abstract class DeclarativeTestCase extends MicroserviceTestSuite {
     }
 
     /**
-     * Check if the current page not contains an WebElement with the expectedText displayed in it
+     * Check if the current page not contains an WebElement with the expectedText displayed in it.
      *
      * @param elementIdentifier WebElement to find
      * @param notExpected       WebElement's text value to not find
@@ -266,7 +266,7 @@ public abstract class DeclarativeTestCase extends MicroserviceTestSuite {
     }
 
     /**
-     * Check if the current page contains an element with the expectedText displayed in it
+     * Check if the current page contains an element with the expectedText displayed in it.
      *
      * @param elementIdentifier WebElement to find
      * @param expected          WebElements text value
@@ -276,7 +276,7 @@ public abstract class DeclarativeTestCase extends MicroserviceTestSuite {
     }
 
     /**
-     * Check if the current page not contains an element with the expectedText displayed in it
+     * Check if the current page not contains an element with the expectedText displayed in it.
      *
      * @param elementIdentifier WebElement to find
      * @param notExpected       WebElements text value to not find
@@ -286,7 +286,7 @@ public abstract class DeclarativeTestCase extends MicroserviceTestSuite {
     }
 
     /**
-     * Check if the current page contains a visible element
+     * Check if the current page contains a visible element.
      *
      * @param elementIdentifier WebElement to find
      */
@@ -295,7 +295,7 @@ public abstract class DeclarativeTestCase extends MicroserviceTestSuite {
     }
 
     /**
-     * Check if the current page not contains a visible element
+     * Check if the current page not contains a visible element.
      *
      * @param elementIdentifier WebElement to not find
      */
@@ -304,7 +304,7 @@ public abstract class DeclarativeTestCase extends MicroserviceTestSuite {
     }
 
     /**
-     * Check if the current page contains an element
+     * Check if the current page contains an element.
      *
      * @param elementIdentifier WebElement to find
      */
@@ -313,7 +313,7 @@ public abstract class DeclarativeTestCase extends MicroserviceTestSuite {
     }
 
     /**
-     * Check if the current page not contains an element
+     * Check if the current page not contains an element.
      *
      * @param elementIdentifier WebElement to not find
      */
@@ -322,59 +322,51 @@ public abstract class DeclarativeTestCase extends MicroserviceTestSuite {
     }
 
     /**
-     * Check if the current page contains an element
+     * Check if the current page contains an element.
      *
      * @param elementIdentifier      WebElement to find
      * @param attributeIdentifier    element property to validate
      * @param expectedAttributeValue expected property textual value
      */
-    protected void attributeEquals(final String elementIdentifier, final WebElementAttribute attributeIdentifier,
-                                   final String expectedAttributeValue) {
-        webEventController.getWebEventService().elementAttribute(elementIdentifier, attributeIdentifier,
-                expectedAttributeValue, true);
+    protected void attributeEquals(final String elementIdentifier, final WebElementAttribute attributeIdentifier, final String expectedAttributeValue) {
+        webEventController.getWebEventService().elementAttribute(elementIdentifier, attributeIdentifier, expectedAttributeValue, true);
     }
 
     /**
-     * Check if the current page not contains an element
+     * Check if the current page not contains an element.
      *
      * @param elementIdentifier         WebElement to find
      * @param attributeIdentifier       element property to validate
      * @param notExpectedAttributeValue expected property textual value to not find
      */
-    protected void attributeNotEquals(final String elementIdentifier, final WebElementAttribute attributeIdentifier,
-                                      final String notExpectedAttributeValue) {
-        webEventController.getWebEventService().elementAttribute(elementIdentifier, attributeIdentifier,
-                notExpectedAttributeValue, false);
+    protected void attributeNotEquals(final String elementIdentifier, final WebElementAttribute attributeIdentifier, final String notExpectedAttributeValue) {
+        webEventController.getWebEventService().elementAttribute(elementIdentifier, attributeIdentifier, notExpectedAttributeValue, false);
     }
 
     /**
-     * Check if the current WebElement's property contains a text
+     * Check if the current WebElement's property contains a text.
      *
      * @param elementIdentifier      WebElement to find
      * @param attributeIdentifier    WebElement attribute to interrogate
      * @param expectedAttributeValue expected WebElement attribute
      */
-    protected void attributeContains(final String elementIdentifier, final WebElementAttribute attributeIdentifier,
-                                     final String expectedAttributeValue) {
-        webEventController.getWebEventService().elementAttributeContains(elementIdentifier, attributeIdentifier,
-                expectedAttributeValue, true);
+    protected void attributeContains(final String elementIdentifier, final WebElementAttribute attributeIdentifier, final String expectedAttributeValue) {
+        webEventController.getWebEventService().elementAttributeContains(elementIdentifier, attributeIdentifier, expectedAttributeValue, true);
     }
 
     /**
-     * Check if the current WebElement's property not contains a text
+     * Check if the current WebElement's property not contains a text.
      *
      * @param elementIdentifier         WebElement to find
      * @param attributeIdentifier       WebElement attribute to interrogate
      * @param notExpectedAttributeValue expected WebElement attribute to not find
      */
-    protected void attributeNotContains(final String elementIdentifier, final WebElementAttribute attributeIdentifier,
-                                        final String notExpectedAttributeValue) {
-        webEventController.getWebEventService().elementAttributeContains(elementIdentifier, attributeIdentifier,
-                notExpectedAttributeValue, false);
+    protected void attributeNotContains(final String elementIdentifier, final WebElementAttribute attributeIdentifier, final String notExpectedAttributeValue) {
+        webEventController.getWebEventService().elementAttributeContains(elementIdentifier, attributeIdentifier, notExpectedAttributeValue, false);
     }
 
     /**
-     * Verify hover text contains text when hovering over an element
+     * Verify hover text contains text when hovering over an element.
      *
      * @param elementIdentifier unique element identifying string
      * @param expectedText      expected hover text
@@ -384,7 +376,7 @@ public abstract class DeclarativeTestCase extends MicroserviceTestSuite {
     }
 
     /**
-     * Verify hover text not contains text when hovering over an element
+     * Verify hover text not contains text when hovering over an element.
      *
      * @param elementIdentifier unique element identifying string
      * @param expectedText      expected hover text to not find
@@ -394,7 +386,7 @@ public abstract class DeclarativeTestCase extends MicroserviceTestSuite {
     }
 
     /**
-     * Measure the performance duration of how long it takes for a WebElement to appear in the browser to the user
+     * Measure the performance duration of how long it takes for a WebElement to appear in the browser to the user.
      *
      * @param elementIdentifier element to find visibility
      * @return duration in seconds for the element to display
@@ -404,7 +396,7 @@ public abstract class DeclarativeTestCase extends MicroserviceTestSuite {
     }
 
     /**
-     * Measure the performance duration of how long it takes for a WebElement to disappear from the browser
+     * Measure the performance duration of how long it takes for a WebElement to disappear from the browser.
      *
      * @param elementIdentifier element to find to be not visible
      * @return duration in seconds for the element to disappear
@@ -438,7 +430,7 @@ public abstract class DeclarativeTestCase extends MicroserviceTestSuite {
     /**
      * Wait for Element to disappear in the browser.  Will timeout after the configurable timeout and throw a failure to fail the test.
      * NOTE: be very careful with this method.  Make sure your elementIdentifier to wait for to NOT display is going to surly
-     * disappear
+     * disappear.
      *
      * @param elementIdentifier element to find visibly not displayed
      */
@@ -449,7 +441,7 @@ public abstract class DeclarativeTestCase extends MicroserviceTestSuite {
     /**
      * Wait for Element to load in browser.  Will timeout after the configurable timeout and throw a failure to fail the test.
      * NOTE: be very careful with this method.  Make sure your elementIdentifier to wait for to display is going to surly
-     * display
+     * display.
      *
      * @param elementIdentifier element to find visibly
      */
@@ -460,7 +452,7 @@ public abstract class DeclarativeTestCase extends MicroserviceTestSuite {
     /**
      * Wait for Text to load in browser.  Will timeout after the configurable timeout and throw a failure to fail the test.
      * NOTE: be very careful with this method.  Make sure your textToWaitToDisplay to wait for to display is going to surly
-     * display
+     * display.
      *
      * @param textToWaitToDisplay text to wait for to display
      */
@@ -482,7 +474,7 @@ public abstract class DeclarativeTestCase extends MicroserviceTestSuite {
     /**
      * Wait for Text to load in browser.  Will timeout after the configurable timeout and throw a failure to fail the test.
      * NOTE: be very careful with this method.  Make sure your textToWaitToDisplay to wait for to display is going to surly
-     * display
+     * display.
      *
      * @param textToWaitToDisappear text to wait for to disappear
      */
@@ -491,22 +483,21 @@ public abstract class DeclarativeTestCase extends MicroserviceTestSuite {
     }
 
     /**
-     * Wait for all active requests to complete before proceeding.
-     * Will timeout after a specified number of seconds and allow test to continue.
+     * Wait for all active requests to complete before proceeding.  Will timeout after a specified number of seconds and allow test to continue.
      */
     protected void waitForBrowserToLoad() {
         webEventController.getWebEventService().waitForBrowserToLoad();
     }
 
     /**
-     * Refresh the currently displayed browser
+     * Refresh the currently displayed browser.
      */
     protected void refreshPage() {
         webEventController.getWebEventService().refreshBrowser();
     }
 
     /**
-     * Execute blur Event on a given element via xPath or by ID
+     * Execute blur Event on a given element via xPath or by ID.
      *
      * @param elementIdentifier element identifier (xPath or explicite Element ID)
      */
@@ -528,7 +519,7 @@ public abstract class DeclarativeTestCase extends MicroserviceTestSuite {
     }
 
     /**
-     * Get the property of this element, including sub-elements
+     * Get the property of this element, including sub-elements.
      *
      * @param elementIdentifier WebElement to find via xpath or unique identifier
      * @param attribute         WebElement's specific property to look for
@@ -550,7 +541,7 @@ public abstract class DeclarativeTestCase extends MicroserviceTestSuite {
     }
 
     /**
-     * Get a list of the current Page's console log entries
+     * Get a list of the current Page's console log entries.
      *
      * @return List of console log entries
      */
@@ -559,7 +550,7 @@ public abstract class DeclarativeTestCase extends MicroserviceTestSuite {
     }
 
     /**
-     * Check if the current page's Console does contains a sub-string message
+     * Check if the current page's Console does contains a sub-string message.
      *
      * @param consoleIdentifier case-insensitive snippet of console log output to find
      */
@@ -568,7 +559,7 @@ public abstract class DeclarativeTestCase extends MicroserviceTestSuite {
     }
 
     /**
-     * Check if the current page's Console does not contains a sub-string message
+     * Check if the current page's Console does not contains a sub-string message.
      *
      * @param consoleIdentifier case-insensitive snippet of console log output to find
      */
@@ -577,7 +568,7 @@ public abstract class DeclarativeTestCase extends MicroserviceTestSuite {
     }
 
     /**
-     * Check if the current page contains Console errors at a given log level or below
+     * Check if the current page contains Console errors at a given log level or below.
      *
      * @param targetLogLevel target log java.util.Level
      */
@@ -587,7 +578,7 @@ public abstract class DeclarativeTestCase extends MicroserviceTestSuite {
 
     /**
      * Check if the Console contains entries greater than or equal to the allowable Level.  This is a filtered list
-     * for this specific project
+     * for this specific project.
      *
      * @param elementIdentifier WebElement to wait for to display before reading Console tab data
      * @param level             {@link Level} the level to filter the log entries
@@ -598,7 +589,7 @@ public abstract class DeclarativeTestCase extends MicroserviceTestSuite {
     }
 
     /**
-     * Get current Network requests that contain a particular request identifier and verify occurrence count
+     * Get current Network requests that contain a particular request identifier and verify occurrence count.
      *
      * @param requestIdentifier       target request identifier to do a case-insensitive match against
      * @param matchingOccurrenceCount expected number of request occurrences
@@ -608,7 +599,7 @@ public abstract class DeclarativeTestCase extends MicroserviceTestSuite {
     }
 
     /**
-     * Get Set of current Network requests Set that contain a particular request identifier
+     * Get Set of current Network requests Set that contain a particular request identifier.
      *
      * @param requestIdentifier target request identifier to do a case-insensitive match against
      * @return unique Set of matching network tab requests
@@ -618,7 +609,7 @@ public abstract class DeclarativeTestCase extends MicroserviceTestSuite {
     }
 
     /**
-     * Get a list of the current Network requests
+     * Get a list of the current Network requests.
      *
      * @return unique List of network tab requests
      */

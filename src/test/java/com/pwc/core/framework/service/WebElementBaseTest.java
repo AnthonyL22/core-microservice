@@ -18,7 +18,7 @@ public class WebElementBaseTest {
     private WebElement mockWebElement;
 
     /**
-     * Create visible anchor WebElement with the element's ID set
+     * Create visible anchor WebElement with the element's ID set.
      *
      * @param elementIdentifier Unique element identifier
      */
@@ -27,7 +27,7 @@ public class WebElementBaseTest {
     }
 
     /**
-     * Create visible anchor WebElement with a given WebElement property set
+     * Create visible anchor WebElement with a given WebElement property set.
      *
      * @param elementIdentifier   Unique element identifier
      * @param attributeIdentifier WebElement property identifier
@@ -37,7 +37,7 @@ public class WebElementBaseTest {
     }
 
     /**
-     * Create a visible WebElement with a given WebElement property as well as WebElement type set
+     * Create a visible WebElement with a given WebElement property as well as WebElement type set.
      *
      * @param elementIdentifier   Unique element identifier
      * @param attributeIdentifier WebElement property identifier
@@ -48,7 +48,7 @@ public class WebElementBaseTest {
     }
 
     /**
-     * Create a WebElement with given property, type, and visibility set
+     * Create a WebElement with given property, type, and visibility set.
      *
      * @param elementIdentifier   Unique element identifier
      * @param attributeIdentifier WebElement property identifier

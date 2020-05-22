@@ -16,8 +16,8 @@ import java.util.Properties;
 
 public class PropertiesUtilsTest {
 
-    private final String PROPERTIES_FILE = "automation.properties";
-    private final String STATIC_FILE = "training.docx";
+    private static final String PROPERTIES_FILE = "automation.properties";
+    private static final String WORD_DOCUMENT_FILE = "training.docx";
     private static final int EXPECTED_NUM_OF_PROPERTIES = 23;
 
     @Before
@@ -26,6 +26,7 @@ public class PropertiesUtilsTest {
 
     @Test
     public void readResourceFileTest() {
+
         List<String> lines = PropertiesUtils.readResourceFile("config/dev-env/" + PROPERTIES_FILE);
         Assert.assertEquals(EXPECTED_NUM_OF_PROPERTIES, lines.size());
         Assert.assertEquals(lines.get(0), "web.url=http://my-web-application.mywebsite.com");
@@ -50,8 +51,8 @@ public class PropertiesUtilsTest {
 
     @Test
     public void getPathValidFileTest() {
-        File file = PropertiesUtils.getFileFromResources("config" + FrameworkConstants.SEPARATOR +
-                "dev-env" + FrameworkConstants.SEPARATOR + PROPERTIES_FILE);
+
+        File file = PropertiesUtils.getFileFromResources("config" + FrameworkConstants.SEPARATOR + "dev-env" + FrameworkConstants.SEPARATOR + PROPERTIES_FILE);
         String path = PropertiesUtils.getPath(file);
         Assert.assertTrue(path.contains("config"));
         Assert.assertTrue(path.contains("dev-env"));
@@ -60,39 +61,44 @@ public class PropertiesUtilsTest {
 
     @Test
     public void getPathNullFileTest() {
+
         String path = PropertiesUtils.getPath(null);
         Assert.assertTrue(StringUtils.isBlank(path));
     }
 
     @Test
     public void invalidFileNameReadResourceFileTest() {
+
         List<String> lines = PropertiesUtils.readResourceFile("config/foobar.properties");
         Assert.assertNull(lines);
     }
 
     @Test
     public void getFileFromResourcesTest() {
-        File file = PropertiesUtils.getFileFromResources("config" + FrameworkConstants.SEPARATOR +
-                "dev-env" + FrameworkConstants.SEPARATOR + PROPERTIES_FILE);
+
+        File file = PropertiesUtils.getFileFromResources("config" + FrameworkConstants.SEPARATOR + "dev-env" + FrameworkConstants.SEPARATOR + PROPERTIES_FILE);
         Assert.assertTrue(StringUtils.contains(file.getPath(), PROPERTIES_FILE));
         Assert.assertTrue(StringUtils.contains(file.getPath(), "config"));
     }
 
     @Test
     public void getPathOfResourceFileTest() {
-        String filePath = PropertiesUtils.getPathOfResourceFile("files" + FrameworkConstants.SEPARATOR + STATIC_FILE);
-        Assert.assertTrue(StringUtils.contains(filePath, STATIC_FILE));
+
+        String filePath = PropertiesUtils.getPathOfResourceFile("files" + FrameworkConstants.SEPARATOR + WORD_DOCUMENT_FILE);
+        Assert.assertTrue(StringUtils.contains(filePath, WORD_DOCUMENT_FILE));
         Assert.assertTrue(StringUtils.contains(filePath, "files"));
     }
 
     @Test
     public void getPathOfResourceFileInvalidFileNameTest() {
-        String filePath = PropertiesUtils.getPathOfResourceFile("filesss" + FrameworkConstants.SEPARATOR + STATIC_FILE);
+
+        String filePath = PropertiesUtils.getPathOfResourceFile("filesss" + FrameworkConstants.SEPARATOR + WORD_DOCUMENT_FILE);
         Assert.assertEquals(filePath, "");
     }
 
     @Test
     public void getFirstFileFromResourcesTest() {
+
         File file = PropertiesUtils.getFirstFileFromTestResources("dev-env" + FrameworkConstants.SEPARATOR + PROPERTIES_FILE);
         Assert.assertEquals(PROPERTIES_FILE, file.getName());
         Assert.assertTrue(StringUtils.contains(file.getPath(), PROPERTIES_FILE));
@@ -124,30 +130,35 @@ public class PropertiesUtilsTest {
 
     @Test
     public void fileNotInPathGetFirstFileFromResourcesTest() {
+
         File file = PropertiesUtils.getFirstFileFromTestResources("foobar.properties");
         Assert.assertNull(file);
     }
 
     @Test
     public void getValidPropertyFromPropertyFileTest() {
+
         String property = PropertiesUtils.getPropertyFromPropertiesFile("config/dev-env/" + PROPERTIES_FILE, "enable.hard.assert");
         Assert.assertEquals("false", property);
     }
 
     @Test
     public void getInvalidPropertyFromPropertyFileTest() {
+
         String property = PropertiesUtils.getPropertyFromPropertiesFile("config/dev-env/" + PROPERTIES_FILE, "enable.hard.asser");
         Assert.assertNull(property);
     }
 
     @Test
     public void getPropertiesFromPropertyFileTest() {
+
         Properties properties = PropertiesUtils.getPropertiesFromPropertyFile("config/dev-env/" + PROPERTIES_FILE);
         Assert.assertEquals(EXPECTED_NUM_OF_PROPERTIES, properties.size());
     }
 
     @Test
     public void invalidGetPropertiesFromPropertyFileTest() {
+
         Properties properties = PropertiesUtils.getPropertiesFromPropertyFile("foobar.properties");
         Assert.assertEquals(0, properties.size());
     }
@@ -155,6 +166,7 @@ public class PropertiesUtilsTest {
     @Test
     public void setEnvTest() {
         HashMap sauceEnvVariableMap = new HashMap<>();
+
         sauceEnvVariableMap.put(FrameworkConstants.SAUCELABS_BROWSER_PROPERTY, "chrome");
         sauceEnvVariableMap.put(FrameworkConstants.SAUCELABS_BROWSER_VERSION_PROPERTY, "26");
         sauceEnvVariableMap.put(FrameworkConstants.SAUCELABS_PLATFORM_PROPERTY, "Windows 2003");
@@ -163,6 +175,7 @@ public class PropertiesUtilsTest {
 
     @Test
     public void setEnvExceptionTest() {
+
         PropertiesUtils.setEnv(null);
     }
 

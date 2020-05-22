@@ -30,67 +30,75 @@ public class PDropDownTest extends WebElementBaseTest {
 
     @Before
     public void setUp() {
+
         WebElement mockWebElementOptionOne = mock(WebElement.class);
         WebElement mockWebElementOptionTwo = mock(WebElement.class);
         mockWebElementOptionList = Arrays.asList(mockWebElementOptionOne, mockWebElementOptionTwo);
     }
 
     @Test
-    public void pDropDownWithTagNameTest() {
+    public void dropDownWithTagNameTest() {
+
         createMockElement("777", WebElementAttribute.ID, WebElementType.P_DROP_DOWN, true);
-        PDropDown pDropDownEl = new PDropDown(getMockWebElement());
-        Assert.assertTrue(pDropDownEl instanceof PDropDown);
+        PDropDown dropDownElement = new PDropDown(getMockWebElement());
+        Assert.assertTrue(dropDownElement instanceof PDropDown);
     }
 
     @Test(expected = UnexpectedTagNameException.class)
-    public void pDropDownNonMatchingTagNameTest() {
+    public void dropDownNonMatchingTagNameTest() {
+
         createMockElement("777", WebElementAttribute.ID, WebElementType.INPUT, true);
-        PDropDown pDropDownEl = new PDropDown(getMockWebElement());
-        Assert.assertTrue(pDropDownEl instanceof PDropDown);
+        PDropDown dropDownElement = new PDropDown(getMockWebElement());
+        Assert.assertTrue(dropDownElement instanceof PDropDown);
     }
 
     @Test
-    public void pDropDownSelectByVisibleTextUnorderedListTest() {
+    public void dropDownSelectByVisibleTextUnorderedListTest() {
+
         createMockElement("777", WebElementAttribute.ID, WebElementType.P_DROP_DOWN, true);
         when(getMockWebElement().findElements(By.xpath(".//li[normalize-space(.) = " + Quotes.escape(DROP_DOWN_VALUE) + "]"))).thenReturn(mockWebElementOptionList);
-        PDropDown pDropDownEl = new PDropDown(getMockWebElement());
-        pDropDownEl.selectByVisibleText(DROP_DOWN_VALUE);
+        PDropDown dropDownElement = new PDropDown(getMockWebElement());
+        dropDownElement.selectByVisibleText(DROP_DOWN_VALUE);
         verify(getMockWebElement(), times(1)).getTagName();
     }
 
     @Test
-    public void pDropDownSelectByVisibleTextOrderedListTest() {
+    public void dropDownSelectByVisibleTextOrderedListTest() {
+
         createMockElement("777", WebElementAttribute.ID, WebElementType.P_DROP_DOWN, true);
         when(getMockWebElement().findElements(By.xpath(".//ol[normalize-space(.) = " + Quotes.escape(DROP_DOWN_VALUE) + "]"))).thenReturn(mockWebElementOptionList);
-        PDropDown pDropDownEl = new PDropDown(getMockWebElement());
-        pDropDownEl.selectByVisibleText(DROP_DOWN_VALUE);
+        PDropDown dropDownElement = new PDropDown(getMockWebElement());
+        dropDownElement.selectByVisibleText(DROP_DOWN_VALUE);
         verify(getMockWebElement(), times(1)).getTagName();
     }
 
     @Test(expected = NoSuchElementException.class)
     public void selectByIndexUnorderedListIndexGreaterThanListSizeTest() {
+
         createMockElement("777", WebElementAttribute.ID, WebElementType.P_DROP_DOWN, true);
         when(getMockWebElement().findElements(By.tagName(WebElementType.LI.type))).thenReturn(mockWebElementOptionList);
-        PDropDown pDropDownEl = new PDropDown(getMockWebElement());
-        pDropDownEl.selectByIndex(3);
+        PDropDown dropDownElement = new PDropDown(getMockWebElement());
+        dropDownElement.selectByIndex(3);
         verify(getMockWebElement(), times(1)).getTagName();
     }
 
     @Test(expected = NoSuchElementException.class)
     public void selectByIndexUnorderedListIndexLessThanListSizeTest() {
+
         createMockElement("777", WebElementAttribute.ID, WebElementType.P_DROP_DOWN, true);
         when(getMockWebElement().findElements(By.tagName(WebElementType.LI.type))).thenReturn(mockWebElementOptionList);
-        PDropDown pDropDownEl = new PDropDown(getMockWebElement());
-        pDropDownEl.selectByIndex(-1);
+        PDropDown dropDownElement = new PDropDown(getMockWebElement());
+        dropDownElement.selectByIndex(-1);
         verify(getMockWebElement(), times(19)).getTagName();
     }
 
     @Test
     public void selectByIndexUnorderedListIndexEqualLowerBoundListSizeTest() {
+
         createMockElement("777", WebElementAttribute.ID, WebElementType.P_DROP_DOWN, true);
         when(getMockWebElement().findElements(By.tagName(WebElementType.LI.type))).thenReturn(mockWebElementOptionList);
-        PDropDown pDropDownEl = new PDropDown(getMockWebElement());
-        pDropDownEl.selectByIndex(0);
+        PDropDown dropDownElement = new PDropDown(getMockWebElement());
+        dropDownElement.selectByIndex(0);
         verify(getMockWebElement(), times(1)).getTagName();
     }
 
@@ -98,19 +106,19 @@ public class PDropDownTest extends WebElementBaseTest {
     public void selectByIndexUnorderedListIndexEqualUpperBoundListSizeTest() {
         createMockElement("777", WebElementAttribute.ID, WebElementType.P_DROP_DOWN, true);
         when(getMockWebElement().findElements(By.tagName(WebElementType.LI.type))).thenReturn(mockWebElementOptionList);
-        PDropDown pDropDownEl = new PDropDown(getMockWebElement());
-        pDropDownEl.selectByIndex(2);
+        PDropDown dropDownElement = new PDropDown(getMockWebElement());
+        dropDownElement.selectByIndex(2);
         verify(getMockWebElement(), times(1)).getTagName();
     }
 
     @Test
     public void selectByIndexUnorderedListIndexInRangeListSizeTest() {
+
         createMockElement("777", WebElementAttribute.ID, WebElementType.P_DROP_DOWN, true);
         when(getMockWebElement().findElements(By.tagName(WebElementType.LI.type))).thenReturn(mockWebElementOptionList);
-        PDropDown pDropDownEl = new PDropDown(getMockWebElement());
-        pDropDownEl.selectByIndex(1);
+        PDropDown dropDownElement = new PDropDown(getMockWebElement());
+        dropDownElement.selectByIndex(1);
         verify(getMockWebElement(), times(1)).getTagName();
     }
-
 
 }

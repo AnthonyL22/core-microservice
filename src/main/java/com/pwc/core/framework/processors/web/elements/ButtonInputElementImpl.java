@@ -11,12 +11,12 @@ import static com.pwc.logging.service.LoggerService.LOG;
 public class ButtonInputElementImpl implements MicroserviceWebElement {
 
     public static boolean applies(WebElement element) {
-        return (StringUtils.equalsIgnoreCase(element.getTagName(), WebElementType.INPUT.type) &&
-                StringUtils.equalsIgnoreCase(element.getAttribute(WebElementAttribute.TYPE.attribute), WebElementType.BUTTON.type)) ||
-                (StringUtils.equalsIgnoreCase(element.getTagName(), WebElementType.INPUT.type) &&
-                        StringUtils.equalsIgnoreCase(element.getAttribute(WebElementAttribute.TYPE.attribute), WebElementType.IMAGE.type)) ||
-                (StringUtils.equalsIgnoreCase(element.getTagName(), WebElementType.INPUT.type) &&
-                        StringUtils.equalsIgnoreCase(element.getAttribute(WebElementAttribute.TYPE.attribute), WebElementType.SUBMIT.type));
+        return (StringUtils.equalsIgnoreCase(element.getTagName(), WebElementType.INPUT.type)
+                        && StringUtils.equalsIgnoreCase(element.getAttribute(WebElementAttribute.TYPE.attribute), WebElementType.BUTTON.type))
+                        || (StringUtils.equalsIgnoreCase(element.getTagName(), WebElementType.INPUT.type)
+                                        && StringUtils.equalsIgnoreCase(element.getAttribute(WebElementAttribute.TYPE.attribute), WebElementType.IMAGE.type))
+                        || (StringUtils.equalsIgnoreCase(element.getTagName(), WebElementType.INPUT.type)
+                                        && StringUtils.equalsIgnoreCase(element.getAttribute(WebElementAttribute.TYPE.attribute), WebElementType.SUBMIT.type));
     }
 
     public void webAction(final WebElement webElement, final Object attributeValue) {
@@ -25,8 +25,8 @@ public class ButtonInputElementImpl implements MicroserviceWebElement {
 
     public void webAction(final WebElement webElement) {
         try {
-            if (StringUtils.equalsIgnoreCase(webElement.getTagName(), WebElementType.INPUT.type) &&
-                    StringUtils.equalsIgnoreCase(webElement.getAttribute(WebElementAttribute.TYPE.attribute), WebElementType.SUBMIT.type)) {
+            if (StringUtils.equalsIgnoreCase(webElement.getTagName(), WebElementType.INPUT.type)
+                            && StringUtils.equalsIgnoreCase(webElement.getAttribute(WebElementAttribute.TYPE.attribute), WebElementType.SUBMIT.type)) {
                 LOG(true, "Submit BUTTON %s", getButtonText(webElement));
                 webElement.submit();
             } else {

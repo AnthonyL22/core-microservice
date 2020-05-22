@@ -36,22 +36,24 @@ public class RandomStringUtils {
     private static final List<String> webAttributesList = new ArrayList<>();
 
     /**
-     * Get a random string of alphabetic letters of variable length
+     * Get a random string of alphabetic letters of variable length.
      *
      * @param length The length of the string of random letters
      * @return A string of random letters
      */
     public static String randomAlphabetic(final int length) {
+
         return org.apache.commons.lang.RandomStringUtils.randomAlphabetic(length);
     }
 
     /**
-     * Get a random string of alphanumeric characters of variable length
+     * Get a random string of alphanumeric characters of variable length.
      *
      * @param length The length of the string of random alphanumeric characters
      * @return A String of random alphanumeric letters
      */
     public static String randomAlphanumeric(final int length) {
+
         return org.apache.commons.lang.RandomStringUtils.randomAlphanumeric(length);
     }
 
@@ -73,14 +75,15 @@ public class RandomStringUtils {
     }
 
     /**
-     * Get random HTML body element
+     * Get random HTML body element.
      *
      * @param numberOfElements number of body elements to return
      * @return random element
      */
     private static Node getRandomBodyElement(final int numberOfElements) {
-        Random rand = new Random();
-        int randSelector = rand.nextInt(BODY_ELEMENT_UPPER_BOUND);
+
+        Random randomValue = new Random();
+        int randSelector = randomValue.nextInt(BODY_ELEMENT_UPPER_BOUND);
 
         switch (randSelector) {
             case 1:
@@ -97,6 +100,7 @@ public class RandomStringUtils {
                         return unorderedList;
                     }
                 }
+                return unorderedList;
             case 3:
                 Ol orderedList = new Ol();
                 for (int index = 0; index < numberOfElements; index++) {
@@ -107,9 +111,9 @@ public class RandomStringUtils {
                         return orderedList;
                     }
                 }
+                return orderedList;
             case 4:
-                return new Img(randomAlphanumeric(DEFAULT_STRING_LENGTH),
-                        randomAlphanumeric(DEFAULT_STRING_LENGTH));
+                return new Img(randomAlphanumeric(DEFAULT_STRING_LENGTH), randomAlphanumeric(DEFAULT_STRING_LENGTH));
             default:
                 Button button = new Button();
                 button.appendChild(new Text(RandomStringUtils.randomAlphabetic(DEFAULT_STRING_LENGTH)));
@@ -118,12 +122,13 @@ public class RandomStringUtils {
     }
 
     /**
-     * Get a segment of of HTML
+     * Get a segment of of HTML.
      *
      * @param numberOfElements The number of HTML elements
      * @return A List of randomly generated HTML elements and content
      */
     private static List<Node> getNodeSegment(final int numberOfElements) {
+
         List<Node> nodeSegment = new ArrayList<>();
         Random rand = new Random();
 
@@ -135,7 +140,7 @@ public class RandomStringUtils {
     }
 
     /**
-     * Get a random string of HTML with real tags and randomly generated content
+     * Get a random string of HTML with real tags and randomly generated content.
      *
      * @param numberOfElementsInBody The number of elements in the segment for segment only html,
      *                               or the number of "Div" elements in the body with random number of tags
@@ -145,10 +150,10 @@ public class RandomStringUtils {
      * @return A randomly generated string of HTML
      */
     public static String randomHTML(final int numberOfElementsInBody, boolean fullPage) {
+
         String generatedHtml = "";
         List<Div> divElements = new ArrayList<>();
         List<Node> nodeSegmentList = getNodeSegment(numberOfElementsInBody);
-
 
         if (fullPage) {
             Div div = new Div();
@@ -182,12 +187,12 @@ public class RandomStringUtils {
     }
 
     /**
-     * Get a random string of XML with real HTML tags for
-     * nodes and randomly generated content
+     * Get a random string of XML with real HTML tags for nodes and randomly generated content.
      *
      * @return A String of random XML
      */
     public static String randomXML() {
+
         refreshAttributesList();
         Collections.shuffle(webAttributesList);
         String node = webAttributesList.get(0);
@@ -196,11 +201,12 @@ public class RandomStringUtils {
     }
 
     /**
-     * Get a randomly generated first and last name
+     * Get a randomly generated first and last name.
      *
      * @return A String consisting of a first and last name
      */
     public static String randomName() {
+
         StringBuilder firstName = new StringBuilder();
         StringBuilder lastName = new StringBuilder();
 
@@ -215,30 +221,33 @@ public class RandomStringUtils {
     }
 
     /**
-     * Get a randomly generated first name
+     * Get a randomly generated first name.
      *
      * @return A String consisting of a first name
      */
     public static String randomFirstName() {
+
         Random rand = new Random();
         return generateName(rand.nextInt(SCHEME_UPPER_BOUND), true);
     }
 
     /**
-     * Get a randomly generated last name
+     * Get a randomly generated last name.
      *
      * @return A String consisting of a last name
      */
     public static String randomLastName() {
+
         Random rand = new Random();
         return generateName(rand.nextInt(SCHEME_UPPER_BOUND), false);
     }
 
     /**
      * Fills this class's web attributes list with the web attributes enum from
-     * WebElementAttribute.java for the random HTML, XML and JSON generators
+     * WebElementAttribute.java for the random HTML, XML and JSON generators.
      */
     private static void refreshAttributesList() {
+
         if (webAttributesList.size() == 0) {
             for (WebElementAttribute attr : WebElementAttribute.values()) {
                 webAttributesList.add(attr.attribute);
@@ -247,31 +256,38 @@ public class RandomStringUtils {
     }
 
     /**
-     * Generates a variety of variations first or last names
+     * Generates a variety of variations first or last names.
      *
      * @param scheme        An Int that will select one of the variations of first or last names
      * @param firstNameOnly A Boolean that determines whether a first name or last name is generated
      * @return A String that is a first name or a last name
      */
     public static String generateName(final int scheme, boolean firstNameOnly) {
+
         StringBuilder name = new StringBuilder();
         if (firstNameOnly) {
             switch (scheme) {
                 case 1:
-                case 2:         //c-v-c-v-c or c-v-v-c-v-c
+                    name.append(generateLetterByProbability(1, CONSONANT).toUpperCase());
+                    name.append(generateLetterByProbability(scheme, VOWEL));
+                    name.append(generateLetterByProbability(2, CONSONANT));
+                    name.append(generateLetterByProbability(2, VOWEL));
+                    name.append(generateLetterByProbability(2, CONSONANT));
+                    break;
+                case 2:
                     name.append(generateLetterByProbability(1, CONSONANT).toUpperCase());
                     name.append(generateLetterByProbability(scheme, VOWEL));
                     name.append((generateLetterByProbability(1, CONSONANT)));
                     name.append(generateLetterByProbability(1, VOWEL));
                     name.append(generateLetterByProbability(1, CONSONANT));
                     break;
-                case 3:         //c-v-c-c-v
+                case 3:
                     name.append(generateLetterByProbability(1, CONSONANT).toUpperCase());
                     name.append(generateLetterByProbability(1, VOWEL));
                     name.append((generateLetterByProbability(2, CONSONANT)));
                     name.append(generateLetterByProbability(1, VOWEL));
                     break;
-                default:        //c-v-c-v
+                default:
                     name.append(generateLetterByProbability(1, CONSONANT).toUpperCase());
                     name.append(generateLetterByProbability(1, VOWEL));
                     name.append(generateLetterByProbability(1, CONSONANT));
@@ -281,21 +297,27 @@ public class RandomStringUtils {
         } else {
             switch (scheme) {
                 case 1:
-                case 2:  //c-v-c-c-v-c or c-v-v-c-c-v-c
+                    name.append(generateLetterByProbability(1, CONSONANT).toUpperCase());
+                    name.append(generateLetterByProbability(scheme, VOWEL));
+                    name.append(generateLetterByProbability(2, CONSONANT));
+                    name.append(generateLetterByProbability(2, VOWEL));
+                    name.append(generateLetterByProbability(2, CONSONANT));
+                    break;
+                case 2:
                     name.append(generateLetterByProbability(1, CONSONANT).toUpperCase());
                     name.append(generateLetterByProbability(scheme, VOWEL));
                     name.append(generateLetterByProbability(2, CONSONANT));
                     name.append(generateLetterByProbability(1, VOWEL));
                     name.append(generateLetterByProbability(1, CONSONANT));
                     break;
-                case 3:         //c-v-c-v-c-c
+                case 3:
                     name.append(generateLetterByProbability(1, CONSONANT).toUpperCase());
                     name.append(generateLetterByProbability(1, VOWEL));
                     name.append(generateLetterByProbability(1, CONSONANT));
                     name.append(generateLetterByProbability(1, VOWEL));
                     name.append(generateLetterByProbability(2, CONSONANT));
                     break;
-                default:        //c-v-c-v-c
+                default:
                     name.append(generateLetterByProbability(1, CONSONANT).toUpperCase());
                     name.append(generateLetterByProbability(1, VOWEL));
                     name.append(generateLetterByProbability(1, CONSONANT));
@@ -315,6 +337,7 @@ public class RandomStringUtils {
      * @return A String of randomly generated vowels or consonants
      */
     public static String generateLetterByProbability(final int length, boolean isConsonant) {
+
         StringBuilder generatedLetters = new StringBuilder("");
 
         LinkedHashMap<String, Double> hm = new LinkedHashMap<>();
@@ -394,19 +417,20 @@ public class RandomStringUtils {
     }
 
     /**
-     * Get a random snippet of a given String from the 0 index to a random location in the given <code>String</code>
+     * Get a random snippet of a given String from the 0 index to a random location in the given <code>String</code>.
      *
      * @param randomString base value to get a snippet of
      * @return sub-string of original value
      */
     public static String getRandomSubStringFromBeginning(String randomString) {
+
         int randomEnd = 1 + (int) (Math.random() * randomString.length() - 1);
         randomString = org.apache.commons.lang3.StringUtils.substring(randomString, 0, randomEnd);
         return randomString;
     }
 
     /**
-     * Get a random fragment of a given sentence of words
+     * Get a random fragment of a given sentence of words.
      *
      * @param randomString base value to get a snippet or sentence
      * @return sub-string of original value
@@ -424,12 +448,13 @@ public class RandomStringUtils {
     }
 
     /**
-     * Get a random snippet of a given String from a random location in the given <code>String</code> to the end
+     * Get a random snippet of a given String from a random location in the given <code>String</code> to the end.
      *
      * @param displayedColumnValue base value to get a snippet of
      * @return sub-string of original value
      */
     public static String getRandomEndingSubString(String displayedColumnValue) {
+
         int randomBegin = 1 + (int) (Math.random() * displayedColumnValue.length() - 1);
         displayedColumnValue = org.apache.commons.lang3.StringUtils.substring(displayedColumnValue, randomBegin, displayedColumnValue.length());
         return displayedColumnValue;

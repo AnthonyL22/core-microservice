@@ -28,20 +28,10 @@ public class MouseActivityProcessor {
     }
 
     public static boolean applies(WebElement webElement) {
-        return CheckboxElementImpl.applies(webElement) ||
-                RadioButtonElementImpl.applies(webElement) ||
-                ButtonElementImpl.applies(webElement) ||
-                ButtonInputElementImpl.applies(webElement) ||
-                AnchorElementImpl.applies(webElement) ||
-                SelectableElementImpl.applies(webElement) ||
-                MatSelectableElementImpl.applies(webElement) ||
-                IconElementImpl.applies(webElement) ||
-                ImageElementImpl.applies(webElement) ||
-                ComboBoxElementImpl.applies(webElement) ||
-                ListItemElementImpl.applies(webElement) ||
-                SpanElementImpl.applies(webElement) ||
-                HeadingElementImpl.applies(webElement) ||
-                PDropDownElementImpl.applies(webElement);
+        return CheckboxElementImpl.applies(webElement) || RadioButtonElementImpl.applies(webElement) || ButtonElementImpl.applies(webElement) || ButtonInputElementImpl.applies(webElement)
+                        || AnchorElementImpl.applies(webElement) || SelectableElementImpl.applies(webElement) || MatSelectableElementImpl.applies(webElement) || IconElementImpl.applies(webElement)
+                        || ImageElementImpl.applies(webElement) || ComboBoxElementImpl.applies(webElement) || ListItemElementImpl.applies(webElement) || SpanElementImpl.applies(webElement)
+                        || HeadingElementImpl.applies(webElement) || PDropDownElementImpl.applies(webElement);
     }
 
     public void webAction(WebElement webElement, Object value) {
@@ -85,8 +75,8 @@ public class MouseActivityProcessor {
             HeadingElementImpl headingElement = new HeadingElementImpl();
             headingElement.webAction(webElement, value);
         } else if (PDropDownElementImpl.applies(webElement)) {
-            PDropDownElementImpl pDropDownElement = new PDropDownElementImpl();
-            pDropDownElement.webAction(webElement, value);
+            PDropDownElementImpl dropDownElement = new PDropDownElementImpl();
+            dropDownElement.webAction(webElement, value);
         }
     }
 

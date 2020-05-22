@@ -1,6 +1,5 @@
 package com.pwc.core.framework.data;
 
-
 public enum WebElementAttribute {
 
     ACCEPT("accept"),
@@ -60,6 +59,7 @@ public enum WebElementAttribute {
     HIDDEN("hidden"),
     HREF("href"),
     ID("id"),
+    INNER_HTML("innerHTML"),
     LANG("lang"),
     LINKTO("linkto"),
     MAX("max"),

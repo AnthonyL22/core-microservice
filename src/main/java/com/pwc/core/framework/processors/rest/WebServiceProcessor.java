@@ -1,6 +1,5 @@
 package com.pwc.core.framework.processors.rest;
 
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ArrayListMultimap;
@@ -76,7 +75,7 @@ public class WebServiceProcessor {
     }
 
     /**
-     * Build URL based on <code>BaseGetCommand</code> and request mapping <code>String</code>
+     * Build URL based on <code>BaseGetCommand</code> and request mapping <code>String</code>.
      *
      * @param url           web service URL
      * @param command       command to execute
@@ -84,6 +83,7 @@ public class WebServiceProcessor {
      * @return web service URL
      */
     protected String constructRestUrl(final String url, final WebServiceCommand command, final Object pathParameter) {
+
         StringBuilder urlBuilder = new StringBuilder();
         urlBuilder.append(StringUtils.appendIfMissing(url, "/", "/"));
         if (StringUtils.endsWith(command.mappingName(), "=")) {
@@ -114,14 +114,13 @@ public class WebServiceProcessor {
             }
         }
 
-
         LOG(true, "REST action for url='%s'", urlBuilder.toString());
         return urlBuilder.toString();
     }
 
     /**
      * Generic REST web service Execution method for simple GET requests
-     * that return a String response
+     * that return a String response.
      *
      * @param url web service URL
      * @return JsonPath json payload
@@ -155,7 +154,7 @@ public class WebServiceProcessor {
 
     /**
      * Generic REST web service Execution method for simple GET requests
-     * that return a String response
+     * that return a String response.
      *
      * @param url  web service URL
      * @param user username
@@ -191,7 +190,7 @@ public class WebServiceProcessor {
 
     /**
      * Generic REST web service Execution method for simple GET requests
-     * that return a String response
+     * that return a String response.
      *
      * @param url     web service URL
      * @param user    username
@@ -205,7 +204,7 @@ public class WebServiceProcessor {
 
     /**
      * Generic REST web service Execution method for simple GET requests
-     * that return a String response. Example: http://www.pacificwebconsulting.com/rest/getAllUsers
+     * that return a String response. Example: http://www.pacificwebconsulting.com/rest/getAllUsers.
      *
      * @param url           web service URL
      * @param user          username
@@ -268,29 +267,29 @@ public class WebServiceProcessor {
     }
 
     /**
-     * Generic REST web service Execution method for simple GET requests
-     * that return a String response
+     * Generic REST web service Execution method for simple GET requests that return a String response.
      *
-     * @param url      web service URL
-     * @param oAuthKey OAuth key to use as the Bearer token
-     * @param command  Type of command to execute
+     * @param url     web service URL
+     * @param authKey OAuth key to use as the Bearer token
+     * @param command Type of command to execute
      * @return JsonPath json payload
      */
-    protected Object execute(final String url, final OAuthKey oAuthKey, final WebServiceCommand command) {
-        return execute(url, oAuthKey, command, null);
+    protected Object execute(final String url, final OAuthKey authKey, final WebServiceCommand command) {
+
+        return execute(url, authKey, command, null);
     }
 
     /**
      * Generic REST web service Execution method for simple GET requests
-     * that return a String response. Example: http://www.mywebsite.com/rest/getAllUsers
+     * that return a String response. Example: http://www.mywebsite.com/rest/getAllUsers.
      *
      * @param url           web service URL
-     * @param oAuthKey      OAuth key to use as the Bearer token
+     * @param authKey       OAuth key to use as the Bearer token
      * @param command       Type of command to execute
      * @param pathParameter web service path parameter
      * @return JsonPath json payload
      */
-    protected Object execute(final String url, final OAuthKey oAuthKey, final WebServiceCommand command, final Object pathParameter) {
+    protected Object execute(final String url, final OAuthKey authKey, final WebServiceCommand command, final Object pathParameter) {
 
         Object wsResponse = null;
         String wsUrl = constructRestUrl(url, command, pathParameter);
@@ -307,25 +306,25 @@ public class WebServiceProcessor {
             StopWatch stopWatch = new StopWatch();
             if (StringUtils.equals(command.methodType(), FrameworkConstants.POST_REQUEST)) {
                 httpPost = new HttpPost(wsUrl);
-                httpPost = (HttpPost) setHeaderCredentials(oAuthKey, httpPost);
+                httpPost = (HttpPost) setHeaderCredentials(authKey, httpPost);
                 stopWatch.start();
                 response = httpclient.execute(httpPost);
                 stopWatch.stop();
             } else if (StringUtils.equals(command.methodType(), FrameworkConstants.GET_REQUEST)) {
                 httpGet = new HttpGet(wsUrl);
-                httpGet = (HttpGet) setHeaderCredentials(oAuthKey, httpGet);
+                httpGet = (HttpGet) setHeaderCredentials(authKey, httpGet);
                 stopWatch.start();
                 response = httpclient.execute(httpGet);
                 stopWatch.stop();
             } else if (StringUtils.equals(command.methodType(), FrameworkConstants.PUT_REQUEST)) {
                 httpPut = new HttpPut(wsUrl);
-                httpPut = (HttpPut) setHeaderCredentials(oAuthKey, httpPut);
+                httpPut = (HttpPut) setHeaderCredentials(authKey, httpPut);
                 stopWatch.start();
                 response = httpclient.execute(httpPut);
                 stopWatch.stop();
             } else if (StringUtils.equals(command.methodType(), FrameworkConstants.DELETE_REQUEST)) {
                 httpDelete = new HttpDelete(wsUrl);
-                httpDelete = (HttpDelete) setHeaderCredentials(oAuthKey, httpDelete);
+                httpDelete = (HttpDelete) setHeaderCredentials(authKey, httpDelete);
                 stopWatch.start();
                 response = httpclient.execute(httpDelete);
                 stopWatch.stop();
@@ -344,16 +343,16 @@ public class WebServiceProcessor {
     }
 
     /**
-     * Generic REST web service Execution method
+     * Generic REST web service Execution method.
      *
      * @param url           web service URL
-     * @param oAuthKey      OAuth key to use as the Bearer token
+     * @param authKey       OAuth key to use as the Bearer token
      * @param command       Type of command to execute
      * @param pathParameter web service path parameter
      * @param payload       Request body payload
      * @return JsonPath json payload
      */
-    protected Object execute(final String url, final OAuthKey oAuthKey, final WebServiceCommand command, final Object pathParameter, final Object payload) {
+    protected Object execute(final String url, final OAuthKey authKey, final WebServiceCommand command, final Object pathParameter, final Object payload) {
 
         Object wsResponse = null;
         String wsUrl = constructRestUrl(url, command, pathParameter);
@@ -369,7 +368,7 @@ public class WebServiceProcessor {
             if (StringUtils.equals(command.methodType(), FrameworkConstants.POST_REQUEST)) {
 
                 httpPost = new HttpPost(wsUrl);
-                httpPost = (HttpPost) setHeaderCredentials(oAuthKey, httpPost);
+                httpPost = (HttpPost) setHeaderCredentials(authKey, httpPost);
 
                 if (payload instanceof HashMap) {
 
@@ -420,7 +419,7 @@ public class WebServiceProcessor {
             } else if (StringUtils.equals(command.methodType(), FrameworkConstants.PUT_REQUEST)) {
 
                 httpPut = new HttpPut(wsUrl);
-                httpPut = (HttpPut) setHeaderCredentials(oAuthKey, httpPut);
+                httpPut = (HttpPut) setHeaderCredentials(authKey, httpPut);
 
                 if (payload instanceof HashMap) {
 
@@ -444,7 +443,7 @@ public class WebServiceProcessor {
             } else {
 
                 httpGet = new HttpGet(wsUrl);
-                httpGet = (HttpGet) setHeaderCredentials(oAuthKey, httpGet);
+                httpGet = (HttpGet) setHeaderCredentials(authKey, httpGet);
 
                 if (payload instanceof HashMap) {
 
@@ -472,7 +471,7 @@ public class WebServiceProcessor {
 
     /**
      * Generic REST web service Execution method for simple GET requests
-     * that return a String response
+     * that return a String response.
      *
      * @param url           web service URL
      * @param headerKeysMap map of header key/value pairs necessary for authorization
@@ -547,7 +546,7 @@ public class WebServiceProcessor {
     }
 
     /**
-     * Generic REST web service Execution method
+     * Generic REST web service Execution method.
      *
      * @param url           web service URL
      * @param headerKeysMap map of header key/value pairs necessary for authorization
@@ -769,7 +768,7 @@ public class WebServiceProcessor {
 
     /**
      * Generic REST web service Execution method for simple GET requests
-     * that return a String response
+     * that return a String response.
      *
      * @param url          web service URL
      * @param smSessionKey SMSESSION key to use as the SMSESSION token
@@ -782,7 +781,7 @@ public class WebServiceProcessor {
 
     /**
      * Generic REST web service Execution method for simple GET requests
-     * that return a String response. Example: http://www.mywebsite.com/rest/getAllUsers
+     * that return a String response. Example: http://www.mywebsite.com/rest/getAllUsers.
      *
      * @param url           web service URL
      * @param smSessionKey  SMSESSION key to use as the SMSESSION token
@@ -844,7 +843,134 @@ public class WebServiceProcessor {
     }
 
     /**
-     * Generic REST web service Execution method
+     * Generic REST web service Execution method.
+     *
+     * @param url           web service URL
+     * @param user          username
+     * @param pass          user's password
+     * @param command       Type of command to execute
+     * @param pathParameter web service path parameter
+     * @param payload       Request body payload
+     * @return JsonPath json payload
+     */
+    protected Object execute(final String url, final String user, final String pass, final WebServiceCommand command, final Object pathParameter, final Object payload) {
+
+        Object wsResponse = null;
+        String wsUrl = constructRestUrl(url, command, pathParameter);
+
+        try {
+
+            CloseableHttpClient httpclient = getAuthenticatedClient(wsUrl, user, pass);
+
+            HttpGet httpGet;
+            HttpPost httpPost;
+            HttpPut httpPut;
+
+            if (StringUtils.equals(command.methodType(), FrameworkConstants.POST_REQUEST)) {
+
+                httpPost = new HttpPost(wsUrl);
+                httpPost = (HttpPost) setHeaderCredentials(user, pass, httpPost);
+
+                if (payload instanceof HashMap) {
+
+                    URI uri = constructUriFromPayloadMap(httpPost, (HashMap<String, Object>) payload);
+                    LOG(true, "POST URI='%s'", uri);
+
+                    httpPost.setURI(uri);
+                    StopWatch stopWatch = new StopWatch();
+                    stopWatch.start();
+                    CloseableHttpResponse response = httpclient.execute(httpPost);
+                    stopWatch.stop();
+                    HttpEntity httpEntity = response.getEntity();
+                    wsResponse = getWebServiceResponse(response, httpEntity, stopWatch);
+                    closeHttpConnections(httpclient, response);
+
+                } else if (payload instanceof List) {
+
+                    StringEntity stringEntity = new StringEntity(((List) payload).get(0).toString());
+                    httpPost.setEntity(stringEntity);
+                    httpPost.setHeader("Content-type", ContentType.APPLICATION_JSON.toString());
+                    LOG(true, "POST JSON='%s'", ((List) payload).get(0).toString());
+
+                    StopWatch stopWatch = new StopWatch();
+                    stopWatch.start();
+                    CloseableHttpResponse response = httpclient.execute(httpPost);
+                    stopWatch.stop();
+                    HttpEntity httpEntity = response.getEntity();
+                    wsResponse = getWebServiceResponse(response, httpEntity, stopWatch);
+                    closeHttpConnections(httpclient, response);
+
+                } else if (payload instanceof String) {
+
+                    StringEntity stringEntity = new StringEntity(payload.toString());
+                    httpPost.setEntity(stringEntity);
+                    httpPost.setHeader("Content-type", ContentType.APPLICATION_JSON.toString());
+                    LOG(true, "POST JSON='%s'", payload.toString());
+
+                    StopWatch stopWatch = new StopWatch();
+                    stopWatch.start();
+                    CloseableHttpResponse response = httpclient.execute(httpPost);
+                    stopWatch.stop();
+                    HttpEntity httpEntity = response.getEntity();
+                    wsResponse = getWebServiceResponse(response, httpEntity, stopWatch);
+                    closeHttpConnections(httpclient, response);
+
+                }
+
+            } else if (StringUtils.equals(command.methodType(), FrameworkConstants.PUT_REQUEST)) {
+
+                httpPut = new HttpPut(wsUrl);
+                httpPut = (HttpPut) setHeaderCredentials(user, pass, httpPut);
+
+                if (payload instanceof HashMap) {
+
+                    URI uri = new URI(wsUrl);
+                    LOG(true, "PUT URI='%s'", uri);
+                    httpPut.setURI(uri);
+
+                    String entityPayload = getFirstValueInMap((HashMap<String, Object>) payload);
+                    httpPut.setHeader("Content-Type", "application/json");
+                    httpPut.setEntity(new StringEntity(entityPayload, "UTF-8"));
+
+                    StopWatch stopWatch = new StopWatch();
+                    stopWatch.start();
+                    CloseableHttpResponse response = httpclient.execute(httpPut);
+                    stopWatch.stop();
+                    HttpEntity httpEntity = response.getEntity();
+                    wsResponse = getWebServiceResponse(response, httpEntity, stopWatch);
+                    closeHttpConnections(httpclient, response);
+
+                }
+            } else {
+
+                httpGet = new HttpGet(wsUrl);
+                httpGet = (HttpGet) setHeaderCredentials(user, pass, httpGet);
+
+                if (payload instanceof HashMap) {
+
+                    URI uri = constructUriFromPayloadMap(httpGet, (HashMap<String, Object>) payload);
+                    LOG(true, "GET URI='%s'", uri);
+                    httpGet.setURI(uri);
+                    StopWatch stopWatch = new StopWatch();
+                    stopWatch.start();
+                    CloseableHttpResponse response = httpclient.execute(httpGet);
+                    stopWatch.stop();
+                    HttpEntity httpEntity = response.getEntity();
+                    wsResponse = getWebServiceResponse(response, httpEntity, stopWatch);
+                    closeHttpConnections(httpclient, response);
+
+                }
+            }
+
+        } catch (Exception e) {
+            Assert.fail(String.format("REST call failed for url=%s with exception='%s'", wsUrl, e.getCause()), e);
+        }
+
+        return wsResponse;
+    }
+
+    /**
+     * Generic REST web service Execution method.
      *
      * @param url           web service URL
      * @param smSessionKey  SMSESSION key to use as the SMSESSION token
@@ -971,7 +1097,7 @@ public class WebServiceProcessor {
     }
 
     /**
-     * Set the BasicAuth header to the user/pass provided
+     * Set the BasicAuth header to the user/pass provided.
      *
      * @param httpBase Http base to set header for
      * @return decorated HttpRequestBase for use by get, post, put, ect..
@@ -986,7 +1112,7 @@ public class WebServiceProcessor {
     }
 
     /**
-     * Set the BasicAuth header to the user/pass provided
+     * Set the BasicAuth header to the user/pass provided.
      *
      * @param user     username
      * @param pass     password
@@ -1007,7 +1133,7 @@ public class WebServiceProcessor {
     }
 
     /**
-     * Add a header containing a authorization key from either OAUTH2 or Site Minder
+     * Add a header containing a authorization key from either OAUTH2 or Site Minder.
      *
      * @param authorizationKey Authorization key of OAuthKey or SmSessionKey types to add to the header
      * @param httpBase         Http base to set header for
@@ -1031,7 +1157,7 @@ public class WebServiceProcessor {
     }
 
     /**
-     * Add a header containing any number of header variables
+     * Add a header containing any number of header variables.
      *
      * @param headerMap map of header key/value pairs to add to the request header
      * @param httpBase  Http base to set header for
@@ -1052,153 +1178,27 @@ public class WebServiceProcessor {
     }
 
     /**
-     * Generic REST web service Execution method
-     *
-     * @param url           web service URL
-     * @param user          username
-     * @param pass          user's password
-     * @param command       Type of command to execute
-     * @param pathParameter web service path parameter
-     * @param payload       Request body payload
-     * @return JsonPath json payload
-     */
-    protected Object execute(final String url, final String user, final String pass, final WebServiceCommand command, final Object pathParameter, final Object payload) {
-
-        Object wsResponse = null;
-        String wsUrl = constructRestUrl(url, command, pathParameter);
-
-        try {
-
-            CloseableHttpClient httpclient = getAuthenticatedClient(wsUrl, user, pass);
-
-            HttpGet httpGet;
-            HttpPost httpPost;
-            HttpPut httpPut;
-
-            if (StringUtils.equals(command.methodType(), FrameworkConstants.POST_REQUEST)) {
-
-                httpPost = new HttpPost(wsUrl);
-                httpPost = (HttpPost) setHeaderCredentials(user, pass, httpPost);
-
-                if (payload instanceof HashMap) {
-
-                    URI uri = constructUriFromPayloadMap(httpPost, (HashMap<String, Object>) payload);
-                    LOG(true, "POST URI='%s'", uri);
-
-                    httpPost.setURI(uri);
-                    StopWatch stopWatch = new StopWatch();
-                    stopWatch.start();
-                    CloseableHttpResponse response = httpclient.execute(httpPost);
-                    stopWatch.stop();
-                    HttpEntity httpEntity = response.getEntity();
-                    wsResponse = getWebServiceResponse(response, httpEntity, stopWatch);
-                    closeHttpConnections(httpclient, response);
-
-                } else if (payload instanceof List) {
-
-                    StringEntity stringEntity = new StringEntity(((List) payload).get(0).toString());
-                    httpPost.setEntity(stringEntity);
-                    httpPost.setHeader("Content-type", ContentType.APPLICATION_JSON.toString());
-                    LOG(true, "POST JSON='%s'", ((List) payload).get(0).toString());
-
-                    StopWatch stopWatch = new StopWatch();
-                    stopWatch.start();
-                    CloseableHttpResponse response = httpclient.execute(httpPost);
-                    stopWatch.stop();
-                    HttpEntity httpEntity = response.getEntity();
-                    wsResponse = getWebServiceResponse(response, httpEntity, stopWatch);
-                    closeHttpConnections(httpclient, response);
-
-                } else if (payload instanceof String) {
-
-                    StringEntity stringEntity = new StringEntity(payload.toString());
-                    httpPost.setEntity(stringEntity);
-                    httpPost.setHeader("Content-type", ContentType.APPLICATION_JSON.toString());
-                    LOG(true, "POST JSON='%s'", payload.toString());
-
-                    StopWatch stopWatch = new StopWatch();
-                    stopWatch.start();
-                    CloseableHttpResponse response = httpclient.execute(httpPost);
-                    stopWatch.stop();
-                    HttpEntity httpEntity = response.getEntity();
-                    wsResponse = getWebServiceResponse(response, httpEntity, stopWatch);
-                    closeHttpConnections(httpclient, response);
-
-                }
-
-            } else if (StringUtils.equals(command.methodType(), FrameworkConstants.PUT_REQUEST)) {
-
-                httpPut = new HttpPut(wsUrl);
-                httpPut = (HttpPut) setHeaderCredentials(user, pass, httpPut);
-
-                if (payload instanceof HashMap) {
-
-                    URI uri = new URI(wsUrl);
-                    LOG(true, "PUT URI='%s'", uri);
-                    httpPut.setURI(uri);
-
-                    String entityPayload = getFirstValueInMap((HashMap<String, Object>) payload);
-                    httpPut.setHeader("Content-Type", "application/json");
-                    httpPut.setEntity(new StringEntity(entityPayload, "UTF-8"));
-
-                    StopWatch stopWatch = new StopWatch();
-                    stopWatch.start();
-                    CloseableHttpResponse response = httpclient.execute(httpPut);
-                    stopWatch.stop();
-                    HttpEntity httpEntity = response.getEntity();
-                    wsResponse = getWebServiceResponse(response, httpEntity, stopWatch);
-                    closeHttpConnections(httpclient, response);
-
-                }
-            } else {
-
-                httpGet = new HttpGet(wsUrl);
-                httpGet = (HttpGet) setHeaderCredentials(user, pass, httpGet);
-
-                if (payload instanceof HashMap) {
-
-                    URI uri = constructUriFromPayloadMap(httpGet, (HashMap<String, Object>) payload);
-                    LOG(true, "GET URI='%s'", uri);
-                    httpGet.setURI(uri);
-                    StopWatch stopWatch = new StopWatch();
-                    stopWatch.start();
-                    CloseableHttpResponse response = httpclient.execute(httpGet);
-                    stopWatch.stop();
-                    HttpEntity httpEntity = response.getEntity();
-                    wsResponse = getWebServiceResponse(response, httpEntity, stopWatch);
-                    closeHttpConnections(httpclient, response);
-
-                }
-            }
-
-        } catch (Exception e) {
-            Assert.fail(String.format("REST call failed for url=%s with exception='%s'", wsUrl, e.getCause()), e);
-        }
-
-        return wsResponse;
-
-    }
-
-    /**
-     * Close the Http response and client sessions
+     * Close the Http response and client sessions.
      *
      * @param httpclient HttpClient to close
      * @param response   HttpResponse to close
      * @throws IOException exception if closing connections failure occurs
      */
     private void closeHttpConnections(CloseableHttpClient httpclient, CloseableHttpResponse response) throws IOException {
+
         response.close();
         httpclient.close();
     }
 
     /**
-     * Construct URI from payload map passed in
+     * Construct URI from payload map passed in.
      *
      * @param httpRequestBase Http request
      * @param payload         payload to construct URI with
      * @return hydrated, decoded URI
      */
     protected URI constructUriFromPayloadMap(HttpRequestBase httpRequestBase, HashMap<String, Object> payload) {
+
         URI encodedUri = null;
         try {
             List<NameValuePair> nameValuePairs = new ArrayList<>();
@@ -1223,6 +1223,7 @@ public class WebServiceProcessor {
      * @return hydrated, decoded URI
      */
     protected URI constructUriFromPayloadMultiMap(HttpRequestBase httpRequestBase, ArrayListMultimap<String, Object> payload) {
+
         URI encodedUri = null;
         try {
             List<NameValuePair> nameValuePairs = new ArrayList<>();
@@ -1250,12 +1251,13 @@ public class WebServiceProcessor {
     }
 
     /**
-     * Return the first value in the HashMap provided
+     * Return the first value in the HashMap provided.
      *
      * @param payload payload map
      * @return first value
      */
     private String getFirstValueInMap(HashMap<String, Object> payload) {
+
         try {
             for (Map.Entry<String, Object> entry : payload.entrySet()) {
                 return String.valueOf(entry.getValue());
@@ -1267,7 +1269,7 @@ public class WebServiceProcessor {
     }
 
     /**
-     * Convert current HttpResponse to JSON
+     * Convert current HttpResponse to JSON.
      *
      * @param response   current HttpResponse
      * @param httpEntity current HttpEntity
@@ -1275,6 +1277,7 @@ public class WebServiceProcessor {
      * @return json representation of HttpResponse
      */
     public Object getWebServiceResponse(CloseableHttpResponse response, HttpEntity httpEntity, StopWatch stopWatch) {
+
         String wsResponse = convertHttpResponseToJson(response, httpEntity, stopWatch);
         if (isValidJson(wsResponse)) {
             return new JsonPath(wsResponse).using(new JsonPathConfig("UTF-8"));
@@ -1283,7 +1286,7 @@ public class WebServiceProcessor {
     }
 
     /**
-     * Convert the current CloseableHttpResponse response's StatusLine to a JSON representation
+     * Convert the current CloseableHttpResponse response's StatusLine to a JSON representation.
      *
      * @param response   current response
      * @param httpEntity Http response to evaluate
@@ -1291,6 +1294,7 @@ public class WebServiceProcessor {
      * @return JSON response
      */
     private String convertHttpResponseToJson(CloseableHttpResponse response, HttpEntity httpEntity, StopWatch stopWatch) {
+
         Map<Object, Object> jsonPayload;
         try {
             jsonPayload = new HashMap();
@@ -1312,7 +1316,7 @@ public class WebServiceProcessor {
     }
 
     /**
-     * Validate if the passed in <code>String</code> is on valid JSON format
+     * Validate if the passed in <code>String</code> is on valid JSON format.
      *
      * @param possiblyJson text to check if it is JSON
      * @return true if text is JSON and false otherwise
@@ -1328,7 +1332,7 @@ public class WebServiceProcessor {
     }
 
     /**
-     * toJSON - Helper method to convert domain objects into JSON
+     * toJSON - Helper method to convert domain objects into JSON.
      *
      * @param domainObject payload to turn into JSON
      * @return JSON representation of the Domain object
@@ -1347,7 +1351,7 @@ public class WebServiceProcessor {
     }
 
     /**
-     * Get authenticated HttpClient
+     * Get authenticated HttpClient.
      *
      * @return authenticated HttpClient
      */
@@ -1357,7 +1361,7 @@ public class WebServiceProcessor {
     }
 
     /**
-     * Get authenticated HttpClient
+     * Get authenticated HttpClient.
      *
      * @param url      url to authenticate
      * @param username username
@@ -1378,22 +1382,20 @@ public class WebServiceProcessor {
     }
 
     /**
-     * Build SSLContext
+     * Build SSLContext.
      *
      * @return custom SSL Context
-     * @throws NoSuchAlgorithmException
-     * @throws KeyManagementException
-     * @throws KeyStoreException
+     * @throws NoSuchAlgorithmException exception
+     * @throws KeyManagementException   exception
+     * @throws KeyStoreException        exception
      */
     private static SSLContext buildSSLContext() throws NoSuchAlgorithmException, KeyManagementException, KeyStoreException {
-        return custom()
-                .setSecureRandom(new SecureRandom())
-                .loadTrustMaterial(null, new TrustSelfSignedStrategy())
-                .build();
+
+        return custom().setSecureRandom(new SecureRandom()).loadTrustMaterial(null, new TrustSelfSignedStrategy()).build();
     }
 
     /**
-     * Build HttpClient for user and password provided
+     * Build HttpClient for user and password provided.
      *
      * @param username   username
      * @param password   password
@@ -1407,23 +1409,17 @@ public class WebServiceProcessor {
             credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(username, password));
         }
 
-        RequestConfig requestConfig = RequestConfig.custom()
-                .setCircularRedirectsAllowed(true)
-                .build();
+        RequestConfig requestConfig = RequestConfig.custom().setCircularRedirectsAllowed(true).build();
 
-        CloseableHttpClient httpclient = HttpClients.custom()
-                .setDefaultCredentialsProvider(credentialsProvider)
-                .setSSLSocketFactory(SSLConnectionSocketFactory.getSocketFactory())
-                .setSSLContext(sslContext)
-                .setRedirectStrategy(new LaxRedirectStrategy())
-                .setDefaultRequestConfig(requestConfig)
-                .build();
+        CloseableHttpClient httpclient = HttpClients.custom().setDefaultCredentialsProvider(credentialsProvider).setSSLSocketFactory(SSLConnectionSocketFactory.getSocketFactory())
+                        .setSSLContext(sslContext).setRedirectStrategy(new LaxRedirectStrategy()).setDefaultRequestConfig(requestConfig).build();
 
         return httpclient;
     }
 
     @NotThreadSafe
     class HttpDeleteWithBody extends HttpEntityEnclosingRequestBase {
+
         public static final String METHOD_NAME = "DELETE";
 
         public String getMethod() {

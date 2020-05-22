@@ -19,12 +19,13 @@ import static com.pwc.logging.service.LoggerService.LOG;
 public class PropertiesUtils {
 
     /**
-     * Read a file's contents from Resources directory
+     * Read a file's contents from Resources directory.
      *
      * @param fileName File to read each line
      * @return List of lines read from the file
      */
     public static List<String> readResourceFile(final String fileName) {
+
         File file = PropertiesUtils.getFileFromResources(fileName);
         try {
             return FileUtils.readLines(file, Charset.defaultCharset());
@@ -35,12 +36,13 @@ public class PropertiesUtils {
     }
 
     /**
-     * Get a file from the 'resources' directory given the fileName
+     * Get a file from the 'resources' directory given the fileName.
      *
      * @param fileName FileName to find
      * @return file matching the name
      */
     public static File getFileFromResources(final String fileName) {
+
         try {
             URL url = PropertiesUtils.class.getClassLoader().getResource(fileName);
             String urlPath = StringUtils.replace(url.getPath(), "%20", " ");
@@ -59,6 +61,7 @@ public class PropertiesUtils {
      * @return String file path of the file found
      */
     public static String getPathOfResourceFile(final String fileName) {
+
         try {
             return getFirstFileFromTestResources(fileName).getPath();
         } catch (Exception e) {
@@ -75,6 +78,7 @@ public class PropertiesUtils {
      * @return file matching the name regardless of case
      */
     public static File getFirstFileFromTestResources(final String fileName) {
+
         URL url = ClassLoader.getSystemClassLoader().getResource("");
         String urlPath = StringUtils.replace(url.getPath(), "%20", " ");
         File resourceDirectory = new File(urlPath);
@@ -89,12 +93,13 @@ public class PropertiesUtils {
 
     /**
      * Override the file.getPath() and return empty <code>String</code> as
-     * file's path if file is null
+     * file's path if file is null.
      *
      * @param file file to find it's path
      * @return file path
      */
     public static String getPath(final File file) {
+
         try {
             return file.getPath();
         } catch (Exception e) {
@@ -103,23 +108,25 @@ public class PropertiesUtils {
     }
 
     /**
-     * Get a property out of a .properties file
+     * Get a property out of a .properties file.
      *
      * @param propertiesFileName Properties file to search in
      * @param property           Property to find
      * @return Property defined
      */
     public static String getPropertyFromPropertiesFile(final String propertiesFileName, final String property) {
+
         return getPropertiesFromPropertyFile(propertiesFileName).getProperty(property);
     }
 
     /**
-     * Get all all propeties in a given .properties file
+     * Get all all propeties in a given .properties file.
      *
      * @param propertiesFileName Properties file to find
      * @return All properties in a property file
      */
     public static Properties getPropertiesFromPropertyFile(final String propertiesFileName) {
+
         Properties props = new Properties();
         try {
             File file = getFileFromResources(propertiesFileName);
@@ -132,11 +139,12 @@ public class PropertiesUtils {
     }
 
     /**
-     * Set an environment variable
+     * Set an environment variable.
      *
      * @param environmentVariable Map of environment variable key and value
      */
     public static void setEnv(Map<String, String> environmentVariable) {
+
         try {
             Class<?> processEnvironmentClass = Class.forName("java.lang.ProcessEnvironment");
             Field theEnvironmentField = processEnvironmentClass.getDeclaredField("theEnvironment");

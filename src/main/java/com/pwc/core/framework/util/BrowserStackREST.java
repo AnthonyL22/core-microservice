@@ -24,7 +24,7 @@ public class BrowserStackREST {
     }
 
     /**
-     * Update the BrowserStack status for the given session ID
+     * Update the BrowserStack status for the given session ID.
      *
      * @param sessionId BrowserStack session ID
      * @param updates   status Map

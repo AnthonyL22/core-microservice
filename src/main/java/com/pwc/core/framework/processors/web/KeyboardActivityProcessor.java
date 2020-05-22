@@ -16,8 +16,7 @@ public class KeyboardActivityProcessor {
     }
 
     public static boolean applies(WebElement webElement) {
-        return TextInputElementImpl.applies(webElement) ||
-                TextAreaElementImpl.applies(webElement);
+        return TextInputElementImpl.applies(webElement) || TextAreaElementImpl.applies(webElement);
     }
 
     public void webAction(WebElement webElement, Object value) {

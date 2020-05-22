@@ -28,5 +28,4 @@ public class DivElementImpl implements MicroserviceWebElement {
         }
     }
 
-
 }

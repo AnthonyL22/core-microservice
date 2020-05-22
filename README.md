@@ -276,7 +276,11 @@ in potentially an interface such as:  String USER_NAME = "Anthony";
 ```
 
 #### Maven Configuration
-Simply add this to a profile or goal in your POM.xml to leverage in your build process.
+Simply add this to a profile or goal in your POM.xml to leverage in your build process.  The Maven command is:
+
+```
+mvn clean install -PoutputManualTestCaseReport
+```
 
 **Required arguments:**
 1. Complete classpath to where your test classes reside
@@ -318,6 +322,32 @@ Simply add this to a profile or goal in your POM.xml to leverage in your build p
     </plugins>
   </build>
 </profile>
+```
+
+#### Sample Manual Test Export Output
+Depending on your configuration the default **Manual_Test_Cases.txt** file output will resemble the following:
+
+```
+  Feature: Smoke Test
+  Scenario: Basic Functionality
+    Given I am logged in page=home and authenticated user=TestConstants.USER_NAME
+    When I view the Landing page without doing a search for env=Data.ENVIRONMENT
+    Then Basic components are present in body of message=MY_MESSAGE
+    And I can click the BACK button
+    But I go back to the Home page
+    Or I am blocked by a popup
+    If I can click the BACK button
+    Not Able to go forward
+    Finally I am able to complete the transaction
+------------------------------------------------------------
+
+------------------------------------------------------------
+MANUAL TEST CASE REPORT SUMMARY
+------------------------------------------------------------
+1 Tests Processed
+Packages Processed:
+  package com.pwc.core.framework.ci.tests;
+  package com.pwc.core.framework.ci.tests.inner;
 ```
 
 # Adjustable Sauce Labs Execution Settings

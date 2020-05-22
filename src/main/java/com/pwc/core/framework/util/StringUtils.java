@@ -13,11 +13,13 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.sql.Clob;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class StringUtils {
 
     /**
-     * Convert a CLOB object to a <code>String</code> representation
+     * Convert a CLOB object to a <code>String</code> representation.
      *
      * @param clobObject java.sql Clob object
      * @return A string representation of Clob
@@ -37,7 +39,7 @@ public class StringUtils {
     }
 
     /**
-     * toJSON - Helper method to convert domain objects into JSON
+     * toJSON - Helper method to convert domain objects into JSON.
      *
      * @param domainObject domain object
      * @param jsonFeatures JSON configuration features
@@ -63,7 +65,7 @@ public class StringUtils {
     }
 
     /**
-     * objectFromJSON - Helper method to convert JSON string to domainObject
+     * objectFromJSON - Helper method to convert JSON string to domainObject.
      *
      * @param clazz      Class of the resulting object
      * @param jsonString JSON String to be converted
@@ -81,6 +83,30 @@ public class StringUtils {
         }
 
         return retVal;
+    }
+
+    /**
+     * Retrieves a matching part of a given <code>String</code> based on regex pattern and a group.
+     *
+     * @param regexToMatch regex to match against
+     * @param searchable   initial given String
+     * @param group        group to match
+     * @return matching part of a given String
+     */
+    public static String getMatchFromRegex(final String regexToMatch, final String searchable, final int group) {
+
+        Pattern pattern = Pattern.compile(regexToMatch);
+        Matcher matcher = pattern.matcher(searchable);
+        matcher.find();
+        String matchedString = matcher.group(group);
+        if (org.apache.commons.lang3.StringUtils.containsIgnoreCase(matchedString, "amp;")) {
+            matchedString = org.apache.commons.lang3.StringUtils.replace(matchedString, "amp;", "");
+            matchedString = org.apache.commons.lang3.StringUtils.replace(matchedString, "\\", "");
+        }
+        if (!org.apache.commons.lang3.StringUtils.containsIgnoreCase(matchedString, "https")) {
+            matchedString = org.apache.commons.lang3.StringUtils.replace(matchedString, "http", "https");
+        }
+        return matchedString;
     }
 
 }

@@ -14,7 +14,7 @@ import static com.pwc.logging.service.LoggerService.LOG;
 public class CollectionUtils {
 
     /**
-     * Get a random sub-list of a given values from a random set in the given <code>List</code> to the end
+     * Get a random sub-list of a given values from a random set in the given <code>List</code> to the end.
      *
      * @param listValues base list to randomize
      * @return random List of original values
@@ -36,7 +36,7 @@ public class CollectionUtils {
     }
 
     /**
-     * Get a random sub-set of a given values from a random set in the given <code>Set</code> to the end
+     * Get a random sub-set of a given values from a random set in the given <code>Set</code> to the end.
      *
      * @param setValues base set to randomize
      * @return random Set of original values

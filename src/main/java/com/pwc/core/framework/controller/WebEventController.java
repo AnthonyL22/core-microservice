@@ -42,7 +42,6 @@ import java.net.URL;
 
 import static com.pwc.logging.service.LoggerService.LOG;
 
-
 @Component
 public class WebEventController {
 
@@ -98,7 +97,7 @@ public class WebEventController {
     private String currentJobId;
 
     /**
-     * Start and configure browser and WebDriver instance
+     * Start and configure browser and WebDriver instance.
      *
      * @param credentials <code>Credentials</code> user of SiteMinder testing if needed
      */
@@ -189,12 +188,11 @@ public class WebEventController {
      */
     private boolean isBrowserStackEnabled() {
 
-        return StringUtils.isNotEmpty(browserstackUser)
-                && StringUtils.isNotEmpty(browserstackAccesskey);
+        return StringUtils.isNotEmpty(browserstackUser) && StringUtils.isNotEmpty(browserstackAccesskey);
     }
 
     /**
-     * Set all browser based runtime capabilities for:
+     * Set all browser based runtime capabilities for.
      * - browser type
      * - browser version
      * - screen resolution
@@ -206,12 +204,11 @@ public class WebEventController {
 
         capabilities = new DesiredCapabilities();
 
-        if (!StringUtils.isEmpty(System.getenv(FrameworkConstants.SAUCELABS_BROWSER_PROPERTY)) &&
-                !StringUtils.isEmpty(System.getenv(FrameworkConstants.SAUCELABS_BROWSER_VERSION_PROPERTY)) &&
-                !StringUtils.isEmpty(System.getenv(FrameworkConstants.SAUCELABS_PLATFORM_PROPERTY))) {
+        if (!StringUtils.isEmpty(System.getenv(FrameworkConstants.SAUCELABS_BROWSER_PROPERTY)) && !StringUtils.isEmpty(System.getenv(FrameworkConstants.SAUCELABS_BROWSER_VERSION_PROPERTY))
+                        && !StringUtils.isEmpty(System.getenv(FrameworkConstants.SAUCELABS_PLATFORM_PROPERTY))) {
 
-            LOG(true, "Initiating Sauce-OnDemand test execution with browser='%s', version='%s', platform='%s'",
-                    System.getenv(FrameworkConstants.SAUCELABS_BROWSER_PROPERTY), System.getenv(FrameworkConstants.SAUCELABS_BROWSER_VERSION_PROPERTY), System.getenv(FrameworkConstants.SAUCELABS_PLATFORM_PROPERTY));
+            LOG(true, "Initiating Sauce-OnDemand test execution with browser='%s', version='%s', platform='%s'", System.getenv(FrameworkConstants.SAUCELABS_BROWSER_PROPERTY),
+                            System.getenv(FrameworkConstants.SAUCELABS_BROWSER_VERSION_PROPERTY), System.getenv(FrameworkConstants.SAUCELABS_PLATFORM_PROPERTY));
 
             capabilities.setBrowserName(System.getenv(FrameworkConstants.SAUCELABS_BROWSER_PROPERTY));
             capabilities.setCapability(CapabilityType.VERSION, System.getenv(FrameworkConstants.SAUCELABS_BROWSER_VERSION_PROPERTY));
@@ -242,9 +239,8 @@ public class WebEventController {
             capabilities.setCapability(FrameworkConstants.BROWSER_STACK_TEST_RUN_NAME_PROPERTY, StringUtils.trim(System.getProperty(FrameworkConstants.BROWSER_STACK_TEST_RUN_NAME_PROPERTY)));
             capabilities.setCapability(FrameworkConstants.BROWSER_STACK_TIMEZONE_PROPERTY, StringUtils.trim(System.getProperty(FrameworkConstants.BROWSER_STACK_TIMEZONE_PROPERTY)));
 
-            LOG(true, "Initiating BrowserStack test execution with browser='%s', platform='%s'",
-                    capabilities.getCapability(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY),
-                    capabilities.getCapability(FrameworkConstants.BROWSER_STACK_OS_PROPERTY));
+            LOG(true, "Initiating BrowserStack test execution with browser='%s', platform='%s'", capabilities.getCapability(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY),
+                            capabilities.getCapability(FrameworkConstants.BROWSER_STACK_OS_PROPERTY));
 
         } else {
             LOG(true, "Initiating User Defined test execution");
@@ -268,14 +264,20 @@ public class WebEventController {
     }
 
     /**
-     * Get iOS Web Driver for local or RemoteWebDriver capability
+     * Get iOS Web Driver for local or RemoteWebDriver capability.
      *
      * @return MicroserviceWebDriver instance
      * @throws MalformedURLException url exception
      */
     public MicroserviceWebDriver getIOSBrowser() throws Exception {
+
         LOG("starting iOS browser");
         capabilities.setCapability(CapabilityType.BROWSER_NAME, BrowserType.SAFARI);
+        if (StringUtils.isNotEmpty(experitestAccesskey)) {
+            capabilities.setCapability("accessKey", experitestAccesskey);
+            capabilities.setCapability("testName", this.currentTestName);
+        }
+
         if (gridEnabled) {
             if (this.remoteWebDriver == null) {
                 MicroserviceRemoteWebDriver microserviceRemoteWebDriver = new MicroserviceRemoteWebDriver(new URL(gridUrl), capabilities);
@@ -291,7 +293,7 @@ public class WebEventController {
     }
 
     /**
-     * Get Firefox Web Driver for local or RemoteWebDriver capability
+     * Get Firefox Web Driver for local or RemoteWebDriver capability.
      *
      * @return MicroserviceWebDriver instance
      * @throws MalformedURLException url exception
@@ -303,6 +305,10 @@ public class WebEventController {
         capabilities.setCapability("marionette", true);
         capabilities.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
         capabilities.setCapability(CapabilityType.BROWSER_NAME, BrowserType.FIREFOX);
+        if (StringUtils.isNotEmpty(experitestAccesskey)) {
+            capabilities.setCapability("accessKey", experitestAccesskey);
+            capabilities.setCapability("testName", this.currentTestName);
+        }
 
         if (gridEnabled) {
             if (this.remoteWebDriver == null) {
@@ -319,7 +325,7 @@ public class WebEventController {
     }
 
     /**
-     * Get Headless Firefox Web Driver for local or RemoteWebDriver capability
+     * Get Headless Firefox Web Driver for local or RemoteWebDriver capability.
      *
      * @return MicroserviceWebDriver instance
      * @throws MalformedURLException url exception
@@ -338,6 +344,10 @@ public class WebEventController {
         capabilities.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
         capabilities.setCapability(CapabilityType.BROWSER_NAME, BrowserType.FIREFOX);
         capabilities.setCapability("video", "True");
+        if (StringUtils.isNotEmpty(experitestAccesskey)) {
+            capabilities.setCapability("accessKey", experitestAccesskey);
+            capabilities.setCapability("testName", this.currentTestName);
+        }
 
         if (gridEnabled) {
             if (this.remoteWebDriver == null) {
@@ -355,7 +365,7 @@ public class WebEventController {
     }
 
     /**
-     * Get a group of SauceLabs generic Web Driver for local or RemoteWebDriver capability
+     * Get a group of SauceLabs generic Web Driver for local or RemoteWebDriver capability.
      *
      * @return MicroserviceWebDriver instance
      * @throws MalformedURLException url exception
@@ -374,7 +384,7 @@ public class WebEventController {
     }
 
     /**
-     * Get Chrome Web Driver for local or RemoteWebDriver capability
+     * Get Chrome Web Driver for local or RemoteWebDriver capability.
      *
      * @return MicroserviceWebDriver instance
      * @throws MalformedURLException url exception
@@ -387,6 +397,8 @@ public class WebEventController {
         chromeOptions.addArguments("--start-maximized");
         chromeOptions.addArguments("--disable-dev-shm-usage");
         chromeOptions.addArguments("--disable-web-security");
+        chromeOptions.addArguments("--ignore-ssl-errors=yes");
+        chromeOptions.addArguments("--ignore-certificate-errors");
         chromeOptions.addArguments("--allow-running-insecure-content");
         capabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
         capabilities.setCapability(CapabilityType.BROWSER_NAME, BrowserType.CHROME);
@@ -412,7 +424,7 @@ public class WebEventController {
     }
 
     /**
-     * Get Headless Chrome Web Driver for local or RemoteWebDriver capability
+     * Get Headless Chrome Web Driver for local or RemoteWebDriver capability.
      *
      * @return MicroserviceWebDriver instance
      * @throws MalformedURLException url exception
@@ -424,6 +436,10 @@ public class WebEventController {
         ChromeOptions chromeOptions = new ChromeOptions();
         chromeOptions.addArguments("headless");
         chromeOptions.addArguments("window-size=1920,1080");
+        chromeOptions.addArguments("--disable-web-security");
+        chromeOptions.addArguments("--ignore-ssl-errors=yes");
+        chromeOptions.addArguments("--ignore-certificate-errors");
+        chromeOptions.addArguments("--allow-running-insecure-content");
         capabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
         capabilities.setCapability(CapabilityType.BROWSER_NAME, BrowserType.CHROME);
         capabilities.setCapability("video", "True");
@@ -448,7 +464,7 @@ public class WebEventController {
     }
 
     /**
-     * Get Android Web Driver for local or RemoteWebDriver capability
+     * Get Android Web Driver for local or RemoteWebDriver capability.
      *
      * @return MicroserviceWebDriver instance
      * @throws MalformedURLException url exception
@@ -477,7 +493,7 @@ public class WebEventController {
     }
 
     /**
-     * Get Microsoft Edge Web Driver for local or RemoteWebDriver capability
+     * Get Microsoft Edge Web Driver for local or RemoteWebDriver capability.
      *
      * @return MicroserviceWebDriver instance
      * @throws MalformedURLException url exception
@@ -507,7 +523,7 @@ public class WebEventController {
     }
 
     /**
-     * Get Internet Explorer Web Driver for local or RemoteWebDriver capability
+     * Get Internet Explorer Web Driver for local or RemoteWebDriver capability.
      *
      * @return MicroserviceWebDriver instance
      * @throws MalformedURLException url exception
@@ -537,7 +553,7 @@ public class WebEventController {
     }
 
     /**
-     * Get Safari Web Driver for local or RemoteWebDriver capability
+     * Get Safari Web Driver for local or RemoteWebDriver capability.
      *
      * @return MicroserviceWebDriver instance
      * @throws MalformedURLException url exception
@@ -567,7 +583,7 @@ public class WebEventController {
     }
 
     /**
-     * Get PhantomJS Web Driver for local or RemoteWebDriver capability
+     * Get PhantomJS Web Driver for local or RemoteWebDriver capability.
      *
      * @return MicroserviceWebDriver instance
      * @throws MalformedURLException url exception
@@ -577,11 +593,7 @@ public class WebEventController {
         LOG("starting PhantomJS virtual browser");
         capabilities.setCapability(CapabilityType.BROWSER_NAME, BrowserType.PHANTOMJS);
         capabilities.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, setDriverExecutable());
-        capabilities.setCapability(PhantomJSDriverService.PHANTOMJS_CLI_ARGS, new String[]{
-                "--web-security=false",
-                "--ssl-protocol=any",
-                "--ignore-ssl-errors=true",
-                "--webdriver-loglevel=DEBUG"});
+        capabilities.setCapability(PhantomJSDriverService.PHANTOMJS_CLI_ARGS, new String[] {"--web-security=false", "--ssl-protocol=any", "--ignore-ssl-errors=true", "--webdriver-loglevel=DEBUG"});
         if (StringUtils.isNotEmpty(experitestAccesskey)) {
             capabilities.setCapability("accessKey", experitestAccesskey);
             capabilities.setCapability("testName", this.currentTestName);
@@ -604,7 +616,7 @@ public class WebEventController {
     }
 
     /**
-     * Set the resources path to the WebDriver executable depending on the ENV the scripts
+     * Set the resources path to the WebDriver executable depending on the ENV the scripts.
      * are running on
      *
      * @return driver executable file path
@@ -660,9 +672,8 @@ public class WebEventController {
                 break;
             }
             case FrameworkConstants.INTERNET_EXPLORER_BROWSER_MODE: {
-                executable = StringUtils.equals(System.getProperty(FrameworkConstants.SYSTEM_JVM_TYPE), "32") ?
-                        PropertiesUtils.getFirstFileFromTestResources("ie_win32.exe") :
-                        PropertiesUtils.getFirstFileFromTestResources("ie_win64.exe");
+                executable = StringUtils.equals(System.getProperty(FrameworkConstants.SYSTEM_JVM_TYPE), "32") ? PropertiesUtils.getFirstFileFromTestResources("ie_win32.exe")
+                                : PropertiesUtils.getFirstFileFromTestResources("ie_win64.exe");
                 System.setProperty(FrameworkConstants.WEB_DRIVER_IE, PropertiesUtils.getPath(executable));
                 break;
             }
@@ -676,21 +687,30 @@ public class WebEventController {
                 if (StringUtils.isNotEmpty(System.getProperty(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY))) {
                     return System.getProperty(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY);
                 } else {
-                    executable = StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), WINDOWS_OS) ?
-                            PropertiesUtils.getFirstFileFromTestResources("phantomjs.exe") :
-                            PropertiesUtils.getFirstFileFromTestResources("phantomjs");
+                    executable = StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), WINDOWS_OS) ? PropertiesUtils.getFirstFileFromTestResources("phantomjs.exe")
+                                    : PropertiesUtils.getFirstFileFromTestResources("phantomjs");
                     System.setProperty(PhantomJSDriverService.PHANTOMJS_GHOSTDRIVER_PATH_PROPERTY, PropertiesUtils.getPath(executable));
                     System.setProperty(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, PropertiesUtils.getPath(executable));
                     return PropertiesUtils.getPath(executable);
                 }
             }
-
+            default: {
+                if (StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), WINDOWS_OS)) {
+                    executable = PropertiesUtils.getFirstFileFromTestResources("chrome_win.exe");
+                } else if (StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), LINUX_OS)) {
+                    executable = PropertiesUtils.getFirstFileFromTestResources("chrome_linux_64");
+                } else {
+                    executable = PropertiesUtils.getFirstFileFromTestResources("chrome_mac");
+                }
+                System.setProperty(FrameworkConstants.WEB_DRIVER_CHROME, PropertiesUtils.getPath(executable));
+                break;
+            }
         }
         return "";
     }
 
     /**
-     * Core web element action sorting logic
+     * Core web element action sorting logic.
      *
      * @param webElement      DOM element to act upon
      * @param webElementValue DOM element value to alter
@@ -721,15 +741,15 @@ public class WebEventController {
     }
 
     /**
-     * Build current test name from TestNG Reporter
+     * Build current test name from TestNG Reporter.
      */
     private void constructTestName() {
+
         try {
             if (Reporter.getCurrentTestResult() != null) {
                 this.currentTestName = StringUtils.substringAfterLast(Reporter.getCurrentTestResult().getTestClass().getName(), ".");
             } else {
-                this.currentTestName = StringUtils.appendIfMissing(StringUtils.removeStart(
-                        currentTestName, "test"), "Test");
+                this.currentTestName = StringUtils.appendIfMissing(StringUtils.removeStart(currentTestName, "test"), "Test");
             }
         } catch (Exception e) {
             this.currentTestName = "";
@@ -737,9 +757,10 @@ public class WebEventController {
     }
 
     /**
-     * Quit the Selenium browser
+     * Quit the Selenium browser.
      */
     public void performQuit() {
+
         try {
             this.remoteWebDriver.quit();
         } catch (Exception e) {

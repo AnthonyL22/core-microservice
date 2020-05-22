@@ -15,7 +15,7 @@ public class TableUtils {
     private static final String TABLE_BODY_ROW_XPATH = "//tbody//tr";
 
     /**
-     * Get a Cell's data value based on the column and row index
+     * Get a Cell's data value based on the column and row index.
      *
      * @param tableElement     table to interrogate
      * @param rowIndex         row index (zero-based)
@@ -74,7 +74,7 @@ public class TableUtils {
     }
 
     /**
-     * Fetch the number of table rows in a given table
+     * Fetch the number of table rows in a given table.
      *
      * @param tableElement table to interrogate
      * @return number of rows in table
@@ -98,7 +98,7 @@ public class TableUtils {
     }
 
     /**
-     * Return all the visible column values for a given column by a column's unique table header value
+     * Return all the visible column values for a given column by a column's unique table header value.
      *
      * @param tableElement     table to interrogate
      * @param columnIdentifier unique coluumn identifier for an element
@@ -110,7 +110,7 @@ public class TableUtils {
     }
 
     /**
-     * Return the visible column values for a given column by index for a given amount of rows
+     * Return the visible column values for a given column by index for a given amount of rows.
      *
      * @param tableElement     table to interrogate
      * @param columnIdentifier unique coluumn identifier for an element

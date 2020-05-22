@@ -45,7 +45,7 @@ public class MatSelect implements ISelect {
      * Check if able to select multiple options.
      *
      * @return Whether this mat-select element support selecting multiple options at the same time? This
-     * is done by checking the value of the "multiple" attribute.
+     *      is done by checking the value of the "multiple" attribute.
      */
     public boolean isMultiple() {
 
@@ -83,8 +83,7 @@ public class MatSelect implements ISelect {
     /**
      * Get first selected option.
      *
-     * @return The first selected option in this mat-select tag (or the currently selected option in a
-     * normal select)
+     * @return The first selected option in this mat-select tag (or the currently selected option in a normal select)
      * @throws NoSuchElementException If no option is selected
      */
     public WebElement getFirstSelectedOption() {
@@ -110,8 +109,7 @@ public class MatSelect implements ISelect {
     @Override
     public void selectByVisibleText(String text) {
 
-        List<WebElement> options =
-                element.findElements(By.xpath("//mat-option[normalize-space(.) = " + Quotes.escape(text) + "]"));
+        List<WebElement> options = element.findElements(By.xpath("//mat-option[normalize-space(.) = " + Quotes.escape(text) + "]"));
 
         boolean matched = false;
         for (WebElement option : options) {
@@ -128,9 +126,7 @@ public class MatSelect implements ISelect {
             if ("".equals(subStringWithoutSpace)) {
                 candidates = element.findElements(By.tagName(WebElementType.MAT_OPTION.type));
             } else {
-                candidates =
-                        element.findElements(By.xpath(".//option[contains(., " +
-                                Quotes.escape(subStringWithoutSpace) + ")]"));
+                candidates = element.findElements(By.xpath(".//option[contains(., " + Quotes.escape(subStringWithoutSpace) + ")]"));
             }
             for (WebElement option : candidates) {
                 if (text.equals(option.getText())) {
@@ -196,8 +192,7 @@ public class MatSelect implements ISelect {
      */
     public void selectByValue(String value) {
 
-        List<WebElement> options = element.findElements(By.xpath(
-                ".//option[@value = " + Quotes.escape(value) + "]"));
+        List<WebElement> options = element.findElements(By.xpath(".//option[@value = " + Quotes.escape(value) + "]"));
 
         boolean matched = false;
         for (WebElement option : options) {
@@ -221,8 +216,7 @@ public class MatSelect implements ISelect {
     public void deselectAll() {
 
         if (!isMultiple()) {
-            throw new UnsupportedOperationException(
-                    "You may only deselect all options of a multi-select");
+            throw new UnsupportedOperationException("You may only deselect all options of a multi-select");
         }
 
         for (WebElement option : getOptions()) {
@@ -243,12 +237,10 @@ public class MatSelect implements ISelect {
     public void deselectByValue(String value) {
 
         if (!isMultiple()) {
-            throw new UnsupportedOperationException(
-                    "You may only deselect options of a multi-select");
+            throw new UnsupportedOperationException("You may only deselect options of a multi-select");
         }
 
-        List<WebElement> options = element.findElements(By.xpath(
-                ".//option[@value = " + Quotes.escape(value) + "]"));
+        List<WebElement> options = element.findElements(By.xpath(".//option[@value = " + Quotes.escape(value) + "]"));
         boolean matched = false;
         for (WebElement option : options) {
             setSelected(option, false);
@@ -270,8 +262,7 @@ public class MatSelect implements ISelect {
     public void deselectByIndex(int index) {
 
         if (!isMultiple()) {
-            throw new UnsupportedOperationException(
-                    "You may only deselect options of a multi-select");
+            throw new UnsupportedOperationException("You may only deselect options of a multi-select");
         }
 
         String match = String.valueOf(index);
@@ -298,12 +289,10 @@ public class MatSelect implements ISelect {
     public void deselectByVisibleText(String text) {
 
         if (!isMultiple()) {
-            throw new UnsupportedOperationException(
-                    "You may only deselect options of a multi-select");
+            throw new UnsupportedOperationException("You may only deselect options of a multi-select");
         }
 
-        List<WebElement> options = element.findElements(By.xpath(
-                ".//mat-option[normalize-space(.) = " + Quotes.escape(text) + "]"));
+        List<WebElement> options = element.findElements(By.xpath(".//mat-option[normalize-space(.) = " + Quotes.escape(text) + "]"));
 
         boolean matched = false;
         for (WebElement option : options) {
@@ -317,7 +306,7 @@ public class MatSelect implements ISelect {
     }
 
     /**
-     * Select or deselect specified option
+     * Select or deselect specified option.
      *
      * @param option The option which state needs to be changed
      * @param select Indicates whether the option needs to be selected (true) or

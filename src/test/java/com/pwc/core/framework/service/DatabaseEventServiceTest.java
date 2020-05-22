@@ -31,10 +31,10 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class DatabaseEventServiceTest {
 
-    final String SELECT_STATEMENT = "select name from model_recommendation where id=?";
-    final String SELECT_LIKE_STATEMENT = "select name from model_recommendation where name like ?";
-    final String SELECT_GENERIC_STATEMENT = "select name from model_recommendation where name field = ?";
-    final String UPDATE_STATEMENT = "update patent_analysis set resubmit_to_model=? where id=?";
+    private static final String SELECT_STATEMENT = "select name from model_recommendation where id=?";
+    private static final String SELECT_LIKE_STATEMENT = "select name from model_recommendation where name like ?";
+    private static final String SELECT_GENERIC_STATEMENT = "select name from model_recommendation where name field = ?";
+    private static final String UPDATE_STATEMENT = "update patent_analysis set resubmit_to_model=? where id=?";
 
     @Mock
     JdbcTemplate mockJdbcTemplate;
@@ -96,7 +96,7 @@ public class DatabaseEventServiceTest {
     public void executeParameterQueryTimestampTest() throws SQLException {
         when(mockConnection.prepareStatement(SELECT_GENERIC_STATEMENT)).thenReturn(mockPreparedStatement);
         Timestamp timestamp = new Timestamp(10000);
-        Object result = databaseEventService.executeParameterQuery(SELECT_GENERIC_STATEMENT, new Object[]{timestamp});
+        Object result = databaseEventService.executeParameterQuery(SELECT_GENERIC_STATEMENT, new Object[] {timestamp});
         Assert.assertEquals("", result);
     }
 
@@ -104,7 +104,7 @@ public class DatabaseEventServiceTest {
     public void executeParameterQueryDateTest() throws SQLException {
         when(mockConnection.prepareStatement(SELECT_GENERIC_STATEMENT)).thenReturn(mockPreparedStatement);
         Date date = new Date(1000);
-        Object result = databaseEventService.executeParameterQuery(SELECT_GENERIC_STATEMENT, new Object[]{date});
+        Object result = databaseEventService.executeParameterQuery(SELECT_GENERIC_STATEMENT, new Object[] {date});
         Assert.assertEquals("", result);
     }
 
@@ -112,7 +112,7 @@ public class DatabaseEventServiceTest {
     public void executeParameterQueryUUIDTest() throws SQLException {
         when(mockConnection.prepareStatement(SELECT_GENERIC_STATEMENT)).thenReturn(mockPreparedStatement);
         UUID uuid = UUID.fromString("1-22-333-44-555");
-        Object result = databaseEventService.executeParameterQuery(SELECT_GENERIC_STATEMENT, new Object[]{uuid});
+        Object result = databaseEventService.executeParameterQuery(SELECT_GENERIC_STATEMENT, new Object[] {uuid});
         Assert.assertEquals("", result);
     }
 
@@ -122,7 +122,7 @@ public class DatabaseEventServiceTest {
         when(mockPreparedStatement.getResultSet()).thenReturn(mockResultSet);
         when(mockResultSet.getMetaData()).thenReturn(mockResultSetMetaData);
         Integer intVersion = new Integer("123");
-        List results = (List) databaseEventService.executeParameterQuery(SELECT_GENERIC_STATEMENT, new Object[]{intVersion});
+        List results = (List) databaseEventService.executeParameterQuery(SELECT_GENERIC_STATEMENT, new Object[] {intVersion});
         Assert.assertEquals(1, results.size());
         for (Object result : results) {
             List columns = (List) result;
@@ -139,7 +139,7 @@ public class DatabaseEventServiceTest {
     public void executeParameterQueryDoubleTest() throws SQLException {
         when(mockConnection.prepareStatement(SELECT_GENERIC_STATEMENT)).thenReturn(mockPreparedStatement);
         Double doubleVersion = new Double("123");
-        Object result = databaseEventService.executeParameterQuery(SELECT_GENERIC_STATEMENT, new Object[]{doubleVersion});
+        Object result = databaseEventService.executeParameterQuery(SELECT_GENERIC_STATEMENT, new Object[] {doubleVersion});
         Assert.assertEquals("", result);
     }
 
@@ -147,7 +147,7 @@ public class DatabaseEventServiceTest {
     public void executeParameterQueryBigDecimalTest() throws SQLException {
         when(mockConnection.prepareStatement(SELECT_GENERIC_STATEMENT)).thenReturn(mockPreparedStatement);
         BigDecimal bd = new BigDecimal("123");
-        Object result = databaseEventService.executeParameterQuery(SELECT_GENERIC_STATEMENT, new Object[]{bd});
+        Object result = databaseEventService.executeParameterQuery(SELECT_GENERIC_STATEMENT, new Object[] {bd});
         Assert.assertEquals("", result);
     }
 
@@ -187,28 +187,28 @@ public class DatabaseEventServiceTest {
     @Test
     public void emptyResultSetExecuteParameterQueryLikeTest() throws SQLException {
         when(mockConnection.prepareStatement(SELECT_LIKE_STATEMENT)).thenReturn(mockPreparedStatement);
-        Object result = databaseEventService.executeParameterQuery(SELECT_LIKE_STATEMENT, new Object[]{"Anthony"});
+        Object result = databaseEventService.executeParameterQuery(SELECT_LIKE_STATEMENT, new Object[] {"Anthony"});
         Assert.assertEquals("", result);
     }
 
     @Test
     public void emptyResultSetExecuteParameterQueryObjectExceptionTest() throws SQLException {
         when(mockConnection.prepareStatement(SELECT_STATEMENT)).thenThrow(new NullPointerException());
-        Object result = databaseEventService.executeParameterQuery(SELECT_STATEMENT, new Object[]{1L, "Anthony"});
+        Object result = databaseEventService.executeParameterQuery(SELECT_STATEMENT, new Object[] {1L, "Anthony"});
         Assert.assertEquals("", result);
     }
 
     @Test
     public void emptyResultSetExecuteParameterQueryObjectIndexExceptionTest() throws SQLException {
         when(mockConnection.prepareStatement(SELECT_STATEMENT)).thenThrow(new IndexOutOfBoundsException());
-        Object result = databaseEventService.executeParameterQuery(SELECT_STATEMENT, new Object[]{1L, "Anthony"});
+        Object result = databaseEventService.executeParameterQuery(SELECT_STATEMENT, new Object[] {1L, "Anthony"});
         Assert.assertEquals("", result);
     }
 
     @Test
     public void emptyResultSetExecuteParameterQueryObjectTest() throws SQLException {
         when(mockConnection.prepareStatement(SELECT_STATEMENT)).thenReturn(mockPreparedStatement);
-        Object result = databaseEventService.executeParameterQuery(SELECT_STATEMENT, new Object[]{1L, "Anthony"});
+        Object result = databaseEventService.executeParameterQuery(SELECT_STATEMENT, new Object[] {1L, "Anthony"});
         Assert.assertEquals("", result);
     }
 
@@ -240,7 +240,7 @@ public class DatabaseEventServiceTest {
     @Test
     public void executeParameterUpdateResultSetTest() throws SQLException {
         when(mockConnection.prepareStatement(UPDATE_STATEMENT)).thenReturn(mockPreparedStatement);
-        Object result = databaseEventService.executeParameterUpdate(UPDATE_STATEMENT, new Object[]{true, 1L});
+        Object result = databaseEventService.executeParameterUpdate(UPDATE_STATEMENT, new Object[] {true, 1L});
         Assert.assertEquals(0, result);
     }
 
@@ -248,13 +248,13 @@ public class DatabaseEventServiceTest {
     public void executeParameterUpdateBadSqlResultSetTest() throws SQLException {
         String badSQL = "update patent_analysis set where id=?";
         when(mockConnection.prepareStatement(badSQL)).thenReturn(mockPreparedStatement);
-        Object result = databaseEventService.executeParameterUpdate(badSQL, new Object[]{true, 1L});
+        Object result = databaseEventService.executeParameterUpdate(badSQL, new Object[] {true, 1L});
         Assert.assertEquals(0, result);
     }
 
     @Test
     public void executeParameterUpdateNullPreparedStatementTest() throws SQLException {
-        Object result = databaseEventService.executeParameterUpdate(UPDATE_STATEMENT, new Object[]{true, 1L});
+        Object result = databaseEventService.executeParameterUpdate(UPDATE_STATEMENT, new Object[] {true, 1L});
         Assert.assertEquals(-1, result);
     }
 
@@ -272,6 +272,5 @@ public class DatabaseEventServiceTest {
             Assert.assertEquals("2 Oak Street", columns.get(4));
         }
     }
-
 
 }

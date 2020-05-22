@@ -73,13 +73,13 @@ public class JiraController extends JiraProcessor {
     public TestExecute includeTestInCycle(final String issueKey, final HashMap cycleMap) {
 
         TestCycle testCycle = new TestCycle.Builder() //
-                .setIssueId(issueKey) //
-                .setCycleId(cycleMap.get("cycleId").toString()) //
-                .setAssignee(cycleMap.get("assigneeUserName").toString()) //
-                .setAssigneeType(cycleMap.get("assigneeDisplay").toString()) //
-                .setProjectId(cycleMap.get("projectId").toString()) //
-                .setVersionId(cycleMap.get("versionId").toString()) //
-                .build();
+                        .setIssueId(issueKey) //
+                        .setCycleId(cycleMap.get("cycleId").toString()) //
+                        .setAssignee(cycleMap.get("assigneeUserName").toString()) //
+                        .setAssigneeType(cycleMap.get("assigneeDisplay").toString()) //
+                        .setProjectId(cycleMap.get("projectId").toString()) //
+                        .setVersionId(cycleMap.get("versionId").toString()) //
+                        .build();
 
         JSONObject payload = JsonUtils.convertObjectToJson(testCycle);
         JsonPath response = (JsonPath) executePost(ZAPI_EXECUTE_BASE_URL, payload.toString());
@@ -87,12 +87,12 @@ public class JiraController extends JiraProcessor {
         String executionId = StringUtils.substringBetween(entity.get().toString(), "{", "=").trim();
 
         return new TestExecute.Builder() //
-                .setExecutionId(executionId) //
-                .setIssueId(issueKey) //
-                .setCycleId(cycleMap.get("cycleId").toString()) //
-                .setProjectId(cycleMap.get("projectId").toString()) //
-                .setVersionId("-1") //
-                .build();
+                        .setExecutionId(executionId) //
+                        .setIssueId(issueKey) //
+                        .setCycleId(cycleMap.get("cycleId").toString()) //
+                        .setProjectId(cycleMap.get("projectId").toString()) //
+                        .setVersionId("-1") //
+                        .build();
     }
 
     /**
@@ -129,20 +129,28 @@ public class JiraController extends JiraProcessor {
         JSONObject payload = JsonUtils.convertObjectToJson(execute);
         JsonPath response = (JsonPath) executePut(ZAPI_EXECUTE_BASE_URL + execute.getExecutionId() + "/execute", payload.toString());
         if (response.get(FrameworkConstants.HTTP_STATUS_VALUE_KEY).equals(HttpStatus.SC_OK)) {
-            String status = "UNEXECUTED";
+            String status;
             switch (tr.getStatus()) {
-                case 1:
+                case 1: {
                     status = "PASS";
                     break;
-                case 2:
+                }
+                case 2: {
                     status = "FAIL";
                     break;
-                case 3:
+                }
+                case 3: {
                     status = "WIP";
                     break;
-                case 4:
+                }
+                case 4: {
                     status = "BLOCKED";
                     break;
+                }
+                default: {
+                    status = "WIP";
+                    break;
+                }
             }
             LOG(true, "%s--Published Zephyr '%s' status for issue: %s", tr.getName(), status, testCaseId);
         }

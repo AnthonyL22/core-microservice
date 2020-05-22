@@ -11,7 +11,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.testng.ITestClass;
 import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
-import org.testng.internal.TestResult;
 
 import java.util.HashMap;
 
@@ -54,12 +53,12 @@ public class JiraControllerTest {
         BASE_CYCLE.put("versionId", "1");
 
         testExecute = new TestExecute.Builder() //
-                .setExecutionId("123") //
-                .setIssueId(JIRA_KEY) //
-                .setCycleId(CYCLE_ID) //
-                .setProjectId(PROJECT_ID) //
-                .setVersionId("-1") //
-                .build();
+                        .setExecutionId("123") //
+                        .setIssueId(JIRA_KEY) //
+                        .setCycleId(CYCLE_ID) //
+                        .setProjectId(PROJECT_ID) //
+                        .setVersionId("-1") //
+                        .build();
 
         ITestClass mockITestClass = mock(ITestClass.class);
         when(mockITestClass.getTestName()).thenReturn("[TestClass name=class com.pwc.automation.tests.web.BasicTest]");

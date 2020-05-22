@@ -18,14 +18,14 @@ import java.util.List;
 @RunWith(MockitoJUnitRunner.class)
 public class ContinuousIntegrationGrouperTest {
 
-    final String CANONICAL_CLASS_NAME = "com.pwc.core.framework.ci.UnitTestGroups";
-    final String OUTPUT_FILE = "group.properties";
-    String destinationPropertiesFileLocation;
-
-    String[] fullyDecoratedArgs = new String[3];
+    private static final String CANONICAL_CLASS_NAME = "com.pwc.core.framework.ci.UnitTestGroups";
+    private static final String OUTPUT_FILE = "group.properties";
+    private static String destinationPropertiesFileLocation;
+    private static String[] fullyDecoratedArgs = new String[3];
 
     @Before
     public void setUp() {
+
         URL url = UnitTestGroups.class.getClassLoader().getResource("");
         File resourceDirectory = new File(url.getPath());
         destinationPropertiesFileLocation = resourceDirectory.getPath();
@@ -36,18 +36,21 @@ public class ContinuousIntegrationGrouperTest {
 
     @Test(expected = NullPointerException.class)
     public void nullMainTest() throws Exception {
+
         ContinuousIntegrationGrouper.main(null);
     }
 
     @Test(expected = Exception.class)
     public void canonicalNameArgumentOnlyMainTest() throws Exception {
-        String args[] = {CANONICAL_CLASS_NAME};
+
+        String[] args = {CANONICAL_CLASS_NAME};
         ContinuousIntegrationGrouper.main(args);
     }
 
     @Test
     public void defaultOutputFileMainTest() throws Exception {
-        String args[] = {CANONICAL_CLASS_NAME, destinationPropertiesFileLocation};
+
+        String[] args = {CANONICAL_CLASS_NAME, destinationPropertiesFileLocation};
         ContinuousIntegrationGrouper.main(args);
         URL url = ClassLoader.getSystemClassLoader().getResource("");
         File resourceDirectory = new File(url.getPath());
@@ -58,8 +61,9 @@ public class ContinuousIntegrationGrouperTest {
 
     @Test
     public void canonicalNameAndOutputDirectoryArgumentOnlyMainTest() throws Exception {
+
         destinationPropertiesFileLocation = StringUtils.replace(destinationPropertiesFileLocation, "%20", " ");
-        String args[] = {CANONICAL_CLASS_NAME, destinationPropertiesFileLocation};
+        String[] args = {CANONICAL_CLASS_NAME, destinationPropertiesFileLocation};
         ContinuousIntegrationGrouper.main(args);
         File output = new File(destinationPropertiesFileLocation + FrameworkConstants.SEPARATOR + ContinuousIntegrationGrouper.getDefaultOutputFileName());
         List<String> lines = FileUtils.readLines(output, StandardCharsets.UTF_8);
@@ -70,6 +74,7 @@ public class ContinuousIntegrationGrouperTest {
 
     @Test
     public void allArgumentsMainTest() throws Exception {
+
         ContinuousIntegrationGrouper.main(fullyDecoratedArgs);
         destinationPropertiesFileLocation = StringUtils.replace(destinationPropertiesFileLocation, "%20", " ");
         File output = new File(destinationPropertiesFileLocation + FrameworkConstants.SEPARATOR + OUTPUT_FILE);
@@ -81,22 +86,25 @@ public class ContinuousIntegrationGrouperTest {
 
     @Test(expected = NullPointerException.class)
     public void invalidClassNameToDecompileMainTest() throws Exception {
-        String badArgs[] = {CANONICAL_CLASS_NAME + "Foobar", destinationPropertiesFileLocation};
+
+        String[] badArgs = {CANONICAL_CLASS_NAME + "Foobar", destinationPropertiesFileLocation};
         ContinuousIntegrationGrouper.main(badArgs);
     }
 
     @Test(expected = NullPointerException.class)
     public void nullClassNameToDecompileMainTest() throws Exception {
-        String badArgs[] = {null, destinationPropertiesFileLocation};
+
+        String[] badArgs = {null, destinationPropertiesFileLocation};
         ContinuousIntegrationGrouper.main(badArgs);
     }
 
     @Test
     public void writeArrayToFileTest() throws Exception {
+
         destinationPropertiesFileLocation = org.apache.commons.lang3.StringUtils.replace(destinationPropertiesFileLocation, "%20", " ");
         ContinuousIntegrationGrouper.setDestinationPropertiesFileLocation(destinationPropertiesFileLocation + System.getProperty("file.separator"));
         ContinuousIntegrationGrouper.setOutputFile(OUTPUT_FILE);
-        ContinuousIntegrationGrouper.writeArrayToFile(new String[]{"hi,there,now"});
+        ContinuousIntegrationGrouper.writeArrayToFile(new String[] {"hi,there,now"});
         File output = new File(destinationPropertiesFileLocation + System.getProperty("file.separator") + OUTPUT_FILE);
         List<String> lines = FileUtils.readLines(output, StandardCharsets.UTF_8);
         Assert.assertEquals(lines.size(), 1);
@@ -105,9 +113,10 @@ public class ContinuousIntegrationGrouperTest {
 
     @Test(expected = FileNotFoundException.class)
     public void invalidOutputFilesWriteArrayToFileTest() throws Exception {
+
         ContinuousIntegrationGrouper.setDestinationPropertiesFileLocation("");
         ContinuousIntegrationGrouper.setOutputFile("");
-        ContinuousIntegrationGrouper.writeArrayToFile(new String[]{"hi,there,now"});
+        ContinuousIntegrationGrouper.writeArrayToFile(new String[] {"hi,there,now"});
     }
 
 }

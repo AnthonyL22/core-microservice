@@ -9,13 +9,10 @@ import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.testng.Assert;
 import org.testng.IInvokedMethodListener;
-import org.testng.ISuite;
 import org.testng.ITestClass;
 import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
-import org.testng.SuiteRunner;
 import org.testng.internal.ConstructorOrMethod;
-import org.testng.internal.IConfiguration;
 import org.testng.xml.XmlSuite;
 import org.testng.xml.XmlTest;
 
@@ -49,10 +46,8 @@ public class RetryListenerTest extends MicroserviceTestListener {
         setSauceInstance(mockSauceREST);
         mockITestResult = mock(ITestResult.class);
 
-        IConfiguration mockIConfiguration = mock(IConfiguration.class);
         XmlSuite xmlSuite = new XmlSuite();
         xmlSuite.setName("unitTestSuiteName");
-        ISuite iSuite = new SuiteRunner(mockIConfiguration, xmlSuite, "/");
 
         XmlTest xmlTest = new XmlTest();
         xmlTest.setName(TEST_NAME);

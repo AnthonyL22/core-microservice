@@ -48,8 +48,8 @@ public final class FrameworkConstants {
     public static final String HEADLESS_FIREFOX_BROWSER_MODE = "headless_ff";
     public static final String CHROME_BROWSER_MODE = "chrome";
     public static final String HEADLESS_CHROME_BROWSER_MODE = "headless_ch";
-    public static final String ANDROID_MODE = "android";
-    public static final String IOS_MODE = "ios";
+    public static final String ANDROID_MODE = "Android";
+    public static final String IOS_MODE = "iOS";
     public static final String INTERNET_EXPLORER_BROWSER_MODE = "ie";
     public static final String EDGE_BROWSER_MODE = "edge";
     public static final String SAFARI_BROWSER_MODE = "safari";
@@ -110,27 +110,34 @@ public final class FrameworkConstants {
     public static final String ENTITY_KEY = "ENTITY";
 
     /**
-     * @deprecated use JavascriptConstants fields instead
+     * Use the use JavascriptConstants fields instead.
+     *
+     * @deprecated use JavascriptConstants
      */
     @Deprecated
-    public static final String JAVASCRIPT_CLICK_ELEMENT_BY_XPATH = "var element = document.evaluate(\"%s\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue; element.click();";
-    public static final String JAVASCRIPT_ALERT_ELEMENT_BY_XPATH = "var element = document.evaluate(\"%s\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue; alert(element.textContent);";
+    public static final String JAVASCRIPT_CLICK_ELEMENT_BY_XPATH =
+                    "var element = document.evaluate(\"%s\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue; element.click();";
+    @Deprecated
+    public static final String JAVASCRIPT_ALERT_ELEMENT_BY_XPATH =
+                    "var element = document.evaluate(\"%s\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue; alert(element.textContent);";
+    @Deprecated
     public static final String JAVASCRIPT_CLICK_ELEMENT_BY_ID = "document.getElementById('%s').click();";
-    public static final String JAVASCRIPT_CLICK_ELEMENT_BY_TAG_AND_VALUE = "var elements = document.getElementsByTagName('%s'); " +
-            "for (var i=0; i<elements.length; i++) " +
-            "{if (elements[i].value == '%s') elements[i].click();}";
-    public static final String JAVASCRIPT_CLICK_ELEMENT_BY_TAG_NODE_VALUE = "var elements = document.getElementsByTagName('%s'); " +
-            "for (var i=0; i<elements.length; i++) " +
-            "{if (elements[i].firstChild.nodeValue == '%s') elements[i].click();}";
-    public static final String JAVASCRIPT_CLICK_ELEMENT_BY_TAG_TYPE_AND_EQUALS_VALUE = "var elements = document.getElementsByTagName('%s'); " +
-            "for (var i=0; i<elements.length; i++) " +
-            "{if (elements[i].firstChild.textContent == '%s') elements[i].click()}";
-    public static final String JAVASCRIPT_CLICK_ELEMENT_BY_TAG_TYPE_AND_CONTAINS_VALUE = "var elements = document.getElementsByTagName('%s'); " +
-            "for (var i=0; i<elements.length; i++) " +
-            "{if (elements[i].firstChild.textContent.indexOf('%s') > -1) elements[i].click();}";
-    public static final String JAVASCRIPT_CLICK_ELEMENT_BY_CLASS_NAME_AND_CONTAINS_VALUE = "var elements = document.getElementsByClassName('%s'); " +
-            "for (var i=0; i<elements.length; i++) " +
-            "{if (elements[i].firstChild.textContent.indexOf('%s') > -1) elements[i].click();}";
+    @Deprecated
+    public static final String JAVASCRIPT_CLICK_ELEMENT_BY_TAG_AND_VALUE =
+                    "var elements = document.getElementsByTagName('%s'); " + "for (var i=0; i<elements.length; i++) " + "{if (elements[i].value == '%s') elements[i].click();}";
+    @Deprecated
+    public static final String JAVASCRIPT_CLICK_ELEMENT_BY_TAG_NODE_VALUE =
+                    "var elements = document.getElementsByTagName('%s'); " + "for (var i=0; i<elements.length; i++) " + "{if (elements[i].firstChild.nodeValue == '%s') elements[i].click();}";
+    @Deprecated
+    public static final String JAVASCRIPT_CLICK_ELEMENT_BY_TAG_TYPE_AND_EQUALS_VALUE =
+                    "var elements = document.getElementsByTagName('%s'); " + "for (var i=0; i<elements.length; i++) " + "{if (elements[i].firstChild.textContent == '%s') elements[i].click()}";
+    @Deprecated
+    public static final String JAVASCRIPT_CLICK_ELEMENT_BY_TAG_TYPE_AND_CONTAINS_VALUE = "var elements = document.getElementsByTagName('%s'); " + "for (var i=0; i<elements.length; i++) "
+                    + "{if (elements[i].firstChild.textContent.indexOf('%s') > -1) elements[i].click();}";
+    @Deprecated
+    public static final String JAVASCRIPT_CLICK_ELEMENT_BY_CLASS_NAME_AND_CONTAINS_VALUE = "var elements = document.getElementsByClassName('%s'); " + "for (var i=0; i<elements.length; i++) "
+                    + "{if (elements[i].firstChild.textContent.indexOf('%s') > -1) elements[i].click();}";
+    @Deprecated
     public static final String JAVASCRIPT_CLICK_LAST_ELEMENT_BY_CLASS_NAME = "var elements = document.getElementsByClassName('%s'); elements[elements.length - 1].click();";
 
     private FrameworkConstants() {
