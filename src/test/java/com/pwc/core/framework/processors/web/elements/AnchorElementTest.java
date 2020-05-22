@@ -141,5 +141,4 @@ public class AnchorElementTest extends WebElementBaseTest {
         anchorElement.webAction(null, WebElementAttribute.VALUE.attribute);
     }
 
-
 }

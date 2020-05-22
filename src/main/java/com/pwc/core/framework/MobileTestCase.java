@@ -1,6 +1,5 @@
 package com.pwc.core.framework;
 
-
 import com.pwc.core.framework.data.MobileGesture;
 
 import java.util.Map;

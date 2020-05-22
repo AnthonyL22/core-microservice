@@ -1,6 +1,10 @@
 package com.pwc.core.framework.data;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
+@Getter
+@AllArgsConstructor
 public enum MobileGesture {
 
     SWIPE("swipe"),
@@ -15,9 +19,5 @@ public enum MobileGesture {
     ALERT("alert");
 
     public String gesture;
-
-    MobileGesture(String gesture) {
-        this.gesture = gesture;
-    }
 
 }

@@ -78,7 +78,6 @@ import static com.pwc.assertion.AssertService.assertPass;
 import static com.pwc.assertion.AssertService.assertTrue;
 import static com.pwc.logging.service.LoggerService.LOG;
 
-
 @Component
 public class WebEventService extends WebEventController {
 

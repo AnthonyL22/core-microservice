@@ -1,5 +1,10 @@
 package com.pwc.core.framework.data;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
 public enum CommonField {
 
     ADDRESSES("addresses"),
@@ -11,13 +16,5 @@ public enum CommonField {
     MSGS("msgs");
 
     private String field;
-
-    CommonField(String fieldName) {
-        this.field = fieldName;
-    }
-
-    public String value() {
-        return this.field;
-    }
 
 }

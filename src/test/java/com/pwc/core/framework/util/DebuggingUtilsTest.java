@@ -15,20 +15,15 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.Assert;
 
 import java.io.File;
-import java.sql.SQLException;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.withSettings;
 
-
 @RunWith(MockitoJUnitRunner.class)
 public class DebuggingUtilsTest extends WebElementBaseTest {
 
     WebEventService webEventService;
-
-    @Mock
-    WebEventService mockWebEventService;
 
     @Mock
     MicroserviceWebDriver mockWebDriverService;
@@ -37,7 +32,7 @@ public class DebuggingUtilsTest extends WebElementBaseTest {
     private TakesScreenshot mockTakesScreenShot;
 
     @Before
-    public void setUp() throws SQLException {
+    public void setUp() {
 
         webEventService = new WebEventService();
         webEventService.setMicroserviceWebDriver(mockWebDriverService);
@@ -109,4 +104,5 @@ public class DebuggingUtilsTest extends WebElementBaseTest {
         String debugInfo = DebuggingUtils.getDebugInfo(mockWebDriverService);
         Assert.assertNotNull(debugInfo);
     }
+
 }

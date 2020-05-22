@@ -32,7 +32,6 @@ import java.util.concurrent.TimeUnit;
 
 import static com.pwc.logging.service.LoggerService.LOG;
 
-
 @Component
 public class MobileEventController {
 
@@ -138,18 +137,12 @@ public class MobileEventController {
         if (!StringUtils.isEmpty(System.getenv(FrameworkConstants.SAUCELABS_BROWSER_PROPERTY)) && !StringUtils.isEmpty(System.getenv(FrameworkConstants.SAUCELABS_BROWSER_VERSION_PROPERTY))
                         && !StringUtils.isEmpty(System.getenv(FrameworkConstants.SAUCELABS_PLATFORM_PROPERTY))) {
 
-            //ToDo: add correct Saucelabs capabilities here
-
             LOG(true, "Initiating Sauce-OnDemand test execution with browser='%s', version='%s', platform='%s'", System.getenv(FrameworkConstants.SAUCELABS_BROWSER_PROPERTY),
                             System.getenv(FrameworkConstants.SAUCELABS_BROWSER_VERSION_PROPERTY), System.getenv(FrameworkConstants.SAUCELABS_PLATFORM_PROPERTY));
-
 
         } else if (isBrowserStackEnabled()) {
 
             GridUtils.initBrowserType();
-
-            //ToDo: add correct Browserstack capabilities here
-
             LOG(true, "Initiating BrowserStack test execution with browser='%s', platform='%s'", capabilities.getCapability(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY),
                             capabilities.getCapability(FrameworkConstants.BROWSER_STACK_OS_PROPERTY));
 

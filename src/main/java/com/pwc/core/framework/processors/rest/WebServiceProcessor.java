@@ -1,6 +1,5 @@
 package com.pwc.core.framework.processors.rest;
 
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ArrayListMultimap;
@@ -114,7 +113,6 @@ public class WebServiceProcessor {
                 urlBuilder.append(pathParameter);
             }
         }
-
 
         LOG(true, "REST action for url='%s'", urlBuilder.toString());
         return urlBuilder.toString();

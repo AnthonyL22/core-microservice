@@ -1,6 +1,5 @@
 package com.pwc.core.framework.data;
 
-
 public enum XCUIElementAttribute {
 
     ELEMENT_ID("elementId"),

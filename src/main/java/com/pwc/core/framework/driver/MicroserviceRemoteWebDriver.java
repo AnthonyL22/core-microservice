@@ -6,7 +6,6 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.net.URL;
 
-
 public class MicroserviceRemoteWebDriver extends RemoteWebDriver implements MicroserviceWebDriver {
 
     protected MicroserviceRemoteWebDriver() {

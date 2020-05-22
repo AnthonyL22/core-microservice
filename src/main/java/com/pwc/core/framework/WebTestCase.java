@@ -1,6 +1,5 @@
 package com.pwc.core.framework;
 
-
 import com.pwc.core.framework.data.CssProperty;
 import com.pwc.core.framework.data.WebElementAttribute;
 import org.openqa.selenium.logging.LogEntry;

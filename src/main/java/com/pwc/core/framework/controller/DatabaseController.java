@@ -1,6 +1,5 @@
 package com.pwc.core.framework.controller;
 
-
 import com.pwc.core.framework.service.DatabaseEventService;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.data.mongodb.core.MongoTemplate;

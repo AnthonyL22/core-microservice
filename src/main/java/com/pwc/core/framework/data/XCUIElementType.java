@@ -1,6 +1,5 @@
 package com.pwc.core.framework.data;
 
-
 public enum XCUIElementType {
 
     ACTIVITY_INDICATOR("XCUIElementTypeActivityIndicator"),

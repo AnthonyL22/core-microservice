@@ -48,7 +48,7 @@ public class EmailUtils {
 
         List<MailSacEmail> allEmails = new ArrayList<>();
         try {
-            JsonPath response = (JsonPath) executeGet(MAILSAC_URL, String.format("%s/%s/%s", CommonField.ADDRESSES.value(), emailAddress, CommonField.MESSAGES.value()));
+            JsonPath response = (JsonPath) executeGet(MAILSAC_URL, String.format("%s/%s/%s", CommonField.ADDRESSES.getField(), emailAddress, CommonField.MESSAGES.getField()));
             JsonPath entity = new JsonPath(response.get(FrameworkConstants.HTTP_ENTITY_KEY).toString());
             List<HashMap> inboxList = entity.get();
             inboxList.forEach(email -> {
@@ -73,9 +73,9 @@ public class EmailUtils {
 
         List<GetNadaEmail> allEmails = new ArrayList<>();
         try {
-            JsonPath response = (JsonPath) executeGet(GETNADA_URL, String.format("%s/%s", CommonField.INBOXES.value(), emailAddress));
+            JsonPath response = (JsonPath) executeGet(GETNADA_URL, String.format("%s/%s", CommonField.INBOXES.getField(), emailAddress));
             JsonPath entity = new JsonPath(response.get(FrameworkConstants.HTTP_ENTITY_KEY).toString());
-            List<HashMap> messageList = entity.get(CommonField.MSGS.value());
+            List<HashMap> messageList = entity.get(CommonField.MSGS.getField());
             if (CollectionUtils.isNotEmpty(messageList)) {
                 IntStream.range(0, numberOfEmails).forEach(index -> {
                     GetNadaEmail emailResponse = (GetNadaEmail) convertMapToObject(messageList.get(index), GetNadaEmail.class);
@@ -97,9 +97,9 @@ public class EmailUtils {
      */
     public static GetNadaEmail getAllGetNadaEmailsById(GetNadaEmail email) {
 
-        JsonPath response = (JsonPath) executeGet(GETNADA_URL, String.format("%s/%s", CommonField.MESSAGES.value(), email.getUid()));
+        JsonPath response = (JsonPath) executeGet(GETNADA_URL, String.format("%s/%s", CommonField.MESSAGES.getField(), email.getUid()));
         JsonPath entity = new JsonPath(response.get(FrameworkConstants.HTTP_ENTITY_KEY).toString());
-        email.setHtml(entity.get(CommonField.HTML.value()));
+        email.setHtml(entity.get(CommonField.HTML.getField()));
         return email;
     }
 
@@ -191,9 +191,9 @@ public class EmailUtils {
 
         try {
             JsonPath response = (JsonPath) executeDelete(MAILSAC_URL,
-                            String.format("%s/%s/%s/%s", CommonField.ADDRESSES.value(), emailToDelete.getOriginalInbox(), CommonField.MESSAGES.value(), emailToDelete.get_id()));
+                            String.format("%s/%s/%s/%s", CommonField.ADDRESSES.getField(), emailToDelete.getOriginalInbox(), CommonField.MESSAGES.getField(), emailToDelete.get_id()));
             JsonPath entity = new JsonPath(response.get(FrameworkConstants.HTTP_ENTITY_KEY).toString());
-            String message = entity.get(CommonField.MESSAGE.value());
+            String message = entity.get(CommonField.MESSAGE.getField());
             LOG(true, "%s (%s) - %s", emailToDelete.getOriginalInbox(), emailToDelete.get_id(), message);
         } catch (Exception e) {
             LOG(false, "Failed due to e=%s", e);
@@ -214,7 +214,7 @@ public class EmailUtils {
             emailList.forEach(emailToDelete -> {
                 JsonPath response = (JsonPath) executeGet(GETNADA_URL, String.format("messages/%s", emailToDelete.getUid()));
                 JsonPath entity = new JsonPath(response.get(FrameworkConstants.HTTP_ENTITY_KEY).toString());
-                if (entity.get(CommonField.DELETED.value())) {
+                if (entity.get(CommonField.DELETED.getField())) {
                     deletedCount.getAndIncrement();
                 }
             });

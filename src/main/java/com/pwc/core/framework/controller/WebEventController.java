@@ -42,7 +42,6 @@ import java.net.URL;
 
 import static com.pwc.logging.service.LoggerService.LOG;
 
-
 @Component
 public class WebEventController {
 

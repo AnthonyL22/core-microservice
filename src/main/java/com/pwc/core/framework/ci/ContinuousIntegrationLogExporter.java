@@ -24,7 +24,6 @@ import java.util.regex.Pattern;
 
 import static com.pwc.logging.service.LoggerService.LOG;
 
-
 public class ContinuousIntegrationLogExporter {
 
     private static Map constants;

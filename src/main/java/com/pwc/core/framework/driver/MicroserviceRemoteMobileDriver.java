@@ -9,7 +9,6 @@ import org.openqa.selenium.remote.http.HttpClient;
 
 import java.net.URL;
 
-
 public class MicroserviceRemoteMobileDriver extends IOSDriver implements MicroserviceMobileDriver {
 
     public MicroserviceRemoteMobileDriver(HttpCommandExecutor executor, Capabilities capabilities) {

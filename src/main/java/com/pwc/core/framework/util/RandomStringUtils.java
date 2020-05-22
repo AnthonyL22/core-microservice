@@ -155,7 +155,6 @@ public class RandomStringUtils {
         List<Div> divElements = new ArrayList<>();
         List<Node> nodeSegmentList = getNodeSegment(numberOfElementsInBody);
 
-
         if (fullPage) {
             Div div = new Div();
             div.appendChild(nodeSegmentList);

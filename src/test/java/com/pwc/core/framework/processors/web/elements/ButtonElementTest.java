@@ -105,5 +105,4 @@ public class ButtonElementTest extends WebElementBaseTest {
         buttonElement.webAction(null);
     }
 
-
 }
