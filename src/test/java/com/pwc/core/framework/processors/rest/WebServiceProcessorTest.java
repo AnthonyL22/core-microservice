@@ -69,6 +69,7 @@ public class WebServiceProcessorTest {
         PUT_IS_VALID_USER_WITH_PAYLOAD(FrameworkConstants.PUT_REQUEST, "rest/users", "isValidUser"), //
         GET_ADD_USER_ID(FrameworkConstants.GET_REQUEST, "rest/users", "addUser"), //
         GET_BY_LAST_NAME(FrameworkConstants.GET_REQUEST, "rest/users", "byLastName"), //
+        PUT_BY_ID(FrameworkConstants.PUT_REQUEST, "rest/users", "id"), //
         PUT_BY_LAST_NAME(FrameworkConstants.PUT_REQUEST, "rest/users", "byLastName"), //
         DELETE_BY_LAST_NAME(FrameworkConstants.DELETE_REQUEST, "rest/users", "byLastName"), //
         DELETE_WITH_PAYLOAD(FrameworkConstants.DELETE_REQUEST, "rest/users", "byPayload"), //
@@ -254,7 +255,12 @@ public class WebServiceProcessorTest {
         Assert.assertNotNull(response);
     }
 
-    ////
+    @Test
+    public void executeWithOAuthWithAllParametersPutTest() {
+        Object response = webServiceProcessor.execute("http://www.foobar.com", authKey, UsersWebServiceWebServiceCommand.PUT_BY_ID, "123456", SAMPLE_PAYLOAD);
+        Assert.assertNotNull(response);
+    }
+
     @Test
     public void executeWithHeaderMapTest() {
         Object response = webServiceProcessor.execute("http://www.foobar.com", headerKeysMap, UsersWebServiceWebServiceCommand.POST_ADD_USER_ID);

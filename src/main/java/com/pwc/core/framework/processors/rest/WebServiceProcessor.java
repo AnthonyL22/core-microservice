@@ -439,6 +439,25 @@ public class WebServiceProcessor {
                     wsResponse = getWebServiceResponse(response, httpEntity, stopWatch);
                     closeHttpConnections(httpclient, response);
 
+                } else if (payload instanceof String) {
+
+                    URI uri = new URI(wsUrl);
+                    LOG(true, "OAUTH PUT URI='%s'", uri);
+                    httpPut.setURI(uri);
+
+                    StringEntity stringEntity = new StringEntity(payload.toString());
+                    httpPut.setEntity(stringEntity);
+                    httpPut.setHeader("Content-type", ContentType.APPLICATION_JSON.toString());
+                    LOG(true, "PUT JSON='%s'", payload.toString());
+
+                    StopWatch stopWatch = new StopWatch();
+                    stopWatch.start();
+                    CloseableHttpResponse response = httpclient.execute(httpPut);
+                    stopWatch.stop();
+                    HttpEntity httpEntity = response.getEntity();
+                    wsResponse = getWebServiceResponse(response, httpEntity, stopWatch);
+                    closeHttpConnections(httpclient, response);
+
                 }
             } else {
 
