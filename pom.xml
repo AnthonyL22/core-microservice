@@ -91,6 +91,7 @@
     <testng.version>6.9.10</testng.version>
     <versions-maven-plugin.version>2.1</versions-maven-plugin.version>
     <xmlapis.version>1.4.01</xmlapis.version>
+    <browsermob-core.version>2.1.5</browsermob-core.version>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -200,6 +201,11 @@
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy</artifactId>
       <version>${byte-buddy.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>net.lightbody.bmp</groupId>
+      <artifactId>browsermob-core</artifactId>
+      <version>${browsermob-core.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>

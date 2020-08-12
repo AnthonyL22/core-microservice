@@ -18,8 +18,13 @@ import com.pwc.core.framework.service.WebEventService;
 import com.pwc.core.framework.util.DebuggingUtils;
 import com.pwc.core.framework.util.GridUtils;
 import com.pwc.core.framework.util.PropertiesUtils;
+import net.lightbody.bmp.BrowserMobProxy;
+import net.lightbody.bmp.BrowserMobProxyServer;
+import net.lightbody.bmp.client.ClientUtil;
+import net.lightbody.bmp.proxy.CaptureType;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxBinary;
@@ -37,8 +42,10 @@ import org.testng.Assert;
 import org.testng.Reporter;
 
 import java.io.File;
+import java.net.Inet4Address;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.UnknownHostException;
 
 import static com.pwc.logging.service.LoggerService.LOG;
 
@@ -95,6 +102,7 @@ public class WebEventController {
     private DesiredCapabilities capabilities;
     private String currentTestName;
     private String currentJobId;
+    private BrowserMobProxy browserProxy;
 
     /**
      * Start and configure browser and WebDriver instance.
@@ -154,6 +162,9 @@ public class WebEventController {
 
             currentJobId = ((RemoteWebDriver) this.remoteWebDriver).getSessionId().toString();
 
+            getBrowserProxy().enableHarCaptureTypes(CaptureType.REQUEST_CONTENT, CaptureType.RESPONSE_CONTENT);
+            getBrowserProxy().newHar("PMC");
+
             webEventService = new WebEventService(remoteWebDriver);
             if (isSiteMinderEnabled()) {
                 webEventService.authenticateSiteMinder(webUrl, credentials, siteMinderOpenUrl, false);
@@ -174,6 +185,15 @@ public class WebEventController {
             webEventService.setWaitForAjaxRequestsEnabled(waitForAjaxRequestsEnabled);
 
             webEventService.redirectToUrl(webUrl);
+
+            getBrowserProxy().addResponseFilter((request, contents, messageInfo) -> {
+                if (messageInfo.getOriginalUrl().contains("/home?")) {
+                    String messageContents = contents.getTextContents();
+                    String newContents = messageContents.replaceAll("cta", "Buy Now");
+                    contents.setTextContents(newContents);
+                }
+
+            });
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -205,10 +225,10 @@ public class WebEventController {
         capabilities = new DesiredCapabilities();
 
         if (!StringUtils.isEmpty(System.getenv(FrameworkConstants.SAUCELABS_BROWSER_PROPERTY)) && !StringUtils.isEmpty(System.getenv(FrameworkConstants.SAUCELABS_BROWSER_VERSION_PROPERTY))
-                        && !StringUtils.isEmpty(System.getenv(FrameworkConstants.SAUCELABS_PLATFORM_PROPERTY))) {
+                && !StringUtils.isEmpty(System.getenv(FrameworkConstants.SAUCELABS_PLATFORM_PROPERTY))) {
 
             LOG(true, "Initiating Sauce-OnDemand test execution with browser='%s', version='%s', platform='%s'", System.getenv(FrameworkConstants.SAUCELABS_BROWSER_PROPERTY),
-                            System.getenv(FrameworkConstants.SAUCELABS_BROWSER_VERSION_PROPERTY), System.getenv(FrameworkConstants.SAUCELABS_PLATFORM_PROPERTY));
+                    System.getenv(FrameworkConstants.SAUCELABS_BROWSER_VERSION_PROPERTY), System.getenv(FrameworkConstants.SAUCELABS_PLATFORM_PROPERTY));
 
             capabilities.setBrowserName(System.getenv(FrameworkConstants.SAUCELABS_BROWSER_PROPERTY));
             capabilities.setCapability(CapabilityType.VERSION, System.getenv(FrameworkConstants.SAUCELABS_BROWSER_VERSION_PROPERTY));
@@ -240,7 +260,7 @@ public class WebEventController {
             capabilities.setCapability(FrameworkConstants.BROWSER_STACK_TIMEZONE_PROPERTY, StringUtils.trim(System.getProperty(FrameworkConstants.BROWSER_STACK_TIMEZONE_PROPERTY)));
 
             LOG(true, "Initiating BrowserStack test execution with browser='%s', platform='%s'", capabilities.getCapability(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY),
-                            capabilities.getCapability(FrameworkConstants.BROWSER_STACK_OS_PROPERTY));
+                    capabilities.getCapability(FrameworkConstants.BROWSER_STACK_OS_PROPERTY));
 
         } else {
             LOG(true, "Initiating User Defined test execution");
@@ -383,6 +403,29 @@ public class WebEventController {
         return null;
     }
 
+    private Proxy setupProxy() {
+
+        Proxy seleniumProxy = null;
+        try {
+
+            browserProxy = new BrowserMobProxyServer();
+            browserProxy.setTrustAllServers(true);
+            browserProxy.start();
+
+            seleniumProxy = ClientUtil.createSeleniumProxy(browserProxy);
+            final String hostIp = Inet4Address.getLocalHost().getHostAddress();
+            seleniumProxy.setProxyType(Proxy.ProxyType.MANUAL);
+            seleniumProxy.setHttpProxy(hostIp + ":" + browserProxy.getPort());
+            seleniumProxy.setSslProxy(hostIp + ":" + browserProxy.getPort());
+
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+
+
+        return seleniumProxy;
+    }
+
     /**
      * Get Chrome Web Driver for local or RemoteWebDriver capability.
      *
@@ -390,6 +433,8 @@ public class WebEventController {
      * @throws MalformedURLException url exception
      */
     public MicroserviceWebDriver getChromeBrowser() throws MalformedURLException {
+
+        Proxy proxy = setupProxy();
 
         LOG("starting chrome browser");
         setDriverExecutable();
@@ -403,6 +448,7 @@ public class WebEventController {
         capabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
         capabilities.setCapability(CapabilityType.BROWSER_NAME, BrowserType.CHROME);
         capabilities.setCapability("video", "True");
+        capabilities.setCapability(CapabilityType.PROXY, proxy);
         if (StringUtils.isNotEmpty(experitestAccesskey)) {
             capabilities.setCapability("accessKey", experitestAccesskey);
             capabilities.setCapability("testName", this.currentTestName);
@@ -593,7 +639,7 @@ public class WebEventController {
         LOG("starting PhantomJS virtual browser");
         capabilities.setCapability(CapabilityType.BROWSER_NAME, BrowserType.PHANTOMJS);
         capabilities.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, setDriverExecutable());
-        capabilities.setCapability(PhantomJSDriverService.PHANTOMJS_CLI_ARGS, new String[] {"--web-security=false", "--ssl-protocol=any", "--ignore-ssl-errors=true", "--webdriver-loglevel=DEBUG"});
+        capabilities.setCapability(PhantomJSDriverService.PHANTOMJS_CLI_ARGS, new String[]{"--web-security=false", "--ssl-protocol=any", "--ignore-ssl-errors=true", "--webdriver-loglevel=DEBUG"});
         if (StringUtils.isNotEmpty(experitestAccesskey)) {
             capabilities.setCapability("accessKey", experitestAccesskey);
             capabilities.setCapability("testName", this.currentTestName);
@@ -673,7 +719,7 @@ public class WebEventController {
             }
             case FrameworkConstants.INTERNET_EXPLORER_BROWSER_MODE: {
                 executable = StringUtils.equals(System.getProperty(FrameworkConstants.SYSTEM_JVM_TYPE), "32") ? PropertiesUtils.getFirstFileFromTestResources("ie_win32.exe")
-                                : PropertiesUtils.getFirstFileFromTestResources("ie_win64.exe");
+                        : PropertiesUtils.getFirstFileFromTestResources("ie_win64.exe");
                 System.setProperty(FrameworkConstants.WEB_DRIVER_IE, PropertiesUtils.getPath(executable));
                 break;
             }
@@ -688,7 +734,7 @@ public class WebEventController {
                     return System.getProperty(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY);
                 } else {
                     executable = StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), WINDOWS_OS) ? PropertiesUtils.getFirstFileFromTestResources("phantomjs.exe")
-                                    : PropertiesUtils.getFirstFileFromTestResources("phantomjs");
+                            : PropertiesUtils.getFirstFileFromTestResources("phantomjs");
                     System.setProperty(PhantomJSDriverService.PHANTOMJS_GHOSTDRIVER_PATH_PROPERTY, PropertiesUtils.getPath(executable));
                     System.setProperty(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, PropertiesUtils.getPath(executable));
                     return PropertiesUtils.getPath(executable);
@@ -766,6 +812,10 @@ public class WebEventController {
         } catch (Exception e) {
             e.getMessage();
         }
+    }
+
+    public BrowserMobProxy getBrowserProxy() {
+        return browserProxy;
     }
 
     public WebEventService getWebEventService() {
