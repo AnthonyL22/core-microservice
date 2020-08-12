@@ -97,6 +97,9 @@ public class WebEventController {
     @Value("${experitest.accesskey}")
     private String experitestAccesskey;
 
+    @Value("${proxy.browsermob.enabled:false}")
+    private boolean browsermobEnabled;
+
     private MicroserviceWebDriver remoteWebDriver;
     private WebEventService webEventService;
     private DesiredCapabilities capabilities;
