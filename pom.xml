@@ -46,6 +46,7 @@
     <appium.version>7.3.0</appium.version>
     <assertion-microservice.version>1.0.3</assertion-microservice.version>
     <automate-client-java.version>0.4</automate-client-java.version>
+    <browsermob-core.version>2.1.5</browsermob-core.version>
     <byte-buddy.version>1.7.7</byte-buddy.version>
     <commonsdbcp2.version>2.0</commonsdbcp2.version>
     <format-maven-plugin.version>2.0.1</format-maven-plugin.version>
@@ -91,7 +92,6 @@
     <testng.version>6.9.10</testng.version>
     <versions-maven-plugin.version>2.1</versions-maven-plugin.version>
     <xmlapis.version>1.4.01</xmlapis.version>
-    <browsermob-core.version>2.1.5</browsermob-core.version>
   </properties>
   <dependencyManagement>
     <dependencies>

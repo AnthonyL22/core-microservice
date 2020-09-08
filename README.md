@@ -228,17 +228,20 @@ prior to calling the web service.
 This service provides a [diverse Utilities set](https://github.com/AnthonyL22/core-microservice/tree/master/src/main/java/com/pwc/core/framework/util) 
 to assist in nearly every need of a quality initiative.
 
+* CollectionUtils
 * DateUtils
 * DebuggingUtils 
+* EmailUtils 
+* ExcelUtils 
 * FileUtils
 * GridUtils
 * JsonUtils
+* ObjectUtils
 * PropertiesUtils
 * RandomStringUtils
 * StringUtils
-* WebElementUtils
-* CollectionUtils
 * TableUtils
+* WebElementUtils
 
 ## Video Playback Feature
 This service records the execution of an automated test and creates a video that users can then playback to watch the automated test.  

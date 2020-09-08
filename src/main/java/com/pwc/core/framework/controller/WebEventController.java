@@ -18,6 +18,7 @@ import com.pwc.core.framework.service.WebEventService;
 import com.pwc.core.framework.util.DebuggingUtils;
 import com.pwc.core.framework.util.GridUtils;
 import com.pwc.core.framework.util.PropertiesUtils;
+import lombok.Getter;
 import net.lightbody.bmp.BrowserMobProxy;
 import net.lightbody.bmp.BrowserMobProxyServer;
 import net.lightbody.bmp.client.ClientUtil;
@@ -46,6 +47,7 @@ import java.net.Inet4Address;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
+import java.util.regex.Pattern;
 
 import static com.pwc.logging.service.LoggerService.LOG;
 
@@ -97,6 +99,7 @@ public class WebEventController {
     @Value("${experitest.accesskey}")
     private String experitestAccesskey;
 
+    @Getter
     @Value("${proxy.browsermob.enabled:false}")
     private boolean browsermobEnabled;
 
@@ -165,9 +168,6 @@ public class WebEventController {
 
             currentJobId = ((RemoteWebDriver) this.remoteWebDriver).getSessionId().toString();
 
-            getBrowserProxy().enableHarCaptureTypes(CaptureType.REQUEST_CONTENT, CaptureType.RESPONSE_CONTENT);
-            getBrowserProxy().newHar("PMC");
-
             webEventService = new WebEventService(remoteWebDriver);
             if (isSiteMinderEnabled()) {
                 webEventService.authenticateSiteMinder(webUrl, credentials, siteMinderOpenUrl, false);
@@ -189,19 +189,36 @@ public class WebEventController {
 
             webEventService.redirectToUrl(webUrl);
 
-            getBrowserProxy().addResponseFilter((request, contents, messageInfo) -> {
-                if (messageInfo.getOriginalUrl().contains("/home?")) {
-                    String messageContents = contents.getTextContents();
-                    String newContents = messageContents.replaceAll("cta", "Buy Now");
-                    contents.setTextContents(newContents);
+            if (isBrowsermobEnabled()) {
+                try {
+                    getBrowserProxy().enableHarCaptureTypes(CaptureType.REQUEST_CONTENT, CaptureType.RESPONSE_CONTENT);
+                    getBrowserProxy().newHar("BrowserMob");
+                    alterResponse("/home?", "Shore Excursions", "Surfings");
+                } catch (Exception e) {
+                    LOG(false, "Failed to proxy request due to e=%s", e);
                 }
-
-            });
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
             Assert.fail("Unable to initialize a valid browser for the RemoteWebDriver", e);
         }
+    }
+
+    /**
+     * Alter any RESPONSE given the target URL.
+     *
+     * @param targetUrl   endpoint to proxy and modify
+     * @param find        response text to find
+     * @param replace response text to replace
+     */
+    private void alterResponse(final String targetUrl, final String find, final String replace) {
+
+        getBrowserProxy().addResponseFilter((response, contents, messageInfo) -> {
+            if (Pattern.compile(targetUrl).matcher(messageInfo.getOriginalUrl()).matches()) {
+                contents.setTextContents(StringUtils.replace(contents.getTextContents(), find, replace));
+            }
+        });
     }
 
     /**
@@ -228,10 +245,10 @@ public class WebEventController {
         capabilities = new DesiredCapabilities();
 
         if (!StringUtils.isEmpty(System.getenv(FrameworkConstants.SAUCELABS_BROWSER_PROPERTY)) && !StringUtils.isEmpty(System.getenv(FrameworkConstants.SAUCELABS_BROWSER_VERSION_PROPERTY))
-                && !StringUtils.isEmpty(System.getenv(FrameworkConstants.SAUCELABS_PLATFORM_PROPERTY))) {
+                        && !StringUtils.isEmpty(System.getenv(FrameworkConstants.SAUCELABS_PLATFORM_PROPERTY))) {
 
             LOG(true, "Initiating Sauce-OnDemand test execution with browser='%s', version='%s', platform='%s'", System.getenv(FrameworkConstants.SAUCELABS_BROWSER_PROPERTY),
-                    System.getenv(FrameworkConstants.SAUCELABS_BROWSER_VERSION_PROPERTY), System.getenv(FrameworkConstants.SAUCELABS_PLATFORM_PROPERTY));
+                            System.getenv(FrameworkConstants.SAUCELABS_BROWSER_VERSION_PROPERTY), System.getenv(FrameworkConstants.SAUCELABS_PLATFORM_PROPERTY));
 
             capabilities.setBrowserName(System.getenv(FrameworkConstants.SAUCELABS_BROWSER_PROPERTY));
             capabilities.setCapability(CapabilityType.VERSION, System.getenv(FrameworkConstants.SAUCELABS_BROWSER_VERSION_PROPERTY));
@@ -263,7 +280,7 @@ public class WebEventController {
             capabilities.setCapability(FrameworkConstants.BROWSER_STACK_TIMEZONE_PROPERTY, StringUtils.trim(System.getProperty(FrameworkConstants.BROWSER_STACK_TIMEZONE_PROPERTY)));
 
             LOG(true, "Initiating BrowserStack test execution with browser='%s', platform='%s'", capabilities.getCapability(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY),
-                    capabilities.getCapability(FrameworkConstants.BROWSER_STACK_OS_PROPERTY));
+                            capabilities.getCapability(FrameworkConstants.BROWSER_STACK_OS_PROPERTY));
 
         } else {
             LOG(true, "Initiating User Defined test execution");
@@ -406,25 +423,26 @@ public class WebEventController {
         return null;
     }
 
+    /**
+     * Setup BrowserMob proxy connection.
+     *
+     * @return proxy connection
+     */
     private Proxy setupProxy() {
 
         Proxy seleniumProxy = null;
         try {
-
             browserProxy = new BrowserMobProxyServer();
             browserProxy.setTrustAllServers(true);
             browserProxy.start();
-
             seleniumProxy = ClientUtil.createSeleniumProxy(browserProxy);
-            final String hostIp = Inet4Address.getLocalHost().getHostAddress();
+            final String HOST_IP = Inet4Address.getLocalHost().getHostAddress();
             seleniumProxy.setProxyType(Proxy.ProxyType.MANUAL);
-            seleniumProxy.setHttpProxy(hostIp + ":" + browserProxy.getPort());
-            seleniumProxy.setSslProxy(hostIp + ":" + browserProxy.getPort());
-
+            seleniumProxy.setHttpProxy(HOST_IP + ":" + browserProxy.getPort());
+            seleniumProxy.setSslProxy(HOST_IP + ":" + browserProxy.getPort());
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
-
 
         return seleniumProxy;
     }
@@ -436,8 +454,6 @@ public class WebEventController {
      * @throws MalformedURLException url exception
      */
     public MicroserviceWebDriver getChromeBrowser() throws MalformedURLException {
-
-        Proxy proxy = setupProxy();
 
         LOG("starting chrome browser");
         setDriverExecutable();
@@ -451,7 +467,9 @@ public class WebEventController {
         capabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
         capabilities.setCapability(CapabilityType.BROWSER_NAME, BrowserType.CHROME);
         capabilities.setCapability("video", "True");
-        capabilities.setCapability(CapabilityType.PROXY, proxy);
+        if (browsermobEnabled) {
+            capabilities.setCapability(CapabilityType.PROXY, setupProxy());
+        }
         if (StringUtils.isNotEmpty(experitestAccesskey)) {
             capabilities.setCapability("accessKey", experitestAccesskey);
             capabilities.setCapability("testName", this.currentTestName);
@@ -642,7 +660,7 @@ public class WebEventController {
         LOG("starting PhantomJS virtual browser");
         capabilities.setCapability(CapabilityType.BROWSER_NAME, BrowserType.PHANTOMJS);
         capabilities.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, setDriverExecutable());
-        capabilities.setCapability(PhantomJSDriverService.PHANTOMJS_CLI_ARGS, new String[]{"--web-security=false", "--ssl-protocol=any", "--ignore-ssl-errors=true", "--webdriver-loglevel=DEBUG"});
+        capabilities.setCapability(PhantomJSDriverService.PHANTOMJS_CLI_ARGS, new String[] {"--web-security=false", "--ssl-protocol=any", "--ignore-ssl-errors=true", "--webdriver-loglevel=DEBUG"});
         if (StringUtils.isNotEmpty(experitestAccesskey)) {
             capabilities.setCapability("accessKey", experitestAccesskey);
             capabilities.setCapability("testName", this.currentTestName);
@@ -722,7 +740,7 @@ public class WebEventController {
             }
             case FrameworkConstants.INTERNET_EXPLORER_BROWSER_MODE: {
                 executable = StringUtils.equals(System.getProperty(FrameworkConstants.SYSTEM_JVM_TYPE), "32") ? PropertiesUtils.getFirstFileFromTestResources("ie_win32.exe")
-                        : PropertiesUtils.getFirstFileFromTestResources("ie_win64.exe");
+                                : PropertiesUtils.getFirstFileFromTestResources("ie_win64.exe");
                 System.setProperty(FrameworkConstants.WEB_DRIVER_IE, PropertiesUtils.getPath(executable));
                 break;
             }
@@ -737,7 +755,7 @@ public class WebEventController {
                     return System.getProperty(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY);
                 } else {
                     executable = StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), WINDOWS_OS) ? PropertiesUtils.getFirstFileFromTestResources("phantomjs.exe")
-                            : PropertiesUtils.getFirstFileFromTestResources("phantomjs");
+                                    : PropertiesUtils.getFirstFileFromTestResources("phantomjs");
                     System.setProperty(PhantomJSDriverService.PHANTOMJS_GHOSTDRIVER_PATH_PROPERTY, PropertiesUtils.getPath(executable));
                     System.setProperty(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, PropertiesUtils.getPath(executable));
                     return PropertiesUtils.getPath(executable);

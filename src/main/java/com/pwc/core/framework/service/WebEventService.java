@@ -30,8 +30,10 @@ import org.jsoup.Jsoup;
 import org.jsoup.parser.Parser;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.InvalidCookieDomainException;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -570,7 +572,7 @@ public class WebEventService extends WebEventController {
     /**
      * Create a URL for redirection when a user wants to append to a url a full
      * query string starting with a '/'.
-     *
+     * <p>
      * ex: https://foo-bar.mywebsite.com/view/loadFilter.faces?id=23414513&jira=false
      *
      * @param url url snippet to redirect to
@@ -588,7 +590,7 @@ public class WebEventService extends WebEventController {
     /**
      * Create a URL for redirection when a user wants to append to a url a full
      * query string starting with a '/'.
-     *
+     * <p>
      * ex: https://foo-bar.mywebsite.com/view/loadFilter.faces?id=23414513&jira=false
      *
      * @param url url snippet to redirect to
@@ -970,6 +972,33 @@ public class WebEventService extends WebEventController {
             assertFail("elementNotVisible() Failed for element=%s", elementIdentifier);
         }
         record();
+    }
+
+    /**
+     * Check if an element is displayed in the current browser viewport.
+     *
+     * @param elementIdentifier element identifier
+     * @return true | false flag if visible to a real browser user
+     */
+    public boolean isWebElementInViewport(final String elementIdentifier) {
+
+        boolean isVisible;
+        try {
+            WebElement element = findWebElement(elementIdentifier);
+            Dimension elementDimension = element.getSize();
+            Point point = element.getLocation();
+            Dimension windowSize = this.microserviceWebDriver.manage().window().getSize();
+
+            final int width = windowSize.getWidth();
+            final int height = windowSize.getHeight();
+            final int calculatedElementWidth = elementDimension.getWidth() + point.getX();
+            final int calculatedElementHeight = elementDimension.getHeight() + point.getY();
+            isVisible = calculatedElementWidth <= width && calculatedElementHeight <= height && calculatedElementWidth > 0 && calculatedElementHeight > 0;
+
+        } catch (Exception e) {
+            isVisible = false;
+        }
+        return isVisible;
     }
 
     /**
