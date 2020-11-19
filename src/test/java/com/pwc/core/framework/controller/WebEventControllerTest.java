@@ -6,6 +6,8 @@ import com.pwc.core.framework.data.Credentials;
 import com.pwc.core.framework.driver.MicroserviceWebDriver;
 import com.pwc.core.framework.service.WebEventService;
 import com.pwc.core.framework.util.PropertiesUtils;
+import net.lightbody.bmp.BrowserMobProxy;
+import net.lightbody.bmp.filters.ResponseFilter;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,12 +40,15 @@ public class WebEventControllerTest {
     private Map<String, String> sauceEnvVariableMap;
     private DesiredCapabilities mockDesiredCapabilities;
     private Credentials credentials;
+    private BrowserMobProxy mockBrowserProxy;
+    private ResponseFilter mockResponseFilter;
 
     @Before
     public void setUp() {
 
         credentials = new Credentials("foo", "bar");
 
+        mockBrowserProxy = mock(BrowserMobProxy.class);
         mockWebElement = mock(WebElement.class);
         mockWebDriverService = mock(MicroserviceWebDriver.class);
         when(mockWebDriverService.executeScript("return document.readyState")).thenReturn("complete");
@@ -58,6 +63,13 @@ public class WebEventControllerTest {
 
         when(mockWebDriverService.executeScript(JavascriptConstants.IS_JQUERY_AJAX_REQUESTS_ACTIVE)).thenReturn(true);
 
+    }
+
+    @Test
+    public void alterResponseTest() {
+        when(mockResponseFilter).thenReturn(mockResponseFilter);
+        when(mockBrowserProxy.addResponseFilter(mockResponseFilter)).thenReturn(mockResponseFilter)
+        webEventController.alterResponse("/api/surfing", "test", "tester");
     }
 
     @Test

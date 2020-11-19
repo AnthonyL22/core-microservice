@@ -193,7 +193,6 @@ public class WebEventController {
                 try {
                     getBrowserProxy().enableHarCaptureTypes(CaptureType.REQUEST_CONTENT, CaptureType.RESPONSE_CONTENT);
                     getBrowserProxy().newHar("BrowserMob");
-                    alterResponse("/home?", "Shore Excursions", "Surfings");
                 } catch (Exception e) {
                     LOG(false, "Failed to proxy request due to e=%s", e);
                 }
@@ -208,15 +207,30 @@ public class WebEventController {
     /**
      * Alter any RESPONSE given the target URL.
      *
-     * @param targetUrl   endpoint to proxy and modify
-     * @param find        response text to find
-     * @param replace response text to replace
+     * @param targetUrl endpoint to proxy and modify
+     * @param find      response text to find
+     * @param replace   response text to replace
      */
-    private void alterResponse(final String targetUrl, final String find, final String replace) {
+    public void alterResponse(final String targetUrl, final String find, final String replace) {
 
-        getBrowserProxy().addResponseFilter((response, contents, messageInfo) -> {
-            if (Pattern.compile(targetUrl).matcher(messageInfo.getOriginalUrl()).matches()) {
-                contents.setTextContents(StringUtils.replace(contents.getTextContents(), find, replace));
+        getBrowserProxy().addResponseFilter((request, contents, messageInfo) -> {
+            if (StringUtils.containsIgnoreCase(messageInfo.getOriginalUrl(), targetUrl)) {
+                String messageContents = contents.getTextContents();
+                String updatedContents;
+                boolean isRegex;
+                try {
+                    Pattern.compile(find);
+                    isRegex = true;
+                } catch (java.util.regex.PatternSyntaxException e) {
+                    isRegex = false;
+                }
+
+                if (isRegex) {
+                    updatedContents = StringUtils.replacePattern(messageContents, find, replace);
+                } else {
+                    updatedContents = StringUtils.replace(messageContents, find, replace);
+                }
+                contents.setTextContents(updatedContents);
             }
         });
     }
