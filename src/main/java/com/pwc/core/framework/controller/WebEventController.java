@@ -18,8 +18,14 @@ import com.pwc.core.framework.service.WebEventService;
 import com.pwc.core.framework.util.DebuggingUtils;
 import com.pwc.core.framework.util.GridUtils;
 import com.pwc.core.framework.util.PropertiesUtils;
+import lombok.Getter;
+import net.lightbody.bmp.BrowserMobProxy;
+import net.lightbody.bmp.BrowserMobProxyServer;
+import net.lightbody.bmp.client.ClientUtil;
+import net.lightbody.bmp.proxy.CaptureType;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxBinary;
@@ -37,8 +43,11 @@ import org.testng.Assert;
 import org.testng.Reporter;
 
 import java.io.File;
+import java.net.Inet4Address;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.UnknownHostException;
+import java.util.regex.Pattern;
 
 import static com.pwc.logging.service.LoggerService.LOG;
 
@@ -90,11 +99,16 @@ public class WebEventController {
     @Value("${experitest.accesskey}")
     private String experitestAccesskey;
 
+    @Getter
+    @Value("${proxy.browsermob.enabled:false}")
+    private boolean browsermobEnabled;
+
     private MicroserviceWebDriver remoteWebDriver;
     private WebEventService webEventService;
     private DesiredCapabilities capabilities;
     private String currentTestName;
     private String currentJobId;
+    private BrowserMobProxy browserProxy;
 
     /**
      * Start and configure browser and WebDriver instance.
@@ -175,10 +189,50 @@ public class WebEventController {
 
             webEventService.redirectToUrl(webUrl);
 
+            if (isBrowsermobEnabled()) {
+                try {
+                    getBrowserProxy().enableHarCaptureTypes(CaptureType.REQUEST_CONTENT, CaptureType.RESPONSE_CONTENT);
+                    getBrowserProxy().newHar("BrowserMob");
+                } catch (Exception e) {
+                    LOG(false, "Failed to proxy request due to e=%s", e);
+                }
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
             Assert.fail("Unable to initialize a valid browser for the RemoteWebDriver", e);
         }
+    }
+
+    /**
+     * Alter any RESPONSE given the target URL.
+     *
+     * @param targetUrl endpoint to proxy and modify
+     * @param find      response text to find
+     * @param replace   response text to replace
+     */
+    public void alterResponse(final String targetUrl, final String find, final String replace) {
+
+        getBrowserProxy().addResponseFilter((request, contents, messageInfo) -> {
+            if (StringUtils.containsIgnoreCase(messageInfo.getOriginalUrl(), targetUrl)) {
+                String messageContents = contents.getTextContents();
+                String updatedContents;
+                boolean isRegex;
+                try {
+                    Pattern.compile(find);
+                    isRegex = true;
+                } catch (java.util.regex.PatternSyntaxException e) {
+                    isRegex = false;
+                }
+
+                if (isRegex) {
+                    updatedContents = StringUtils.replacePattern(messageContents, find, replace);
+                } else {
+                    updatedContents = StringUtils.replace(messageContents, find, replace);
+                }
+                contents.setTextContents(updatedContents);
+            }
+        });
     }
 
     /**
@@ -384,6 +438,30 @@ public class WebEventController {
     }
 
     /**
+     * Setup BrowserMob proxy connection.
+     *
+     * @return proxy connection
+     */
+    private Proxy setupProxy() {
+
+        Proxy seleniumProxy = null;
+        try {
+            browserProxy = new BrowserMobProxyServer();
+            browserProxy.setTrustAllServers(true);
+            browserProxy.start();
+            seleniumProxy = ClientUtil.createSeleniumProxy(browserProxy);
+            final String HOST_IP = Inet4Address.getLocalHost().getHostAddress();
+            seleniumProxy.setProxyType(Proxy.ProxyType.MANUAL);
+            seleniumProxy.setHttpProxy(HOST_IP + ":" + browserProxy.getPort());
+            seleniumProxy.setSslProxy(HOST_IP + ":" + browserProxy.getPort());
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+
+        return seleniumProxy;
+    }
+
+    /**
      * Get Chrome Web Driver for local or RemoteWebDriver capability.
      *
      * @return MicroserviceWebDriver instance
@@ -403,6 +481,9 @@ public class WebEventController {
         capabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
         capabilities.setCapability(CapabilityType.BROWSER_NAME, BrowserType.CHROME);
         capabilities.setCapability("video", "True");
+        if (browsermobEnabled) {
+            capabilities.setCapability(CapabilityType.PROXY, setupProxy());
+        }
         if (StringUtils.isNotEmpty(experitestAccesskey)) {
             capabilities.setCapability("accessKey", experitestAccesskey);
             capabilities.setCapability("testName", this.currentTestName);
@@ -766,6 +847,10 @@ public class WebEventController {
         } catch (Exception e) {
             e.getMessage();
         }
+    }
+
+    public BrowserMobProxy getBrowserProxy() {
+        return browserProxy;
     }
 
     public WebEventService getWebEventService() {

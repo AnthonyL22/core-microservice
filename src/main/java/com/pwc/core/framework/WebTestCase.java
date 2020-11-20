@@ -344,6 +344,16 @@ public abstract class WebTestCase extends MicroserviceTestSuite {
     }
 
     /**
+     * Check if an element is displayed in the current browser viewport.
+     *
+     * @param elementIdentifier element identifier
+     * @return true | false flag if visible to a real browser user
+     */
+    protected boolean webElementVisibleInViewport(final String elementIdentifier) {
+        return webEventController.getWebEventService().isWebElementInViewport(elementIdentifier);
+    }
+
+    /**
      * Check if the current page not contains a visible element.
      *
      * @param elementIdentifier WebElement to not find

@@ -18,7 +18,7 @@ public class PropertiesUtilsTest {
 
     private static final String PROPERTIES_FILE = "automation.properties";
     private static final String WORD_DOCUMENT_FILE = "training.docx";
-    private static final int EXPECTED_NUM_OF_PROPERTIES = 23;
+    private static final int EXPECTED_NUM_OF_PROPERTIES = 24;
 
     @Before
     public void setUp() {
