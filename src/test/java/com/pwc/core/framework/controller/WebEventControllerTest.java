@@ -66,13 +66,6 @@ public class WebEventControllerTest {
     }
 
     @Test
-    public void alterResponseTest() {
-        when(mockResponseFilter).thenReturn(mockResponseFilter);
-        when(mockBrowserProxy.addResponseFilter(mockResponseFilter)).thenReturn(mockResponseFilter)
-        webEventController.alterResponse("/api/surfing", "test", "tester");
-    }
-
-    @Test
     public void setBrowserDefaultsTunnelIdentifierTest() {
 
         resetSauceLabsEnvVariableMap();

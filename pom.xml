@@ -44,7 +44,7 @@
   </distributionManagement>
   <properties>
     <appium.version>7.3.0</appium.version>
-    <assertion-microservice.version>1.0.4</assertion-microservice.version>
+    <assertion-microservice.version>1.0.5</assertion-microservice.version>
     <automate-client-java.version>0.4</automate-client-java.version>
     <browsermob-core.version>2.1.5</browsermob-core.version>
     <byte-buddy.version>1.7.7</byte-buddy.version>
@@ -57,7 +57,7 @@
     <java_code.version>1.8</java_code.version>
     <javatuples.version>1.2</javatuples.version>
     <jsoup.version>1.8.2</jsoup.version>
-    <junit.version>4.11</junit.version>
+    <junit.version>4.13.1</junit.version>
     <logging-microservice.version>1.0.9</logging-microservice.version>
     <lombok.version>1.18.4</lombok.version>
     <maven-clean-plugin.version>2.4.1</maven-clean-plugin.version>
