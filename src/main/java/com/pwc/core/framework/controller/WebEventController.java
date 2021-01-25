@@ -47,7 +47,6 @@ import java.net.Inet4Address;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
-import java.util.regex.Pattern;
 
 import static com.pwc.logging.service.LoggerService.LOG;
 
@@ -217,11 +216,12 @@ public class WebEventController {
             if (StringUtils.containsIgnoreCase(messageInfo.getOriginalUrl(), targetUrl)) {
                 String messageContents = contents.getTextContents();
                 String updatedContents;
-                boolean isRegex;
+                boolean isRegex = false;
                 try {
-                    Pattern.compile(find);
-                    isRegex = true;
-                } catch (java.util.regex.PatternSyntaxException e) {
+                    if (find.matches(FrameworkConstants.REGEX_XPATH_FINDER)) {
+                        isRegex = true;
+                    }
+                } catch (Exception e) {
                     isRegex = false;
                 }
 
