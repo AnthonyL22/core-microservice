@@ -62,10 +62,24 @@ public final class FrameworkConstants {
     public static final String WEB_DRIVER_GECKO = "webdriver.gecko.driver";
     public static final String WEB_DRIVER_EDGE = "webdriver.edge.driver";
 
-    // DEFAULT Date Patterns
+    // Date Patterns
+    public static final String MONTH_PATTERN = "MMMM";
+    public static final String YEAR_PATTERN = "yyyy";
+    public static final String SHORT_DATE_PATTERN = "MM/dd/yyyy";
+    public static final String DEFAULT_DATE_PATTERN = "yyyy-MM-dd";
+    public static final String DEFAULT_COMBINED_DATE_PATTERN = "YYYYMMdd";
+    public static final String COMBINED_DATE_PATTERN = "yyyyMMdd";
+    public static final String CLEAR_MONTH_PATTERN = "MMM d";
     public static final String DATETIME_LOGGER_DATETIME_PATTER = "yyyy-MM-dd HH:mm:ss.SSS";
     public static final String SYSTEM_DEFAULT_DATETIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
-    public static final String SHORT_DATE_PATTERN = "MM/dd/yyyy";
+    public static final String CALENDAR_PATTERN = "E MMM dd HH:mm:ss Z yyyy";
+    public static final String TIMEZONE_PATTERN = "yyyy-MM-dd'T'HH:mm:ss Z";
+    public static final String DATE_AND_TIME_PATTERN = "yyyy-MM-dd'T'HH:mm:ss";
+    public static final String DATE_AND_TIME_COMBINED_PATTERN = "yyyyMMdd'T'HHmmss";
+
+    // Regex
+    public static final String REGEX_XPATH_FINDER = ".*[\\[@'].*";
+    public static final String REGEX_CSS_SELECTOR_FINDER = ".*[\\[#.=^$’>:+~].*";
 
     // Default Capability Name
     public static final String SCRIPT_NAME_CAPABILITY = "name";

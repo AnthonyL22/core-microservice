@@ -95,9 +95,6 @@ public class WebEventService extends WebEventController {
     private CloseableHttpClient customHttpClient;
     private BasicCookieStore cookieStore;
 
-    private static final String REGEX_XPATH_FINDER = ".*[\\[@'].*";
-    private static final String REGEX_CSS_SELECTOR_FINDER = ".*[\\[#.=^$’>:+~].*";
-
     public WebEventService() {
     }
 
@@ -138,11 +135,11 @@ public class WebEventService extends WebEventController {
         List<Cookie> cookies = null;
         try {
             Authenticator authenticator = Authenticator.getInstance();
-            cookies = authenticator.getAuthenticationCookies(getUrl(), credentials.getUsername(), credentials.getPassword());
+            cookies = authenticator.getAuthenticationCookies(this.url, credentials.getUsername(), credentials.getPassword());
             cookies = scrubCookiesForDomain(cookies);
         } catch (Exception e) {
             e.printStackTrace();
-            Assert.fail("Failed to generate valid cookies for url='" + getUrl() + "'", e.getCause());
+            Assert.fail("Failed to generate valid cookies for url='" + this.url + "'", e.getCause());
         }
         return cookies;
 
@@ -179,8 +176,8 @@ public class WebEventService extends WebEventController {
 
         try {
             if (CollectionUtils.isNotEmpty(cookies)) {
-                constructUrlWithFullHostFromGivenUrl(getUrl());
-                microserviceWebDriver.get(StringUtils.appendIfMissing(getUrl(), "/", "/") + siteMinderUrl);
+                constructUrlWithFullHostFromGivenUrl(this.url);
+                microserviceWebDriver.get(StringUtils.appendIfMissing(this.url, "/", "/") + siteMinderUrl);
                 for (Cookie c : cookies) {
                     org.openqa.selenium.Cookie cookie = new org.openqa.selenium.Cookie(c.getName(), c.getValue(), c.getDomain(), c.getPath(), c.getExpiryDate());
                     microserviceWebDriver.manage().addCookie(cookie);
@@ -214,7 +211,7 @@ public class WebEventService extends WebEventController {
                 SSLConnectionSocketFactory sslConnectionSocketFactory = buildSSLConnectionSocketFactory(sslcontext);
                 customHttpClient = buildCookieBasedHttpClient(cookieStore, sslConnectionSocketFactory);
 
-                HttpUriRequest loginPost = RequestBuilder.post().setUri(getUrl()).addParameter("USER", credentials.getUsername()).addParameter("PASSWORD", credentials.getPassword()).build();
+                HttpUriRequest loginPost = RequestBuilder.post().setUri(this.url).addParameter("USER", credentials.getUsername()).addParameter("PASSWORD", credentials.getPassword()).build();
 
                 LOG(true, "Executing request '%s' %s", loginPost.getRequestLine(), "\n");
 
@@ -314,7 +311,7 @@ public class WebEventService extends WebEventController {
 
         waitForBrowserToLoad();
 
-        if (StringUtils.startsWith(elementIdentifier, "//") && elementIdentifier.matches(REGEX_XPATH_FINDER)) {
+        if (StringUtils.startsWith(elementIdentifier, "//") && elementIdentifier.matches(FrameworkConstants.REGEX_XPATH_FINDER)) {
             try {
                 WebElement webElement = this.microserviceWebDriver.findElementByXPath(elementIdentifier);
                 if (webElement != null) {
@@ -323,7 +320,7 @@ public class WebEventService extends WebEventController {
             } catch (Exception e) {
                 e.getMessage();
             }
-        } else if (!StringUtils.startsWith(elementIdentifier, "//") && elementIdentifier.matches(REGEX_CSS_SELECTOR_FINDER)) {
+        } else if (!StringUtils.startsWith(elementIdentifier, "//") && elementIdentifier.matches(FrameworkConstants.REGEX_CSS_SELECTOR_FINDER)) {
             try {
                 WebElement webElement = this.microserviceWebDriver.findElementByCssSelector(elementIdentifier);
                 if (webElement != null) {
@@ -576,15 +573,16 @@ public class WebEventService extends WebEventController {
      * ex: https://foo-bar.mywebsite.com/view/loadFilter.faces?id=23414513&jira=false
      *
      * @param url url snippet to redirect to
+     * @return current url
      */
-    private void constructUrlWithFullHostFromCurrentUrl(String url) {
+    private String constructUrlWithFullHostFromCurrentUrl(String url) {
 
         Pattern urlRegularExpression = Pattern.compile("http.*?://(\\w|\\-|\\.)+(:\\d+)?");
         Matcher m = urlRegularExpression.matcher(this.microserviceWebDriver.getCurrentUrl());
         m.find();
         String host = StringUtils.appendIfMissing(m.group(0), "/");
         url = StringUtils.removeStart(url, "/");
-        setUrl(host + url);
+        return host + url;
     }
 
     /**
@@ -594,14 +592,15 @@ public class WebEventService extends WebEventController {
      * ex: https://foo-bar.mywebsite.com/view/loadFilter.faces?id=23414513&jira=false
      *
      * @param url url snippet to redirect to
+     * @return current url
      */
-    private void constructUrlWithFullHostFromGivenUrl(String url) {
+    private String constructUrlWithFullHostFromGivenUrl(String url) {
 
         Pattern urlRegularExpression = Pattern.compile("http.*?://(\\w|\\-|\\.)+(:\\d+)?");
         Matcher m = urlRegularExpression.matcher(url);
         m.find();
         String host = StringUtils.appendIfMissing(m.group(0), "/");
-        setUrl(host);
+        return host;
     }
 
     /**
@@ -611,22 +610,24 @@ public class WebEventService extends WebEventController {
      * ex: https://foo-bar.mywebsite.com/?jira=false
      *
      * @param url url snippet to redirect to
+     *            @return current url
      */
-    private void constructUrlWithQueryParameter(String url) {
+    private String constructUrlWithQueryParameter(String url) {
 
+        String modifiedUrl;
         String currentUrl = this.microserviceWebDriver.getCurrentUrl();
         if (StringUtils.containsIgnoreCase(currentUrl, "data:,")) {
-            setUrl(url);
-            return;
+            return url;
         }
         StringBuilder newUrl = new StringBuilder(currentUrl);
         if (StringUtils.containsIgnoreCase(currentUrl, "?")) {
             newUrl.append("&");
+            modifiedUrl = newUrl.append(url).toString();
         } else {
             newUrl.append("?");
+            modifiedUrl = newUrl.append(url).toString();
         }
-        newUrl.append(url);
-        setUrl(newUrl.toString());
+        return modifiedUrl;
     }
 
     /**
@@ -637,22 +638,24 @@ public class WebEventService extends WebEventController {
      */
     public long redirectToUrl(String url) {
 
+        String currentUrl = url;
         record();
 
         StopWatch sw = new StopWatch();
         try {
             if (StringUtils.endsWith(microserviceWebDriver.getCurrentUrl(), getSiteMinderRedirectUrl())) {
-                setUrl(url);
+                currentUrl = url;
             } else if (url.startsWith("/")) {
-                constructUrlWithFullHostFromCurrentUrl(url);
+                currentUrl = constructUrlWithFullHostFromCurrentUrl(url);
             } else if (StringUtils.containsAny(url, '=')) {
-                constructUrlWithQueryParameter(url);
-            } else {
-                setUrl(url);
+                currentUrl = constructUrlWithQueryParameter(url);
             }
 
+            synchronized (currentUrl) {
+                this.url = currentUrl;
+            }
             sw.start();
-            microserviceWebDriver.get(getUrl());
+            microserviceWebDriver.get(currentUrl);
             sw.stop();
 
             if (!StringUtils.equalsIgnoreCase(microserviceWebDriver.getCapabilities().getBrowserName(), "android")
@@ -748,7 +751,7 @@ public class WebEventService extends WebEventController {
      * @param elementIdentifier element identifier (xPath or explicit Element ID)
      */
     public void elementBlur(final String elementIdentifier) {
-        if (elementIdentifier.matches(REGEX_XPATH_FINDER)) {
+        if (elementIdentifier.matches(FrameworkConstants.REGEX_XPATH_FINDER)) {
             executeJavascript(String.format(JavascriptConstants.BLUR_ELEMENT_BY_XPATH, elementIdentifier));
         } else {
             executeJavascript(String.format(JavascriptConstants.BLUR_ELEMENT_BY_ID, elementIdentifier));
@@ -1842,7 +1845,9 @@ public class WebEventService extends WebEventController {
     }
 
     public void setUrl(String url) {
-        this.url = url;
+        synchronized (url) {
+            this.url = url;
+        }
     }
 
     public boolean isWaitForAjaxRequestsEnabled() {
