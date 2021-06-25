@@ -240,7 +240,7 @@ public class DatabaseEventService {
             for (int i = 0; i < valuesToSubstitute.length; i++) {
                 if (valuesToSubstitute[i] instanceof String) {
                     if (StringUtils.contains(sqlTemplateQuery, "like")) {
-                        preparedStatement.setString(1, "%" + valuesToSubstitute[i].toString() + "%");
+                        preparedStatement.setString(i + 1, "%" + valuesToSubstitute[i].toString() + "%");
                     } else if (StringUtils.containsIgnoreCase(valuesToSubstitute[i].toString(), "null")) {
                         int sqlType = Integer.parseInt(StringUtils.substringAfter(valuesToSubstitute[i].toString(), ":"));
                         preparedStatement.setNull(i + 1, sqlType);
