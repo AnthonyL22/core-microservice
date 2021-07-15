@@ -623,6 +623,8 @@ public class WebEventService extends WebEventController {
         if (StringUtils.containsIgnoreCase(currentUrl, "?")) {
             newUrl.append("&");
             modifiedUrl = newUrl.append(url).toString();
+        } else if (StringUtils.isEmpty(currentUrl)) {
+            modifiedUrl = newUrl.append(url).toString();
         } else {
             newUrl.append("?");
             modifiedUrl = newUrl.append(url).toString();
