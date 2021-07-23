@@ -30,6 +30,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxBinary;
 import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.logging.LogType;
+import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.phantomjs.PhantomJSDriverService;
 import org.openqa.selenium.remote.BrowserType;
 import org.openqa.selenium.remote.CapabilityType;
@@ -47,6 +49,7 @@ import java.net.Inet4Address;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -103,6 +106,10 @@ public class WebEventController {
     @Getter
     @Value("${proxy.browsermob.enabled:false}")
     private boolean browsermobEnabled;
+
+    @Getter
+    @Value("${enable.loggingPrefs:false}")
+    private boolean loggingPrefsEnabled;
 
     private MicroserviceWebDriver remoteWebDriver;
     private WebEventService webEventService;
@@ -221,6 +228,8 @@ public class WebEventController {
                 boolean isRegex;
                 try {
                     if (find.matches(FrameworkConstants.REGEX_XPATH_FINDER)) {
+                        isRegex = true;
+                    } else if (StringUtils.contains(find, "*") && StringUtils.contains(find, "?") && StringUtils.contains(find, ".")) {
                         isRegex = true;
                     } else {
                         Pattern pattern = Pattern.compile(find);
@@ -477,6 +486,7 @@ public class WebEventController {
 
         LOG("starting chrome browser");
         setDriverExecutable();
+
         ChromeOptions chromeOptions = new ChromeOptions();
         chromeOptions.addArguments("--start-maximized");
         chromeOptions.addArguments("--disable-dev-shm-usage");
@@ -487,6 +497,11 @@ public class WebEventController {
         capabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
         capabilities.setCapability(CapabilityType.BROWSER_NAME, BrowserType.CHROME);
         capabilities.setCapability("video", "True");
+
+        LoggingPreferences loggingPreferences = new LoggingPreferences();
+        loggingPreferences.enable(LogType.BROWSER, Level.ALL);
+        capabilities.setCapability("goog:loggingPrefs", loggingPreferences);
+
         if (browsermobEnabled) {
             capabilities.setCapability(CapabilityType.PROXY, setupProxy());
         }

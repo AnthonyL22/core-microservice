@@ -3,7 +3,9 @@ package com.pwc.core.framework;
 import com.pwc.core.framework.data.CssProperty;
 import com.pwc.core.framework.data.WebElementAttribute;
 import org.openqa.selenium.logging.LogEntry;
+import org.openqa.selenium.logging.LogType;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
@@ -684,6 +686,18 @@ public abstract class WebTestCase extends MicroserviceTestSuite {
      */
     protected List<String> webNetworkRequests() {
         return webEventController.getWebEventService().getPageRequests();
+    }
+
+    /**
+     * Get a list of all Network log entry requests.
+     *
+     * @return unique List of network log entry requests
+     */
+    protected List<LogEntry> webNetworkLogEntries() {
+
+        List<LogEntry> logEntries = new ArrayList<>();
+        logEntries.addAll(webEventController.getWebEventService().getMicroserviceWebDriver().manage().logs().get(LogType.BROWSER).getAll());
+        return logEntries;
     }
 
 }

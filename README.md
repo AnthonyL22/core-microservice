@@ -468,25 +468,30 @@ browserstack.local=false
 
 Settings:
 
-| Property                      | Default Value    | Description                                |
-| ------------------------------|------------------|--------------------------------------------|
-| web.url                       |                  | website url to test                        |
-| web.services.url              |                  | web service url if available               |
-| web.services.user             |                  | web service credentials                    |
-| web.services.password         |                  | web service credentials                    |
-| enable.hard.assert            | false            | boolean: fail on first failure             |
-| default.wait.for.sleep.millis | 1000             | driver wait for element retry (ms)         |
-| element.wait.timeout.seconds  | 180              | driver timeout waiting for element (sec)   |
-| browser.wait.timeout.seconds  | 10               | browser timeout wait (sec)                 |
-| enable.ajax.requests.waiting  | true             | boolean: enable active ajax req's waiting  |
-| enable.siteMinder             | false            | boolean: enable Site Minder auth           |
-| siteminder.open.url           |                  | Site Minder auth URL                       |
-| saucelabs.username            |                  | Sauce Labs username                        |
-| saucelabs.accesskey           |                  | Sauce Labs key                             |
-| browserstack.username         |                  | BrowserStack username                      |
-| browserstack.accesskey        |                  | BrowserStack key                           |
-| browserstack.local            | false            | Connect to BrowserStack locally?           |
-| capture.video                 | false            | record test execution video                |
+| Property                      | Default Value    | Description                                    |
+| ------------------------------|------------------|------------------------------------------------|
+| web.url                       |                  | website url to test                            |
+| web.services.url              |                  | web service url if available                   |
+| web.services.user             |                  | web service credentials                        |
+| web.services.password         |                  | web service credentials                        |
+| enable.hard.assert            | false            | boolean: fail on first failure                 |
+| default.wait.for.sleep.millis | 1000             | driver wait for element retry (ms)             |
+| element.wait.timeout.seconds  | 180              | driver timeout waiting for element (sec)       |
+| browser.wait.timeout.seconds  | 10               | browser timeout wait (sec)                     |
+| enable.ajax.requests.waiting  | true             | boolean: enable active ajax req's waiting      |
+| enable.siteMinder             | false            | boolean: enable Site Minder auth               |
+| siteminder.open.url           |                  | Site Minder auth URL                           |
+| saucelabs.username            |                  | Sauce Labs username                            |
+| saucelabs.accesskey           |                  | Sauce Labs key                                 |
+| browserstack.username         |                  | BrowserStack username                          |
+| browserstack.accesskey        |                  | BrowserStack key                               |
+| browserstack.local            | false            | Connect to BrowserStack locally?               |
+| capture.video                 | false            | record test execution video                    |
+| jira.zapi.enabled             | false            | Jira Zapi Enabled                              |
+| jira.zapi.url                 |                  | Jira Zapi url                                  |
+| jira.zapi.username            |                  | Jira Zapi api username                         |
+| jira.zapi.password            |                  | Jira Zapi api password                         |
+| jira.zapi.cycle.name          |                  | Jira Zapi cycle name                           |
 
 ### database.properties
 Properties used for connections to the database under test. 
