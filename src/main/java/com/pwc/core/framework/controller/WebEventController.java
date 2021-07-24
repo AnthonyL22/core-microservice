@@ -500,6 +500,7 @@ public class WebEventController {
 
         LoggingPreferences loggingPreferences = new LoggingPreferences();
         loggingPreferences.enable(LogType.BROWSER, Level.ALL);
+        loggingPreferences.enable(LogType.PERFORMANCE, Level.ALL);
         capabilities.setCapability("goog:loggingPrefs", loggingPreferences);
 
         if (browsermobEnabled) {

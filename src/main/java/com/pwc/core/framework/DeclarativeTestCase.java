@@ -638,6 +638,7 @@ public abstract class DeclarativeTestCase extends MicroserviceTestSuite {
 
         List<LogEntry> logEntries = new ArrayList<>();
         logEntries.addAll(webEventController.getWebEventService().getMicroserviceWebDriver().manage().logs().get(LogType.BROWSER).getAll());
+        logEntries.addAll(webEventController.getWebEventService().getMicroserviceWebDriver().manage().logs().get(LogType.PERFORMANCE).getAll());
         return logEntries;
     }
 
