@@ -12,7 +12,7 @@ This service is an on-ramp for entire engineering teams to contribute to the fun
 
 Currently capabilities include:
 
-* Browser (Internet Explorer, Firefox, Headless Firefox, Chrome, Headless Chrome, Safari, PhantomJS)
+* Browser (Internet Explorer, Firefox, Headless Firefox, Chrome, Headless Chrome, Edge, Safari, PhantomJS)
 * Mobile Browser (Android, iOS using Appium)
 * REST Web Services (SiteMinder Authenticated) 
 * Database (Oracle, MongoDB, MS SQL, any JDBC connection)
@@ -362,7 +362,7 @@ Simply define the following at runtime via **-D** system variables:
 
 | User Defined Command  | Options                                                                                           | Default     | Example                      |
 | ----------------------|---------------------------------------------------------------------------------------------------|-------------|------------------------------|
-| -Dbrowser             | ch, headless_ch, ff, headless_ff, ie, safari                                                      | Chrome      | -Dbrowser=ff                 |
+| -Dbrowser             | ch, headless_ch, ff, headless_ff, ie, safari, edge                                                | Chrome      | -Dbrowser=ff                 |
 | -Dbrowser.version     | any available                                                                                     | 44          | -Dbrowser.version=38.0       |
 | -Dbrowser.resolution  | 800x600, 1024x768, 1152x864, 1280x800, 1280x960, 1280x1024, all mobile resolutions in Chrome      | 1024x768    | -Dbrowser.resolution=360x640 |
 | -Dplatform            | mac, osx, linux, windows, windows 10, windows 8, windows 8.1, windows 7, windows xp, xp           | linux       | -Dplatform=xp                |
@@ -411,7 +411,7 @@ Simply define the following at runtime via **-D** system variables.  Use double 
 | -Dos                  | Windows, OS X                                                                           | Windows         | No       | -Dos="OS X"                  |
 | -Dos                  | Windows, OS X                                                                           | Windows         | No        | -Dos="OS X"                  |
 | -Dos_version          | 10, 8.1, 8, 7, XP, Mojave, Lion, etc...                                                 | latest Windows  | No        | -Dos_version=xp              |
-| -Dbrowser             | Chrome, Firefox, Safari, Opera                                                          | Chrome          | No        | -Dbrowser=Firefox            |
+| -Dbrowser             | Chrome, Firefox, Safari, Opera, Edge                                                    | Chrome          | No        | -Dbrowser=Firefox            |
 | -Dbrowser_version     | 72.0, 64.0, etc...                                                                      | latest version  | No        | -Dbrowser_version=71.0       |
 | -Dresolution          | 1024x768, 1280x960, 1280x1024, 1600x1200, 1920x1080                                     | 1024x768        | No        | -Dresolution=1920x1080       |
 | -Dproject             | Specify a name for a logical group of builds                                            | BLANK           | No        | -Dproject="RC Testing"       |
