@@ -781,7 +781,11 @@ public class WebEventController {
                 break;
             }
             case FrameworkConstants.EDGE_BROWSER_MODE: {
-                executable = PropertiesUtils.getFirstFileFromTestResources("edge.exe");
+                if (StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), WINDOWS_OS)) {
+                    executable = PropertiesUtils.getFirstFileFromTestResources("edge_win.exe");
+                } else {
+                    executable = PropertiesUtils.getFirstFileFromTestResources("edge_mac");
+                }
                 System.setProperty(FrameworkConstants.WEB_DRIVER_EDGE, PropertiesUtils.getPath(executable));
                 break;
             }
