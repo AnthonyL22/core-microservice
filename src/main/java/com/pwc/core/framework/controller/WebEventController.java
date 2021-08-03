@@ -488,8 +488,9 @@ public class WebEventController {
         setDriverExecutable();
 
         ChromeOptions chromeOptions = new ChromeOptions();
-        chromeOptions.addArguments("--start-maximized");
+        chromeOptions.addArguments("--no-sandbox");
         chromeOptions.addArguments("--disable-dev-shm-usage");
+        chromeOptions.addArguments("--start-maximized");
         chromeOptions.addArguments("--disable-web-security");
         chromeOptions.addArguments("--ignore-ssl-errors=yes");
         chromeOptions.addArguments("--ignore-certificate-errors");
