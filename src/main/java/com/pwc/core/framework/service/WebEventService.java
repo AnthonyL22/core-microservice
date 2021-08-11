@@ -610,13 +610,15 @@ public class WebEventService extends WebEventController {
      * ex: https://foo-bar.mywebsite.com/?jira=false
      *
      * @param url url snippet to redirect to
-     *            @return current url
+     * @return current url
      */
     private String constructUrlWithQueryParameter(String url) {
 
         String modifiedUrl;
         String currentUrl = this.microserviceWebDriver.getCurrentUrl();
         if (StringUtils.containsIgnoreCase(currentUrl, "data:,")) {
+            return url;
+        } else if (StringUtils.equalsIgnoreCase(currentUrl, "about:blank")) {
             return url;
         }
         StringBuilder newUrl = new StringBuilder(currentUrl);
