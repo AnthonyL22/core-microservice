@@ -57,11 +57,9 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
-import java.io.File;
 import java.io.StringReader;
 import java.security.SecureRandom;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -230,18 +228,15 @@ public class WebEventService extends WebEventController {
     }
 
     private static SSLContext buildSSLContext() throws Exception {
-        SSLContext sslcontext = SSLContexts.custom().setSecureRandom(new SecureRandom()).loadTrustMaterial(null, new TrustSelfSignedStrategy()).build();
-        return sslcontext;
+        return SSLContexts.custom().setSecureRandom(new SecureRandom()).loadTrustMaterial(null, new TrustSelfSignedStrategy()).build();
     }
 
     private static SSLConnectionSocketFactory buildSSLConnectionSocketFactory(SSLContext sslcontext) {
-        SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslcontext, SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
-        return sslsf;
+        return new SSLConnectionSocketFactory(sslcontext, SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
     }
 
     private static CloseableHttpClient buildCookieBasedHttpClient(BasicCookieStore cookieStore, SSLConnectionSocketFactory sslsf) {
-        CloseableHttpClient httpclient = HttpClients.custom().setSSLSocketFactory(sslsf).setDefaultCookieStore(cookieStore).setRedirectStrategy(new LaxRedirectStrategy()).build();
-        return httpclient;
+        return HttpClients.custom().setSSLSocketFactory(sslsf).setDefaultCookieStore(cookieStore).setRedirectStrategy(new LaxRedirectStrategy()).build();
     }
 
     private void closeHttpResponse(final CloseableHttpResponse response) {
@@ -251,28 +246,6 @@ public class WebEventService extends WebEventController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    /**
-     * Construct the cookie file name for your product.
-     *
-     * @return well-formed cookie name
-     */
-    private String getCookieFilename() {
-        String env = getActiveEnv();
-        StringBuilder fileName = new StringBuilder();
-        fileName.append(System.getProperty("java.io.tmpdir"));
-        if (!StringUtils.endsWith(System.getProperty("java.io.tmpdir"), "/")) {
-            fileName.append(File.separator);
-        }
-        fileName.append(credentials.getUsername());
-        fileName.append(".");
-        fileName.append(env);
-        fileName.append(".");
-        fileName.append(new Date().getTime());
-        fileName.append(".cookies.json");
-
-        return fileName.toString();
     }
 
     /**
@@ -599,8 +572,7 @@ public class WebEventService extends WebEventController {
         Pattern urlRegularExpression = Pattern.compile("http.*?://(\\w|\\-|\\.)+(:\\d+)?");
         Matcher m = urlRegularExpression.matcher(url);
         m.find();
-        String host = StringUtils.appendIfMissing(m.group(0), "/");
-        return host;
+        return StringUtils.appendIfMissing(m.group(0), "/");
     }
 
     /**
@@ -1140,10 +1112,8 @@ public class WebEventService extends WebEventController {
             return false;
         } else if (textExists && StringUtils.containsIgnoreCase(actualText, expectedText)) {
             return true;
-        } else if (!textExists && StringUtils.containsIgnoreCase(actualText, expectedText)) {
-            return true;
         } else {
-            return false;
+            return !textExists && StringUtils.containsIgnoreCase(actualText, expectedText);
         }
     }
 
@@ -1162,10 +1132,8 @@ public class WebEventService extends WebEventController {
             return false;
         } else if (textExists && StringUtils.equals(actualText, expectedText)) {
             return true;
-        } else if (!textExists && StringUtils.equals(actualText, expectedText)) {
-            return true;
         } else {
-            return false;
+            return !textExists && StringUtils.equals(actualText, expectedText);
         }
     }
 
@@ -1726,7 +1694,7 @@ public class WebEventService extends WebEventController {
             cookieToAdd = new org.openqa.selenium.Cookie(cookieName, cookieValue, cookieDomain, cookiePath, null, secureCookie);
         }
         this.microserviceWebDriver.manage().addCookie(cookieToAdd);
-        assertTrue("Verify addCookie() name='%s', value='%s'", findCookies(cookieName).size() > 0, cookieToAdd.getName(), cookieToAdd.getValue());
+        assertTrue("Verify addCookie() name='%s', value='%s'", CollectionUtils.isNotEmpty(findCookies(cookieName)), cookieToAdd.getName(), cookieToAdd.getValue());
     }
 
     /**
@@ -1743,7 +1711,7 @@ public class WebEventService extends WebEventController {
 
         deleteCookie(cookieName);
         addCookie(cookieName, cookieValue, cookieDomain, cookiePath, cookieExpiryDateOffset, secureCookie);
-        assertTrue("Verify addCookie() name='%s', value='%s'", findCookies(cookieName).size() > 0, cookieName, cookieValue);
+        assertTrue("Verify addCookie() name='%s', value='%s'", CollectionUtils.isNotEmpty(findCookies(cookieName)), cookieName, cookieValue);
     }
 
     /**
