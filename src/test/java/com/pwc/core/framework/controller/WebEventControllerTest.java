@@ -268,12 +268,6 @@ public class WebEventControllerTest {
     }
 
     @Test(expected = AssertionError.class)
-    public void initiateBrowserInvalidPhantomJsBrowserDriverLocationTest() {
-        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.PHANTOM_JS_BROWSER_MODE);
-        webEventController.initiateBrowser(null);
-    }
-
-    @Test(expected = AssertionError.class)
     public void initiateBrowserInvalidDefaultFirefoxBrowserDriverLocationTest() {
         System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, "use my default browser");
         webEventController.setRemoteWebDriver(mockWebDriverService);
@@ -505,37 +499,6 @@ public class WebEventControllerTest {
         String driverPath = webEventController.setDriverExecutable();
         Assert.assertEquals(driverPath, "");
         Assert.assertEquals(System.getProperty(FrameworkConstants.WEB_DRIVER_IE), "");
-    }
-
-    @Test
-    public void setDriverExecutablePhantomJsDriverTest() {
-        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.PHANTOM_JS_BROWSER_MODE);
-        webEventController.setDriverExecutable();
-    }
-
-    @Test()
-    public void getPhantomJsBrowserGridExistingLiveRemoteDriverTest() throws MalformedURLException {
-        webEventController.setRemoteWebDriver(mockWebDriverService);
-        webEventController.setGridEnabled(true);
-        webEventController.setGridUrl(GRID_URL);
-        MicroserviceWebDriver result = webEventController.getPhantomJsBrowser();
-        Assert.assertNull(result);
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void getPhantomJsBrowserGridNoExistingLiveRemoteDriverTest() throws MalformedURLException {
-        webEventController.setGridEnabled(true);
-        webEventController.setGridUrl(GRID_URL);
-        webEventController.getPhantomJsBrowser();
-    }
-
-    @Test()
-    public void getPhantomJsBrowserNoGridExistingLiveRemoteDriverTest() throws MalformedURLException {
-        webEventController.setRemoteWebDriver(mockWebDriverService);
-        webEventController.setGridEnabled(false);
-        webEventController.setGridUrl(GRID_URL);
-        MicroserviceWebDriver result = webEventController.getPhantomJsBrowser();
-        Assert.assertNull(result);
     }
 
     @Test()

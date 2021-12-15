@@ -32,7 +32,6 @@ import org.openqa.selenium.firefox.FirefoxBinary;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
-import org.openqa.selenium.phantomjs.PhantomJSDriverService;
 import org.openqa.selenium.remote.BrowserType;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -163,10 +162,6 @@ public class WebEventController {
                 }
                 case FrameworkConstants.SAFARI_BROWSER_MODE: {
                     this.remoteWebDriver = getSafariBrowser();
-                    break;
-                }
-                case FrameworkConstants.PHANTOM_JS_BROWSER_MODE: {
-                    this.remoteWebDriver = getPhantomJsBrowser();
                     break;
                 }
                 default: {
@@ -686,39 +681,6 @@ public class WebEventController {
     }
 
     /**
-     * Get PhantomJS Web Driver for local or RemoteWebDriver capability.
-     *
-     * @return MicroserviceWebDriver instance
-     * @throws MalformedURLException url exception
-     */
-    public MicroserviceWebDriver getPhantomJsBrowser() throws MalformedURLException {
-
-        LOG("starting PhantomJS virtual browser");
-        capabilities.setCapability(CapabilityType.BROWSER_NAME, BrowserType.PHANTOMJS);
-        capabilities.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, setDriverExecutable());
-        capabilities.setCapability(PhantomJSDriverService.PHANTOMJS_CLI_ARGS, new String[] {"--web-security=false", "--ssl-protocol=any", "--ignore-ssl-errors=true", "--webdriver-loglevel=DEBUG"});
-        if (StringUtils.isNotEmpty(experitestAccesskey)) {
-            capabilities.setCapability("accessKey", experitestAccesskey);
-            capabilities.setCapability("testName", this.currentTestName);
-        }
-
-        if (gridEnabled) {
-            if (this.remoteWebDriver == null) {
-                MicroserviceRemoteWebDriver microserviceRemoteWebDriver = new MicroserviceRemoteWebDriver(new URL(gridUrl), capabilities);
-                microserviceRemoteWebDriver.setFileDetector(new LocalFileDetector());
-                return microserviceRemoteWebDriver;
-            }
-        } else {
-            if (this.remoteWebDriver == null) {
-                Assert.fail("Local PhantomJS Execution Not Yet Supported. Please use the GRID for this driver!");
-                //this.remoteWebDriver = (new MicroservicePhantomJsDriver(capabilities));
-                //this.remoteWebDriver = (MicroserviceWebDriver) new PhantomJSDriver(capabilities);
-            }
-        }
-        return null;
-    }
-
-    /**
      * Set the resources path to the WebDriver executable depending on the ENV the scripts.
      * are running on
      *
@@ -788,18 +750,6 @@ public class WebEventController {
                 }
                 System.setProperty(FrameworkConstants.WEB_DRIVER_EDGE, PropertiesUtils.getPath(executable));
                 break;
-            }
-            case FrameworkConstants.PHANTOM_JS_BROWSER_MODE: {
-
-                if (StringUtils.isNotEmpty(System.getProperty(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY))) {
-                    return System.getProperty(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY);
-                } else {
-                    executable = StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), WINDOWS_OS) ? PropertiesUtils.getFirstFileFromTestResources("phantomjs.exe")
-                                    : PropertiesUtils.getFirstFileFromTestResources("phantomjs");
-                    System.setProperty(PhantomJSDriverService.PHANTOMJS_GHOSTDRIVER_PATH_PROPERTY, PropertiesUtils.getPath(executable));
-                    System.setProperty(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, PropertiesUtils.getPath(executable));
-                    return PropertiesUtils.getPath(executable);
-                }
             }
             default: {
                 if (StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), WINDOWS_OS)) {

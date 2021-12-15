@@ -12,7 +12,7 @@ This service is an on-ramp for entire engineering teams to contribute to the fun
 
 Currently capabilities include:
 
-* Browser (Internet Explorer, Firefox, Headless Firefox, Chrome, Headless Chrome, Edge, Safari, PhantomJS)
+* Browser (Internet Explorer, Firefox, Headless Firefox, Chrome, Headless Chrome, Edge, Safari)
 * Mobile Browser (Android, iOS using Appium)
 * REST Web Services (SiteMinder Authenticated) 
 * Database (Oracle, MongoDB, MS SQL, any JDBC connection)
@@ -569,19 +569,6 @@ The following system environment variables must be set to run the Headless Chrom
 ```
 -Dbrowser=headless_ch OR headless_ff
 ```
-
-### PhantomJS
-If you would like to use a headless PhantomJS browser you must use Selenium GRID with the PhantomJS drivers enabled.
-
-The following system environment variables must be set to run PhantomJS browsers in your GRID environment
-```
--Dbrowser=phantomjs
--Dphantomjs.binary.path=c:/grid/drivers/phantomjs/phantomjs.exe
-```
-
-The *phantomjs.binary.path* path correlates to the exact location of your PhantomJS drivers on your NODES not your local
-development environment.
-
 
 ## Sauce Labs
 If you have a Sauce Labs account, define the **grid.hub.url** in your grid.properties file according to the settings

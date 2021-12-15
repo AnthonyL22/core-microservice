@@ -190,41 +190,6 @@ public class GridUtilsTest {
     }
 
     @Test
-    public void initBrowserTypesPhantomJsTest() {
-        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.PHANTOM_JS_BROWSER_MODE);
-        GridUtils.initBrowserType();
-        Assert.assertEquals(FrameworkConstants.PHANTOM_JS_BROWSER_MODE, System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY));
-    }
-
-    @Test
-    public void initBrowserTypesPHTest() {
-        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, "ph");
-        GridUtils.initBrowserType();
-        Assert.assertEquals(FrameworkConstants.PHANTOM_JS_BROWSER_MODE, System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY));
-    }
-
-    @Test
-    public void initBrowserTypesPhantomTest() {
-        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, "phantom");
-        GridUtils.initBrowserType();
-        Assert.assertEquals(FrameworkConstants.PHANTOM_JS_BROWSER_MODE, System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY));
-    }
-
-    @Test
-    public void initBrowserTypesPhantomSpaceJsTest() {
-        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, "phantom js");
-        GridUtils.initBrowserType();
-        Assert.assertEquals(FrameworkConstants.PHANTOM_JS_BROWSER_MODE, System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY));
-    }
-
-    @Test
-    public void initBrowserTypesPhantomJsCapsTest() {
-        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, "phantomJS");
-        GridUtils.initBrowserType();
-        Assert.assertEquals(FrameworkConstants.PHANTOM_JS_BROWSER_MODE, System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY));
-    }
-
-    @Test
     public void initBrowserTypesNoBrowserTest() {
         System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.NONE_BROWSER_MODE);
         GridUtils.initBrowserType();
