@@ -286,7 +286,7 @@ public class WebEventService extends WebEventController {
 
         if (StringUtils.startsWith(elementIdentifier, "//") && elementIdentifier.matches(FrameworkConstants.REGEX_XPATH_FINDER)) {
             try {
-                WebElement webElement = this.microserviceWebDriver.findElementByXPath(elementIdentifier);
+                WebElement webElement = this.microserviceWebDriver.findElement(By.xpath(elementIdentifier));
                 if (webElement != null) {
                     return webElement;
                 }
@@ -295,7 +295,7 @@ public class WebEventService extends WebEventController {
             }
         } else if (!StringUtils.startsWith(elementIdentifier, "//") && elementIdentifier.matches(FrameworkConstants.REGEX_CSS_SELECTOR_FINDER)) {
             try {
-                WebElement webElement = this.microserviceWebDriver.findElementByCssSelector(elementIdentifier);
+                WebElement webElement = this.microserviceWebDriver.findElement(By.cssSelector(elementIdentifier));
                 if (webElement != null) {
                     return webElement;
                 }
@@ -364,7 +364,7 @@ public class WebEventService extends WebEventController {
             for (String xpathSearch : xpathSearchList) {
                 WebElement webElement = null;
                 try {
-                    webElement = this.microserviceWebDriver.findElementByXPath(xpathSearch);
+                    webElement = this.microserviceWebDriver.findElement(By.xpath(xpathSearch));
                 } catch (Exception eatIt) {
                     eatIt.getMessage();
                 }
@@ -417,7 +417,7 @@ public class WebEventService extends WebEventController {
 
             for (String xpathSearch : xpathSearchList) {
                 if ((boolean) xpath.evaluate(xpathSearch, document, XPathConstants.BOOLEAN)) {
-                    return this.microserviceWebDriver.findElementByXPath(xpathSearch);
+                    return this.microserviceWebDriver.findElement(By.xpath(xpathSearch));
                 }
             }
 
@@ -1576,7 +1576,7 @@ public class WebEventService extends WebEventController {
         }
 
         LogEntries filteredConsoleEntries = new LogEntries(allRequests);
-        filteredConsoleEntries.filter(level);
+        filteredConsoleEntries.getAll().stream().filter(l -> l.equals(level));
 
         if (CollectionUtils.isEmpty(filteredConsoleEntries.getAll())) {
             assertPass("Console contains %s expected entries @Log Level >= %s", filteredConsoleEntries.getAll().size(), level.getName());

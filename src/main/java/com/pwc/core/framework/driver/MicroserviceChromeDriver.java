@@ -15,10 +15,6 @@ public class MicroserviceChromeDriver extends ChromeDriver implements Microservi
         super(service);
     }
 
-    public MicroserviceChromeDriver(Capabilities capabilities) {
-        super(capabilities);
-    }
-
     public MicroserviceChromeDriver(ChromeOptions options) {
         super(options);
     }
@@ -27,7 +23,4 @@ public class MicroserviceChromeDriver extends ChromeDriver implements Microservi
         super(service, options);
     }
 
-    public MicroserviceChromeDriver(ChromeDriverService service, Capabilities capabilities) {
-        super(service, capabilities);
-    }
 }
