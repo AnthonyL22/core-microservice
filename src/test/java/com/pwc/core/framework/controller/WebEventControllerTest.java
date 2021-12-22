@@ -309,7 +309,7 @@ public class WebEventControllerTest {
         webEventController.setRemoteWebDriver(mockWebDriverService);
         webEventController.setGridEnabled(true);
         webEventController.setGridUrl(GRID_URL);
-        MicroserviceWebDriver result = webEventController.getIOSBrowser();
+        MicroserviceWebDriver result = webEventController.getSafariBrowser();
         Assert.assertNull(result);
     }
 
@@ -352,7 +352,7 @@ public class WebEventControllerTest {
         webEventController.setGridEnabled(false);
         webEventController.setGridUrl(GRID_URL);
         webEventController.getFirefoxBrowser();
-        MicroserviceWebDriver result = webEventController.getIOSBrowser();
+        MicroserviceWebDriver result = webEventController.getSafariBrowser();
         Assert.assertNull(result);
     }
 

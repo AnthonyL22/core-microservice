@@ -7,30 +7,33 @@ public final class FrameworkConstants {
     public static final String AUTOMATION_TIME_ZONE_ENVIRONMENT = "time.zone";
     public static final String AUTOMATION_BROWSER_PROPERTY = "browser";
     public static final String AUTOMATION_BROWSER_VERSION_PROPERTY = "browser.version";
-    public static final String SAUCELABS_BROWSER_PROPERTY = "SELENIUM_BROWSER";
-    public static final String SAUCELABS_BROWSER_VERSION_PROPERTY = "SELENIUM_VERSION";
-    public static final String SAUCELABS_TUNNEL_IDENTIFIER_PROPERTY = "TUNNEL_IDENTIFIER";
-    public static final String SAUCELABS_ONDEMAND_BROWSERS_PROPERTY = "SAUCE_ONDEMAND_BROWSERS";
     public static final String AUTOMATION_BROWSER_RESOLUTION_PROPERTY = "browser.resolution";
     public static final String AUTOMATION_PLATFORM_PROPERTY = "platform";
-    public static final String AUTOMATION_OS_PROPERTY = "os";
-    public static final String AUTOMATION_LONG_NAME_PROPERTY = "longName";
     public static final String AUTOMATION_LONG_VERSION_PROPERTY = "longVersion";
     public static final String AUTOMATION_DEVICE_NAME_PROPERTY = "deviceName";
     public static final String AUTOMATION_ORIENTATION_PROPERTY = "deviceOrientation";
+    public static final String AUTOMATION_NAME_PROPERTY = "name";
+    public static final String AUTOMATION_BUILD_PROPERTY = "build";
+    public static final String AUTOMATION_RESOLUTION_PROPERTY = "resolution";
+
+    public static final String EXPERITEST_ACCESS_KEY_PROPERTY = "accessKey";
+    public static final String EXPERITEST_TEST_NAME_PROPERTY = "testName";
+
+    public static final String SAUCELABS_OPTIONS_PROPERTY = "sauce:options";
+    public static final String SAUCELABS_BROWSER_PROPERTY = "SELENIUM_BROWSER";
+    public static final String SAUCELABS_BROWSER_VERSION_PROPERTY = "SELENIUM_VERSION";
+    public static final String SAUCELABS_TUNNEL_IDENTIFIER_PROPERTY = "TUNNEL_IDENTIFIER";
     public static final String SAUCELABS_PLATFORM_PROPERTY = "SELENIUM_PLATFORM";
 
-    public static final String BROWSER_STACK_BROWSER_VERSION_PROPERTY = "browser_version";
+    public static final String BROWSER_STACK_BROWSER_NAME_PROPERTY = "browserName";
+    public static final String BROWSER_STACK_BROWSER_VERSION_PROPERTY = "browserVersion";
     public static final String BROWSER_STACK_OS_PROPERTY = "os";
-    public static final String BROWSER_STACK_OS_VERSION_PROPERTY = "os_version";
-    public static final String BROWSER_STACK_RESOLUTION_PROPERTY = "resolution";
-    public static final String BROWSER_STACK_LOCAL_PROPERTY = "browserstack.local";
-    public static final String BROWSER_STACK_LOCAL_IDENTIFIER_PROPERTY = "browserstack.localIdentifier";
-    public static final String BROWSER_STACK_NAME_PROPERTY = "name";
-    public static final String BROWSER_STACK_BUILD_PROPERTY = "build";
-    public static final String BROWSER_STACK_PROJECT_PROPERTY = "project";
-    public static final String BROWSER_STACK_TEST_RUN_NAME_PROPERTY = "name";
-    public static final String BROWSER_STACK_TIMEZONE_PROPERTY = "browserstack.timezone";
+    public static final String BROWSER_STACK_OS_VERSION_PROPERTY = "osVersion";
+    public static final String BROWSER_STACK_PROJECT_NAME_PROPERTY = "projectName";
+    public static final String BROWSER_STACK_BUILD_NAME_PROPERTY = "buildName";
+    public static final String BROWSER_STACK_SESSION_NAME_PROPERTY = "sessionName";
+    public static final String BROWSER_STACK_PROPERTY = "browserStack";
+    public static final String BROWSER_STACK_OPTIONS_PROPERTY = "bstack:options";
 
     // System Properties Supported
     public static final String SEPARATOR = System.getProperty("file.separator");
@@ -48,7 +51,6 @@ public final class FrameworkConstants {
     public static final String HEADLESS_FIREFOX_BROWSER_MODE = "headless_ff";
     public static final String CHROME_BROWSER_MODE = "chrome";
     public static final String HEADLESS_CHROME_BROWSER_MODE = "headless_ch";
-    public static final String ANDROID_MODE = "Android";
     public static final String IOS_MODE = "iOS";
     public static final String INTERNET_EXPLORER_BROWSER_MODE = "ie";
     public static final String EDGE_BROWSER_MODE = "edge";
@@ -64,6 +66,8 @@ public final class FrameworkConstants {
     // Date Patterns
     public static final String MONTH_PATTERN = "MMMM";
     public static final String YEAR_PATTERN = "yyyy";
+    public static final String MONTH_TEXT_DATE_PATTERN = "dd-MMM-yyyy";
+    public static final String UTC_DATE_PATTERN = "yyyy-MM-dd";
     public static final String SHORT_DATE_PATTERN = "MM/dd/yyyy";
     public static final String DEFAULT_DATE_PATTERN = "yyyy-MM-dd";
     public static final String DEFAULT_COMBINED_DATE_PATTERN = "YYYYMMdd";
@@ -73,12 +77,20 @@ public final class FrameworkConstants {
     public static final String SYSTEM_DEFAULT_DATETIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
     public static final String CALENDAR_PATTERN = "E MMM dd HH:mm:ss Z yyyy";
     public static final String TIMEZONE_PATTERN = "yyyy-MM-dd'T'HH:mm:ss Z";
+    public static final String DATABASE_PATTERN = "yyyy-MM-dd'T'hh:mm:ss'Z'";
+    public static final String LONG_TWENTY_FOR_HOUR_TIME_PATTERN = "MM/dd/yyyy HH:mm:ss a";
+    public static final String INTERNATIONAL_PANEL_DATE_PATTERN = "EEE MMM dd HH:mm:ss Z yyyy";
     public static final String DATE_AND_TIME_PATTERN = "yyyy-MM-dd'T'HH:mm:ss";
     public static final String DATE_AND_TIME_COMBINED_PATTERN = "yyyyMMdd'T'HHmmss";
+    public static final String DETAIL_DATE_PATTERN = "EEEE, MMMM dd, yyyy";
 
     // Regex
-    public static final String REGEX_XPATH_FINDER = ".*[\\[@'].*";
-    public static final String REGEX_CSS_SELECTOR_FINDER = ".*[\\[#.=^$’>:+~].*";
+    public static final String XPATH_REGEX = ".*[\\[@'].*";
+    public static final String CSS_SELECTOR_REGEX = ".*[\\[#.=^$’>:+~].*";
+    public static final String DEFAULT_DATE_REGEX = "^\\d{2}/\\d{2}/\\d{4}$";
+    public static final String LONG_DATE_REGEX = "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$";
+    public static final String ONE_OR_MORE_LETTERS_REGEX = ".*?\\w+?.*?";
+    public static final String EMAIL_REGEX = ".+\\@.+\\..+";
 
     // Default Capability Name
     public static final String SCRIPT_NAME_CAPABILITY = "name";
@@ -121,37 +133,6 @@ public final class FrameworkConstants {
     public static final String HTTP_RESPONSE_TIME_KEY = "httpResponseTime";
     public static final String STATUS_KEY = "STATUS";
     public static final String ENTITY_KEY = "ENTITY";
-
-    /**
-     * Use the use JavascriptConstants fields instead.
-     *
-     * @deprecated use JavascriptConstants
-     */
-    @Deprecated
-    public static final String JAVASCRIPT_CLICK_ELEMENT_BY_XPATH =
-                    "var element = document.evaluate(\"%s\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue; element.click();";
-    @Deprecated
-    public static final String JAVASCRIPT_ALERT_ELEMENT_BY_XPATH =
-                    "var element = document.evaluate(\"%s\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue; alert(element.textContent);";
-    @Deprecated
-    public static final String JAVASCRIPT_CLICK_ELEMENT_BY_ID = "document.getElementById('%s').click();";
-    @Deprecated
-    public static final String JAVASCRIPT_CLICK_ELEMENT_BY_TAG_AND_VALUE =
-                    "var elements = document.getElementsByTagName('%s'); " + "for (var i=0; i<elements.length; i++) " + "{if (elements[i].value == '%s') elements[i].click();}";
-    @Deprecated
-    public static final String JAVASCRIPT_CLICK_ELEMENT_BY_TAG_NODE_VALUE =
-                    "var elements = document.getElementsByTagName('%s'); " + "for (var i=0; i<elements.length; i++) " + "{if (elements[i].firstChild.nodeValue == '%s') elements[i].click();}";
-    @Deprecated
-    public static final String JAVASCRIPT_CLICK_ELEMENT_BY_TAG_TYPE_AND_EQUALS_VALUE =
-                    "var elements = document.getElementsByTagName('%s'); " + "for (var i=0; i<elements.length; i++) " + "{if (elements[i].firstChild.textContent == '%s') elements[i].click()}";
-    @Deprecated
-    public static final String JAVASCRIPT_CLICK_ELEMENT_BY_TAG_TYPE_AND_CONTAINS_VALUE = "var elements = document.getElementsByTagName('%s'); " + "for (var i=0; i<elements.length; i++) "
-                    + "{if (elements[i].firstChild.textContent.indexOf('%s') > -1) elements[i].click();}";
-    @Deprecated
-    public static final String JAVASCRIPT_CLICK_ELEMENT_BY_CLASS_NAME_AND_CONTAINS_VALUE = "var elements = document.getElementsByClassName('%s'); " + "for (var i=0; i<elements.length; i++) "
-                    + "{if (elements[i].firstChild.textContent.indexOf('%s') > -1) elements[i].click();}";
-    @Deprecated
-    public static final String JAVASCRIPT_CLICK_LAST_ELEMENT_BY_CLASS_NAME = "var elements = document.getElementsByClassName('%s'); elements[elements.length - 1].click();";
 
     private FrameworkConstants() {
     }

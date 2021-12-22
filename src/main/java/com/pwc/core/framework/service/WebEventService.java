@@ -284,7 +284,7 @@ public class WebEventService extends WebEventController {
 
         waitForBrowserToLoad();
 
-        if (StringUtils.startsWith(elementIdentifier, "//") && elementIdentifier.matches(FrameworkConstants.REGEX_XPATH_FINDER)) {
+        if (StringUtils.startsWith(elementIdentifier, "//") && elementIdentifier.matches(FrameworkConstants.XPATH_REGEX)) {
             try {
                 WebElement webElement = this.microserviceWebDriver.findElement(By.xpath(elementIdentifier));
                 if (webElement != null) {
@@ -293,7 +293,7 @@ public class WebEventService extends WebEventController {
             } catch (Exception e) {
                 e.getMessage();
             }
-        } else if (!StringUtils.startsWith(elementIdentifier, "//") && elementIdentifier.matches(FrameworkConstants.REGEX_CSS_SELECTOR_FINDER)) {
+        } else if (!StringUtils.startsWith(elementIdentifier, "//") && elementIdentifier.matches(FrameworkConstants.CSS_SELECTOR_REGEX)) {
             try {
                 WebElement webElement = this.microserviceWebDriver.findElement(By.cssSelector(elementIdentifier));
                 if (webElement != null) {
@@ -727,7 +727,7 @@ public class WebEventService extends WebEventController {
      * @param elementIdentifier element identifier (xPath or explicit Element ID)
      */
     public void elementBlur(final String elementIdentifier) {
-        if (elementIdentifier.matches(FrameworkConstants.REGEX_XPATH_FINDER)) {
+        if (elementIdentifier.matches(FrameworkConstants.XPATH_REGEX)) {
             executeJavascript(String.format(JavascriptConstants.BLUR_ELEMENT_BY_XPATH, elementIdentifier));
         } else {
             executeJavascript(String.format(JavascriptConstants.BLUR_ELEMENT_BY_ID, elementIdentifier));
