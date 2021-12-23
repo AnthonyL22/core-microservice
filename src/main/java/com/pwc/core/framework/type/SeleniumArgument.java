@@ -8,11 +8,8 @@ import lombok.Getter;
 @Getter
 public enum SeleniumArgument {
 
-    START_MAXIMIZED("--start-maximized"),
-    DISABLE_SHM("--disable-dev-shm-usage"),
-    DISABLE_WEB_SECURITY("--disable-web-security"),
-    IGNORE_CERTIFICATE_ERRORS("--ignore-certificate-errors"),
-    ALLOW_INSECURE_CONTENT("--allow-running-insecure-content"),
+    START_MAXIMIZED("--start-maximized"), DISABLE_SHM("--disable-dev-shm-usage"), DISABLE_WEB_SECURITY("--disable-web-security"), IGNORE_CERTIFICATE_ERRORS(
+                    "--ignore-certificate-errors"), ALLOW_INSECURE_CONTENT("--allow-running-insecure-content");
 
     private final String value;
 

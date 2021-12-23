@@ -43,11 +43,6 @@ public class GridUtils {
             System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.CHROME_BROWSER_MODE);
             return;
         } else {
-            browserMatcher = ANDROID_REGEX.matcher(property);
-            if (browserMatcher.find()) {
-                System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.ANDROID_MODE);
-                return;
-            }
             browserMatcher = IOS_REGEX.matcher(property);
             if (browserMatcher.find()) {
                 System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.IOS_MODE);
