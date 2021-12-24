@@ -52,7 +52,7 @@ public class RetryListenerTest extends MicroserviceTestListener {
         XmlTest xmlTest = new XmlTest();
         xmlTest.setName(TEST_NAME);
         xmlTest.setVerbose(0);
-        xmlTest.setPreserveOrder(XmlSuite.CONTINUE);
+        xmlTest.setPreserveOrder(true);
         xmlTest.setSuite(xmlSuite);
 
         IInvokedMethodListener listener = new MicroserviceTestListener();

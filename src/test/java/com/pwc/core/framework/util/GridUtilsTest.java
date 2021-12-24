@@ -106,34 +106,6 @@ public class GridUtilsTest {
     }
 
     @Test
-    public void initBrowserTypesAndroidTest() {
-        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, "android");
-        GridUtils.initBrowserType();
-        Assert.assertEquals(FrameworkConstants.ANDROID_MODE, System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY));
-    }
-
-    @Test
-    public void initBrowserTypesDroidTest() {
-        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, "droid");
-        GridUtils.initBrowserType();
-        Assert.assertEquals(FrameworkConstants.ANDROID_MODE, System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY));
-    }
-
-    @Test
-    public void initBrowserTypesAppiumTest() {
-        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, "appium");
-        GridUtils.initBrowserType();
-        Assert.assertEquals(FrameworkConstants.ANDROID_MODE, System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY));
-    }
-
-    @Test
-    public void initBrowserTypesGoogleTest() {
-        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, "google");
-        GridUtils.initBrowserType();
-        Assert.assertEquals(FrameworkConstants.ANDROID_MODE, System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY));
-    }
-
-    @Test
     public void initBrowserTypesFFTest() {
         System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.FIREFOX_BROWSER_MODE);
         GridUtils.initBrowserType();

@@ -9,6 +9,7 @@ import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.ie.InternetExplorerDriverService;
+import org.openqa.selenium.ie.InternetExplorerOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.Assert;
@@ -36,7 +37,8 @@ public class MicroserviceDriversTest {
 
     @Test(expected = Exception.class)
     public void edgeDriverTest() {
-        MicroserviceEdgeDriver driver = new MicroserviceEdgeDriver(desiredCapabilities);
+        EdgeOptions edgeOptions = new EdgeOptions();
+        MicroserviceEdgeDriver driver = new MicroserviceEdgeDriver(edgeOptions);
         Assert.assertNotNull(driver);
     }
 
@@ -65,7 +67,8 @@ public class MicroserviceDriversTest {
 
     @Test(expected = Exception.class)
     public void chromeDriverDesiredCapabilitiesTest() {
-        driver = new MicroserviceChromeDriver(desiredCapabilities);
+        ChromeOptions chromeOptions = new ChromeOptions();
+        driver = new MicroserviceChromeDriver(chromeOptions);
     }
 
     @Test(expected = Exception.class)
@@ -86,7 +89,8 @@ public class MicroserviceDriversTest {
     @Test(expected = Exception.class)
     public void chromeDriverChromeDriverServiceAndCapabilitiesTest() {
         ChromeDriverService chromeDriverService = ChromeDriverService.createDefaultService();
-        driver = new MicroserviceChromeDriver(chromeDriverService, desiredCapabilities);
+        ChromeOptions chromeOptions = new ChromeOptions();
+        driver = new MicroserviceChromeDriver(chromeDriverService, chromeOptions);
     }
 
     @Test(expected = Exception.class)
@@ -96,7 +100,8 @@ public class MicroserviceDriversTest {
 
     @Test(expected = Exception.class)
     public void internetExplorerDriverWithPortTest() {
-        driver = new MicroserviceInternetExplorerDriver(4444);
+        InternetExplorerOptions internetExplorerOptions = new InternetExplorerOptions();
+        driver = new MicroserviceInternetExplorerDriver(internetExplorerOptions);
     }
 
     @Test(expected = Exception.class)
