@@ -1,6 +1,5 @@
 package com.pwc.core.framework.data;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

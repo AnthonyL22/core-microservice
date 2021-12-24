@@ -269,7 +269,7 @@ public class WebEventController {
     }
 
     /**
-     * Create base driver option object
+     * Create base driver option object.
      *
      * @param driverOptions any type of Selenium Driver options type
      * @return base driver options set to defaults
