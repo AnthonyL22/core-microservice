@@ -13,7 +13,7 @@ import com.pwc.core.framework.processors.web.KeyboardActivityProcessor;
 import com.pwc.core.framework.processors.web.MouseActivityProcessor;
 import com.pwc.core.framework.processors.web.ViewActivityProcessor;
 import com.pwc.core.framework.service.WebEventService;
-import com.pwc.core.framework.type.SeleniumArgument;
+import com.pwc.core.framework.data.SeleniumArgument;
 import com.pwc.core.framework.util.DebuggingUtils;
 import com.pwc.core.framework.util.GridUtils;
 import com.pwc.core.framework.util.PropertiesUtils;
