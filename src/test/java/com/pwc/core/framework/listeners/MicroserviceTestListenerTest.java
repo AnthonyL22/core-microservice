@@ -13,7 +13,6 @@ import org.testng.ISuite;
 import org.testng.ITestClass;
 import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
-import org.testng.ITestRunnerFactory;
 import org.testng.SuiteRunner;
 import org.testng.TestRunner;
 import org.testng.internal.ConstructorOrMethod;
@@ -23,7 +22,6 @@ import org.testng.xml.XmlTest;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 import static org.mockito.Mockito.doNothing;
@@ -59,22 +57,20 @@ public class MicroserviceTestListenerTest extends MicroserviceTestListener {
         mockITestResult = mock(ITestResult.class);
 
         IConfiguration mockIConfiguration = mock(IConfiguration.class);
-        ITestRunnerFactory mockITestRunnerFactory = mock(ITestRunnerFactory.class);
-        mockITestNGMethod = mock(ITestNGMethod.class);
         XmlSuite xmlSuite = new XmlSuite();
         xmlSuite.setName("unitTestSuiteName");
-        ISuite suiteRunner = new SuiteRunner(mockIConfiguration, xmlSuite, "/", mockITestRunnerFactory, (Comparator<ITestNGMethod>) mockITestNGMethod);
+        ISuite suiteRunner = new SuiteRunner(mockIConfiguration, xmlSuite, "/");
 
         XmlTest xmlTest = new XmlTest();
         xmlTest.setName(TEST_NAME);
         xmlTest.setVerbose(0);
-        xmlTest.setPreserveOrder(true);
+        xmlTest.setPreserveOrder(XmlSuite.CONTINUE);
         xmlTest.setSuite(xmlSuite);
 
         IInvokedMethodListener listener = new MicroserviceTestListener();
         List<IInvokedMethodListener> methodListeners = new ArrayList<>();
         methodListeners.add(listener);
-        testRunner = new TestRunner(mockIConfiguration, suiteRunner, xmlTest, true, methodListeners, null);
+        testRunner = new TestRunner(mockIConfiguration, suiteRunner, xmlTest, true, methodListeners);
 
         ITestClass mockITestClass = mock(ITestClass.class);
         when(mockITestClass.getTestName()).thenReturn("[TestClass name=class com.pwc.automation.tests.web.BasicTest]");

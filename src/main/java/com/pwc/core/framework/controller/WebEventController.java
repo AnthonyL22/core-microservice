@@ -2,6 +2,7 @@ package com.pwc.core.framework.controller;
 
 import com.pwc.core.framework.FrameworkConstants;
 import com.pwc.core.framework.data.Credentials;
+import com.pwc.core.framework.data.SeleniumArgument;
 import com.pwc.core.framework.driver.MicroserviceChromeDriver;
 import com.pwc.core.framework.driver.MicroserviceEdgeDriver;
 import com.pwc.core.framework.driver.MicroserviceFirefoxDriver;
@@ -13,7 +14,6 @@ import com.pwc.core.framework.processors.web.KeyboardActivityProcessor;
 import com.pwc.core.framework.processors.web.MouseActivityProcessor;
 import com.pwc.core.framework.processors.web.ViewActivityProcessor;
 import com.pwc.core.framework.service.WebEventService;
-import com.pwc.core.framework.data.SeleniumArgument;
 import com.pwc.core.framework.util.DebuggingUtils;
 import com.pwc.core.framework.util.GridUtils;
 import com.pwc.core.framework.util.PropertiesUtils;
@@ -122,42 +122,23 @@ public class WebEventController {
     public void initiateBrowser(final Credentials credentials) {
         try {
 
-            switch (System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY)) {
-                case FrameworkConstants.CHROME_BROWSER_MODE: {
-                    this.remoteWebDriver = getChromeBrowser();
-                    break;
-                }
-                case FrameworkConstants.HEADLESS_CHROME_BROWSER_MODE: {
-                    this.remoteWebDriver = getHeadlessChromeBrowser();
-                    break;
-                }
-                case FrameworkConstants.FIREFOX_BROWSER_MODE: {
-                    this.remoteWebDriver = getFirefoxBrowser();
-                    break;
-                }
-                case FrameworkConstants.HEADLESS_FIREFOX_BROWSER_MODE: {
-                    this.remoteWebDriver = getHeadlessFirefoxBrowser();
-                    break;
-                }
-                case FrameworkConstants.IOS_MODE: {
-                    this.remoteWebDriver = getSafariBrowser();
-                    break;
-                }
-                case FrameworkConstants.INTERNET_EXPLORER_BROWSER_MODE: {
-                    this.remoteWebDriver = getInternetExplorerBrowser();
-                    break;
-                }
-                case FrameworkConstants.EDGE_BROWSER_MODE: {
-                    this.remoteWebDriver = getEdgeBrowser();
-                    break;
-                }
-                case FrameworkConstants.SAFARI_BROWSER_MODE: {
-                    this.remoteWebDriver = getSafariBrowser();
-                    break;
-                }
-                default: {
-                    this.remoteWebDriver = getChromeBrowser();
-                }
+            if (StringUtils.isEmpty(System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY))
+                            || StringUtils.equals(System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY), FrameworkConstants.CHROME_BROWSER_MODE)) {
+                this.remoteWebDriver = getChromeBrowser();
+            } else if (StringUtils.equals(System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY), FrameworkConstants.HEADLESS_CHROME_BROWSER_MODE)) {
+                this.remoteWebDriver = getHeadlessChromeBrowser();
+            } else if (StringUtils.equals(System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY), FrameworkConstants.FIREFOX_BROWSER_MODE)) {
+                this.remoteWebDriver = getFirefoxBrowser();
+            } else if (StringUtils.equals(System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY), FrameworkConstants.HEADLESS_FIREFOX_BROWSER_MODE)) {
+                this.remoteWebDriver = getHeadlessFirefoxBrowser();
+            } else if (StringUtils.equals(System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY), FrameworkConstants.IOS_MODE)) {
+                this.remoteWebDriver = getSafariBrowser();
+            } else if (StringUtils.equals(System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY), FrameworkConstants.INTERNET_EXPLORER_BROWSER_MODE)) {
+                this.remoteWebDriver = getInternetExplorerBrowser();
+            } else if (StringUtils.equals(System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY), FrameworkConstants.EDGE_BROWSER_MODE)) {
+                this.remoteWebDriver = getEdgeBrowser();
+            } else {
+                this.remoteWebDriver = getChromeBrowser();
             }
 
             currentJobId = ((RemoteWebDriver) this.remoteWebDriver).getSessionId().toString();
@@ -331,7 +312,7 @@ public class WebEventController {
                 LOG(true, "Initiating BrowserStack test execution with browser='%s'", StringUtils.trim(System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY)));
 
             } else {
-                LOG(true, "Initiating User Defined test execution");
+                LOG(true, "Initiating Local test execution");
                 GridUtils.initBrowserType();
             }
 
