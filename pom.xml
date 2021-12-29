@@ -52,6 +52,7 @@
     <format-maven-plugin.version>2.0.1</format-maven-plugin.version>
     <gagawa.version>1.0.1</gagawa.version>
     <httpclient.version>3.1</httpclient.version>
+    <ios-server.version>0.6.2</ios-server.version>
     <jackson.json.version>2.10.0.pr1</jackson.json.version>
     <jacoco.version>0.7.5.201505241946</jacoco.version>
     <java_code.version>1.8</java_code.version>
@@ -75,6 +76,7 @@
     <maven.checkstyle.plugin.version>2.17</maven.checkstyle.plugin.version>
     <mockito.version>1.10.19</mockito.version>
     <mongodb-driver.version>3.0.2</mongodb-driver.version>
+    <netty-all.version>4.1.72.Final</netty-all.version>
     <opera.version>1.5</opera.version>
     <poi-ooxml.version>3.15</poi-ooxml.version>
     <procyon.version>0.5.28</procyon.version>
@@ -92,8 +94,6 @@
     <versions-maven-plugin.version>2.1</versions-maven-plugin.version>
     <visual.version>0.10</visual.version>
     <xmlapis.version>1.4.01</xmlapis.version>
-    <netty-all.version>4.1.72.Final</netty-all.version>
-    <ios-server.version>0.6.2</ios-server.version>
   </properties>
   <dependencyManagement>
     <dependencies>
