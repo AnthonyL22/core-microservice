@@ -92,6 +92,7 @@ public final class FrameworkConstants {
     public static final String LONG_DATE_REGEX = "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$";
     public static final String ONE_OR_MORE_LETTERS_REGEX = ".*?\\w+?.*?";
     public static final String EMAIL_REGEX = ".+\\@.+\\..+";
+    public static final String WEB_URL_REGEX = "http.*?://(\\w|\\-|\\.)+(:\\d+)?";
 
     // Default Capability Name
     public static final String SCRIPT_NAME_CAPABILITY = "name";

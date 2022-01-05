@@ -1,5 +1,6 @@
 package com.pwc.core.framework.service;
 
+import com.pwc.core.framework.FrameworkConstants;
 import com.pwc.core.framework.JavascriptConstants;
 import com.pwc.core.framework.data.Credentials;
 import com.pwc.core.framework.data.CssProperty;
@@ -115,6 +116,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
         when(mockTabNameCookie.getName()).thenReturn("tabName");
         when(mockTabNameCookie.getValue()).thenReturn("Stuff");
         when(mockTabNameCookie.getDomain()).thenReturn(".mywebsite.com");
+        System.setProperty(FrameworkConstants.SYSTEM_USER_TIMEZONE, "PST");
         Date tabNameCookieExpireDate = DateUtils.getDateByOffset(0);
         when(mockTabNameCookie.getExpiry()).thenReturn(tabNameCookieExpireDate);
 
@@ -232,7 +234,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
 
         Assert.assertEquals(webEventService.getUrl(), DEFAULT_URL + "myDetails/777");
         verify(mockWebDriverService, times(2)).getCurrentUrl();
-        verify(mockWebDriverService, times(2)).manage();
+        verify(mockWebDriverService, times(3)).manage();
     }
 
     @Test
@@ -395,7 +397,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
 
         Assert.assertEquals(webEventService.getUrl(), DEFAULT_URL + "myDetails/1234");
         verify(mockWebDriverService, times(2)).getCurrentUrl();
-        verify(mockWebDriverService, times(2)).manage();
+        verify(mockWebDriverService, times(3)).manage();
     }
 
     @Test
@@ -408,7 +410,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
 
         Assert.assertEquals(webEventService.getUrl(), DEFAULT_URL + "myDetails/777");
         verify(mockWebDriverService, times(2)).getCurrentUrl();
-        verify(mockWebDriverService, times(2)).manage();
+        verify(mockWebDriverService, times(3)).manage();
     }
 
     @Test
@@ -421,7 +423,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
 
         Assert.assertEquals(webEventService.getUrl(), DEFAULT_URL + "foobar");
         verify(mockWebDriverService, times(2)).getCurrentUrl();
-        verify(mockWebDriverService, times(2)).manage();
+        verify(mockWebDriverService, times(3)).manage();
     }
 
     @Test
@@ -1413,7 +1415,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
         webEventService.elementAttribute("777", WebElementAttribute.CHECKED, "", false);
     }
 
-    @Test(expected = IndexOutOfBoundsException.class)
+    @Test
     public void elementTextContainsSelectTest() {
         when(specialMockWebElement.isDisplayed()).thenReturn(true);
         when(specialMockWebElement.getTagName()).thenReturn(WebElementType.SELECT.type);
