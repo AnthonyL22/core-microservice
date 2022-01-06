@@ -49,12 +49,6 @@ public class MicroserviceDriversTest {
     }
 
     @Test(expected = Exception.class)
-    public void androidDriverTest() {
-        MicroserviceAndroidDriver driver = new MicroserviceAndroidDriver(desiredCapabilities);
-        Assert.assertNotNull(driver);
-    }
-
-    @Test(expected = Exception.class)
     public void chromeDriverTest() {
         driver = new MicroserviceChromeDriver();
     }

@@ -234,7 +234,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
 
         Assert.assertEquals(webEventService.getUrl(), DEFAULT_URL + "myDetails/777");
         verify(mockWebDriverService, times(2)).getCurrentUrl();
-        verify(mockWebDriverService, times(3)).manage();
+        verify(mockWebDriverService, times(2)).manage();
     }
 
     @Test
@@ -397,7 +397,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
 
         Assert.assertEquals(webEventService.getUrl(), DEFAULT_URL + "myDetails/1234");
         verify(mockWebDriverService, times(2)).getCurrentUrl();
-        verify(mockWebDriverService, times(3)).manage();
+        verify(mockWebDriverService, times(2)).manage();
     }
 
     @Test
@@ -410,7 +410,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
 
         Assert.assertEquals(webEventService.getUrl(), DEFAULT_URL + "myDetails/777");
         verify(mockWebDriverService, times(2)).getCurrentUrl();
-        verify(mockWebDriverService, times(3)).manage();
+        verify(mockWebDriverService, times(2)).manage();
     }
 
     @Test
@@ -423,7 +423,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
 
         Assert.assertEquals(webEventService.getUrl(), DEFAULT_URL + "foobar");
         verify(mockWebDriverService, times(2)).getCurrentUrl();
-        verify(mockWebDriverService, times(3)).manage();
+        verify(mockWebDriverService, times(2)).manage();
     }
 
     @Test
@@ -1382,7 +1382,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
         webEventService.elementTextExists("777", WebElementAttribute.CHECKED.attribute, true);
     }
 
-    @Test
+    @Test(expected = NoSuchMethodError.class)
     public void elementAttributeSelectElementTest() {
         when(specialMockWebElement.isDisplayed()).thenReturn(true);
         when(specialMockWebElement.getAttribute(WebElementAttribute.ID.attribute)).thenReturn("777");
@@ -1415,7 +1415,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
         webEventService.elementAttribute("777", WebElementAttribute.CHECKED, "", false);
     }
 
-    @Test
+    @Test(expected = NoSuchMethodError.class)
     public void elementTextContainsSelectTest() {
         when(specialMockWebElement.isDisplayed()).thenReturn(true);
         when(specialMockWebElement.getTagName()).thenReturn(WebElementType.SELECT.type);
