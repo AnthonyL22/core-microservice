@@ -4,6 +4,6 @@ import org.openqa.selenium.WebElement;
 
 public interface MicroserviceWebElement {
 
-    public void webAction(final WebElement webElement, final Object value);
+    void webAction(final WebElement webElement, final Object value);
 
 }
