@@ -137,6 +137,8 @@ public class WebEventController {
                 this.remoteWebDriver = getInternetExplorerBrowser();
             } else if (StringUtils.equals(System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY), FrameworkConstants.EDGE_BROWSER_MODE)) {
                 this.remoteWebDriver = getEdgeBrowser();
+            } else if (StringUtils.equals(System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY), FrameworkConstants.SAFARI_BROWSER_MODE)) {
+                this.remoteWebDriver = getSafariBrowser();
             } else {
                 this.remoteWebDriver = getChromeBrowser();
             }
@@ -597,7 +599,7 @@ public class WebEventController {
                 executable = PropertiesUtils.getFirstFileFromTestResources("edge_mac");
             }
             System.setProperty(FrameworkConstants.WEB_DRIVER_EDGE, PropertiesUtils.getPath(executable));
-        } else {
+        } else if (StringUtils.equalsIgnoreCase(DESIRED_BROWSER, FrameworkConstants.CHROME_BROWSER_MODE) || StringUtils.isEmpty(DESIRED_BROWSER)) {
             if (StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), WINDOWS_OS)) {
                 executable = PropertiesUtils.getFirstFileFromTestResources("chrome_win.exe");
             } else if (StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), LINUX_OS)) {
