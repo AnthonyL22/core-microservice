@@ -263,11 +263,9 @@ public class WebEventController {
         try {
 
             setDriverExecutable();
-            abstractDriverOptions.setAcceptInsecureCerts(true);
 
             if (isDigitalAIEnabled()) {
 
-                abstractDriverOptions.setCapability(CapabilityType.BROWSER_NAME, StringUtils.trim(System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY)));
                 abstractDriverOptions.setCapability(FrameworkConstants.EXPERITEST_ACCESS_KEY_PROPERTY, experitestAccesskey);
                 abstractDriverOptions.setCapability(FrameworkConstants.EXPERITEST_TEST_NAME_PROPERTY, this.currentTestName);
 
@@ -442,6 +440,40 @@ public class WebEventController {
     }
 
     /**
+     * Get Microsoft Edge Web Driver for local or RemoteWebDriver capability.
+     *
+     * @return MicroserviceWebDriver instance
+     */
+    public MicroserviceWebDriver getHeadlessEdgeBrowser() {
+
+        LOG("Starting Headless Microsoft Edge browser");
+        EdgeOptions browserOptions = (EdgeOptions) getBrowser(new EdgeOptions());
+        browserOptions.addArguments(SeleniumArgument.START_MAXIMIZED.getValue());
+        browserOptions.addArguments("headless");
+        browserOptions.addArguments("disable-gpu");
+
+        MicroserviceRemoteWebDriver microserviceRemoteWebDriver = null;
+        try {
+            if (browsermobEnabled) {
+                browserOptions.setCapability(CapabilityType.PROXY, setupProxy());
+            }
+            if (gridEnabled) {
+                if (this.remoteWebDriver == null) {
+                    microserviceRemoteWebDriver = new MicroserviceRemoteWebDriver(new URL(gridUrl), browserOptions);
+                    microserviceRemoteWebDriver.setFileDetector(new LocalFileDetector());
+                }
+            } else {
+                if (this.remoteWebDriver == null) {
+                    return (new MicroserviceEdgeDriver(browserOptions));
+                }
+            }
+        } catch (Exception e) {
+            LOG(true, "Failed to initiate Edge driver due to exception=%s", e);
+        }
+        return microserviceRemoteWebDriver;
+    }
+
+    /**
      * Get Internet Explorer Web Driver for local or RemoteWebDriver capability.
      *
      * @return MicroserviceWebDriver instance
@@ -512,7 +544,7 @@ public class WebEventController {
 
         LOG("Starting Firefox browser");
         FirefoxOptions browserOptions = (FirefoxOptions) getBrowser(new FirefoxOptions());
-        browserOptions.addArguments(SeleniumArgument.START_MAXIMIZED.getValue());
+        //browserOptions.addArguments(SeleniumArgument.START_MAXIMIZED.getValue());
 
         MicroserviceRemoteWebDriver microserviceRemoteWebDriver = null;
         try {
