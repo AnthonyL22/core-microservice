@@ -608,7 +608,7 @@ public class WebEventController {
      */
     protected void setDriverExecutable() {
 
-        final String DESIRED_BROWSER = StringUtils.defaultIfBlank(System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY), "");
+        final String DESIRED_BROWSER = StringUtils.defaultIfBlank(System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY), FrameworkConstants.CHROME_BROWSER_MODE);
         File executable;
 
         if (StringUtils.equalsIgnoreCase(DESIRED_BROWSER, FrameworkConstants.FIREFOX_BROWSER_MODE) || StringUtils.equalsIgnoreCase(DESIRED_BROWSER, FrameworkConstants.HEADLESS_FIREFOX_BROWSER_MODE)) {
