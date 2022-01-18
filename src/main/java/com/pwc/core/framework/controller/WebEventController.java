@@ -640,6 +640,7 @@ public class WebEventController {
                 executable = PropertiesUtils.getFirstFileFromTestResources("chrome_mac");
             }
             System.setProperty(FrameworkConstants.WEB_DRIVER_CHROME, PropertiesUtils.getPath(executable));
+            System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.CHROME_BROWSER_MODE);
         }
     }
 
