@@ -2,6 +2,8 @@ package com.pwc.core.framework.util;
 
 import org.openqa.selenium.WebElement;
 
+import static com.pwc.logging.service.LoggerService.LOG;
+
 public class WebElementUtils {
 
     /**
@@ -16,7 +18,7 @@ public class WebElementUtils {
             xpath.append(org.apache.commons.lang3.StringUtils.substringBetween(webElement.toString(), "xpath:", "]]").trim());
             xpath.append("]");
         } catch (Exception e) {
-            xpath.append("");
+            LOG(false, "Exception e=%s", e);
         }
         return xpath.toString();
     }

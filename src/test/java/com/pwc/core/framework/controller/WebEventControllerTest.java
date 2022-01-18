@@ -6,13 +6,10 @@ import com.pwc.core.framework.data.Credentials;
 import com.pwc.core.framework.driver.MicroserviceWebDriver;
 import com.pwc.core.framework.service.WebEventService;
 import com.pwc.core.framework.util.PropertiesUtils;
-import net.lightbody.bmp.BrowserMobProxy;
-import net.lightbody.bmp.filters.ResponseFilter;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -40,15 +37,12 @@ public class WebEventControllerTest {
     private Map<String, String> sauceEnvVariableMap;
     private DesiredCapabilities mockDesiredCapabilities;
     private Credentials credentials;
-    private BrowserMobProxy mockBrowserProxy;
-    private ResponseFilter mockResponseFilter;
 
     @Before
     public void setUp() {
 
         credentials = new Credentials("foo", "bar");
 
-        mockBrowserProxy = mock(BrowserMobProxy.class);
         mockWebElement = mock(WebElement.class);
         mockWebDriverService = mock(MicroserviceWebDriver.class);
         when(mockWebDriverService.executeScript("return document.readyState")).thenReturn("complete");
@@ -57,7 +51,6 @@ public class WebEventControllerTest {
         webEventService = new WebEventService();
 
         mockDesiredCapabilities = mock(DesiredCapabilities.class);
-        webEventController.setCapabilities(mockDesiredCapabilities);
         when(mockWebDriverService.getCapabilities()).thenReturn(mockDesiredCapabilities);
         webEventController.setReadableTestName("testInventionListViewExport");
 
@@ -80,11 +73,6 @@ public class WebEventControllerTest {
         envVariable.put(FrameworkConstants.SAUCELABS_TUNNEL_IDENTIFIER_PROPERTY, UNIT_TEST_TUNNEL_IDENTIFIER);
         PropertiesUtils.setEnv(envVariable);
 
-        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, "");
-        webEventController.setDefaultDesiredCapabilities();
-        DesiredCapabilities actualDesiredCapabilities = webEventController.getCapabilities();
-        Assert.assertEquals(actualDesiredCapabilities.getCapability(FrameworkConstants.TUNNEL_IDENTIFIER_CAPABILITY), UNIT_TEST_TUNNEL_IDENTIFIER);
-
     }
 
     @Test
@@ -95,11 +83,6 @@ public class WebEventControllerTest {
         HashMap<String, String> envVariable = new HashMap();
         envVariable.put(FrameworkConstants.SAUCELABS_TUNNEL_IDENTIFIER_PROPERTY, "");
         PropertiesUtils.setEnv(envVariable);
-
-        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, "");
-        webEventController.setDefaultDesiredCapabilities();
-        DesiredCapabilities actualDesiredCapabilities = webEventController.getCapabilities();
-        Assert.assertNull(actualDesiredCapabilities.getCapability(FrameworkConstants.TUNNEL_IDENTIFIER_CAPABILITY));
 
     }
 
@@ -114,16 +97,7 @@ public class WebEventControllerTest {
         envVariable.put(FrameworkConstants.SAUCELABS_PLATFORM_PROPERTY, "Windows 10");
         PropertiesUtils.setEnv(envVariable);
 
-        webEventController.setDefaultDesiredCapabilities();
-
-        DesiredCapabilities actualDesiredCapabilities = webEventController.getCapabilities();
-        Assert.assertTrue(actualDesiredCapabilities.isJavascriptEnabled());
-        Assert.assertTrue((Boolean) actualDesiredCapabilities.getCapability("takesScreenshot"));
-
         Assert.assertNotEquals(System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY), "");
-        Assert.assertNotEquals(webEventController.getCapabilities().getCapability(CapabilityType.PLATFORM), "");
-        Assert.assertNotEquals(webEventController.getCapabilities().getCapability(CapabilityType.VERSION), "");
-
         Assert.assertNotEquals(System.getenv(FrameworkConstants.SAUCELABS_BROWSER_PROPERTY), "");
         Assert.assertNotEquals(System.getenv(FrameworkConstants.SAUCELABS_BROWSER_VERSION_PROPERTY), "");
         Assert.assertNotEquals(System.getenv(FrameworkConstants.SAUCELABS_PLATFORM_PROPERTY), "");
@@ -136,87 +110,6 @@ public class WebEventControllerTest {
         envVariable.put(FrameworkConstants.SAUCELABS_BROWSER_PROPERTY, "Firefox");
         PropertiesUtils.setEnv(envVariable);
 
-        webEventController.setDefaultDesiredCapabilities();
-
-        DesiredCapabilities actualDesiredCapabilities = webEventController.getCapabilities();
-        Assert.assertTrue(actualDesiredCapabilities.isJavascriptEnabled());
-        Assert.assertTrue((Boolean) actualDesiredCapabilities.getCapability("takesScreenshot"));
-
-        Assert.assertNotNull(webEventController.getCapabilities().getCapability(CapabilityType.PLATFORM));
-        Assert.assertNotNull(webEventController.getCapabilities().getCapability(CapabilityType.VERSION));
-
-    }
-
-    @Test
-    public void setBrowserDefaultsTest() {
-        resetSauceLabsEnvVariableMap();
-        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, "");
-        webEventController.setDefaultDesiredCapabilities();
-        DesiredCapabilities actualDesiredCapabilities = webEventController.getCapabilities();
-        Assert.assertTrue(actualDesiredCapabilities.isJavascriptEnabled());
-        Assert.assertTrue((Boolean) actualDesiredCapabilities.getCapability("takesScreenshot"));
-        Assert.assertEquals(System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY), FrameworkConstants.CHROME_BROWSER_MODE);
-    }
-
-    @Test
-    public void setPlatformNoPlatformSpecifiedTest() {
-        System.setProperty(FrameworkConstants.AUTOMATION_PLATFORM_PROPERTY, "");
-        webEventController.setDefaultDesiredCapabilities();
-        Assert.assertEquals(webEventController.getCapabilities().getCapability(CapabilityType.PLATFORM).toString(), Platform.ANY.name());
-    }
-
-    @Test
-    public void setPlatformWindowsTest() {
-        System.setProperty(FrameworkConstants.AUTOMATION_PLATFORM_PROPERTY, "windows");
-        webEventController.setDefaultDesiredCapabilities();
-        Assert.assertEquals(webEventController.getCapabilities().getCapability(CapabilityType.PLATFORM).toString(), Platform.WINDOWS.name());
-    }
-
-    @Test
-    public void setPlatformLinuxTest() {
-
-        HashMap<String, String> envVariable = new HashMap();
-        envVariable.put(FrameworkConstants.SAUCELABS_BROWSER_PROPERTY, "");
-        PropertiesUtils.setEnv(envVariable);
-
-        System.setProperty(FrameworkConstants.AUTOMATION_PLATFORM_PROPERTY, "linux");
-        webEventController.setDefaultDesiredCapabilities();
-        Assert.assertEquals(webEventController.getCapabilities().getCapability(CapabilityType.PLATFORM).toString(), Platform.LINUX.toString());
-    }
-
-    @Test
-    public void setPlatformMacTest() {
-        System.setProperty(FrameworkConstants.AUTOMATION_PLATFORM_PROPERTY, "mac");
-        webEventController.setDefaultDesiredCapabilities();
-        Assert.assertNotNull(webEventController.getCapabilities().getCapability(CapabilityType.PLATFORM));
-    }
-
-    @Test
-    public void setPlatformOsxTest() {
-        System.setProperty(FrameworkConstants.AUTOMATION_PLATFORM_PROPERTY, "osx");
-        webEventController.setDefaultDesiredCapabilities();
-        Assert.assertEquals(webEventController.getCapabilities().getCapability(CapabilityType.PLATFORM).toString(), Platform.EL_CAPITAN.toString());
-    }
-
-    @Test
-    public void setPlatformOsxWithVersionTest() {
-        System.setProperty(FrameworkConstants.AUTOMATION_PLATFORM_PROPERTY, "osx 10.9");
-        webEventController.setDefaultDesiredCapabilities();
-        Assert.assertEquals(webEventController.getCapabilities().getCapability(CapabilityType.PLATFORM).toString(), Platform.MAVERICKS.toString());
-    }
-
-    @Test
-    public void setPlatformOsxWithSpacesTest() {
-        System.setProperty(FrameworkConstants.AUTOMATION_PLATFORM_PROPERTY, "os x 10.11");
-        webEventController.setDefaultDesiredCapabilities();
-        Assert.assertNotNull(webEventController.getCapabilities().getCapability(CapabilityType.PLATFORM).toString());
-    }
-
-    @Test
-    public void setPlatformDefaultPlatformAutomaticallyAssignedTest() {
-        System.setProperty(FrameworkConstants.AUTOMATION_PLATFORM_PROPERTY, "bad platform name");
-        webEventController.setDefaultDesiredCapabilities();
-        Assert.assertNotNull(webEventController.getCapabilities().getCapability(CapabilityType.PLATFORM));
     }
 
     @Test(expected = AssertionError.class)
@@ -256,20 +149,13 @@ public class WebEventControllerTest {
         webEventController.initiateBrowser(null);
         Assert.assertEquals(System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY), FrameworkConstants.CHROME_BROWSER_MODE);
         Assert.assertNotNull(System.getProperty(FrameworkConstants.AUTOMATION_PLATFORM_PROPERTY));
-        Assert.assertNotNull(webEventController.getCapabilities().getCapability(CapabilityType.PLATFORM));
-        Assert.assertTrue(webEventController.getCapabilities().isJavascriptEnabled());
-        Assert.assertEquals(webEventController.getCapabilities().getCapability("takesScreenshot"), true);
+        Assert.assertNotNull(webEventController.getChromeBrowser().getCapabilities().getCapability(CapabilityType.PLATFORM));
+        Assert.assertEquals(webEventController.getChromeBrowser().getCapabilities().getCapability("takesScreenshot"), true);
     }
 
     @Test(expected = AssertionError.class)
     public void initiateBrowserInvalidInternetExploreBrowserDriverLocationTest() {
         System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.INTERNET_EXPLORER_BROWSER_MODE);
-        webEventController.initiateBrowser(null);
-    }
-
-    @Test(expected = AssertionError.class)
-    public void initiateBrowserInvalidPhantomJsBrowserDriverLocationTest() {
-        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.PHANTOM_JS_BROWSER_MODE);
         webEventController.initiateBrowser(null);
     }
 
@@ -315,7 +201,7 @@ public class WebEventControllerTest {
         webEventController.setRemoteWebDriver(mockWebDriverService);
         webEventController.setGridEnabled(true);
         webEventController.setGridUrl(GRID_URL);
-        MicroserviceWebDriver result = webEventController.getIOSBrowser();
+        MicroserviceWebDriver result = webEventController.getSafariBrowser();
         Assert.assertNull(result);
     }
 
@@ -326,20 +212,6 @@ public class WebEventControllerTest {
         webEventController.setGridUrl(GRID_URL);
         MicroserviceWebDriver result = webEventController.getFirefoxBrowser();
         Assert.assertNull(result);
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void getIOSBrowserGridNoExistingLiveRemoteDriverTest() throws Exception {
-        webEventController.setGridEnabled(true);
-        webEventController.setGridUrl(GRID_URL);
-        webEventController.getIOSBrowser();
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void getFirefoxBrowserGridNoExistingLiveRemoteDriverTest() throws MalformedURLException {
-        webEventController.setGridEnabled(true);
-        webEventController.setGridUrl(GRID_URL);
-        webEventController.getFirefoxBrowser();
     }
 
     @Test()
@@ -358,15 +230,14 @@ public class WebEventControllerTest {
         webEventController.setGridEnabled(false);
         webEventController.setGridUrl(GRID_URL);
         webEventController.getFirefoxBrowser();
-        MicroserviceWebDriver result = webEventController.getIOSBrowser();
+        MicroserviceWebDriver result = webEventController.getSafariBrowser();
         Assert.assertNull(result);
     }
 
     @Test
     public void setDriverExecutableTest() {
         System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, "");
-        String driverPath = webEventController.setDriverExecutable();
-        Assert.assertEquals(driverPath, "");
+        webEventController.setDriverExecutable();
     }
 
     @Test
@@ -374,8 +245,7 @@ public class WebEventControllerTest {
         System.setProperty(FrameworkConstants.MAC_SYSTEM_OS_NAME, "");
         System.setProperty(FrameworkConstants.SYSTEM_OS_NAME, "windows 10");
         System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.EDGE_BROWSER_MODE);
-        String driverPath = webEventController.setDriverExecutable();
-        Assert.assertEquals(driverPath, "");
+        webEventController.setDriverExecutable();
         Assert.assertEquals(System.getProperty(FrameworkConstants.WEB_DRIVER_EDGE), "");
     }
 
@@ -384,8 +254,7 @@ public class WebEventControllerTest {
         System.setProperty(FrameworkConstants.MAC_SYSTEM_OS_NAME, "");
         System.setProperty(FrameworkConstants.SYSTEM_OS_NAME, "windows 10");
         System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.FIREFOX_BROWSER_MODE);
-        String driverPath = webEventController.setDriverExecutable();
-        Assert.assertEquals(driverPath, "");
+        webEventController.setDriverExecutable();
         Assert.assertEquals(System.getProperty(FrameworkConstants.WEB_DRIVER_GECKO), "");
     }
 
@@ -394,8 +263,7 @@ public class WebEventControllerTest {
         System.setProperty(FrameworkConstants.SYSTEM_OS_NAME, "");
         System.setProperty(FrameworkConstants.MAC_SYSTEM_OS_NAME, "Mac OSX");
         System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.FIREFOX_BROWSER_MODE);
-        String driverPath = webEventController.setDriverExecutable();
-        Assert.assertEquals(driverPath, "");
+        webEventController.setDriverExecutable();
         Assert.assertEquals(System.getProperty(FrameworkConstants.WEB_DRIVER_GECKO), "");
     }
 
@@ -404,8 +272,7 @@ public class WebEventControllerTest {
         System.setProperty(FrameworkConstants.SYSTEM_OS_NAME, "Linux");
         System.setProperty(FrameworkConstants.MAC_SYSTEM_OS_NAME, "");
         System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.FIREFOX_BROWSER_MODE);
-        String driverPath = webEventController.setDriverExecutable();
-        Assert.assertEquals(driverPath, "");
+        webEventController.setDriverExecutable();
         Assert.assertEquals(System.getProperty(FrameworkConstants.WEB_DRIVER_GECKO), "");
     }
 
@@ -414,8 +281,7 @@ public class WebEventControllerTest {
         System.setProperty(FrameworkConstants.MAC_SYSTEM_OS_NAME, "");
         System.setProperty(FrameworkConstants.SYSTEM_OS_NAME, "windows 10");
         System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.HEADLESS_FIREFOX_BROWSER_MODE);
-        String driverPath = webEventController.setDriverExecutable();
-        Assert.assertEquals(driverPath, "");
+        webEventController.setDriverExecutable();
         Assert.assertEquals(System.getProperty(FrameworkConstants.WEB_DRIVER_GECKO), "");
     }
 
@@ -424,8 +290,7 @@ public class WebEventControllerTest {
         System.setProperty(FrameworkConstants.SYSTEM_OS_NAME, "");
         System.setProperty(FrameworkConstants.MAC_SYSTEM_OS_NAME, "Mac OSX");
         System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.HEADLESS_FIREFOX_BROWSER_MODE);
-        String driverPath = webEventController.setDriverExecutable();
-        Assert.assertEquals(driverPath, "");
+        webEventController.setDriverExecutable();
         Assert.assertEquals(System.getProperty(FrameworkConstants.WEB_DRIVER_GECKO), "");
     }
 
@@ -434,8 +299,7 @@ public class WebEventControllerTest {
         System.setProperty(FrameworkConstants.SYSTEM_OS_NAME, "");
         System.setProperty(FrameworkConstants.MAC_SYSTEM_OS_NAME, "");
         System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.HEADLESS_FIREFOX_BROWSER_MODE);
-        String driverPath = webEventController.setDriverExecutable();
-        Assert.assertEquals(driverPath, "");
+        webEventController.setDriverExecutable();
         Assert.assertEquals(System.getProperty(FrameworkConstants.WEB_DRIVER_GECKO), "");
     }
 
@@ -444,8 +308,7 @@ public class WebEventControllerTest {
         System.setProperty(FrameworkConstants.MAC_SYSTEM_OS_NAME, "");
         System.setProperty(FrameworkConstants.SYSTEM_OS_NAME, "windows 10");
         System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.CHROME_BROWSER_MODE);
-        String driverPath = webEventController.setDriverExecutable();
-        Assert.assertEquals(driverPath, "");
+        webEventController.setDriverExecutable();
         Assert.assertEquals(System.getProperty(FrameworkConstants.WEB_DRIVER_CHROME), "");
     }
 
@@ -454,8 +317,7 @@ public class WebEventControllerTest {
         System.setProperty(FrameworkConstants.SYSTEM_OS_NAME, "");
         System.setProperty(FrameworkConstants.MAC_SYSTEM_OS_NAME, "Mac OSX");
         System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.CHROME_BROWSER_MODE);
-        String driverPath = webEventController.setDriverExecutable();
-        Assert.assertEquals(driverPath, "");
+        webEventController.setDriverExecutable();
         Assert.assertEquals(System.getProperty(FrameworkConstants.WEB_DRIVER_CHROME), "");
     }
 
@@ -464,8 +326,7 @@ public class WebEventControllerTest {
         System.setProperty(FrameworkConstants.SYSTEM_OS_NAME, "Linux");
         System.setProperty(FrameworkConstants.MAC_SYSTEM_OS_NAME, "");
         System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.CHROME_BROWSER_MODE);
-        String driverPath = webEventController.setDriverExecutable();
-        Assert.assertEquals(driverPath, "");
+        webEventController.setDriverExecutable();
         Assert.assertEquals(System.getProperty(FrameworkConstants.WEB_DRIVER_CHROME), "");
     }
 
@@ -474,8 +335,7 @@ public class WebEventControllerTest {
         System.setProperty(FrameworkConstants.MAC_SYSTEM_OS_NAME, "");
         System.setProperty(FrameworkConstants.SYSTEM_OS_NAME, "windows 10");
         System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.HEADLESS_CHROME_BROWSER_MODE);
-        String driverPath = webEventController.setDriverExecutable();
-        Assert.assertEquals(driverPath, "");
+        webEventController.setDriverExecutable();
         Assert.assertEquals(System.getProperty(FrameworkConstants.WEB_DRIVER_CHROME), "");
     }
 
@@ -484,8 +344,7 @@ public class WebEventControllerTest {
         System.setProperty(FrameworkConstants.SYSTEM_OS_NAME, "");
         System.setProperty(FrameworkConstants.MAC_SYSTEM_OS_NAME, "Mac OSX");
         System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.HEADLESS_CHROME_BROWSER_MODE);
-        String driverPath = webEventController.setDriverExecutable();
-        Assert.assertEquals(driverPath, "");
+        webEventController.setDriverExecutable();
         Assert.assertEquals(System.getProperty(FrameworkConstants.WEB_DRIVER_CHROME), "");
     }
 
@@ -494,48 +353,15 @@ public class WebEventControllerTest {
         System.setProperty(FrameworkConstants.SYSTEM_OS_NAME, "");
         System.setProperty(FrameworkConstants.MAC_SYSTEM_OS_NAME, "");
         System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.HEADLESS_CHROME_BROWSER_MODE);
-        String driverPath = webEventController.setDriverExecutable();
-        Assert.assertEquals(driverPath, "");
+        webEventController.setDriverExecutable();
         Assert.assertEquals(System.getProperty(FrameworkConstants.WEB_DRIVER_CHROME), "");
     }
 
     @Test
     public void setDriverExecutableInternetExplorerDriverTest() {
         System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.INTERNET_EXPLORER_BROWSER_MODE);
-        String driverPath = webEventController.setDriverExecutable();
-        Assert.assertEquals(driverPath, "");
-        Assert.assertEquals(System.getProperty(FrameworkConstants.WEB_DRIVER_IE), "");
-    }
-
-    @Test
-    public void setDriverExecutablePhantomJsDriverTest() {
-        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.PHANTOM_JS_BROWSER_MODE);
         webEventController.setDriverExecutable();
-    }
-
-    @Test()
-    public void getPhantomJsBrowserGridExistingLiveRemoteDriverTest() throws MalformedURLException {
-        webEventController.setRemoteWebDriver(mockWebDriverService);
-        webEventController.setGridEnabled(true);
-        webEventController.setGridUrl(GRID_URL);
-        MicroserviceWebDriver result = webEventController.getPhantomJsBrowser();
-        Assert.assertNull(result);
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void getPhantomJsBrowserGridNoExistingLiveRemoteDriverTest() throws MalformedURLException {
-        webEventController.setGridEnabled(true);
-        webEventController.setGridUrl(GRID_URL);
-        webEventController.getPhantomJsBrowser();
-    }
-
-    @Test()
-    public void getPhantomJsBrowserNoGridExistingLiveRemoteDriverTest() throws MalformedURLException {
-        webEventController.setRemoteWebDriver(mockWebDriverService);
-        webEventController.setGridEnabled(false);
-        webEventController.setGridUrl(GRID_URL);
-        MicroserviceWebDriver result = webEventController.getPhantomJsBrowser();
-        Assert.assertNull(result);
+        Assert.assertEquals(System.getProperty(FrameworkConstants.WEB_DRIVER_IE), "");
     }
 
     @Test()
@@ -547,13 +373,6 @@ public class WebEventControllerTest {
         Assert.assertNull(result);
     }
 
-    @Test(expected = NullPointerException.class)
-    public void getEdgeBrowserNoExistingLiveRemoteDriverTest() throws MalformedURLException {
-        webEventController.setGridEnabled(true);
-        webEventController.setGridUrl(GRID_URL);
-        webEventController.getEdgeBrowser();
-    }
-
     @Test()
     public void getSafariBrowserGridExistingLiveRemoteDriverTest() throws MalformedURLException {
         webEventController.setRemoteWebDriver(mockWebDriverService);
@@ -561,13 +380,6 @@ public class WebEventControllerTest {
         webEventController.setGridUrl(GRID_URL);
         MicroserviceWebDriver result = webEventController.getSafariBrowser();
         Assert.assertNull(result);
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void getSafariGridNoExistingLiveRemoteDriverTest() throws MalformedURLException {
-        webEventController.setGridEnabled(true);
-        webEventController.setGridUrl(GRID_URL);
-        webEventController.getSafariBrowser();
     }
 
     @Test()
@@ -587,13 +399,6 @@ public class WebEventControllerTest {
         webEventController.setGridUrl(GRID_URL);
         MicroserviceWebDriver result = webEventController.getInternetExplorerBrowser();
         Assert.assertNull(result);
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void getInternetExplorerBrowserGridNoExistingLiveRemoteDriverTest() throws MalformedURLException {
-        webEventController.setGridEnabled(true);
-        webEventController.setGridUrl(GRID_URL);
-        webEventController.getInternetExplorerBrowser();
     }
 
     @Test()

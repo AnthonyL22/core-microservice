@@ -2,11 +2,10 @@ package com.pwc.core.framework.controller;
 
 import com.pwc.core.framework.FrameworkConstants;
 import com.pwc.core.framework.data.Credentials;
-import com.pwc.core.framework.driver.MicroserviceAndroidDriver;
+import com.pwc.core.framework.data.SeleniumArgument;
 import com.pwc.core.framework.driver.MicroserviceChromeDriver;
 import com.pwc.core.framework.driver.MicroserviceEdgeDriver;
 import com.pwc.core.framework.driver.MicroserviceFirefoxDriver;
-import com.pwc.core.framework.driver.MicroserviceIOSDriver;
 import com.pwc.core.framework.driver.MicroserviceInternetExplorerDriver;
 import com.pwc.core.framework.driver.MicroserviceRemoteWebDriver;
 import com.pwc.core.framework.driver.MicroserviceSafariDriver;
@@ -28,16 +27,14 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.firefox.FirefoxBinary;
+import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxOptions;
-import org.openqa.selenium.logging.LogType;
-import org.openqa.selenium.logging.LoggingPreferences;
-import org.openqa.selenium.phantomjs.PhantomJSDriverService;
-import org.openqa.selenium.remote.BrowserType;
+import org.openqa.selenium.ie.InternetExplorerOptions;
+import org.openqa.selenium.remote.AbstractDriverOptions;
 import org.openqa.selenium.remote.CapabilityType;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.LocalFileDetector;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.safari.SafariOptions;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
@@ -46,10 +43,10 @@ import org.testng.Reporter;
 
 import java.io.File;
 import java.net.Inet4Address;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
-import java.util.logging.Level;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -113,7 +110,6 @@ public class WebEventController {
 
     private MicroserviceWebDriver remoteWebDriver;
     private WebEventService webEventService;
-    private DesiredCapabilities capabilities;
     private String currentTestName;
     private String currentJobId;
     private BrowserMobProxy browserProxy;
@@ -126,52 +122,25 @@ public class WebEventController {
     public void initiateBrowser(final Credentials credentials) {
         try {
 
-            setDefaultDesiredCapabilities();
-
-            switch (System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY)) {
-                case FrameworkConstants.FIREFOX_BROWSER_MODE: {
-                    this.remoteWebDriver = getFirefoxBrowser();
-                    break;
-                }
-                case FrameworkConstants.HEADLESS_FIREFOX_BROWSER_MODE: {
-                    this.remoteWebDriver = getHeadlessFirefoxBrowser();
-                    break;
-                }
-                case FrameworkConstants.CHROME_BROWSER_MODE: {
-                    this.remoteWebDriver = getChromeBrowser();
-                    break;
-                }
-                case FrameworkConstants.HEADLESS_CHROME_BROWSER_MODE: {
-                    this.remoteWebDriver = getHeadlessChromeBrowser();
-                    break;
-                }
-                case FrameworkConstants.ANDROID_MODE: {
-                    this.remoteWebDriver = getAndroidBrowser();
-                    break;
-                }
-                case FrameworkConstants.IOS_MODE: {
-                    this.remoteWebDriver = getIOSBrowser();
-                    break;
-                }
-                case FrameworkConstants.INTERNET_EXPLORER_BROWSER_MODE: {
-                    this.remoteWebDriver = getInternetExplorerBrowser();
-                    break;
-                }
-                case FrameworkConstants.EDGE_BROWSER_MODE: {
-                    this.remoteWebDriver = getEdgeBrowser();
-                    break;
-                }
-                case FrameworkConstants.SAFARI_BROWSER_MODE: {
-                    this.remoteWebDriver = getSafariBrowser();
-                    break;
-                }
-                case FrameworkConstants.PHANTOM_JS_BROWSER_MODE: {
-                    this.remoteWebDriver = getPhantomJsBrowser();
-                    break;
-                }
-                default: {
-                    this.remoteWebDriver = getAnyBrowser();
-                }
+            if (StringUtils.isEmpty(System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY))
+                            || StringUtils.equals(System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY), FrameworkConstants.CHROME_BROWSER_MODE)) {
+                this.remoteWebDriver = getChromeBrowser();
+            } else if (StringUtils.equals(System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY), FrameworkConstants.HEADLESS_CHROME_BROWSER_MODE)) {
+                this.remoteWebDriver = getHeadlessChromeBrowser();
+            } else if (StringUtils.equals(System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY), FrameworkConstants.FIREFOX_BROWSER_MODE)) {
+                this.remoteWebDriver = getFirefoxBrowser();
+            } else if (StringUtils.equals(System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY), FrameworkConstants.HEADLESS_FIREFOX_BROWSER_MODE)) {
+                this.remoteWebDriver = getHeadlessFirefoxBrowser();
+            } else if (StringUtils.equals(System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY), FrameworkConstants.IOS_MODE)) {
+                this.remoteWebDriver = getSafariBrowser();
+            } else if (StringUtils.equals(System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY), FrameworkConstants.INTERNET_EXPLORER_BROWSER_MODE)) {
+                this.remoteWebDriver = getInternetExplorerBrowser();
+            } else if (StringUtils.equals(System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY), FrameworkConstants.EDGE_BROWSER_MODE)) {
+                this.remoteWebDriver = getEdgeBrowser();
+            } else if (StringUtils.equals(System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY), FrameworkConstants.SAFARI_BROWSER_MODE)) {
+                this.remoteWebDriver = getSafariBrowser();
+            } else {
+                this.remoteWebDriver = getChromeBrowser();
             }
 
             currentJobId = ((RemoteWebDriver) this.remoteWebDriver).getSessionId().toString();
@@ -182,8 +151,9 @@ public class WebEventController {
             }
 
             try {
-                int width = Integer.parseInt(StringUtils.substringBefore(capabilities.getCapability(FrameworkConstants.SCREEN_RESOLUTION_CAPABILITY).toString(), "x"));
-                int height = Integer.parseInt(StringUtils.substringAfter(capabilities.getCapability(FrameworkConstants.SCREEN_RESOLUTION_CAPABILITY).toString(), "x"));
+                String resolution = GridUtils.initBrowserResolution();
+                int width = Integer.parseInt(StringUtils.substringBefore(resolution, "x"));
+                int height = Integer.parseInt(StringUtils.substringAfter(resolution, "x"));
                 this.remoteWebDriver.manage().window().setSize(new Dimension(width, height));
             } catch (Exception e) {
                 LOG(false, "unable to set window size");
@@ -227,7 +197,7 @@ public class WebEventController {
                 String updatedContents;
                 boolean isRegex;
                 try {
-                    if (find.matches(FrameworkConstants.REGEX_XPATH_FINDER)) {
+                    if (find.matches(FrameworkConstants.XPATH_REGEX)) {
                         isRegex = true;
                     } else if (StringUtils.contains(find, "*") && StringUtils.contains(find, "?") && StringUtils.contains(find, ".")) {
                         isRegex = true;
@@ -261,559 +231,417 @@ public class WebEventController {
     }
 
     /**
-     * Set all browser based runtime capabilities for.
-     * - browser type
-     * - browser version
-     * - screen resolution
-     * - platform (OS)
+     * Check if Sauce Labs is being used by the downstream user.
+     *
+     * @return sauce labs enabled | disabled flag
      */
-    protected void setDefaultDesiredCapabilities() {
+    private boolean isSauceLabsEnabled() {
 
-        constructTestName();
-
-        capabilities = new DesiredCapabilities();
-
-        if (!StringUtils.isEmpty(System.getenv(FrameworkConstants.SAUCELABS_BROWSER_PROPERTY)) && !StringUtils.isEmpty(System.getenv(FrameworkConstants.SAUCELABS_BROWSER_VERSION_PROPERTY))
-                        && !StringUtils.isEmpty(System.getenv(FrameworkConstants.SAUCELABS_PLATFORM_PROPERTY))) {
-
-            LOG(true, "Initiating Sauce-OnDemand test execution with browser='%s', version='%s', platform='%s'", System.getenv(FrameworkConstants.SAUCELABS_BROWSER_PROPERTY),
-                            System.getenv(FrameworkConstants.SAUCELABS_BROWSER_VERSION_PROPERTY), System.getenv(FrameworkConstants.SAUCELABS_PLATFORM_PROPERTY));
-
-            capabilities.setBrowserName(System.getenv(FrameworkConstants.SAUCELABS_BROWSER_PROPERTY));
-            capabilities.setCapability(CapabilityType.VERSION, System.getenv(FrameworkConstants.SAUCELABS_BROWSER_VERSION_PROPERTY));
-            capabilities.setCapability(CapabilityType.PLATFORM, System.getenv(FrameworkConstants.SAUCELABS_PLATFORM_PROPERTY));
-            capabilities.setCapability(FrameworkConstants.AUTOMATION_DEVICE_NAME_PROPERTY, StringUtils.trim(System.getProperty(FrameworkConstants.AUTOMATION_DEVICE_NAME_PROPERTY)));
-            capabilities.setCapability(FrameworkConstants.AUTOMATION_ORIENTATION_PROPERTY, StringUtils.trim(System.getProperty(FrameworkConstants.AUTOMATION_ORIENTATION_PROPERTY)));
-
-            System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, System.getenv(FrameworkConstants.SAUCELABS_BROWSER_PROPERTY));
-
-        } else if (isBrowserStackEnabled()) {
-
-            GridUtils.initBrowserType();
-
-            capabilities.setCapability(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, StringUtils.trim(System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY)));
-            capabilities.setCapability(FrameworkConstants.BROWSER_STACK_BROWSER_VERSION_PROPERTY, StringUtils.trim(System.getProperty(FrameworkConstants.BROWSER_STACK_BROWSER_VERSION_PROPERTY)));
-            if (StringUtils.isEmpty(System.getProperty(FrameworkConstants.BROWSER_STACK_OS_PROPERTY))) {
-                capabilities.setCapability(FrameworkConstants.BROWSER_STACK_OS_PROPERTY, WINDOWS_OS);
-            } else {
-                capabilities.setCapability(FrameworkConstants.BROWSER_STACK_OS_PROPERTY, StringUtils.trim(System.getProperty(FrameworkConstants.BROWSER_STACK_OS_PROPERTY)));
-            }
-            capabilities.setCapability(FrameworkConstants.BROWSER_STACK_OS_VERSION_PROPERTY, StringUtils.trim(System.getProperty(FrameworkConstants.BROWSER_STACK_OS_VERSION_PROPERTY)));
-            capabilities.setCapability(FrameworkConstants.BROWSER_STACK_RESOLUTION_PROPERTY, StringUtils.trim(System.getProperty(FrameworkConstants.BROWSER_STACK_RESOLUTION_PROPERTY)));
-            capabilities.setCapability(FrameworkConstants.BROWSER_STACK_LOCAL_PROPERTY, browserstackLocal);
-            capabilities.setCapability(FrameworkConstants.BROWSER_STACK_LOCAL_IDENTIFIER_PROPERTY, StringUtils.trim(System.getProperty(FrameworkConstants.BROWSER_STACK_LOCAL_IDENTIFIER_PROPERTY)));
-            capabilities.setCapability(FrameworkConstants.BROWSER_STACK_PROJECT_PROPERTY, StringUtils.trim(System.getProperty(FrameworkConstants.BROWSER_STACK_PROJECT_PROPERTY)));
-            capabilities.setCapability(FrameworkConstants.BROWSER_STACK_BUILD_PROPERTY, StringUtils.trim(System.getProperty(FrameworkConstants.BROWSER_STACK_BUILD_PROPERTY)));
-            capabilities.setCapability(FrameworkConstants.BROWSER_STACK_NAME_PROPERTY, StringUtils.trim(System.getProperty(FrameworkConstants.BROWSER_STACK_NAME_PROPERTY)));
-            capabilities.setCapability(FrameworkConstants.BROWSER_STACK_TEST_RUN_NAME_PROPERTY, StringUtils.trim(System.getProperty(FrameworkConstants.BROWSER_STACK_TEST_RUN_NAME_PROPERTY)));
-            capabilities.setCapability(FrameworkConstants.BROWSER_STACK_TIMEZONE_PROPERTY, StringUtils.trim(System.getProperty(FrameworkConstants.BROWSER_STACK_TIMEZONE_PROPERTY)));
-
-            LOG(true, "Initiating BrowserStack test execution with browser='%s', platform='%s'", capabilities.getCapability(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY),
-                            capabilities.getCapability(FrameworkConstants.BROWSER_STACK_OS_PROPERTY));
-
-        } else {
-            LOG(true, "Initiating User Defined test execution");
-            GridUtils.initBrowserType();
-            capabilities.setCapability(CapabilityType.PLATFORM, GridUtils.initPlatformType());
-            capabilities.setCapability(CapabilityType.VERSION, GridUtils.initBrowserVersion());
-            capabilities.setCapability(FrameworkConstants.AUTOMATION_DEVICE_NAME_PROPERTY, StringUtils.trim(System.getProperty(FrameworkConstants.AUTOMATION_DEVICE_NAME_PROPERTY)));
-            capabilities.setCapability(FrameworkConstants.AUTOMATION_ORIENTATION_PROPERTY, StringUtils.trim(System.getProperty(FrameworkConstants.AUTOMATION_ORIENTATION_PROPERTY)));
-        }
-
-        if (!StringUtils.isEmpty(System.getenv(FrameworkConstants.SAUCELABS_TUNNEL_IDENTIFIER_PROPERTY))) {
-            capabilities.setCapability(FrameworkConstants.TUNNEL_IDENTIFIER_CAPABILITY, System.getenv(FrameworkConstants.SAUCELABS_TUNNEL_IDENTIFIER_PROPERTY));
-        }
-
-        capabilities.setCapability(FrameworkConstants.TIME_ZONE_CAPABILITY, GridUtils.initTimeZone());
-        capabilities.setCapability(FrameworkConstants.SCREEN_RESOLUTION_CAPABILITY, GridUtils.initBrowserResolution());
-        capabilities.setCapability(CapabilityType.TAKES_SCREENSHOT, true);
-        capabilities.setCapability(CapabilityType.SUPPORTS_JAVASCRIPT, true);
-        capabilities.setCapability(FrameworkConstants.SCRIPT_NAME_CAPABILITY, getReadableTestName());
-
+        return StringUtils.isNotEmpty(System.getenv(FrameworkConstants.SAUCELABS_BROWSER_PROPERTY)) && StringUtils.isNotEmpty(System.getenv(FrameworkConstants.SAUCELABS_BROWSER_VERSION_PROPERTY))
+                        && StringUtils.isNotEmpty(System.getenv(FrameworkConstants.SAUCELABS_PLATFORM_PROPERTY));
     }
 
     /**
-     * Get iOS Web Driver for local or RemoteWebDriver capability.
+     * Check if Experitest / Digital.ai is being used by the downstream user.
      *
-     * @return MicroserviceWebDriver instance
-     * @throws MalformedURLException url exception
+     * @return Experitest enabled | disabled flag
      */
-    public MicroserviceWebDriver getIOSBrowser() throws Exception {
+    private boolean isDigitalAIEnabled() {
 
-        LOG("starting iOS browser");
-        capabilities.setCapability(CapabilityType.BROWSER_NAME, BrowserType.SAFARI);
-        if (StringUtils.isNotEmpty(experitestAccesskey)) {
-            capabilities.setCapability("accessKey", experitestAccesskey);
-            capabilities.setCapability("testName", this.currentTestName);
-        }
-
-        if (gridEnabled) {
-            if (this.remoteWebDriver == null) {
-                MicroserviceRemoteWebDriver microserviceRemoteWebDriver = new MicroserviceRemoteWebDriver(new URL(gridUrl), capabilities);
-                microserviceRemoteWebDriver.setFileDetector(new LocalFileDetector());
-                return microserviceRemoteWebDriver;
-            }
-        } else {
-            if (this.remoteWebDriver == null) {
-                return (new MicroserviceIOSDriver(capabilities));
-            }
-        }
-        return null;
+        return StringUtils.isNotEmpty(experitestAccesskey);
     }
 
     /**
-     * Get Firefox Web Driver for local or RemoteWebDriver capability.
+     * Create base driver option object.
      *
-     * @return MicroserviceWebDriver instance
-     * @throws MalformedURLException url exception
+     * @param driverOptions any type of Selenium Driver options type
+     * @return base driver options set to defaults
      */
-    public MicroserviceWebDriver getFirefoxBrowser() throws MalformedURLException {
+    public AbstractDriverOptions getBrowser(AbstractDriverOptions driverOptions) {
 
-        LOG("starting firefox browser");
-        setDriverExecutable();
-        capabilities.setCapability("marionette", true);
-        capabilities.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
-        capabilities.setCapability(CapabilityType.BROWSER_NAME, BrowserType.FIREFOX);
-        if (StringUtils.isNotEmpty(experitestAccesskey)) {
-            capabilities.setCapability("accessKey", experitestAccesskey);
-            capabilities.setCapability("testName", this.currentTestName);
-        }
-
-        if (gridEnabled) {
-            if (this.remoteWebDriver == null) {
-                MicroserviceRemoteWebDriver microserviceRemoteWebDriver = new MicroserviceRemoteWebDriver(new URL(gridUrl), capabilities);
-                microserviceRemoteWebDriver.setFileDetector(new LocalFileDetector());
-                return microserviceRemoteWebDriver;
-            }
-        } else {
-            if (this.remoteWebDriver == null) {
-                return (new MicroserviceFirefoxDriver());
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Get Headless Firefox Web Driver for local or RemoteWebDriver capability.
-     *
-     * @return MicroserviceWebDriver instance
-     * @throws MalformedURLException url exception
-     */
-    public MicroserviceWebDriver getHeadlessFirefoxBrowser() throws MalformedURLException {
-
-        LOG("starting headless firefox browser");
-        setDriverExecutable();
-        FirefoxBinary firefoxBinary = new FirefoxBinary();
-        firefoxBinary.addCommandLineOptions("--headless");
-        FirefoxOptions firefoxOptions = new FirefoxOptions();
-        firefoxOptions.setBinary(firefoxBinary);
-        firefoxOptions.addArguments("window-size=1920,1080");
-        capabilities.setCapability(FirefoxOptions.FIREFOX_OPTIONS, firefoxOptions);
-        capabilities.setCapability("marionette", true);
-        capabilities.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
-        capabilities.setCapability(CapabilityType.BROWSER_NAME, BrowserType.FIREFOX);
-        capabilities.setCapability("video", "True");
-        if (StringUtils.isNotEmpty(experitestAccesskey)) {
-            capabilities.setCapability("accessKey", experitestAccesskey);
-            capabilities.setCapability("testName", this.currentTestName);
-        }
-
-        if (gridEnabled) {
-            if (this.remoteWebDriver == null) {
-                MicroserviceRemoteWebDriver microserviceRemoteWebDriver = new MicroserviceRemoteWebDriver(new URL(gridUrl), capabilities);
-                microserviceRemoteWebDriver.setFileDetector(new LocalFileDetector());
-                return microserviceRemoteWebDriver;
-            }
-        } else {
-            if (this.remoteWebDriver == null) {
-                return (new MicroserviceFirefoxDriver(firefoxOptions));
-            }
-        }
-        return null;
-
-    }
-
-    /**
-     * Get a group of SauceLabs generic Web Driver for local or RemoteWebDriver capability.
-     *
-     * @return MicroserviceWebDriver instance
-     * @throws MalformedURLException url exception
-     */
-    public MicroserviceWebDriver getAnyBrowser() throws MalformedURLException {
-
-        LOG("starting sauce labs browser(s)");
-        if (gridEnabled) {
-            if (this.remoteWebDriver == null) {
-                MicroserviceRemoteWebDriver microserviceRemoteWebDriver = new MicroserviceRemoteWebDriver(new URL(gridUrl), capabilities);
-                microserviceRemoteWebDriver.setFileDetector(new LocalFileDetector());
-                return microserviceRemoteWebDriver;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Setup BrowserMob proxy connection.
-     *
-     * @return proxy connection
-     */
-    private Proxy setupProxy() {
-
-        Proxy seleniumProxy = null;
+        AbstractDriverOptions abstractDriverOptions = driverOptions;
         try {
-            browserProxy = new BrowserMobProxyServer();
-            browserProxy.setTrustAllServers(true);
-            browserProxy.start();
-            seleniumProxy = ClientUtil.createSeleniumProxy(browserProxy);
-            final String HOST_IP = Inet4Address.getLocalHost().getHostAddress();
-            seleniumProxy.setProxyType(Proxy.ProxyType.MANUAL);
-            seleniumProxy.setHttpProxy(HOST_IP + ":" + browserProxy.getPort());
-            seleniumProxy.setSslProxy(HOST_IP + ":" + browserProxy.getPort());
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
 
-        return seleniumProxy;
+            setDriverExecutable();
+
+            if (isDigitalAIEnabled()) {
+
+                abstractDriverOptions.setCapability(FrameworkConstants.EXPERITEST_ACCESS_KEY_PROPERTY, experitestAccesskey);
+                abstractDriverOptions.setCapability(FrameworkConstants.EXPERITEST_TEST_NAME_PROPERTY, this.currentTestName);
+
+                LOG(true, "Initiating Digital.ai test execution with browser='%s'", StringUtils.trim(System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY)));
+
+            } else if (isSauceLabsEnabled()) {
+
+                Map<String, Object> sauceOptions = new HashMap<>();
+                sauceOptions.put(FrameworkConstants.AUTOMATION_BUILD_PROPERTY, this.currentTestName);
+                sauceOptions.put(FrameworkConstants.AUTOMATION_NAME_PROPERTY, this.currentTestName);
+
+                abstractDriverOptions.setPlatformName(System.getenv(FrameworkConstants.SAUCELABS_PLATFORM_PROPERTY));
+                abstractDriverOptions.setBrowserVersion(System.getenv(FrameworkConstants.SAUCELABS_BROWSER_VERSION_PROPERTY));
+                abstractDriverOptions.setCapability(FrameworkConstants.AUTOMATION_DEVICE_NAME_PROPERTY, StringUtils.trim(System.getProperty(FrameworkConstants.AUTOMATION_DEVICE_NAME_PROPERTY)));
+                abstractDriverOptions.setCapability(FrameworkConstants.AUTOMATION_ORIENTATION_PROPERTY, StringUtils.trim(System.getProperty(FrameworkConstants.AUTOMATION_ORIENTATION_PROPERTY)));
+                abstractDriverOptions.setCapability(FrameworkConstants.SAUCELABS_OPTIONS_PROPERTY, sauceOptions);
+
+                System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, System.getenv(FrameworkConstants.SAUCELABS_BROWSER_PROPERTY));
+
+                LOG(true, "Initiating Sauce-OnDemand test execution with browser='%s', version='%s', platform='%s'", System.getenv(FrameworkConstants.SAUCELABS_BROWSER_PROPERTY),
+                                System.getenv(FrameworkConstants.SAUCELABS_BROWSER_VERSION_PROPERTY), System.getenv(FrameworkConstants.SAUCELABS_PLATFORM_PROPERTY));
+
+            } else if (isBrowserStackEnabled()) {
+
+                GridUtils.initBrowserType();
+
+                abstractDriverOptions.setCapability(FrameworkConstants.BROWSER_STACK_BROWSER_NAME_PROPERTY, StringUtils.trim(System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY)));
+                abstractDriverOptions.setCapability(FrameworkConstants.BROWSER_STACK_BROWSER_VERSION_PROPERTY,
+                                StringUtils.trim(System.getProperty(FrameworkConstants.BROWSER_STACK_BROWSER_VERSION_PROPERTY)));
+
+                HashMap<String, Object> browserstackOptions = new HashMap<>();
+                if (StringUtils.isEmpty(System.getProperty(FrameworkConstants.BROWSER_STACK_OS_PROPERTY))) {
+                    browserstackOptions.put(FrameworkConstants.BROWSER_STACK_OS_PROPERTY, WINDOWS_OS);
+                } else {
+                    browserstackOptions.put(FrameworkConstants.BROWSER_STACK_OS_PROPERTY, StringUtils.trim(System.getProperty(FrameworkConstants.BROWSER_STACK_OS_PROPERTY)));
+                }
+                browserstackOptions.put(FrameworkConstants.BROWSER_STACK_PROJECT_NAME_PROPERTY, StringUtils.trim(System.getProperty(FrameworkConstants.BROWSER_STACK_PROJECT_NAME_PROPERTY)));
+                browserstackOptions.put(FrameworkConstants.BROWSER_STACK_BUILD_NAME_PROPERTY, StringUtils.trim(System.getProperty(FrameworkConstants.AUTOMATION_BUILD_PROPERTY)));
+                browserstackOptions.put(FrameworkConstants.BROWSER_STACK_SESSION_NAME_PROPERTY, StringUtils.trim(System.getProperty(FrameworkConstants.AUTOMATION_NAME_PROPERTY)));
+                browserstackOptions.put(FrameworkConstants.BROWSER_STACK_PROPERTY, browserstackOptions);
+
+                abstractDriverOptions.setCapability(FrameworkConstants.BROWSER_STACK_OPTIONS_PROPERTY, browserstackOptions);
+
+                LOG(true, "Initiating BrowserStack test execution with browser='%s'", StringUtils.trim(System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY)));
+
+            } else {
+                LOG(true, "Initiating Local test execution");
+                GridUtils.initBrowserType();
+            }
+
+            if (StringUtils.isNotEmpty(System.getenv(FrameworkConstants.SAUCELABS_TUNNEL_IDENTIFIER_PROPERTY))) {
+                abstractDriverOptions.setCapability(FrameworkConstants.TUNNEL_IDENTIFIER_CAPABILITY, System.getenv(FrameworkConstants.SAUCELABS_TUNNEL_IDENTIFIER_PROPERTY));
+            }
+
+            abstractDriverOptions.setCapability(FrameworkConstants.TIME_ZONE_CAPABILITY, GridUtils.initTimeZone());
+            abstractDriverOptions.setCapability(CapabilityType.TAKES_SCREENSHOT, true);
+            abstractDriverOptions.setCapability(CapabilityType.SUPPORTS_JAVASCRIPT, true);
+            abstractDriverOptions.setCapability(FrameworkConstants.SCRIPT_NAME_CAPABILITY, getReadableTestName());
+
+        } catch (Exception e) {
+            LOG(true, "Failed to initiate Selenium Driver due to e=%s", e);
+        }
+        return abstractDriverOptions;
     }
 
     /**
      * Get Chrome Web Driver for local or RemoteWebDriver capability.
      *
      * @return MicroserviceWebDriver instance
-     * @throws MalformedURLException url exception
      */
-    public MicroserviceWebDriver getChromeBrowser() throws MalformedURLException {
+    public MicroserviceWebDriver getChromeBrowser() {
 
-        LOG("starting chrome browser");
-        setDriverExecutable();
+        LOG("Starting Chrome browser");
+        ChromeOptions browserOptions = (ChromeOptions) getBrowser(new ChromeOptions());
+        browserOptions.setAcceptInsecureCerts(true);
+        browserOptions.addArguments(SeleniumArgument.START_MAXIMIZED.getValue());
+        browserOptions.addArguments(SeleniumArgument.DISABLE_SHM.getValue());
+        browserOptions.addArguments(SeleniumArgument.DISABLE_WEB_SECURITY.getValue());
+        browserOptions.addArguments(SeleniumArgument.IGNORE_CERTIFICATE_ERRORS.getValue());
+        browserOptions.addArguments(SeleniumArgument.ALLOW_INSECURE_CONTENT.getValue());
+        browserOptions.addArguments(FrameworkConstants.AUTOMATION_VIDEO_PROPERTY, "True");
 
-        ChromeOptions chromeOptions = new ChromeOptions();
-        chromeOptions.addArguments("--start-maximized");
-        chromeOptions.addArguments("--disable-dev-shm-usage");
-        chromeOptions.addArguments("--disable-web-security");
-        chromeOptions.addArguments("--ignore-ssl-errors=yes");
-        chromeOptions.addArguments("--ignore-certificate-errors");
-        chromeOptions.addArguments("--allow-running-insecure-content");
-        capabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
-        capabilities.setCapability(CapabilityType.BROWSER_NAME, BrowserType.CHROME);
-        capabilities.setCapability("video", "True");
-
-        LoggingPreferences loggingPreferences = new LoggingPreferences();
-        loggingPreferences.enable(LogType.BROWSER, Level.ALL);
-        loggingPreferences.enable(LogType.PERFORMANCE, Level.ALL);
-        capabilities.setCapability("goog:loggingPrefs", loggingPreferences);
-
-        if (browsermobEnabled) {
-            capabilities.setCapability(CapabilityType.PROXY, setupProxy());
-        }
-        if (StringUtils.isNotEmpty(experitestAccesskey)) {
-            capabilities.setCapability("accessKey", experitestAccesskey);
-            capabilities.setCapability("testName", this.currentTestName);
-        }
-
-        if (gridEnabled) {
-            if (this.remoteWebDriver == null) {
-                MicroserviceRemoteWebDriver microserviceRemoteWebDriver = new MicroserviceRemoteWebDriver(new URL(gridUrl), capabilities);
-                microserviceRemoteWebDriver.setFileDetector(new LocalFileDetector());
-                return microserviceRemoteWebDriver;
+        MicroserviceRemoteWebDriver microserviceRemoteWebDriver = null;
+        try {
+            if (browsermobEnabled) {
+                browserOptions.setCapability(CapabilityType.PROXY, setupProxy());
             }
-        } else {
-            if (this.remoteWebDriver == null) {
-                return (new MicroserviceChromeDriver(capabilities));
+            if (gridEnabled) {
+                if (this.remoteWebDriver == null) {
+                    microserviceRemoteWebDriver = new MicroserviceRemoteWebDriver(new URL(gridUrl), browserOptions);
+                    microserviceRemoteWebDriver.setFileDetector(new LocalFileDetector());
+                }
+            } else {
+                if (this.remoteWebDriver == null) {
+                    return (new MicroserviceChromeDriver(browserOptions));
+                }
             }
+        } catch (Exception e) {
+            LOG(true, "Failed to initiate Chrome driver due to exception=%s", e);
         }
-
-        return null;
+        return microserviceRemoteWebDriver;
     }
 
     /**
      * Get Headless Chrome Web Driver for local or RemoteWebDriver capability.
      *
      * @return MicroserviceWebDriver instance
-     * @throws MalformedURLException url exception
      */
-    public MicroserviceWebDriver getHeadlessChromeBrowser() throws MalformedURLException {
+    public MicroserviceWebDriver getHeadlessChromeBrowser() {
 
-        LOG("starting headless chrome browser");
-        setDriverExecutable();
-        ChromeOptions chromeOptions = new ChromeOptions();
-        chromeOptions.addArguments("headless");
-        chromeOptions.addArguments("window-size=1920,1080");
-        chromeOptions.addArguments("--disable-web-security");
-        chromeOptions.addArguments("--ignore-ssl-errors=yes");
-        chromeOptions.addArguments("--ignore-certificate-errors");
-        chromeOptions.addArguments("--allow-running-insecure-content");
-        capabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
-        capabilities.setCapability(CapabilityType.BROWSER_NAME, BrowserType.CHROME);
-        capabilities.setCapability("video", "True");
-        if (StringUtils.isNotEmpty(experitestAccesskey)) {
-            capabilities.setCapability("accessKey", experitestAccesskey);
-            capabilities.setCapability("testName", this.currentTestName);
-        }
+        LOG("Starting Headless Chrome browser");
+        ChromeOptions browserOptions = (ChromeOptions) getBrowser(new ChromeOptions());
+        browserOptions.setHeadless(true);
+        browserOptions.addArguments("window-size=1920,1080");
+        browserOptions.addArguments(SeleniumArgument.DISABLE_SHM.getValue());
+        browserOptions.addArguments(SeleniumArgument.DISABLE_WEB_SECURITY.getValue());
+        browserOptions.addArguments(SeleniumArgument.IGNORE_CERTIFICATE_ERRORS.getValue());
+        browserOptions.addArguments(SeleniumArgument.ALLOW_INSECURE_CONTENT.getValue());
+        browserOptions.addArguments(FrameworkConstants.AUTOMATION_VIDEO_PROPERTY, "True");
 
-        if (gridEnabled) {
-            if (this.remoteWebDriver == null) {
-                MicroserviceRemoteWebDriver microserviceRemoteWebDriver = new MicroserviceRemoteWebDriver(new URL(gridUrl), capabilities);
-                microserviceRemoteWebDriver.setFileDetector(new LocalFileDetector());
-                return microserviceRemoteWebDriver;
+        MicroserviceRemoteWebDriver microserviceRemoteWebDriver = null;
+        try {
+            if (browsermobEnabled) {
+                browserOptions.setCapability(CapabilityType.PROXY, setupProxy());
             }
-        } else {
-            if (this.remoteWebDriver == null) {
-                return (new MicroserviceChromeDriver(capabilities));
+            if (gridEnabled) {
+                if (this.remoteWebDriver == null) {
+                    microserviceRemoteWebDriver = new MicroserviceRemoteWebDriver(new URL(gridUrl), browserOptions);
+                    microserviceRemoteWebDriver.setFileDetector(new LocalFileDetector());
+                }
+            } else {
+                if (this.remoteWebDriver == null) {
+                    return (new MicroserviceChromeDriver(browserOptions));
+                }
             }
+        } catch (Exception e) {
+            LOG(true, "Failed to initiate Headless Chrome driver due to exception=%s", e);
         }
-
-        return null;
-    }
-
-    /**
-     * Get Android Web Driver for local or RemoteWebDriver capability.
-     *
-     * @return MicroserviceWebDriver instance
-     * @throws MalformedURLException url exception
-     */
-    public MicroserviceWebDriver getAndroidBrowser() throws Exception {
-
-        LOG("starting android browser");
-        setDriverExecutable();
-        capabilities.setCapability(CapabilityType.BROWSER_NAME, BrowserType.ANDROID);
-        if (StringUtils.isNotEmpty(experitestAccesskey)) {
-            capabilities.setCapability("accessKey", experitestAccesskey);
-            capabilities.setCapability("testName", this.currentTestName);
-        }
-        if (gridEnabled) {
-            if (this.remoteWebDriver == null) {
-                MicroserviceRemoteWebDriver microserviceRemoteWebDriver = new MicroserviceRemoteWebDriver(new URL(gridUrl), capabilities);
-                microserviceRemoteWebDriver.setFileDetector(new LocalFileDetector());
-                return microserviceRemoteWebDriver;
-            }
-        } else {
-            if (this.remoteWebDriver == null) {
-                return (new MicroserviceAndroidDriver(capabilities));
-            }
-        }
-        return null;
+        return microserviceRemoteWebDriver;
     }
 
     /**
      * Get Microsoft Edge Web Driver for local or RemoteWebDriver capability.
      *
      * @return MicroserviceWebDriver instance
-     * @throws MalformedURLException url exception
      */
-    public MicroserviceWebDriver getEdgeBrowser() throws MalformedURLException {
+    public MicroserviceWebDriver getEdgeBrowser() {
 
-        LOG("starting microsoft edge browser");
-        setDriverExecutable();
-        capabilities.setCapability(CapabilityType.BROWSER_NAME, BrowserType.EDGE);
-        if (StringUtils.isNotEmpty(experitestAccesskey)) {
-            capabilities.setCapability("accessKey", experitestAccesskey);
-            capabilities.setCapability("testName", this.currentTestName);
-        }
+        LOG("Starting Microsoft Edge browser");
+        EdgeOptions browserOptions = (EdgeOptions) getBrowser(new EdgeOptions());
+        browserOptions.addArguments(SeleniumArgument.START_MAXIMIZED.getValue());
 
-        if (gridEnabled) {
-            if (this.remoteWebDriver == null) {
-                MicroserviceRemoteWebDriver microserviceRemoteWebDriver = new MicroserviceRemoteWebDriver(new URL(gridUrl), capabilities);
-                microserviceRemoteWebDriver.setFileDetector(new LocalFileDetector());
-                return microserviceRemoteWebDriver;
+        MicroserviceRemoteWebDriver microserviceRemoteWebDriver = null;
+        try {
+            if (browsermobEnabled) {
+                browserOptions.setCapability(CapabilityType.PROXY, setupProxy());
             }
-        } else {
-            if (this.remoteWebDriver == null) {
-                return (new MicroserviceEdgeDriver(capabilities));
+            if (gridEnabled) {
+                if (this.remoteWebDriver == null) {
+                    microserviceRemoteWebDriver = new MicroserviceRemoteWebDriver(new URL(gridUrl), browserOptions);
+                    microserviceRemoteWebDriver.setFileDetector(new LocalFileDetector());
+                }
+            } else {
+                if (this.remoteWebDriver == null) {
+                    return (new MicroserviceEdgeDriver(browserOptions));
+                }
             }
+        } catch (Exception e) {
+            LOG(true, "Failed to initiate Edge driver due to exception=%s", e);
         }
-        return null;
+        return microserviceRemoteWebDriver;
+    }
+
+    /**
+     * Get Microsoft Edge Web Driver for local or RemoteWebDriver capability.
+     *
+     * @return MicroserviceWebDriver instance
+     */
+    public MicroserviceWebDriver getHeadlessEdgeBrowser() {
+
+        LOG("Starting Headless Microsoft Edge browser");
+        EdgeOptions browserOptions = (EdgeOptions) getBrowser(new EdgeOptions());
+        browserOptions.addArguments(SeleniumArgument.START_MAXIMIZED.getValue());
+        browserOptions.addArguments("headless");
+        browserOptions.addArguments("disable-gpu");
+
+        MicroserviceRemoteWebDriver microserviceRemoteWebDriver = null;
+        try {
+            if (browsermobEnabled) {
+                browserOptions.setCapability(CapabilityType.PROXY, setupProxy());
+            }
+            if (gridEnabled) {
+                if (this.remoteWebDriver == null) {
+                    microserviceRemoteWebDriver = new MicroserviceRemoteWebDriver(new URL(gridUrl), browserOptions);
+                    microserviceRemoteWebDriver.setFileDetector(new LocalFileDetector());
+                }
+            } else {
+                if (this.remoteWebDriver == null) {
+                    return (new MicroserviceEdgeDriver(browserOptions));
+                }
+            }
+        } catch (Exception e) {
+            LOG(true, "Failed to initiate Edge driver due to exception=%s", e);
+        }
+        return microserviceRemoteWebDriver;
     }
 
     /**
      * Get Internet Explorer Web Driver for local or RemoteWebDriver capability.
      *
      * @return MicroserviceWebDriver instance
-     * @throws MalformedURLException url exception
      */
-    public MicroserviceWebDriver getInternetExplorerBrowser() throws MalformedURLException {
+    public MicroserviceWebDriver getInternetExplorerBrowser() {
 
-        LOG("starting internet explorer browser");
-        setDriverExecutable();
-        capabilities.setCapability(CapabilityType.BROWSER_NAME, BrowserType.IE);
-        if (StringUtils.isNotEmpty(experitestAccesskey)) {
-            capabilities.setCapability("accessKey", experitestAccesskey);
-            capabilities.setCapability("testName", this.currentTestName);
-        }
+        LOG("Starting Internet Explorer browser");
+        InternetExplorerOptions browserOptions = (InternetExplorerOptions) getBrowser(new InternetExplorerOptions());
 
-        if (gridEnabled) {
-            if (this.remoteWebDriver == null) {
-                MicroserviceRemoteWebDriver microserviceRemoteWebDriver = new MicroserviceRemoteWebDriver(new URL(gridUrl), capabilities);
-                microserviceRemoteWebDriver.setFileDetector(new LocalFileDetector());
-                return microserviceRemoteWebDriver;
+        MicroserviceRemoteWebDriver microserviceRemoteWebDriver = null;
+        try {
+            if (browsermobEnabled) {
+                browserOptions.setCapability(CapabilityType.PROXY, setupProxy());
             }
-        } else {
-            if (this.remoteWebDriver == null) {
-                return (new MicroserviceInternetExplorerDriver(capabilities));
+            if (gridEnabled) {
+                if (this.remoteWebDriver == null) {
+                    microserviceRemoteWebDriver = new MicroserviceRemoteWebDriver(new URL(gridUrl), browserOptions);
+                    microserviceRemoteWebDriver.setFileDetector(new LocalFileDetector());
+                }
+            } else {
+                if (this.remoteWebDriver == null) {
+                    return (new MicroserviceInternetExplorerDriver(browserOptions));
+                }
             }
+        } catch (Exception e) {
+            LOG(true, "Failed to initiate Internet Explorer driver due to exception=%s", e);
         }
-        return null;
+        return microserviceRemoteWebDriver;
     }
 
     /**
-     * Get Safari Web Driver for local or RemoteWebDriver capability.
+     * Get Safari or IOS Web Driver for local or RemoteWebDriver capability.
      *
      * @return MicroserviceWebDriver instance
-     * @throws MalformedURLException url exception
      */
-    public MicroserviceWebDriver getSafariBrowser() throws MalformedURLException {
+    public MicroserviceWebDriver getSafariBrowser() {
 
-        LOG("starting safari browser");
-        setDriverExecutable();
-        capabilities.setCapability(CapabilityType.BROWSER_NAME, BrowserType.SAFARI);
-        if (StringUtils.isNotEmpty(experitestAccesskey)) {
-            capabilities.setCapability("accessKey", experitestAccesskey);
-            capabilities.setCapability("testName", this.currentTestName);
-        }
+        LOG("Starting Safari browser");
+        SafariOptions browserOptions = (SafariOptions) getBrowser(new SafariOptions());
 
-        if (gridEnabled) {
-            if (this.remoteWebDriver == null) {
-                MicroserviceRemoteWebDriver microserviceRemoteWebDriver = new MicroserviceRemoteWebDriver(new URL(gridUrl), capabilities);
-                microserviceRemoteWebDriver.setFileDetector(new LocalFileDetector());
-                return microserviceRemoteWebDriver;
+        MicroserviceRemoteWebDriver microserviceRemoteWebDriver = null;
+        try {
+            if (browsermobEnabled) {
+                browserOptions.setCapability(CapabilityType.PROXY, setupProxy());
             }
-        } else {
-            if (this.remoteWebDriver == null) {
-                return (new MicroserviceSafariDriver(capabilities));
+            if (gridEnabled) {
+                if (this.remoteWebDriver == null) {
+                    microserviceRemoteWebDriver = new MicroserviceRemoteWebDriver(new URL(gridUrl), browserOptions);
+                    microserviceRemoteWebDriver.setFileDetector(new LocalFileDetector());
+                }
+            } else {
+                if (this.remoteWebDriver == null) {
+                    return (new MicroserviceSafariDriver(browserOptions));
+                }
             }
+        } catch (Exception e) {
+            LOG(true, "Failed to initiate Safari driver due to exception=%s", e);
         }
-        return null;
+        return microserviceRemoteWebDriver;
     }
 
     /**
-     * Get PhantomJS Web Driver for local or RemoteWebDriver capability.
+     * Get Firefox Web Driver for local or RemoteWebDriver capability.
      *
      * @return MicroserviceWebDriver instance
-     * @throws MalformedURLException url exception
      */
-    public MicroserviceWebDriver getPhantomJsBrowser() throws MalformedURLException {
+    public MicroserviceWebDriver getFirefoxBrowser() {
 
-        LOG("starting PhantomJS virtual browser");
-        capabilities.setCapability(CapabilityType.BROWSER_NAME, BrowserType.PHANTOMJS);
-        capabilities.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, setDriverExecutable());
-        capabilities.setCapability(PhantomJSDriverService.PHANTOMJS_CLI_ARGS, new String[] {"--web-security=false", "--ssl-protocol=any", "--ignore-ssl-errors=true", "--webdriver-loglevel=DEBUG"});
-        if (StringUtils.isNotEmpty(experitestAccesskey)) {
-            capabilities.setCapability("accessKey", experitestAccesskey);
-            capabilities.setCapability("testName", this.currentTestName);
-        }
+        LOG("Starting Firefox browser");
+        FirefoxOptions browserOptions = (FirefoxOptions) getBrowser(new FirefoxOptions());
+        //browserOptions.addArguments(SeleniumArgument.START_MAXIMIZED.getValue());
 
-        if (gridEnabled) {
-            if (this.remoteWebDriver == null) {
-                MicroserviceRemoteWebDriver microserviceRemoteWebDriver = new MicroserviceRemoteWebDriver(new URL(gridUrl), capabilities);
-                microserviceRemoteWebDriver.setFileDetector(new LocalFileDetector());
-                return microserviceRemoteWebDriver;
+        MicroserviceRemoteWebDriver microserviceRemoteWebDriver = null;
+        try {
+            if (browsermobEnabled) {
+                browserOptions.setCapability(CapabilityType.PROXY, setupProxy());
             }
-        } else {
-            if (this.remoteWebDriver == null) {
-                Assert.fail("Local PhantomJS Execution Not Yet Supported. Please use the GRID for this driver!");
-                //this.remoteWebDriver = (new MicroservicePhantomJsDriver(capabilities));
-                //this.remoteWebDriver = (MicroserviceWebDriver) new PhantomJSDriver(capabilities);
+            if (gridEnabled) {
+                if (this.remoteWebDriver == null) {
+                    microserviceRemoteWebDriver = new MicroserviceRemoteWebDriver(new URL(gridUrl), browserOptions);
+                    microserviceRemoteWebDriver.setFileDetector(new LocalFileDetector());
+                }
+            } else {
+                if (this.remoteWebDriver == null) {
+                    return (new MicroserviceFirefoxDriver(browserOptions));
+                }
             }
+        } catch (Exception e) {
+            LOG(true, "Failed to initiate Firefox driver due to exception=%s", e);
         }
-        return null;
+        return microserviceRemoteWebDriver;
+    }
+
+    /**
+     * Get Headless Firefox Web Driver for local or RemoteWebDriver capability.
+     *
+     * @return MicroserviceWebDriver instance
+     */
+    public MicroserviceWebDriver getHeadlessFirefoxBrowser() {
+
+        LOG("Starting Headless Firefox browser");
+        FirefoxOptions browserOptions = (FirefoxOptions) getBrowser(new FirefoxOptions());
+        browserOptions.setHeadless(true);
+        browserOptions.addArguments("window-size=1920,1080");
+        browserOptions.setCapability(FrameworkConstants.AUTOMATION_VIDEO_PROPERTY, "True");
+
+        MicroserviceRemoteWebDriver microserviceRemoteWebDriver = null;
+        try {
+            if (browsermobEnabled) {
+                browserOptions.setCapability(CapabilityType.PROXY, setupProxy());
+            }
+            if (gridEnabled) {
+                if (this.remoteWebDriver == null) {
+                    microserviceRemoteWebDriver = new MicroserviceRemoteWebDriver(new URL(gridUrl), browserOptions);
+                    microserviceRemoteWebDriver.setFileDetector(new LocalFileDetector());
+                }
+            } else {
+                if (this.remoteWebDriver == null) {
+                    return (new MicroserviceFirefoxDriver(browserOptions));
+                }
+            }
+        } catch (Exception e) {
+            LOG(true, "Failed to initiate Headless Firefox driver due to exception=%s", e);
+        }
+        return microserviceRemoteWebDriver;
+
     }
 
     /**
      * Set the resources path to the WebDriver executable depending on the ENV the scripts.
      * are running on
-     *
-     * @return driver executable file path
      */
-    protected String setDriverExecutable() {
+    protected void setDriverExecutable() {
 
-        final String DESIRED_BROWSER = StringUtils.defaultIfBlank(System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY), "");
+        final String DESIRED_BROWSER = StringUtils.defaultIfBlank(System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY), FrameworkConstants.CHROME_BROWSER_MODE);
         File executable;
 
-        switch (DESIRED_BROWSER) {
-            case FrameworkConstants.CHROME_BROWSER_MODE: {
-                if (StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), WINDOWS_OS)) {
-                    executable = PropertiesUtils.getFirstFileFromTestResources("chrome_win.exe");
-                } else if (StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), LINUX_OS)) {
-                    executable = PropertiesUtils.getFirstFileFromTestResources("chrome_linux_64");
-                } else {
-                    executable = PropertiesUtils.getFirstFileFromTestResources("chrome_mac");
-                }
-                System.setProperty(FrameworkConstants.WEB_DRIVER_CHROME, PropertiesUtils.getPath(executable));
-                break;
+        if (StringUtils.equalsIgnoreCase(DESIRED_BROWSER, FrameworkConstants.FIREFOX_BROWSER_MODE) || StringUtils.equalsIgnoreCase(DESIRED_BROWSER, FrameworkConstants.HEADLESS_FIREFOX_BROWSER_MODE)) {
+            if (StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), WINDOWS_OS)) {
+                executable = PropertiesUtils.getFirstFileFromTestResources("geckodriver.exe");
+            } else if (StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), LINUX_OS)) {
+                executable = PropertiesUtils.getFirstFileFromTestResources("geckodriver_linux_64");
+            } else {
+                executable = PropertiesUtils.getFirstFileFromTestResources("geckodriver_mac");
             }
-            case FrameworkConstants.HEADLESS_CHROME_BROWSER_MODE: {
-                if (StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), WINDOWS_OS)) {
-                    executable = PropertiesUtils.getFirstFileFromTestResources("chrome_win.exe");
-                } else if (StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), LINUX_OS)) {
-                    executable = PropertiesUtils.getFirstFileFromTestResources("chrome_linux_64");
-                } else {
-                    executable = PropertiesUtils.getFirstFileFromTestResources("chrome_mac");
-                }
-                System.setProperty(FrameworkConstants.WEB_DRIVER_CHROME, PropertiesUtils.getPath(executable));
-                break;
+            System.setProperty(FrameworkConstants.WEB_DRIVER_GECKO, PropertiesUtils.getPath(executable));
+        } else if (StringUtils.equalsIgnoreCase(DESIRED_BROWSER, FrameworkConstants.INTERNET_EXPLORER_BROWSER_MODE)) {
+            executable = StringUtils.equals(System.getProperty(FrameworkConstants.SYSTEM_JVM_TYPE), "32") ? PropertiesUtils.getFirstFileFromTestResources("ie_win32.exe")
+                            : PropertiesUtils.getFirstFileFromTestResources("ie_win64.exe");
+            System.setProperty(FrameworkConstants.WEB_DRIVER_IE, PropertiesUtils.getPath(executable));
+        } else if (StringUtils.equalsIgnoreCase(DESIRED_BROWSER, FrameworkConstants.EDGE_BROWSER_MODE)) {
+            if (StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), WINDOWS_OS)) {
+                executable = PropertiesUtils.getFirstFileFromTestResources("edge_win.exe");
+            } else {
+                executable = PropertiesUtils.getFirstFileFromTestResources("edge_mac");
             }
-            case FrameworkConstants.FIREFOX_BROWSER_MODE: {
-                if (StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), WINDOWS_OS)) {
-                    executable = PropertiesUtils.getFirstFileFromTestResources("geckodriver.exe");
-                } else if (StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), LINUX_OS)) {
-                    executable = PropertiesUtils.getFirstFileFromTestResources("geckodriver_linux_64");
-                } else {
-                    executable = PropertiesUtils.getFirstFileFromTestResources("geckodriver_mac");
-                }
-                System.setProperty(FrameworkConstants.WEB_DRIVER_GECKO, PropertiesUtils.getPath(executable));
-                break;
+            System.setProperty(FrameworkConstants.WEB_DRIVER_EDGE, PropertiesUtils.getPath(executable));
+        } else if (StringUtils.equalsIgnoreCase(DESIRED_BROWSER, FrameworkConstants.CHROME_BROWSER_MODE) || StringUtils.isEmpty(DESIRED_BROWSER)) {
+            if (StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), WINDOWS_OS)) {
+                executable = PropertiesUtils.getFirstFileFromTestResources("chrome_win.exe");
+            } else if (StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), LINUX_OS)) {
+                executable = PropertiesUtils.getFirstFileFromTestResources("chrome_linux_64");
+            } else {
+                executable = PropertiesUtils.getFirstFileFromTestResources("chrome_mac");
             }
-            case FrameworkConstants.HEADLESS_FIREFOX_BROWSER_MODE: {
-                if (StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), WINDOWS_OS)) {
-                    executable = PropertiesUtils.getFirstFileFromTestResources("geckodriver.exe");
-                } else if (StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), LINUX_OS)) {
-                    executable = PropertiesUtils.getFirstFileFromTestResources("geckodriver_linux_64");
-                } else {
-                    executable = PropertiesUtils.getFirstFileFromTestResources("geckodriver_mac");
-                }
-                System.setProperty(FrameworkConstants.WEB_DRIVER_GECKO, PropertiesUtils.getPath(executable));
-                break;
-            }
-            case FrameworkConstants.INTERNET_EXPLORER_BROWSER_MODE: {
-                executable = StringUtils.equals(System.getProperty(FrameworkConstants.SYSTEM_JVM_TYPE), "32") ? PropertiesUtils.getFirstFileFromTestResources("ie_win32.exe")
-                                : PropertiesUtils.getFirstFileFromTestResources("ie_win64.exe");
-                System.setProperty(FrameworkConstants.WEB_DRIVER_IE, PropertiesUtils.getPath(executable));
-                break;
-            }
-            case FrameworkConstants.EDGE_BROWSER_MODE: {
-                if (StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), WINDOWS_OS)) {
-                    executable = PropertiesUtils.getFirstFileFromTestResources("edge_win.exe");
-                } else {
-                    executable = PropertiesUtils.getFirstFileFromTestResources("edge_mac");
-                }
-                System.setProperty(FrameworkConstants.WEB_DRIVER_EDGE, PropertiesUtils.getPath(executable));
-                break;
-            }
-            case FrameworkConstants.PHANTOM_JS_BROWSER_MODE: {
-
-                if (StringUtils.isNotEmpty(System.getProperty(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY))) {
-                    return System.getProperty(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY);
-                } else {
-                    executable = StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), WINDOWS_OS) ? PropertiesUtils.getFirstFileFromTestResources("phantomjs.exe")
-                                    : PropertiesUtils.getFirstFileFromTestResources("phantomjs");
-                    System.setProperty(PhantomJSDriverService.PHANTOMJS_GHOSTDRIVER_PATH_PROPERTY, PropertiesUtils.getPath(executable));
-                    System.setProperty(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, PropertiesUtils.getPath(executable));
-                    return PropertiesUtils.getPath(executable);
-                }
-            }
-            default: {
-                if (StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), WINDOWS_OS)) {
-                    executable = PropertiesUtils.getFirstFileFromTestResources("chrome_win.exe");
-                } else if (StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), LINUX_OS)) {
-                    executable = PropertiesUtils.getFirstFileFromTestResources("chrome_linux_64");
-                } else {
-                    executable = PropertiesUtils.getFirstFileFromTestResources("chrome_mac");
-                }
-                System.setProperty(FrameworkConstants.WEB_DRIVER_CHROME, PropertiesUtils.getPath(executable));
-                break;
-            }
+            System.setProperty(FrameworkConstants.WEB_DRIVER_CHROME, PropertiesUtils.getPath(executable));
+            System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.CHROME_BROWSER_MODE);
         }
-        return "";
     }
 
     /**
@@ -875,6 +703,29 @@ public class WebEventController {
         }
     }
 
+    /**
+     * Setup BrowserMob proxy connection.
+     *
+     * @return proxy connection
+     */
+    private Proxy setupProxy() {
+
+        Proxy seleniumProxy = null;
+        try {
+            browserProxy = new BrowserMobProxyServer();
+            browserProxy.setTrustAllServers(true);
+            browserProxy.start();
+            seleniumProxy = ClientUtil.createSeleniumProxy(browserProxy);
+            final String HOST_IP = Inet4Address.getLocalHost().getHostAddress();
+            seleniumProxy.setProxyType(Proxy.ProxyType.MANUAL);
+            seleniumProxy.setHttpProxy(HOST_IP + ":" + browserProxy.getPort());
+            seleniumProxy.setSslProxy(HOST_IP + ":" + browserProxy.getPort());
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+        return seleniumProxy;
+    }
+
     public BrowserMobProxy getBrowserProxy() {
         return browserProxy;
     }
@@ -905,14 +756,6 @@ public class WebEventController {
 
     public void setSiteMinderEnabled(boolean enabled) {
         this.siteMinderEnabled = enabled;
-    }
-
-    public DesiredCapabilities getCapabilities() {
-        return capabilities;
-    }
-
-    public void setCapabilities(DesiredCapabilities desiredCapabilities) {
-        this.capabilities = desiredCapabilities;
     }
 
     public boolean isSiteMinderEnabled() {

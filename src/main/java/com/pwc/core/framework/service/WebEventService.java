@@ -59,6 +59,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 import java.io.StringReader;
 import java.security.SecureRandom;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -284,23 +285,23 @@ public class WebEventService extends WebEventController {
 
         waitForBrowserToLoad();
 
-        if (StringUtils.startsWith(elementIdentifier, "//") && elementIdentifier.matches(FrameworkConstants.REGEX_XPATH_FINDER)) {
+        if (StringUtils.startsWith(elementIdentifier, "//") && elementIdentifier.matches(FrameworkConstants.XPATH_REGEX)) {
             try {
-                WebElement webElement = this.microserviceWebDriver.findElementByXPath(elementIdentifier);
+                WebElement webElement = this.microserviceWebDriver.findElement(By.xpath(elementIdentifier));
                 if (webElement != null) {
                     return webElement;
                 }
             } catch (Exception e) {
                 e.getMessage();
             }
-        } else if (!StringUtils.startsWith(elementIdentifier, "//") && elementIdentifier.matches(FrameworkConstants.REGEX_CSS_SELECTOR_FINDER)) {
+        } else if (!StringUtils.startsWith(elementIdentifier, "//") && elementIdentifier.matches(FrameworkConstants.CSS_SELECTOR_REGEX)) {
             try {
-                WebElement webElement = this.microserviceWebDriver.findElementByCssSelector(elementIdentifier);
+                WebElement webElement = this.microserviceWebDriver.findElement(By.cssSelector(elementIdentifier));
                 if (webElement != null) {
                     return webElement;
                 }
             } catch (Exception e) {
-                e.getMessage();
+                LOG(false, "Exception e=%s", e);
             }
         } else {
 
@@ -364,7 +365,7 @@ public class WebEventService extends WebEventController {
             for (String xpathSearch : xpathSearchList) {
                 WebElement webElement = null;
                 try {
-                    webElement = this.microserviceWebDriver.findElementByXPath(xpathSearch);
+                    webElement = this.microserviceWebDriver.findElement(By.xpath(xpathSearch));
                 } catch (Exception eatIt) {
                     eatIt.getMessage();
                 }
@@ -417,7 +418,7 @@ public class WebEventService extends WebEventController {
 
             for (String xpathSearch : xpathSearchList) {
                 if ((boolean) xpath.evaluate(xpathSearch, document, XPathConstants.BOOLEAN)) {
-                    return this.microserviceWebDriver.findElementByXPath(xpathSearch);
+                    return this.microserviceWebDriver.findElement(By.xpath(xpathSearch));
                 }
             }
 
@@ -550,7 +551,7 @@ public class WebEventService extends WebEventController {
      */
     private String constructUrlWithFullHostFromCurrentUrl(String url) {
 
-        Pattern urlRegularExpression = Pattern.compile("http.*?://(\\w|\\-|\\.)+(:\\d+)?");
+        Pattern urlRegularExpression = Pattern.compile(FrameworkConstants.WEB_URL_REGEX);
         Matcher m = urlRegularExpression.matcher(this.microserviceWebDriver.getCurrentUrl());
         m.find();
         String host = StringUtils.appendIfMissing(m.group(0), "/");
@@ -569,7 +570,7 @@ public class WebEventService extends WebEventController {
      */
     private String constructUrlWithFullHostFromGivenUrl(String url) {
 
-        Pattern urlRegularExpression = Pattern.compile("http.*?://(\\w|\\-|\\.)+(:\\d+)?");
+        Pattern urlRegularExpression = Pattern.compile(FrameworkConstants.WEB_URL_REGEX);
         Matcher m = urlRegularExpression.matcher(url);
         m.find();
         return StringUtils.appendIfMissing(m.group(0), "/");
@@ -588,13 +589,12 @@ public class WebEventService extends WebEventController {
 
         String modifiedUrl;
         String currentUrl = this.microserviceWebDriver.getCurrentUrl();
-        if (StringUtils.containsIgnoreCase(currentUrl, "data:,")) {
-            return url;
-        } else if (StringUtils.equalsIgnoreCase(currentUrl, "about:blank")) {
-            return url;
-        }
         StringBuilder newUrl = new StringBuilder(currentUrl);
-        if (StringUtils.containsIgnoreCase(currentUrl, "?")) {
+        if (StringUtils.containsIgnoreCase(newUrl, "data:,")) {
+            modifiedUrl = url;
+        } else if (StringUtils.equalsIgnoreCase(newUrl, "about:blank")) {
+            modifiedUrl = url;
+        } else if (StringUtils.containsIgnoreCase(currentUrl, "?")) {
             newUrl.append("&");
             modifiedUrl = newUrl.append(url).toString();
         } else if (StringUtils.isEmpty(currentUrl)) {
@@ -727,7 +727,7 @@ public class WebEventService extends WebEventController {
      * @param elementIdentifier element identifier (xPath or explicit Element ID)
      */
     public void elementBlur(final String elementIdentifier) {
-        if (elementIdentifier.matches(FrameworkConstants.REGEX_XPATH_FINDER)) {
+        if (elementIdentifier.matches(FrameworkConstants.XPATH_REGEX)) {
             executeJavascript(String.format(JavascriptConstants.BLUR_ELEMENT_BY_XPATH, elementIdentifier));
         } else {
             executeJavascript(String.format(JavascriptConstants.BLUR_ELEMENT_BY_ID, elementIdentifier));
@@ -1040,7 +1040,7 @@ public class WebEventService extends WebEventController {
         try {
 
             record();
-            WebDriverWait wait = new WebDriverWait(microserviceWebDriver, 2);
+            WebDriverWait wait = new WebDriverWait(microserviceWebDriver, Duration.ofSeconds(timeOutInSeconds));
             wait.until(ExpectedConditions.alertIsPresent());
             Alert alert = microserviceWebDriver.switchTo().alert();
 
@@ -1074,7 +1074,7 @@ public class WebEventService extends WebEventController {
         try {
 
             record();
-            WebDriverWait wait = new WebDriverWait(microserviceWebDriver, 2);
+            WebDriverWait wait = new WebDriverWait(microserviceWebDriver, Duration.ofSeconds(timeOutInSeconds));
             wait.until(ExpectedConditions.alertIsPresent());
             Alert alert = microserviceWebDriver.switchTo().alert();
 
@@ -1161,7 +1161,7 @@ public class WebEventService extends WebEventController {
 
         try {
 
-            (new WebDriverWait(this.microserviceWebDriver, timeOutInSeconds, 1000)).until(new ExpectedCondition<Boolean>() {
+            (new WebDriverWait(this.microserviceWebDriver, Duration.ofSeconds(timeOutInSeconds), Duration.ofMillis(1000))).until(new ExpectedCondition<Boolean>() {
 
                 boolean isElementStillVisible = false;
                 int countDown = (int) timeOutInSeconds;
@@ -1195,8 +1195,7 @@ public class WebEventService extends WebEventController {
         final int[] durationElementIsNotDisplayed = {0};
 
         try {
-
-            (new WebDriverWait(this.microserviceWebDriver, timeOutInSeconds, 1000)).until(new ExpectedCondition<Boolean>() {
+            (new WebDriverWait(this.microserviceWebDriver, Duration.ofSeconds(timeOutInSeconds), Duration.ofMillis(1000))).until(new ExpectedCondition<Boolean>() {
 
                 boolean isVisible = true;
                 int countDown = (int) timeOutInSeconds;
@@ -1231,7 +1230,7 @@ public class WebEventService extends WebEventController {
         try {
 
             record();
-            (new WebDriverWait(this.microserviceWebDriver, timeOutInSeconds, sleepInMillis)).until(new ExpectedCondition<Boolean>() {
+            (new WebDriverWait(this.microserviceWebDriver, Duration.ofSeconds(timeOutInSeconds), Duration.ofMillis(sleepInMillis))).until(new ExpectedCondition<Boolean>() {
 
                 boolean isElementNotVisible = true;
                 int countDown = (int) timeOutInSeconds;
@@ -1259,8 +1258,7 @@ public class WebEventService extends WebEventController {
     public void waitForElementToBecomeEnabled(final String elementIdentifier) {
 
         try {
-
-            (new WebDriverWait(this.microserviceWebDriver, timeOutInSeconds, sleepInMillis)).until(new ExpectedCondition<Boolean>() {
+            (new WebDriverWait(this.microserviceWebDriver, Duration.ofSeconds(timeOutInSeconds), Duration.ofMillis(sleepInMillis))).until(new ExpectedCondition<Boolean>() {
 
                 boolean isElementEnabled = false;
                 int countDown = (int) timeOutInSeconds;
@@ -1292,7 +1290,7 @@ public class WebEventService extends WebEventController {
 
         try {
 
-            (new WebDriverWait(this.microserviceWebDriver, timeOutInSeconds, sleepInMillis)).until(new ExpectedCondition<Boolean>() {
+            (new WebDriverWait(this.microserviceWebDriver, Duration.ofSeconds(timeOutInSeconds), Duration.ofMillis(sleepInMillis))).until(new ExpectedCondition<Boolean>() {
 
                 boolean isElementDisabled = true;
                 int countDown = (int) timeOutInSeconds;
@@ -1327,7 +1325,7 @@ public class WebEventService extends WebEventController {
         try {
 
             record();
-            (new WebDriverWait(this.microserviceWebDriver, timeOutInSeconds, sleepInMillis)).until(new ExpectedCondition<Boolean>() {
+            (new WebDriverWait(this.microserviceWebDriver, Duration.ofSeconds(timeOutInSeconds), Duration.ofMillis(sleepInMillis))).until(new ExpectedCondition<Boolean>() {
                 boolean elementExists = false;
                 int countDown = (int) timeOutInSeconds;
 
@@ -1358,7 +1356,7 @@ public class WebEventService extends WebEventController {
         try {
 
             record();
-            (new WebDriverWait(this.microserviceWebDriver, timeOutInSeconds, sleepInMillis)).until(new ExpectedCondition<Boolean>() {
+            (new WebDriverWait(this.microserviceWebDriver, Duration.ofSeconds(timeOutInSeconds), Duration.ofMillis(sleepInMillis))).until(new ExpectedCondition<Boolean>() {
                 boolean isElementVisible = false;
                 int countDown = (int) timeOutInSeconds;
 
@@ -1389,19 +1387,20 @@ public class WebEventService extends WebEventController {
         try {
 
             record();
-            (new WebDriverWait(this.microserviceWebDriver, timeOutInSeconds, sleepInMillis)).ignoring(StaleElementReferenceException.class).until(new ExpectedCondition<Boolean>() {
-                boolean isElementVisibleWithText = false;
-                int countDown = (int) timeOutInSeconds;
+            (new WebDriverWait(this.microserviceWebDriver, Duration.ofSeconds(timeOutInSeconds), Duration.ofMillis(sleepInMillis))).ignoring(StaleElementReferenceException.class)
+                            .until(new ExpectedCondition<Boolean>() {
+                                boolean isElementVisibleWithText = false;
+                                int countDown = (int) timeOutInSeconds;
 
-                public Boolean apply(WebDriver d) {
+                                public Boolean apply(WebDriver d) {
 
-                    isElementVisibleWithText = StringUtils.contains(getText(elementIdentifier), textToWaitToDisplay);
-                    if (!isElementVisibleWithText && countDown > 0) {
-                        LOG(true, "Waiting - Element='%s' WITH TEXT='%s' NOT VISIBLE, Retrying for %s seconds ****", elementIdentifier, textToWaitToDisplay, countDown--);
-                    }
-                    return isElementVisibleWithText;
-                }
-            });
+                                    isElementVisibleWithText = StringUtils.contains(getText(elementIdentifier), textToWaitToDisplay);
+                                    if (!isElementVisibleWithText && countDown > 0) {
+                                        LOG(true, "Waiting - Element='%s' WITH TEXT='%s' NOT VISIBLE, Retrying for %s seconds ****", elementIdentifier, textToWaitToDisplay, countDown--);
+                                    }
+                                    return isElementVisibleWithText;
+                                }
+                            });
 
         } catch (Exception e) {
             Assert.fail(String.format("Element='%s', didn't appear in allotted time.", elementIdentifier), e);
@@ -1421,7 +1420,7 @@ public class WebEventService extends WebEventController {
         try {
 
             record();
-            (new WebDriverWait(this.microserviceWebDriver, timeOutInSeconds, sleepInMillis)).until(new ExpectedCondition<Boolean>() {
+            (new WebDriverWait(this.microserviceWebDriver, Duration.ofSeconds(timeOutInSeconds), Duration.ofMillis(sleepInMillis))).until(new ExpectedCondition<Boolean>() {
                 boolean isElementVisible = false;
                 int countDown = (int) timeOutInSeconds;
 
@@ -1453,7 +1452,7 @@ public class WebEventService extends WebEventController {
         try {
 
             record();
-            (new WebDriverWait(this.microserviceWebDriver, timeOutInSeconds, sleepInMillis)).until(new ExpectedCondition<Boolean>() {
+            (new WebDriverWait(this.microserviceWebDriver, Duration.ofSeconds(timeOutInSeconds), Duration.ofMillis(sleepInMillis))).until(new ExpectedCondition<Boolean>() {
                 boolean isElementNotVisible = true;
                 int countDown = (int) timeOutInSeconds;
 
@@ -1480,7 +1479,7 @@ public class WebEventService extends WebEventController {
         if (isWaitForAjaxRequestsEnabled()) {
 
             try {
-                (new WebDriverWait(this.microserviceWebDriver, pageTimeoutInSeconds, sleepInMillis)).until(new ExpectedCondition<Boolean>() {
+                (new WebDriverWait(this.microserviceWebDriver, Duration.ofSeconds(timeOutInSeconds), Duration.ofMillis(sleepInMillis))).until(new ExpectedCondition<Boolean>() {
                     boolean noActiveRequests = false;
                     int countDown = (int) pageTimeoutInSeconds;
 
@@ -1509,8 +1508,8 @@ public class WebEventService extends WebEventController {
     private void waitForDuration(final long millis) {
         try {
             Thread.sleep(millis);
-        } catch (InterruptedException eat) {
-            eat.getMessage();
+        } catch (InterruptedException e) {
+            LOG(false, "Exception occurred=%s", e);
         }
     }
 
@@ -1576,7 +1575,7 @@ public class WebEventService extends WebEventController {
         }
 
         LogEntries filteredConsoleEntries = new LogEntries(allRequests);
-        filteredConsoleEntries.filter(level);
+        filteredConsoleEntries.getAll().stream().filter(l -> l.equals(level));
 
         if (CollectionUtils.isEmpty(filteredConsoleEntries.getAll())) {
             assertPass("Console contains %s expected entries @Log Level >= %s", filteredConsoleEntries.getAll().size(), level.getName());

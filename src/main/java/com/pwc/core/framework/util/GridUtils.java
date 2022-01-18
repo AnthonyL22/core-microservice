@@ -19,7 +19,6 @@ public class GridUtils {
     private static final Pattern INTERNET_EXPLORER_REGEX = Pattern.compile("^.*?(ie|internet\\sexplorer|explorer)+?");
     private static final Pattern EDGE_EXPLORER_REGEX = Pattern.compile("^.*?(ie|ms\\sedge|edge|msedge)+?");
     private static final Pattern SAFARI_REGEX = Pattern.compile("^.*?(safari|sf)+?");
-    private static final Pattern PHANTOM_JS_REGEX = Pattern.compile("^.*?(ph|phantom|phantomjs|phantom\\sjs)+?");
     private static final Pattern NO_BROWSER_REGEX = Pattern.compile("^.*?(none)+?");
 
     private static final Pattern VERSION_IDEAL_REGEX = Pattern.compile("^\\d{2}\\.\\d{1}$");
@@ -30,7 +29,7 @@ public class GridUtils {
     private static final Pattern LINUX_PLATFORMS_REGEX = Pattern.compile("^.*?(linux)+?");
     private static final Pattern MAC_PLATFORMS_REGEX = Pattern.compile("^.*?(mac|osx|os\\sx)+(\\s\\d+)?");
     private static final Pattern IOS_PLATFORMS_REGEX = Pattern.compile("^.*?(ios|iphone|ipad)+(\\s\\d+)?");
-    public static final String DEFAULT_OSX_PLATFORM_STRING = "OS X 10.11";
+    private static final String DEFAULT_OSX_PLATFORM_STRING = "OS X 10.11";
 
     /**
      * Get and set the browser type potentially defined by the user.
@@ -44,11 +43,6 @@ public class GridUtils {
             System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.CHROME_BROWSER_MODE);
             return;
         } else {
-            browserMatcher = ANDROID_REGEX.matcher(property);
-            if (browserMatcher.find()) {
-                System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.ANDROID_MODE);
-                return;
-            }
             browserMatcher = IOS_REGEX.matcher(property);
             if (browserMatcher.find()) {
                 System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.IOS_MODE);
@@ -87,11 +81,6 @@ public class GridUtils {
             browserMatcher = SAFARI_REGEX.matcher(property);
             if (browserMatcher.find()) {
                 System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.SAFARI_BROWSER_MODE);
-                return;
-            }
-            browserMatcher = PHANTOM_JS_REGEX.matcher(property);
-            if (browserMatcher.find()) {
-                System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.PHANTOM_JS_BROWSER_MODE);
                 return;
             }
             browserMatcher = NO_BROWSER_REGEX.matcher(property);

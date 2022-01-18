@@ -338,7 +338,7 @@ public class RandomStringUtils {
      */
     public static String generateLetterByProbability(final int length, boolean isConsonant) {
 
-        StringBuilder generatedLetters = new StringBuilder("");
+        StringBuilder generatedLetters = new StringBuilder();
 
         LinkedHashMap<String, Double> hm = new LinkedHashMap<>();
         if (isConsonant) {

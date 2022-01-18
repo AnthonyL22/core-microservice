@@ -179,7 +179,7 @@ public enum CssProperty {
 
     public String property;
 
-    private CssProperty(String a) {
+    CssProperty(String a) {
         property = a;
     }
 

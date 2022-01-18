@@ -70,7 +70,7 @@ public class MicroserviceTestListenerTest extends MicroserviceTestListener {
         IInvokedMethodListener listener = new MicroserviceTestListener();
         List<IInvokedMethodListener> methodListeners = new ArrayList<>();
         methodListeners.add(listener);
-        testRunner = new TestRunner(mockIConfiguration, suiteRunner, xmlTest, true, methodListeners, null);
+        testRunner = new TestRunner(mockIConfiguration, suiteRunner, xmlTest, true, methodListeners);
 
         ITestClass mockITestClass = mock(ITestClass.class);
         when(mockITestClass.getTestName()).thenReturn("[TestClass name=class com.pwc.automation.tests.web.BasicTest]");

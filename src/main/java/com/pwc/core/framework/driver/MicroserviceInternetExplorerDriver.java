@@ -14,10 +14,6 @@ public class MicroserviceInternetExplorerDriver extends InternetExplorerDriver i
         super(capabilities);
     }
 
-    public MicroserviceInternetExplorerDriver(int port) {
-        super(port);
-    }
-
     public MicroserviceInternetExplorerDriver(InternetExplorerDriverService service) {
         super(service);
     }

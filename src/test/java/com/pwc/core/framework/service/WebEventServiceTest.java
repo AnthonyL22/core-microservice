@@ -1,5 +1,6 @@
 package com.pwc.core.framework.service;
 
+import com.pwc.core.framework.FrameworkConstants;
 import com.pwc.core.framework.JavascriptConstants;
 import com.pwc.core.framework.data.Credentials;
 import com.pwc.core.framework.data.CssProperty;
@@ -115,6 +116,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
         when(mockTabNameCookie.getName()).thenReturn("tabName");
         when(mockTabNameCookie.getValue()).thenReturn("Stuff");
         when(mockTabNameCookie.getDomain()).thenReturn(".mywebsite.com");
+        System.setProperty(FrameworkConstants.SYSTEM_USER_TIMEZONE, "PST");
         Date tabNameCookieExpireDate = DateUtils.getDateByOffset(0);
         when(mockTabNameCookie.getExpiry()).thenReturn(tabNameCookieExpireDate);
 
@@ -305,7 +307,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
         when(specialMockWebElement.getAttribute(WebElementAttribute.ID.attribute)).thenReturn("776");
         when(specialMockWebElement.getAttribute(WebElementAttribute.VALUE.attribute)).thenReturn("Save Button");
         when(specialMockWebElement.getTagName()).thenReturn(WebElementType.DIV.type);
-        when(mockWebDriverService.findElementByXPath(".//*[@id='776']")).thenReturn(specialMockWebElement);
+        when(mockWebDriverService.findElement(By.xpath(".//*[@id='776']"))).thenReturn(specialMockWebElement);
 
         webEventService.elementAttribute("777", WebElementAttribute.NAME, "foobar", true);
     }
@@ -583,7 +585,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
 
         when(mockWebDriverService.getPageSource()).thenReturn(TABLE_HTML);
         createMockElement("datatable", WebElementAttribute.ID, WebElementType.TABLE, true);
-        when(mockWebDriverService.findElementByXPath(".//*[@id='datatable']")).thenReturn(getMockWebElement());
+        when(mockWebDriverService.findElement(By.xpath(".//*[@id='datatable']"))).thenReturn(getMockWebElement());
 
         WebElement headingMockRow = mock(WebElement.class);
         WebElement firstMockRow = mock(WebElement.class);
@@ -616,7 +618,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
 
         when(mockWebDriverService.getPageSource()).thenReturn(TABLE_HTML);
         createMockElement("datatable", WebElementAttribute.ID, WebElementType.TABLE, true);
-        when(mockWebDriverService.findElementByXPath(".//*[@id='datatable']")).thenReturn(getMockWebElement());
+        when(mockWebDriverService.findElement(By.xpath(".//*[@id='datatable']"))).thenReturn(getMockWebElement());
 
         WebElement headingMockRow = mock(WebElement.class);
         WebElement firstMockRow = mock(WebElement.class);
@@ -649,7 +651,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
 
         when(mockWebDriverService.getPageSource()).thenReturn(TABLE_HTML);
         createMockElement("datatable", WebElementAttribute.ID, WebElementType.TABLE, true);
-        when(mockWebDriverService.findElementByXPath(".//*[@id='datatable']")).thenReturn(getMockWebElement());
+        when(mockWebDriverService.findElement(By.xpath(".//*[@id='datatable']"))).thenReturn(getMockWebElement());
 
         WebElement headingMockRow = mock(WebElement.class);
         WebElement firstMockRow = mock(WebElement.class);
@@ -682,7 +684,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
 
         when(mockWebDriverService.getPageSource()).thenReturn(TABLE_HTML);
         createMockElement("datatable", WebElementAttribute.ID, WebElementType.TABLE, true);
-        when(mockWebDriverService.findElementByXPath(".//*[@id='datatable']")).thenReturn(getMockWebElement());
+        when(mockWebDriverService.findElement(By.xpath(".//*[@id='datatable']"))).thenReturn(getMockWebElement());
 
         WebElement headingMockRow = mock(WebElement.class);
         WebElement firstMockRow = mock(WebElement.class);
@@ -715,7 +717,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
 
         when(mockWebDriverService.getPageSource()).thenReturn(TABLE_HTML);
         createMockElement("datatable", WebElementAttribute.ID, WebElementType.TABLE, true);
-        when(mockWebDriverService.findElementByXPath(".//*[@id='datatable']")).thenReturn(getMockWebElement());
+        when(mockWebDriverService.findElement(By.xpath(".//*[@id='datatable']"))).thenReturn(getMockWebElement());
 
         WebElement headingMockRow = mock(WebElement.class);
         WebElement firstMockRow = mock(WebElement.class);
@@ -748,7 +750,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
 
         when(mockWebDriverService.getPageSource()).thenReturn(TABLE_HTML);
         createMockElement("datatable", WebElementAttribute.ID, WebElementType.TABLE, true);
-        when(mockWebDriverService.findElementByXPath(".//*[@id='datatable']")).thenReturn(getMockWebElement());
+        when(mockWebDriverService.findElement(By.xpath(".//*[@id='datatable']"))).thenReturn(getMockWebElement());
 
         WebElement headingMockRow = mock(WebElement.class);
         WebElement firstMockRow = mock(WebElement.class);
@@ -781,7 +783,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
 
         when(mockWebDriverService.getPageSource()).thenReturn(TABLE_HTML);
         createMockElement("datatable", WebElementAttribute.ID, WebElementType.TABLE, true);
-        when(mockWebDriverService.findElementByXPath(".//*[@id='datatable']")).thenReturn(getMockWebElement());
+        when(mockWebDriverService.findElement(By.xpath(".//*[@id='datatable']"))).thenReturn(getMockWebElement());
 
         WebElement headingMockRow = mock(WebElement.class);
         WebElement firstMockRow = mock(WebElement.class);
@@ -814,7 +816,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
 
         when(mockWebDriverService.getPageSource()).thenReturn(TABLE_HTML);
         createMockElement("datatable", WebElementAttribute.ID, WebElementType.TABLE, true);
-        when(mockWebDriverService.findElementByXPath(".//*[@id='datatable']")).thenReturn(getMockWebElement());
+        when(mockWebDriverService.findElement(By.xpath(".//*[@id='datatable']"))).thenReturn(getMockWebElement());
 
         WebElement headingMockRow = mock(WebElement.class);
         WebElement firstMockRow = mock(WebElement.class);
@@ -844,7 +846,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
     public void gridRowCountMatchingCountTest() {
         when(mockWebDriverService.getPageSource()).thenReturn(TABLE_HTML);
         createMockElement("datatable", WebElementAttribute.ID, WebElementType.TABLE, true);
-        when(mockWebDriverService.findElementByXPath(".//*[@id='datatable']")).thenReturn(getMockWebElement());
+        when(mockWebDriverService.findElement(By.xpath(".//*[@id='datatable']"))).thenReturn(getMockWebElement());
 
         WebElement headingMockRow = mock(WebElement.class);
         WebElement secondHeadingMockRow = mock(WebElement.class);
@@ -881,13 +883,13 @@ public class WebEventServiceTest extends WebElementBaseTest {
 
     @Test
     public void gridRowCountFindTableTest() {
-        when(mockWebDriverService.findElementByXPath(".//*[@id='datatable']")).thenReturn(getMockWebElement());
+        when(mockWebDriverService.findElement(By.xpath(".//*[@id='datatable']"))).thenReturn(getMockWebElement());
         webEventService.tableRowCount("datatable", 0);
     }
 
     @Test(expected = AssertionError.class)
     public void gridRowCountUnableToFindTableTest() {
-        when(mockWebDriverService.findElementByXPath(".//*[@id='datatable-foobar']")).thenReturn(getMockWebElement());
+        when(mockWebDriverService.findElement(By.xpath(".//*[@id='datatable-foobar']"))).thenReturn(getMockWebElement());
         webEventService.tableRowCount("datatable", 0);
     }
 
@@ -895,7 +897,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
     public void gridRowCountNotMatchingCountTest() {
         when(mockWebDriverService.getPageSource()).thenReturn(TABLE_HTML);
         createMockElement("datatable", WebElementAttribute.ID, WebElementType.TABLE, true);
-        when(mockWebDriverService.findElementByXPath(".//*[@id='datatable']")).thenReturn(getMockWebElement());
+        when(mockWebDriverService.findElement(By.xpath(".//*[@id='datatable']"))).thenReturn(getMockWebElement());
 
         WebElement headingMockRow = mock(WebElement.class);
         WebElement firstMockRow = mock(WebElement.class);
@@ -927,7 +929,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
     public void gridRowCountNoTableHeaderTest() {
         when(mockWebDriverService.getPageSource()).thenReturn(TABLE_HTML);
         createMockElement("datatable", WebElementAttribute.ID, WebElementType.TABLE, true);
-        when(mockWebDriverService.findElementByXPath(".//*[@id='datatable']")).thenReturn(getMockWebElement());
+        when(mockWebDriverService.findElement(By.xpath(".//*[@id='datatable']"))).thenReturn(getMockWebElement());
 
         WebElement headingMockRow = mock(WebElement.class);
         WebElement firstMockRow = mock(WebElement.class);
@@ -998,7 +1000,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
     public void findWebElementXpathTest() {
         createMockElement("777", WebElementAttribute.ID, WebElementType.DIV, true);
 
-        when(mockWebDriverService.findElementByXPath(XPATH_LOCATOR)).thenReturn(getMockWebElement());
+        when(mockWebDriverService.findElement(By.xpath(XPATH_LOCATOR))).thenReturn(getMockWebElement());
 
         WebElement webElement = webEventService.findWebElement(XPATH_LOCATOR);
         Assert.assertEquals(webElement.getTagName(), WebElementType.DIV.type);
@@ -1008,7 +1010,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
     @Test
     public void findWebElementBadParsingTest() {
         createMockElement("777", WebElementAttribute.ID, WebElementType.DIV, true);
-        when(mockWebDriverService.findElementByXPath("777")).thenReturn(getMockWebElement());
+        when(mockWebDriverService.findElement(By.xpath("777"))).thenReturn(getMockWebElement());
 
         WebElement webElement = webEventService.findWebElement("777");
         Assert.assertNull(webElement);
@@ -1017,7 +1019,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
     @Test
     public void findWebElementPartialHtmlTest() {
         createMockElement("777", WebElementAttribute.ID, WebElementType.DIV, true);
-        when(mockWebDriverService.findElementByXPath("777")).thenReturn(getMockWebElement());
+        when(mockWebDriverService.findElement(By.xpath("777"))).thenReturn(getMockWebElement());
 
         WebElement webElement = webEventService.findWebElement("777");
         Assert.assertNull(webElement);
@@ -1026,7 +1028,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
     @Test
     public void findWebElementCustomConstructedPathTest() {
         createMockElement("777", WebElementAttribute.ID, WebElementType.DIV, true);
-        when(mockWebDriverService.findElementByXPath(".//*[@id='777']")).thenReturn(getMockWebElement());
+        when(mockWebDriverService.findElement(By.xpath(".//*[@id='777']"))).thenReturn(getMockWebElement());
 
         WebElement webElement = webEventService.findWebElement("777");
         Assert.assertEquals(webElement.getTagName(), WebElementType.DIV.type);
@@ -1036,7 +1038,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
     @Test
     public void findWebElementCustomConstructedPathElementNotFoundTest() {
         createMockElement("777", WebElementAttribute.ID, WebElementType.DIV, true);
-        when(mockWebDriverService.findElementByXPath(".//*[@id='7778']")).thenReturn(getMockWebElement());
+        when(mockWebDriverService.findElement(By.xpath(".//*[@id='7778']"))).thenReturn(getMockWebElement());
 
         WebElement webElement = webEventService.findWebElement("777");
         Assert.assertNull(webElement);
@@ -1046,7 +1048,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
     public void findWebElementBadHtmlTest() {
         when(mockWebDriverService.getPageSource()).thenReturn(PARTIAL_HTML);
         createMockElement("777", WebElementAttribute.ID, WebElementType.DIV, true);
-        when(mockWebDriverService.findElementByXPath(".//*[@id='7778']")).thenReturn(getMockWebElement());
+        when(mockWebDriverService.findElement(By.xpath(".//*[@id='7778']"))).thenReturn(getMockWebElement());
 
         WebElement webElement = webEventService.findWebElement("777");
         Assert.assertNull(webElement);
@@ -1056,7 +1058,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
     public void findWebElementSeleniumParserTest() {
         when(mockWebDriverService.getPageSource()).thenReturn(RAW_HTML);
         createMockElement("777", WebElementAttribute.ID, WebElementType.DIV, true);
-        when(mockWebDriverService.findElementByXPath(ELEMENT_XPATHS.get(2))).thenReturn(getMockWebElement());
+        when(mockWebDriverService.findElement(By.xpath(ELEMENT_XPATHS.get(2)))).thenReturn(getMockWebElement());
 
         WebElement webElement = webEventService.seleniumFindElementByXPath(ELEMENT_XPATHS);
         Assert.assertNotNull(webElement);
@@ -1066,7 +1068,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
     public void findWebElementSeleniumParserUnableToFindTest() {
         when(mockWebDriverService.getPageSource()).thenReturn(RAW_HTML);
         createMockElement("777", WebElementAttribute.ID, WebElementType.DIV, true);
-        when(mockWebDriverService.findElementByXPath(".//*[@id='7778']")).thenReturn(getMockWebElement());
+        when(mockWebDriverService.findElement(By.xpath(".//*[@id='7778']"))).thenReturn(getMockWebElement());
 
         WebElement webElement = webEventService.seleniumFindElementByXPath(ELEMENT_XPATHS);
         Assert.assertNull(webElement);
@@ -1076,9 +1078,9 @@ public class WebEventServiceTest extends WebElementBaseTest {
     public void findWebElementCustomParserTest() {
         when(mockWebDriverService.getPageSource()).thenReturn(RAW_HTML);
         createMockElement("777", WebElementAttribute.ID, WebElementType.DIV, true);
-        when(mockWebDriverService.findElementByXPath(ELEMENT_XPATHS.get(2))).thenReturn(getMockWebElement());
+        when(mockWebDriverService.findElement(By.xpath(ELEMENT_XPATHS.get(2)))).thenReturn(getMockWebElement());
 
-        WebElement webElement = webEventService.findElementByXPath(ELEMENT_XPATHS);
+        WebElement webElement = webEventService.seleniumFindElementByXPath(ELEMENT_XPATHS);
         Assert.assertNotNull(webElement);
     }
 
@@ -1088,7 +1090,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
         when(specialMockWebElement.getAttribute(WebElementAttribute.ID.attribute)).thenReturn("777");
         when(specialMockWebElement.getTagName()).thenReturn(WebElementType.DIV.type);
         when(specialMockWebElement.getText()).thenReturn("Save Button");
-        when(mockWebDriverService.findElementByXPath(".//*[@id='777']")).thenReturn(specialMockWebElement);
+        when(mockWebDriverService.findElement(By.xpath(".//*[@id='777']"))).thenReturn(specialMockWebElement);
 
         Actions mockActions = mock(Actions.class);
         Action mockAction = mock(Action.class);
@@ -1103,9 +1105,9 @@ public class WebEventServiceTest extends WebElementBaseTest {
     public void findWebElementVTDParserFallBackToSeleniumParserTest() {
         when(mockWebDriverService.getPageSource()).thenReturn(RAW_HTML);
         createMockElement("777", WebElementAttribute.ID, WebElementType.DIV, true);
-        when(mockWebDriverService.findElementByXPath(".//*[@id='7778']")).thenReturn(getMockWebElement());
+        when(mockWebDriverService.findElement(By.xpath(".//*[@id='7778']"))).thenReturn(getMockWebElement());
 
-        WebElement webElement = webEventService.findElementByXPath(ELEMENT_XPATHS);
+        WebElement webElement = webEventService.seleniumFindElementByXPath(ELEMENT_XPATHS);
         Assert.assertNull(webElement);
     }
 
@@ -1115,7 +1117,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
         when(specialMockWebElement.getAttribute(WebElementAttribute.ID.attribute)).thenReturn("777");
         when(specialMockWebElement.getTagName()).thenReturn(WebElementType.DIV.type);
         when(specialMockWebElement.getText()).thenReturn("Save Button");
-        when(mockWebDriverService.findElementByXPath(".//*[@id='777']")).thenReturn(specialMockWebElement);
+        when(mockWebDriverService.findElement(By.xpath(".//*[@id='777']"))).thenReturn(specialMockWebElement);
 
         String elementText = webEventService.getText("777");
         Assert.assertEquals(elementText, "Save Button");
@@ -1127,7 +1129,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
         when(specialMockWebElement.getAttribute(WebElementAttribute.ID.attribute)).thenReturn("777");
         when(specialMockWebElement.getTagName()).thenReturn(WebElementType.DIV.type);
         when(specialMockWebElement.getText()).thenReturn("Save Button");
-        when(mockWebDriverService.findElementByXPath(".//*[@id='777']")).thenReturn(null);
+        when(mockWebDriverService.findElement(By.xpath(".//*[@id='777']"))).thenReturn(null);
 
         String elementText = webEventService.getText("777");
         Assert.assertEquals(elementText, "");
@@ -1139,7 +1141,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
         when(specialMockWebElement.getAttribute(WebElementAttribute.ID.attribute)).thenReturn("777");
         when(specialMockWebElement.getTagName()).thenReturn(WebElementType.DIV.type);
         when(specialMockWebElement.getAttribute(WebElementAttribute.VALUE.attribute)).thenReturn("Save Button");
-        when(mockWebDriverService.findElementByXPath(".//*[@id='777']")).thenReturn(specialMockWebElement);
+        when(mockWebDriverService.findElement(By.xpath(".//*[@id='777']"))).thenReturn(specialMockWebElement);
 
         String result = webEventService.getText("777");
         Assert.assertEquals(result, "Save Button");
@@ -1151,7 +1153,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
         when(specialMockWebElement.getAttribute(WebElementAttribute.ID.attribute)).thenReturn("777");
         when(specialMockWebElement.getTagName()).thenReturn(WebElementType.BUTTON.type);
         when(specialMockWebElement.getAttribute(WebElementAttribute.HREF.attribute)).thenReturn(DEFAULT_URL);
-        when(mockWebDriverService.findElementByXPath(".//*[@id='777']")).thenReturn(specialMockWebElement);
+        when(mockWebDriverService.findElement(By.xpath(".//*[@id='777']"))).thenReturn(specialMockWebElement);
 
         String result = webEventService.getAttribute("777", WebElementAttribute.HREF);
         Assert.assertEquals(result, DEFAULT_URL);
@@ -1164,7 +1166,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
         when(specialMockWebElement.getTagName()).thenReturn(WebElementType.BUTTON.type);
         when(specialMockWebElement.getCssValue("left")).thenReturn("left: 68px;");
         when(specialMockWebElement.isDisplayed()).thenReturn(true);
-        when(mockWebDriverService.findElementByXPath(".//*[@id='777']")).thenReturn(specialMockWebElement);
+        when(mockWebDriverService.findElement(By.xpath(".//*[@id='777']"))).thenReturn(specialMockWebElement);
 
         webEventService.elementCssPropertyContains("777", CssProperty.LEFT, "68px;", true);
     }
@@ -1176,7 +1178,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
         when(specialMockWebElement.getTagName()).thenReturn(WebElementType.BUTTON.type);
         when(specialMockWebElement.getCssValue("left")).thenReturn("left: 68px;");
         when(specialMockWebElement.isDisplayed()).thenReturn(true);
-        when(mockWebDriverService.findElementByXPath(".//*[@id='777']")).thenReturn(specialMockWebElement);
+        when(mockWebDriverService.findElement(By.xpath(".//*[@id='777']"))).thenReturn(specialMockWebElement);
 
         webEventService.elementCssPropertyContains("777", CssProperty.LEFT, "69px;", true);
     }
@@ -1188,7 +1190,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
         when(specialMockWebElement.getTagName()).thenReturn(WebElementType.BUTTON.type);
         when(specialMockWebElement.getCssValue("left")).thenReturn("left: 68px;");
         when(specialMockWebElement.isDisplayed()).thenReturn(true);
-        when(mockWebDriverService.findElementByXPath(".//*[@id='777']")).thenReturn(specialMockWebElement);
+        when(mockWebDriverService.findElement(By.xpath(".//*[@id='777']"))).thenReturn(specialMockWebElement);
 
         webEventService.elementCssPropertyContains("777", CssProperty.LEFT, "69px;", false);
     }
@@ -1200,7 +1202,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
         when(specialMockWebElement.getTagName()).thenReturn(WebElementType.BUTTON.type);
         when(specialMockWebElement.getCssValue("left")).thenReturn("left: 68px;");
         when(specialMockWebElement.isDisplayed()).thenReturn(true);
-        when(mockWebDriverService.findElementByXPath(".//*[@id='777']")).thenReturn(specialMockWebElement);
+        when(mockWebDriverService.findElement(By.xpath(".//*[@id='777']"))).thenReturn(specialMockWebElement);
 
         webEventService.elementCssPropertyContains("777", CssProperty.LEFT, "68px;", false);
     }
@@ -1212,7 +1214,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
         when(specialMockWebElement.getTagName()).thenReturn(WebElementType.BUTTON.type);
         when(specialMockWebElement.getCssValue("left")).thenReturn("left: 68px;");
         when(specialMockWebElement.isDisplayed()).thenReturn(true);
-        when(mockWebDriverService.findElementByXPath(".//*[@id='777']")).thenReturn(specialMockWebElement);
+        when(mockWebDriverService.findElement(By.xpath(".//*[@id='777']"))).thenReturn(specialMockWebElement);
 
         webEventService.elementCssPropertyEquals("777", CssProperty.LEFT, "left: 68px;", true);
     }
@@ -1224,7 +1226,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
         when(specialMockWebElement.getTagName()).thenReturn(WebElementType.BUTTON.type);
         when(specialMockWebElement.getCssValue("left")).thenReturn("left: 68px;");
         when(specialMockWebElement.isDisplayed()).thenReturn(true);
-        when(mockWebDriverService.findElementByXPath(".//*[@id='777']")).thenReturn(specialMockWebElement);
+        when(mockWebDriverService.findElement(By.xpath(".//*[@id='777']"))).thenReturn(specialMockWebElement);
 
         webEventService.elementCssPropertyEquals("777", CssProperty.LEFT, "left: 69px;", false);
     }
@@ -1236,7 +1238,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
         when(specialMockWebElement.getTagName()).thenReturn(WebElementType.BUTTON.type);
         when(specialMockWebElement.getCssValue("left")).thenReturn("left: 68px;");
         when(specialMockWebElement.isDisplayed()).thenReturn(true);
-        when(mockWebDriverService.findElementByXPath(".//*[@id='777']")).thenReturn(specialMockWebElement);
+        when(mockWebDriverService.findElement(By.xpath(".//*[@id='777']"))).thenReturn(specialMockWebElement);
 
         webEventService.elementCssPropertyEquals("777", CssProperty.LEFT, "left: 69px;", true);
     }
@@ -1248,7 +1250,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
         when(specialMockWebElement.getTagName()).thenReturn(WebElementType.BUTTON.type);
         when(specialMockWebElement.getCssValue("left")).thenReturn("left: 68px;");
         when(specialMockWebElement.isDisplayed()).thenReturn(true);
-        when(mockWebDriverService.findElementByXPath(".//*[@id='777']")).thenReturn(specialMockWebElement);
+        when(mockWebDriverService.findElement(By.xpath(".//*[@id='777']"))).thenReturn(specialMockWebElement);
 
         webEventService.elementCssPropertyEquals("777", CssProperty.LEFT, "left: 68px;", false);
     }
@@ -1259,7 +1261,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
         when(specialMockWebElement.getAttribute(WebElementAttribute.ID.attribute)).thenReturn("777");
         when(specialMockWebElement.getTagName()).thenReturn(WebElementType.DIV.type);
         when(specialMockWebElement.getText()).thenReturn("Save Button");
-        when(mockWebDriverService.findElementByXPath(".//*[@id='777']")).thenReturn(specialMockWebElement);
+        when(mockWebDriverService.findElement(By.xpath(".//*[@id='777']"))).thenReturn(specialMockWebElement);
 
         webEventService.elementTextExists("Save Changes", true);
     }
@@ -1270,7 +1272,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
         when(specialMockWebElement.getAttribute(WebElementAttribute.ID.attribute)).thenReturn("777");
         when(specialMockWebElement.getTagName()).thenReturn(WebElementType.DIV.type);
         when(specialMockWebElement.getText()).thenReturn("Save Button");
-        when(mockWebDriverService.findElementByXPath(".//*[@id='777']")).thenReturn(specialMockWebElement);
+        when(mockWebDriverService.findElement(By.xpath(".//*[@id='777']"))).thenReturn(specialMockWebElement);
 
         webEventService.elementTextExists("foobar", true);
     }
@@ -1281,7 +1283,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
         when(specialMockWebElement.getAttribute(WebElementAttribute.ID.attribute)).thenReturn("777");
         when(specialMockWebElement.getTagName()).thenReturn(WebElementType.DIV.type);
         when(specialMockWebElement.getText()).thenReturn("Save Button");
-        when(mockWebDriverService.findElementByXPath(".//*[@id='777']")).thenReturn(specialMockWebElement);
+        when(mockWebDriverService.findElement(By.xpath(".//*[@id='777']"))).thenReturn(specialMockWebElement);
 
         webEventService.elementTextExists("Save Changes", false);
     }
@@ -1292,7 +1294,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
         when(specialMockWebElement.getAttribute(WebElementAttribute.ID.attribute)).thenReturn("777");
         when(specialMockWebElement.getTagName()).thenReturn(WebElementType.DIV.type);
         when(specialMockWebElement.getText()).thenReturn("Save Button");
-        when(mockWebDriverService.findElementByXPath(".//*[@id='777']")).thenReturn(specialMockWebElement);
+        when(mockWebDriverService.findElement(By.xpath(".//*[@id='777']"))).thenReturn(specialMockWebElement);
 
         webEventService.elementTextExists("foobar", false);
     }
@@ -1318,7 +1320,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
         when(specialMockWebElement.getAttribute(WebElementAttribute.ID.attribute)).thenReturn("777");
         when(specialMockWebElement.getAttribute(WebElementAttribute.VALUE.attribute)).thenReturn("Save Button");
         when(specialMockWebElement.getTagName()).thenReturn(WebElementType.DIV.type);
-        when(mockWebDriverService.findElementByXPath(".//*[@id='777']")).thenReturn(specialMockWebElement);
+        when(mockWebDriverService.findElement(By.xpath(".//*[@id='777']"))).thenReturn(specialMockWebElement);
 
         webEventService.elementTextExists("777", "Save Changes", true);
     }
@@ -1329,7 +1331,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
         when(specialMockWebElement.getAttribute(WebElementAttribute.ID.attribute)).thenReturn("777");
         when(specialMockWebElement.getAttribute(WebElementAttribute.VALUE.attribute)).thenReturn("Save Button");
         when(specialMockWebElement.getTagName()).thenReturn(WebElementType.DIV.type);
-        when(mockWebDriverService.findElementByXPath(".//*[@id='777']")).thenReturn(specialMockWebElement);
+        when(mockWebDriverService.findElement(By.xpath(".//*[@id='777']"))).thenReturn(specialMockWebElement);
 
         webEventService.elementTextExists("777", "Save Button", true);
     }
@@ -1340,7 +1342,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
         when(specialMockWebElement.getAttribute(WebElementAttribute.ID.attribute)).thenReturn("777");
         when(specialMockWebElement.getAttribute(WebElementAttribute.VALUE.attribute)).thenReturn("Save Button");
         when(specialMockWebElement.getTagName()).thenReturn(WebElementType.DIV.type);
-        when(mockWebDriverService.findElementByXPath(".//*[@id='777']")).thenReturn(specialMockWebElement);
+        when(mockWebDriverService.findElement(By.xpath(".//*[@id='777']"))).thenReturn(specialMockWebElement);
 
         webEventService.elementTextExists("777", "Save Changes", false);
     }
@@ -1364,7 +1366,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
         when(specialMockWebElement.getAttribute(WebElementAttribute.ID.attribute)).thenReturn("777");
         when(specialMockWebElement.getAttribute(WebElementAttribute.VALUE.attribute)).thenReturn("Save Button");
         when(specialMockWebElement.getTagName()).thenReturn(WebElementType.DIV.type);
-        when(mockWebDriverService.findElementByXPath(".//*[@id='777']")).thenReturn(specialMockWebElement);
+        when(mockWebDriverService.findElement(By.xpath(".//*[@id='777']"))).thenReturn(specialMockWebElement);
 
         webEventService.elementTextExists("777", "Save Button", false);
     }
@@ -1375,12 +1377,12 @@ public class WebEventServiceTest extends WebElementBaseTest {
         when(specialMockWebElement.getAttribute(WebElementAttribute.ID.attribute)).thenReturn("777");
         when(specialMockWebElement.getAttribute(WebElementAttribute.VALUE.attribute)).thenReturn("Save Button");
         when(specialMockWebElement.getTagName()).thenReturn(WebElementType.DIV.type);
-        when(mockWebDriverService.findElementByXPath(".//*[@id='777']")).thenReturn(specialMockWebElement);
+        when(mockWebDriverService.findElement(By.xpath(".//*[@id='777']"))).thenReturn(specialMockWebElement);
 
         webEventService.elementTextExists("777", WebElementAttribute.CHECKED.attribute, true);
     }
 
-    @Test
+    @Test(expected = NoSuchMethodError.class)
     public void elementAttributeSelectElementTest() {
         when(specialMockWebElement.isDisplayed()).thenReturn(true);
         when(specialMockWebElement.getAttribute(WebElementAttribute.ID.attribute)).thenReturn("777");
@@ -1397,7 +1399,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
         Select mockSelect = mock(Select.class);
         when(mockSelect.getAllSelectedOptions()).thenReturn(selectedOptions);
 
-        when(mockWebDriverService.findElementByXPath(".//*[@id='777']")).thenReturn(specialMockWebElement);
+        when(mockWebDriverService.findElement(By.xpath(".//*[@id='777']"))).thenReturn(specialMockWebElement);
 
         webEventService.elementAttribute("777", WebElementAttribute.VALUE, dropDownValue, true);
     }
@@ -1408,18 +1410,18 @@ public class WebEventServiceTest extends WebElementBaseTest {
         when(specialMockWebElement.getAttribute(WebElementAttribute.ID.attribute)).thenReturn("777");
         when(specialMockWebElement.getAttribute(WebElementAttribute.VALUE.attribute)).thenReturn("Save Button");
         when(specialMockWebElement.getTagName()).thenReturn(WebElementType.DIV.type);
-        when(mockWebDriverService.findElementByXPath(".//*[@id='777']")).thenReturn(specialMockWebElement);
+        when(mockWebDriverService.findElement(By.xpath(".//*[@id='777']"))).thenReturn(specialMockWebElement);
 
         webEventService.elementAttribute("777", WebElementAttribute.CHECKED, "", false);
     }
 
-    @Test(expected = IndexOutOfBoundsException.class)
+    @Test(expected = NoSuchMethodError.class)
     public void elementTextContainsSelectTest() {
         when(specialMockWebElement.isDisplayed()).thenReturn(true);
         when(specialMockWebElement.getTagName()).thenReturn(WebElementType.SELECT.type);
         when(specialMockWebElement.getAttribute(WebElementAttribute.ID.attribute)).thenReturn("777");
         when(specialMockWebElement.getAttribute(WebElementAttribute.VALUE.attribute)).thenReturn("Save Button");
-        when(mockWebDriverService.findElementByXPath(".//*[@id='777']")).thenReturn(specialMockWebElement);
+        when(mockWebDriverService.findElement(By.xpath(".//*[@id='777']"))).thenReturn(specialMockWebElement);
 
         webEventService.elementTextContains("777", "Save", true);
     }
@@ -1430,7 +1432,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
         when(specialMockWebElement.getAttribute(WebElementAttribute.ID.attribute)).thenReturn("777");
         when(specialMockWebElement.getAttribute(WebElementAttribute.VALUE.attribute)).thenReturn("Save Button");
         when(specialMockWebElement.getTagName()).thenReturn(WebElementType.DIV.type);
-        when(mockWebDriverService.findElementByXPath(".//*[@id='777']")).thenReturn(specialMockWebElement);
+        when(mockWebDriverService.findElement(By.xpath(".//*[@id='777']"))).thenReturn(specialMockWebElement);
 
         webEventService.elementTextContains("777", "Save", true);
     }
@@ -1442,7 +1444,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
         when(specialMockWebElement.getAttribute(WebElementAttribute.VALUE.attribute)).thenReturn("null");
         when(specialMockWebElement.getText()).thenReturn("Save Button");
         when(specialMockWebElement.getTagName()).thenReturn(WebElementType.DIV.type);
-        when(mockWebDriverService.findElementByXPath(".//*[@id='777']")).thenReturn(specialMockWebElement);
+        when(mockWebDriverService.findElement(By.xpath(".//*[@id='777']"))).thenReturn(specialMockWebElement);
 
         webEventService.elementTextContains("777", "Save", true);
     }
@@ -1454,7 +1456,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
         when(specialMockWebElement.getAttribute(WebElementAttribute.VALUE.attribute)).thenReturn("null");
         when(specialMockWebElement.getText()).thenReturn("GO");
         when(specialMockWebElement.getTagName()).thenReturn(WebElementType.DIV.type);
-        when(mockWebDriverService.findElementByXPath(".//*[@id='777']")).thenReturn(specialMockWebElement);
+        when(mockWebDriverService.findElement(By.xpath(".//*[@id='777']"))).thenReturn(specialMockWebElement);
 
         webEventService.elementTextContains("777", "Save", true);
     }
@@ -1466,7 +1468,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
         when(specialMockWebElement.getAttribute(WebElementAttribute.VALUE.attribute)).thenReturn("null");
         when(specialMockWebElement.getText()).thenReturn("GO");
         when(specialMockWebElement.getTagName()).thenReturn(WebElementType.DIV.type);
-        when(mockWebDriverService.findElementByXPath(".//*[@id='777']")).thenReturn(specialMockWebElement);
+        when(mockWebDriverService.findElement(By.xpath(".//*[@id='777']"))).thenReturn(specialMockWebElement);
 
         webEventService.elementTextContains("777", "Save", false);
     }
@@ -1477,7 +1479,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
         when(specialMockWebElement.getAttribute(WebElementAttribute.ID.attribute)).thenReturn("777");
         when(specialMockWebElement.getAttribute(WebElementAttribute.VALUE.attribute)).thenReturn("Save Button");
         when(specialMockWebElement.getTagName()).thenReturn(WebElementType.DIV.type);
-        when(mockWebDriverService.findElementByXPath(".//*[@id='777']")).thenReturn(specialMockWebElement);
+        when(mockWebDriverService.findElement(By.xpath(".//*[@id='777']"))).thenReturn(specialMockWebElement);
 
         webEventService.elementTextContains("777", "Save", false);
     }
@@ -1488,7 +1490,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
         when(specialMockWebElement.getAttribute(WebElementAttribute.ID.attribute)).thenReturn("777");
         when(specialMockWebElement.getAttribute(WebElementAttribute.VALUE.attribute)).thenReturn("Save Button");
         when(specialMockWebElement.getTagName()).thenReturn(WebElementType.DIV.type);
-        when(mockWebDriverService.findElementByXPath(".//*[@id='777']")).thenReturn(specialMockWebElement);
+        when(mockWebDriverService.findElement(By.xpath(".//*[@id='777']"))).thenReturn(specialMockWebElement);
 
         webEventService.elementTextContains("777", "Saving", false);
     }
@@ -1499,7 +1501,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
         when(specialMockWebElement.getAttribute(WebElementAttribute.ID.attribute)).thenReturn("777");
         when(specialMockWebElement.getAttribute(WebElementAttribute.VALUE.attribute)).thenReturn("Save Button");
         when(specialMockWebElement.getTagName()).thenReturn(WebElementType.DIV.type);
-        when(mockWebDriverService.findElementByXPath(".//*[@id='777']")).thenReturn(specialMockWebElement);
+        when(mockWebDriverService.findElement(By.xpath(".//*[@id='777']"))).thenReturn(specialMockWebElement);
 
         webEventService.elementTextContains("777", "Button", false);
     }
@@ -1510,7 +1512,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
         when(specialMockWebElement.getAttribute(WebElementAttribute.ID.attribute)).thenReturn("777");
         when(specialMockWebElement.getAttribute(WebElementAttribute.VALUE.attribute)).thenReturn("Save Button");
         when(specialMockWebElement.getTagName()).thenReturn(WebElementType.DIV.type);
-        when(mockWebDriverService.findElementByXPath(".//*[@id='777']")).thenReturn(specialMockWebElement);
+        when(mockWebDriverService.findElement(By.xpath(".//*[@id='777']"))).thenReturn(specialMockWebElement);
 
         boolean result = webEventService.isVisible("777");
         Assert.assertTrue(result);
@@ -1522,7 +1524,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
         when(specialMockWebElement.getAttribute(WebElementAttribute.ID.attribute)).thenReturn("777");
         when(specialMockWebElement.getAttribute(WebElementAttribute.VALUE.attribute)).thenReturn("Save Button");
         when(specialMockWebElement.getTagName()).thenReturn(WebElementType.DIV.type);
-        when(mockWebDriverService.findElementByXPath(".//*[@id='777']")).thenReturn(specialMockWebElement);
+        when(mockWebDriverService.findElement(By.xpath(".//*[@id='777']"))).thenReturn(specialMockWebElement);
 
         boolean result = webEventService.isVisible("778");
         Assert.assertFalse(result);
@@ -1534,7 +1536,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
         when(specialMockWebElement.getAttribute(WebElementAttribute.ID.attribute)).thenReturn("777");
         when(specialMockWebElement.getAttribute(WebElementAttribute.VALUE.attribute)).thenReturn("Save Button");
         when(specialMockWebElement.getTagName()).thenReturn(WebElementType.DIV.type);
-        when(mockWebDriverService.findElementByXPath(".//*[@id='777']")).thenReturn(specialMockWebElement);
+        when(mockWebDriverService.findElement(By.xpath(".//*[@id='777']"))).thenReturn(specialMockWebElement);
 
         boolean result = webEventService.isVisible("777");
         Assert.assertFalse(result);
@@ -1546,7 +1548,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
         when(specialMockWebElement.getAttribute(WebElementAttribute.ID.attribute)).thenReturn("777");
         when(specialMockWebElement.getAttribute(WebElementAttribute.VALUE.attribute)).thenReturn("Save Button");
         when(specialMockWebElement.getTagName()).thenReturn(WebElementType.DIV.type);
-        when(mockWebDriverService.findElementByXPath(".//*[@id='777']")).thenReturn(specialMockWebElement);
+        when(mockWebDriverService.findElement(By.xpath(".//*[@id='777']"))).thenReturn(specialMockWebElement);
 
         boolean result = webEventService.isVisible("778");
         Assert.assertTrue(result);
@@ -1558,7 +1560,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
         when(specialMockWebElement.getAttribute(WebElementAttribute.ID.attribute)).thenReturn("777");
         when(specialMockWebElement.getAttribute(WebElementAttribute.VALUE.attribute)).thenReturn("Save Button");
         when(specialMockWebElement.getTagName()).thenReturn(WebElementType.DIV.type);
-        when(mockWebDriverService.findElementByXPath(".//*[@id='777']")).thenReturn(specialMockWebElement);
+        when(mockWebDriverService.findElement(By.xpath(".//*[@id='777']"))).thenReturn(specialMockWebElement);
 
         webEventService.elementVisible("777");
     }
@@ -1569,7 +1571,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
         when(specialMockWebElement.getAttribute(WebElementAttribute.ID.attribute)).thenReturn("777");
         when(specialMockWebElement.getAttribute(WebElementAttribute.VALUE.attribute)).thenReturn("Save Button");
         when(specialMockWebElement.getTagName()).thenReturn(WebElementType.DIV.type);
-        when(mockWebDriverService.findElementByXPath(".//*[@id='777']")).thenReturn(specialMockWebElement);
+        when(mockWebDriverService.findElement(By.xpath(".//*[@id='777']"))).thenReturn(specialMockWebElement);
 
         webEventService.elementNotVisible("777");
     }
@@ -1580,7 +1582,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
         when(specialMockWebElement.getAttribute(WebElementAttribute.ID.attribute)).thenReturn("777");
         when(specialMockWebElement.getAttribute(WebElementAttribute.VALUE.attribute)).thenReturn("Save Button");
         when(specialMockWebElement.getTagName()).thenReturn(WebElementType.DIV.type);
-        when(mockWebDriverService.findElementByXPath(".//*[@id='777']")).thenReturn(specialMockWebElement);
+        when(mockWebDriverService.findElement(By.xpath(".//*[@id='777']"))).thenReturn(specialMockWebElement);
 
         webEventService.elementNotVisible("777");
     }
@@ -1591,7 +1593,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
         when(specialMockWebElement.getAttribute(WebElementAttribute.ID.attribute)).thenReturn("777");
         when(specialMockWebElement.getAttribute(WebElementAttribute.VALUE.attribute)).thenReturn("Save Button");
         when(specialMockWebElement.getTagName()).thenReturn(WebElementType.DIV.type);
-        when(mockWebDriverService.findElementByXPath(".//*[@id='777']")).thenReturn(specialMockWebElement);
+        when(mockWebDriverService.findElement(By.xpath(".//*[@id='777']"))).thenReturn(specialMockWebElement);
 
         webEventService.elementAttributeContains("777", WebElementAttribute.VALUE, "Button", true);
     }
@@ -1602,7 +1604,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
         when(specialMockWebElement.getAttribute(WebElementAttribute.ID.attribute)).thenReturn("777");
         when(specialMockWebElement.getAttribute(WebElementAttribute.VALUE.attribute)).thenReturn("Save Button");
         when(specialMockWebElement.getTagName()).thenReturn(WebElementType.DIV.type);
-        when(mockWebDriverService.findElementByXPath(".//*[@id='777']")).thenReturn(specialMockWebElement);
+        when(mockWebDriverService.findElement(By.xpath(".//*[@id='777']"))).thenReturn(specialMockWebElement);
 
         webEventService.elementAttributeContains("777", WebElementAttribute.VALUE, "Buttons", false);
     }
@@ -1613,7 +1615,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
         when(specialMockWebElement.getAttribute(WebElementAttribute.ID.attribute)).thenReturn("777");
         when(specialMockWebElement.getAttribute(WebElementAttribute.VALUE.attribute)).thenReturn("Save Button");
         when(specialMockWebElement.getTagName()).thenReturn(WebElementType.DIV.type);
-        when(mockWebDriverService.findElementByXPath(".//*[@id='777']")).thenReturn(specialMockWebElement);
+        when(mockWebDriverService.findElement(By.xpath(".//*[@id='777']"))).thenReturn(specialMockWebElement);
 
         webEventService.elementAttributeContains("777", WebElementAttribute.VALUE, "Buttons", true);
     }
@@ -1624,7 +1626,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
         when(specialMockWebElement.getAttribute(WebElementAttribute.ID.attribute)).thenReturn("777");
         when(specialMockWebElement.getAttribute(WebElementAttribute.VALUE.attribute)).thenReturn("Save Button");
         when(specialMockWebElement.getTagName()).thenReturn(WebElementType.DIV.type);
-        when(mockWebDriverService.findElementByXPath(".//*[@id='777']")).thenReturn(specialMockWebElement);
+        when(mockWebDriverService.findElement(By.xpath(".//*[@id='777']"))).thenReturn(specialMockWebElement);
 
         webEventService.elementAttributeContains("777", WebElementAttribute.TEXT, "Save Button", true);
     }
@@ -1635,7 +1637,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
         when(specialMockWebElement.getAttribute(WebElementAttribute.ID.attribute)).thenReturn("777");
         when(specialMockWebElement.getAttribute(WebElementAttribute.VALUE.attribute)).thenReturn("Save Button");
         when(specialMockWebElement.getTagName()).thenReturn(WebElementType.DIV.type);
-        when(mockWebDriverService.findElementByXPath(".//*[@id='777']")).thenReturn(specialMockWebElement);
+        when(mockWebDriverService.findElement(By.xpath(".//*[@id='777']"))).thenReturn(specialMockWebElement);
 
         webEventService.elementAttributeContains("777", WebElementAttribute.VALUE, "Saves Button", true);
     }
@@ -1646,7 +1648,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
         when(specialMockWebElement.getAttribute(WebElementAttribute.ID.attribute)).thenReturn("777");
         when(specialMockWebElement.getAttribute(WebElementAttribute.VALUE.attribute)).thenReturn("Save Button");
         when(specialMockWebElement.getTagName()).thenReturn(WebElementType.DIV.type);
-        when(mockWebDriverService.findElementByXPath(".//*[@id='777']")).thenReturn(specialMockWebElement);
+        when(mockWebDriverService.findElement(By.xpath(".//*[@id='777']"))).thenReturn(specialMockWebElement);
 
         webEventService.elementExists("777");
     }
@@ -1657,7 +1659,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
         when(specialMockWebElement.getAttribute(WebElementAttribute.ID.attribute)).thenReturn("777");
         when(specialMockWebElement.getAttribute(WebElementAttribute.VALUE.attribute)).thenReturn("Save Button");
         when(specialMockWebElement.getTagName()).thenReturn(WebElementType.DIV.type);
-        when(mockWebDriverService.findElementByXPath(".//*[@id='777']")).thenReturn(specialMockWebElement);
+        when(mockWebDriverService.findElement(By.xpath(".//*[@id='777']"))).thenReturn(specialMockWebElement);
 
         webEventService.elementNotExists("7778");
     }
@@ -1668,7 +1670,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
         when(specialMockWebElement.getAttribute(WebElementAttribute.ID.attribute)).thenReturn("777");
         when(specialMockWebElement.getAttribute(WebElementAttribute.VALUE.attribute)).thenReturn("Save Button");
         when(specialMockWebElement.getTagName()).thenReturn(WebElementType.DIV.type);
-        when(mockWebDriverService.findElementByXPath(".//*[@id='777']")).thenReturn(specialMockWebElement);
+        when(mockWebDriverService.findElement(By.xpath(".//*[@id='777']"))).thenReturn(specialMockWebElement);
 
         webEventService.elementNotExists("777");
     }

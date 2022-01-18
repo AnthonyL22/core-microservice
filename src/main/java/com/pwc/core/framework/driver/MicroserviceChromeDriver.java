@@ -1,6 +1,5 @@
 package com.pwc.core.framework.driver;
 
-import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -15,10 +14,6 @@ public class MicroserviceChromeDriver extends ChromeDriver implements Microservi
         super(service);
     }
 
-    public MicroserviceChromeDriver(Capabilities capabilities) {
-        super(capabilities);
-    }
-
     public MicroserviceChromeDriver(ChromeOptions options) {
         super(options);
     }
@@ -27,7 +22,4 @@ public class MicroserviceChromeDriver extends ChromeDriver implements Microservi
         super(service, options);
     }
 
-    public MicroserviceChromeDriver(ChromeDriverService service, Capabilities capabilities) {
-        super(service, capabilities);
-    }
 }

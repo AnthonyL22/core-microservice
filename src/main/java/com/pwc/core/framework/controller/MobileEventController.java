@@ -96,10 +96,6 @@ public class MobileEventController {
                     this.remoteMobileDriver = getIOSDriver();
                     break;
                 }
-                case FrameworkConstants.ANDROID_MODE: {
-                    this.remoteMobileDriver = getAndroidDriver();
-                    break;
-                }
                 default: {
                     this.remoteMobileDriver = getIOSDriver();
                     break;

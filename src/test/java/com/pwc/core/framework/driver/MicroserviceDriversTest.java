@@ -4,11 +4,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.ie.InternetExplorerDriverService;
-import org.openqa.selenium.phantomjs.PhantomJSDriverService;
+import org.openqa.selenium.ie.InternetExplorerOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.Assert;
@@ -30,25 +31,20 @@ public class MicroserviceDriversTest {
         requiredCapabilities.setJavascriptEnabled(true);
 
         edgeOptions = new EdgeOptions();
-        edgeOptions.setPageLoadStrategy("fast");
+        edgeOptions.setPageLoadStrategy(PageLoadStrategy.EAGER);
 
     }
 
     @Test(expected = Exception.class)
     public void edgeDriverTest() {
-        MicroserviceEdgeDriver driver = new MicroserviceEdgeDriver(desiredCapabilities);
+        EdgeOptions edgeOptions = new EdgeOptions();
+        MicroserviceEdgeDriver driver = new MicroserviceEdgeDriver(edgeOptions);
         Assert.assertNotNull(driver);
     }
 
     @Test(expected = Exception.class)
     public void edgeDriverEdgeOptionsTest() {
         MicroserviceEdgeDriver driver = new MicroserviceEdgeDriver(edgeOptions);
-        Assert.assertNotNull(driver);
-    }
-
-    @Test(expected = Exception.class)
-    public void androidDriverTest() {
-        MicroserviceAndroidDriver driver = new MicroserviceAndroidDriver(desiredCapabilities);
         Assert.assertNotNull(driver);
     }
 
@@ -65,7 +61,8 @@ public class MicroserviceDriversTest {
 
     @Test(expected = Exception.class)
     public void chromeDriverDesiredCapabilitiesTest() {
-        driver = new MicroserviceChromeDriver(desiredCapabilities);
+        ChromeOptions chromeOptions = new ChromeOptions();
+        driver = new MicroserviceChromeDriver(chromeOptions);
     }
 
     @Test(expected = Exception.class)
@@ -86,7 +83,8 @@ public class MicroserviceDriversTest {
     @Test(expected = Exception.class)
     public void chromeDriverChromeDriverServiceAndCapabilitiesTest() {
         ChromeDriverService chromeDriverService = ChromeDriverService.createDefaultService();
-        driver = new MicroserviceChromeDriver(chromeDriverService, desiredCapabilities);
+        ChromeOptions chromeOptions = new ChromeOptions();
+        driver = new MicroserviceChromeDriver(chromeDriverService, chromeOptions);
     }
 
     @Test(expected = Exception.class)
@@ -96,7 +94,8 @@ public class MicroserviceDriversTest {
 
     @Test(expected = Exception.class)
     public void internetExplorerDriverWithPortTest() {
-        driver = new MicroserviceInternetExplorerDriver(4444);
+        InternetExplorerOptions internetExplorerOptions = new InternetExplorerOptions();
+        driver = new MicroserviceInternetExplorerDriver(internetExplorerOptions);
     }
 
     @Test(expected = Exception.class)
@@ -109,17 +108,6 @@ public class MicroserviceDriversTest {
     public void internetExplorerDriverServiceAndCapabilitiesTest() {
         InternetExplorerDriverService internetExplorerDriverService = InternetExplorerDriverService.createDefaultService();
         driver = new MicroserviceInternetExplorerDriver(internetExplorerDriverService, desiredCapabilities);
-    }
-
-    @Test(expected = Exception.class)
-    public void phantomJsDriverTest() {
-        driver = new MicroservicePhantomJsDriver();
-    }
-
-    @Test(expected = Exception.class)
-    public void phantomJsDriverWithServiceTest() {
-        PhantomJSDriverService phantomJSDriverService = PhantomJSDriverService.createDefaultService();
-        driver = new MicroservicePhantomJsDriver(phantomJSDriverService, requiredCapabilities);
     }
 
 }

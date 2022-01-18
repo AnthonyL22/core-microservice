@@ -41,7 +41,7 @@ public class SelectableElementTest extends WebElementBaseTest {
         Assert.assertFalse(result);
     }
 
-    @Test(expected = AssertionError.class)
+    @Test(expected = NoSuchMethodError.class)
     public void webActionLoggingTest() {
         WebElement mockElement = mock(WebElement.class);
         Select mockSelectElement = mock(Select.class);
@@ -51,7 +51,7 @@ public class SelectableElementTest extends WebElementBaseTest {
         selectableElement.webAction(mockElement, DROP_DOWN_VALUE);
     }
 
-    @Test(expected = AssertionError.class)
+    @Test(expected = NoSuchMethodError.class)
     public void webActionMultiSelectTest() {
         WebElement mockElement = mock(WebElement.class);
         Select mockSelectElement = mock(Select.class);
