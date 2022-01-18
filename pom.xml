@@ -59,7 +59,7 @@
     <jacoco.version>0.7.5.201505241946</jacoco.version>
     <java_code.version>1.8</java_code.version>
     <javatuples.version>1.2</javatuples.version>
-    <jsoup.version>1.8.2</jsoup.version>
+    <jsoup.version>1.14.2</jsoup.version>
     <junit.version>4.13.1</junit.version>
     <logging-microservice.version>1.0.9</logging-microservice.version>
     <lombok.version>1.18.4</lombok.version>
