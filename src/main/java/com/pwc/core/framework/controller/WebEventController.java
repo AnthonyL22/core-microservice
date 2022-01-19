@@ -300,7 +300,7 @@ public class WebEventController {
                 }
                 abstractDriverOptions.setCapability(FrameworkConstants.SAUCELABS_OPTIONS_PROPERTY, sauceOptions);
 
-                LOG(true, "Initiating Sauce-OnDemand test execution with browser='%s'", System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY));
+                LOG(true, "Initiating Sauce Labs test execution with browser='%s'", System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY));
 
             } else if (isBrowserStackEnabled()) {
 
