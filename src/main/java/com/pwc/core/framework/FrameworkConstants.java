@@ -14,22 +14,22 @@ public final class FrameworkConstants {
     public static final String AUTOMATION_ORIENTATION_PROPERTY = "deviceOrientation";
     public static final String AUTOMATION_NAME_PROPERTY = "name";
     public static final String AUTOMATION_BUILD_PROPERTY = "build";
-    public static final String AUTOMATION_RESOLUTION_PROPERTY = "resolution";
+    public static final String BROWSER_VERSION_PROPERTY = "version";
     public static final String AUTOMATION_VIDEO_PROPERTY = "video";
+    public static final String CLOUD_OPTIONS_PROPERTY = "cloud:options";
+    public static final String PLATFORM_NAME_PROPERTY = "platformName";
+    public static final String AUTOMATION_RESOLUTION_PROPERTY = "resolution";
 
     public static final String EXPERITEST_ACCESS_KEY_PROPERTY = "accessKey";
     public static final String EXPERITEST_TEST_NAME_PROPERTY = "testName";
 
-    public static final String SAUCELABS_OPTIONS_PROPERTY = "sauce:options";
-    public static final String SAUCELABS_BROWSER_PROPERTY = "SELENIUM_BROWSER";
-    public static final String SAUCELABS_BROWSER_VERSION_PROPERTY = "SELENIUM_VERSION";
-    public static final String SAUCELABS_TUNNEL_IDENTIFIER_PROPERTY = "TUNNEL_IDENTIFIER";
-    public static final String SAUCELABS_PLATFORM_PROPERTY = "SELENIUM_PLATFORM";
+    public static final String SAUCE_LABS_TUNNEL_NAME_PROPERTY = "tunnelName";
+    public static final String SAUCE_LABS_OPTIONS_PROPERTY = "sauce:options";
+    public static final String SAUCE_LABS_BROWSER_PROPERTY = "SELENIUM_BROWSER";
 
     public static final String BROWSER_STACK_BROWSER_NAME_PROPERTY = "browserName";
     public static final String BROWSER_STACK_BROWSER_VERSION_PROPERTY = "browserVersion";
     public static final String BROWSER_STACK_OS_PROPERTY = "os";
-    public static final String BROWSER_STACK_OS_VERSION_PROPERTY = "osVersion";
     public static final String BROWSER_STACK_PROJECT_NAME_PROPERTY = "projectName";
     public static final String BROWSER_STACK_BUILD_NAME_PROPERTY = "buildName";
     public static final String BROWSER_STACK_SESSION_NAME_PROPERTY = "sessionName";
@@ -96,7 +96,6 @@ public final class FrameworkConstants {
 
     // Default Capability Name
     public static final String SCRIPT_NAME_CAPABILITY = "name";
-    public static final String TUNNEL_IDENTIFIER_CAPABILITY = "tunnelIdentifier";
     public static final String TIME_ZONE_CAPABILITY = "timeZone";
     public static final String SCREEN_RESOLUTION_CAPABILITY = "screenResolution";
     public static final String TIME_ZONE_DEFAULT = "Los Angeles";

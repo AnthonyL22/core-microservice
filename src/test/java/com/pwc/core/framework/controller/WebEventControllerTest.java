@@ -64,13 +64,13 @@ public class WebEventControllerTest {
         resetSauceLabsEnvVariableMap();
 
         HashMap<String, String> envVariable = new HashMap();
-        envVariable.put(FrameworkConstants.SAUCELABS_BROWSER_PROPERTY, "Firefox");
+        envVariable.put(FrameworkConstants.SAUCE_LABS_BROWSER_PROPERTY, "Firefox");
         PropertiesUtils.setEnv(envVariable);
-        envVariable.put(FrameworkConstants.SAUCELABS_BROWSER_VERSION_PROPERTY, "44");
+        envVariable.put(FrameworkConstants.BROWSER_VERSION_PROPERTY, "44");
         PropertiesUtils.setEnv(envVariable);
-        envVariable.put(FrameworkConstants.SAUCELABS_PLATFORM_PROPERTY, "Windows 10");
+        envVariable.put(FrameworkConstants.PLATFORM_NAME_PROPERTY, "Windows 10");
         PropertiesUtils.setEnv(envVariable);
-        envVariable.put(FrameworkConstants.SAUCELABS_TUNNEL_IDENTIFIER_PROPERTY, UNIT_TEST_TUNNEL_IDENTIFIER);
+        envVariable.put(FrameworkConstants.SAUCE_LABS_TUNNEL_NAME_PROPERTY, UNIT_TEST_TUNNEL_IDENTIFIER);
         PropertiesUtils.setEnv(envVariable);
 
     }
@@ -81,7 +81,7 @@ public class WebEventControllerTest {
         resetSauceLabsEnvVariableMap();
 
         HashMap<String, String> envVariable = new HashMap();
-        envVariable.put(FrameworkConstants.SAUCELABS_TUNNEL_IDENTIFIER_PROPERTY, "");
+        envVariable.put(FrameworkConstants.SAUCE_LABS_TUNNEL_NAME_PROPERTY, "");
         PropertiesUtils.setEnv(envVariable);
 
     }
@@ -90,24 +90,24 @@ public class WebEventControllerTest {
     public void setDefaultDesiredCapabilitiesSauceLabsAllFieldsTest() {
 
         HashMap<String, String> envVariable = new HashMap();
-        envVariable.put(FrameworkConstants.SAUCELABS_BROWSER_PROPERTY, "Firefox");
+        envVariable.put(FrameworkConstants.SAUCE_LABS_BROWSER_PROPERTY, "Firefox");
         PropertiesUtils.setEnv(envVariable);
-        envVariable.put(FrameworkConstants.SAUCELABS_BROWSER_VERSION_PROPERTY, "44");
+        envVariable.put(FrameworkConstants.BROWSER_VERSION_PROPERTY, "44");
         PropertiesUtils.setEnv(envVariable);
-        envVariable.put(FrameworkConstants.SAUCELABS_PLATFORM_PROPERTY, "Windows 10");
+        envVariable.put(FrameworkConstants.PLATFORM_NAME_PROPERTY, "Windows 10");
         PropertiesUtils.setEnv(envVariable);
 
         Assert.assertNotEquals(System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY), "");
-        Assert.assertNotEquals(System.getenv(FrameworkConstants.SAUCELABS_BROWSER_PROPERTY), "");
-        Assert.assertNotEquals(System.getenv(FrameworkConstants.SAUCELABS_BROWSER_VERSION_PROPERTY), "");
-        Assert.assertNotEquals(System.getenv(FrameworkConstants.SAUCELABS_PLATFORM_PROPERTY), "");
+        Assert.assertNotEquals(System.getenv(FrameworkConstants.SAUCE_LABS_BROWSER_PROPERTY), "");
+        Assert.assertNotEquals(System.getenv(FrameworkConstants.BROWSER_VERSION_PROPERTY), "");
+        Assert.assertNotEquals(System.getenv(FrameworkConstants.PLATFORM_NAME_PROPERTY), "");
     }
 
     @Test
     public void setDefaultDesiredCapabilitiesSauceLabsPartialFieldsTest() {
 
         HashMap<String, String> envVariable = new HashMap();
-        envVariable.put(FrameworkConstants.SAUCELABS_BROWSER_PROPERTY, "Firefox");
+        envVariable.put(FrameworkConstants.SAUCE_LABS_BROWSER_PROPERTY, "Firefox");
         PropertiesUtils.setEnv(envVariable);
 
     }
@@ -133,9 +133,9 @@ public class WebEventControllerTest {
     @Test(expected = AssertionError.class)
     public void initiateBrowserNullBrowserPropertyTest() {
         sauceEnvVariableMap = new HashMap<>();
-        sauceEnvVariableMap.put(FrameworkConstants.SAUCELABS_BROWSER_PROPERTY, "chrome");
-        sauceEnvVariableMap.put(FrameworkConstants.SAUCELABS_BROWSER_VERSION_PROPERTY, "26");
-        sauceEnvVariableMap.put(FrameworkConstants.SAUCELABS_PLATFORM_PROPERTY, "Windows 2003");
+        sauceEnvVariableMap.put(FrameworkConstants.SAUCE_LABS_BROWSER_PROPERTY, "chrome");
+        sauceEnvVariableMap.put(FrameworkConstants.BROWSER_VERSION_PROPERTY, "26");
+        sauceEnvVariableMap.put(FrameworkConstants.PLATFORM_NAME_PROPERTY, "Windows 2003");
         PropertiesUtils.setEnv(sauceEnvVariableMap);
 
         System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, "");
@@ -417,9 +417,9 @@ public class WebEventControllerTest {
 
     private void resetSauceLabsEnvVariableMap() {
         sauceEnvVariableMap = new HashMap<>();
-        sauceEnvVariableMap.put(FrameworkConstants.SAUCELABS_BROWSER_PROPERTY, "");
-        sauceEnvVariableMap.put(FrameworkConstants.SAUCELABS_BROWSER_VERSION_PROPERTY, "");
-        sauceEnvVariableMap.put(FrameworkConstants.SAUCELABS_PLATFORM_PROPERTY, "");
+        sauceEnvVariableMap.put(FrameworkConstants.SAUCE_LABS_BROWSER_PROPERTY, "");
+        sauceEnvVariableMap.put(FrameworkConstants.BROWSER_VERSION_PROPERTY, "");
+        sauceEnvVariableMap.put(FrameworkConstants.PLATFORM_NAME_PROPERTY, "");
         PropertiesUtils.setEnv(sauceEnvVariableMap);
     }
 

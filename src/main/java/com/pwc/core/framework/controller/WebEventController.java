@@ -88,6 +88,12 @@ public class WebEventController {
     @Value("${enable.ajax.requests.waiting:true}")
     private boolean waitForAjaxRequestsEnabled;
 
+    @Value("${saucelabs.username}")
+    private String sauceLabsUser;
+
+    @Value("${saucelabs.accesskey}")
+    private String sauceLabsAccesskey;
+
     @Value("${browserstack.username}")
     private String browserstackUser;
 
@@ -237,8 +243,8 @@ public class WebEventController {
      */
     private boolean isSauceLabsEnabled() {
 
-        return StringUtils.isNotEmpty(System.getenv(FrameworkConstants.SAUCELABS_BROWSER_PROPERTY)) && StringUtils.isNotEmpty(System.getenv(FrameworkConstants.SAUCELABS_BROWSER_VERSION_PROPERTY))
-                        && StringUtils.isNotEmpty(System.getenv(FrameworkConstants.SAUCELABS_PLATFORM_PROPERTY));
+        return (StringUtils.isNotEmpty(sauceLabsAccesskey) && StringUtils.isNotEmpty(sauceLabsUser)) || (StringUtils.isNotEmpty(System.getenv(FrameworkConstants.SAUCE_LABS_BROWSER_PROPERTY))
+                        && StringUtils.isNotEmpty(System.getenv(FrameworkConstants.BROWSER_VERSION_PROPERTY)) && StringUtils.isNotEmpty(System.getenv(FrameworkConstants.PLATFORM_NAME_PROPERTY)));
     }
 
     /**
@@ -264,6 +270,12 @@ public class WebEventController {
 
             setDriverExecutable();
 
+            constructTestName();
+            Map<String, Object> cloudOptionsList = new HashMap<>();
+            cloudOptionsList.put(FrameworkConstants.AUTOMATION_BUILD_PROPERTY, this.currentTestName);
+            cloudOptionsList.put(FrameworkConstants.AUTOMATION_NAME_PROPERTY, this.currentTestName);
+            abstractDriverOptions.setCapability(FrameworkConstants.CLOUD_OPTIONS_PROPERTY, cloudOptionsList);
+
             if (isDigitalAIEnabled()) {
 
                 abstractDriverOptions.setCapability(FrameworkConstants.EXPERITEST_ACCESS_KEY_PROPERTY, experitestAccesskey);
@@ -277,16 +289,18 @@ public class WebEventController {
                 sauceOptions.put(FrameworkConstants.AUTOMATION_BUILD_PROPERTY, this.currentTestName);
                 sauceOptions.put(FrameworkConstants.AUTOMATION_NAME_PROPERTY, this.currentTestName);
 
-                abstractDriverOptions.setPlatformName(System.getenv(FrameworkConstants.SAUCELABS_PLATFORM_PROPERTY));
-                abstractDriverOptions.setBrowserVersion(System.getenv(FrameworkConstants.SAUCELABS_BROWSER_VERSION_PROPERTY));
-                abstractDriverOptions.setCapability(FrameworkConstants.AUTOMATION_DEVICE_NAME_PROPERTY, StringUtils.trim(System.getProperty(FrameworkConstants.AUTOMATION_DEVICE_NAME_PROPERTY)));
-                abstractDriverOptions.setCapability(FrameworkConstants.AUTOMATION_ORIENTATION_PROPERTY, StringUtils.trim(System.getProperty(FrameworkConstants.AUTOMATION_ORIENTATION_PROPERTY)));
-                abstractDriverOptions.setCapability(FrameworkConstants.SAUCELABS_OPTIONS_PROPERTY, sauceOptions);
+                if (StringUtils.isNotEmpty(System.getProperty(FrameworkConstants.AUTOMATION_DEVICE_NAME_PROPERTY))) {
+                    sauceOptions.put(FrameworkConstants.AUTOMATION_DEVICE_NAME_PROPERTY, System.getProperty(FrameworkConstants.AUTOMATION_DEVICE_NAME_PROPERTY));
+                }
+                if (StringUtils.isNotEmpty(System.getProperty(FrameworkConstants.AUTOMATION_ORIENTATION_PROPERTY))) {
+                    sauceOptions.put(FrameworkConstants.AUTOMATION_ORIENTATION_PROPERTY, System.getProperty(FrameworkConstants.AUTOMATION_ORIENTATION_PROPERTY));
+                }
+                if (StringUtils.isNotEmpty(System.getProperty(FrameworkConstants.SAUCE_LABS_TUNNEL_NAME_PROPERTY))) {
+                    sauceOptions.put(FrameworkConstants.SAUCE_LABS_TUNNEL_NAME_PROPERTY, System.getProperty(FrameworkConstants.SAUCE_LABS_TUNNEL_NAME_PROPERTY));
+                }
+                abstractDriverOptions.setCapability(FrameworkConstants.SAUCE_LABS_OPTIONS_PROPERTY, sauceOptions);
 
-                System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, System.getenv(FrameworkConstants.SAUCELABS_BROWSER_PROPERTY));
-
-                LOG(true, "Initiating Sauce-OnDemand test execution with browser='%s', version='%s', platform='%s'", System.getenv(FrameworkConstants.SAUCELABS_BROWSER_PROPERTY),
-                                System.getenv(FrameworkConstants.SAUCELABS_BROWSER_VERSION_PROPERTY), System.getenv(FrameworkConstants.SAUCELABS_PLATFORM_PROPERTY));
+                LOG(true, "Initiating Sauce Labs test execution with browser='%s'", System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY));
 
             } else if (isBrowserStackEnabled()) {
 
@@ -316,8 +330,9 @@ public class WebEventController {
                 GridUtils.initBrowserType();
             }
 
-            if (StringUtils.isNotEmpty(System.getenv(FrameworkConstants.SAUCELABS_TUNNEL_IDENTIFIER_PROPERTY))) {
-                abstractDriverOptions.setCapability(FrameworkConstants.TUNNEL_IDENTIFIER_CAPABILITY, System.getenv(FrameworkConstants.SAUCELABS_TUNNEL_IDENTIFIER_PROPERTY));
+            abstractDriverOptions.setBrowserVersion(StringUtils.defaultIfBlank(System.getProperty(FrameworkConstants.BROWSER_VERSION_PROPERTY), "latest"));
+            if (StringUtils.isNotEmpty(System.getProperty(FrameworkConstants.PLATFORM_NAME_PROPERTY))) {
+                abstractDriverOptions.setPlatformName(System.getProperty(FrameworkConstants.PLATFORM_NAME_PROPERTY));
             }
 
             abstractDriverOptions.setCapability(FrameworkConstants.TIME_ZONE_CAPABILITY, GridUtils.initTimeZone());
@@ -544,7 +559,6 @@ public class WebEventController {
 
         LOG("Starting Firefox browser");
         FirefoxOptions browserOptions = (FirefoxOptions) getBrowser(new FirefoxOptions());
-        //browserOptions.addArguments(SeleniumArgument.START_MAXIMIZED.getValue());
 
         MicroserviceRemoteWebDriver microserviceRemoteWebDriver = null;
         try {
