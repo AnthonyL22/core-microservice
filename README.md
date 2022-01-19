@@ -362,21 +362,20 @@ Simply define the following at runtime via **-D** system variables:
 
 | User Defined Command  | Options                                                                                           | Default     | Example                      |
 | ----------------------|---------------------------------------------------------------------------------------------------|-------------|------------------------------|
-| -Dbrowser             | ch, headless_ch, ff, headless_ff, ie, safari, edge                                                | Chrome      | -Dbrowser=ff                 |
-| -Dbrowser.version     | any available                                                                                     | 44          | -Dbrowser.version=38.0       |
+| -Dbrowser             | ch, chrome, headless_ch, ff, firefox, headless_ff, ie, safari, edge                               | Chrome      | -Dbrowser=ff                 |
+| -Dbrowser.version     | any available                                                                                     | latest          | -Dbrowser.version=38.0       |
 | -Dbrowser.resolution  | 800x600, 1024x768, 1152x864, 1280x800, 1280x960, 1280x1024, all mobile resolutions in Chrome      | 1024x768    | -Dbrowser.resolution=360x640 |
-| -Dplatform            | mac, osx, linux, windows, windows 10, windows 8, windows 8.1, windows 7, windows xp, xp           | linux       | -Dplatform=xp                |
+| -DplatformName        | macOS, osx, linux, windows, windows 10, windows 8, windows 8.1, windows 7, windows xp, xp         | Windows       | -Dplatform=xp                |
 | -Dtime.zone           | Los Angeles, Honolulu, New_York                                                                   | Los Angeles | -Dtime.zone=Los Angeles      |
 
 **IMPORTANT:**
 Defining any of the following variables will result in your test being executed using default Sauce Labs settings:
 
-| User Defined Command        | Conversion                    |
-| ----------------------------|-------------------------------|
-| -Dplatform=mac              | -Dplatform=OS X 10.11         |
-| -Dplatform=osx              | -Dplatform=OS X 10.11         |
-| -Dbrowser=ch -Dplatform=xp  | -Dbrowser=ch -Dplatform=linux |
-
+| User Defined Command        | Conversion                            |
+| ----------------------------|---------------------------------------|
+| -DplatformName=macOS 11.00      | -Dplatform=OS X 11.0              |
+| -DplatformName=osx              | -Dplatform=OS X 10.11             |
+| -Dbrowser=ch -DplatformName=xp  | -Dbrowser=ch -DplatformName=linux |
 
 ### Default Runtime Settings - Sauce Labs
 If you choose not to override ANY of the settings above the following runtime settings are used by default in Sauce Labs:

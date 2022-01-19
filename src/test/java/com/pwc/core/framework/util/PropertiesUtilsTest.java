@@ -168,8 +168,8 @@ public class PropertiesUtilsTest {
         HashMap sauceEnvVariableMap = new HashMap<>();
 
         sauceEnvVariableMap.put(FrameworkConstants.SAUCELABS_BROWSER_PROPERTY, "chrome");
-        sauceEnvVariableMap.put(FrameworkConstants.SAUCELABS_BROWSER_VERSION_PROPERTY, "26");
-        sauceEnvVariableMap.put(FrameworkConstants.SAUCELABS_PLATFORM_PROPERTY, "Windows 2003");
+        sauceEnvVariableMap.put(FrameworkConstants.BROWSER_VERSION_PROPERTY, "26");
+        sauceEnvVariableMap.put(FrameworkConstants.PLATFORM_NAME_PROPERTY, "Windows 2003");
         PropertiesUtils.setEnv(sauceEnvVariableMap);
     }
 
