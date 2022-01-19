@@ -243,7 +243,7 @@ public class WebEventController {
      */
     private boolean isSauceLabsEnabled() {
 
-        return (StringUtils.isNotEmpty(sauceLabsAccesskey) && StringUtils.isNotEmpty(sauceLabsUser)) || (StringUtils.isNotEmpty(System.getenv(FrameworkConstants.SAUCELABS_BROWSER_PROPERTY))
+        return (StringUtils.isNotEmpty(sauceLabsAccesskey) && StringUtils.isNotEmpty(sauceLabsUser)) || (StringUtils.isNotEmpty(System.getenv(FrameworkConstants.SAUCE_LABS_BROWSER_PROPERTY))
                         && StringUtils.isNotEmpty(System.getenv(FrameworkConstants.BROWSER_VERSION_PROPERTY)) && StringUtils.isNotEmpty(System.getenv(FrameworkConstants.PLATFORM_NAME_PROPERTY)));
     }
 
@@ -295,10 +295,10 @@ public class WebEventController {
                 if (StringUtils.isNotEmpty(System.getProperty(FrameworkConstants.AUTOMATION_ORIENTATION_PROPERTY))) {
                     sauceOptions.put(FrameworkConstants.AUTOMATION_ORIENTATION_PROPERTY, System.getProperty(FrameworkConstants.AUTOMATION_ORIENTATION_PROPERTY));
                 }
-                if (StringUtils.isNotEmpty(System.getProperty(FrameworkConstants.SAUCELABS_TUNNEL_IDENTIFIER_PROPERTY))) {
-                    sauceOptions.put(FrameworkConstants.TUNNEL_NAME_PROPERTY, System.getProperty(FrameworkConstants.SAUCELABS_TUNNEL_IDENTIFIER_PROPERTY));
+                if (StringUtils.isNotEmpty(System.getProperty(FrameworkConstants.SAUCE_LABS_TUNNEL_NAME_PROPERTY))) {
+                    sauceOptions.put(FrameworkConstants.SAUCE_LABS_TUNNEL_NAME_PROPERTY, System.getProperty(FrameworkConstants.SAUCE_LABS_TUNNEL_NAME_PROPERTY));
                 }
-                abstractDriverOptions.setCapability(FrameworkConstants.SAUCELABS_OPTIONS_PROPERTY, sauceOptions);
+                abstractDriverOptions.setCapability(FrameworkConstants.SAUCE_LABS_OPTIONS_PROPERTY, sauceOptions);
 
                 LOG(true, "Initiating Sauce Labs test execution with browser='%s'", System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY));
 

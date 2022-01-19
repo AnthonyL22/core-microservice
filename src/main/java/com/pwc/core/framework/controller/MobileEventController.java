@@ -130,10 +130,10 @@ public class MobileEventController {
 
         capabilities = new DesiredCapabilities();
 
-        if (!StringUtils.isEmpty(System.getenv(FrameworkConstants.SAUCELABS_BROWSER_PROPERTY)) && !StringUtils.isEmpty(System.getenv(FrameworkConstants.BROWSER_VERSION_PROPERTY))
+        if (!StringUtils.isEmpty(System.getenv(FrameworkConstants.SAUCE_LABS_BROWSER_PROPERTY)) && !StringUtils.isEmpty(System.getenv(FrameworkConstants.BROWSER_VERSION_PROPERTY))
                         && !StringUtils.isEmpty(System.getenv(FrameworkConstants.PLATFORM_NAME_PROPERTY))) {
 
-            LOG(true, "Initiating Sauce-OnDemand test execution with browser='%s', version='%s', platform='%s'", System.getenv(FrameworkConstants.SAUCELABS_BROWSER_PROPERTY),
+            LOG(true, "Initiating Sauce-OnDemand test execution with browser='%s', version='%s', platform='%s'", System.getenv(FrameworkConstants.SAUCE_LABS_BROWSER_PROPERTY),
                             System.getenv(FrameworkConstants.BROWSER_VERSION_PROPERTY), System.getenv(FrameworkConstants.PLATFORM_NAME_PROPERTY));
 
         } else if (isBrowserStackEnabled()) {
@@ -151,8 +151,8 @@ public class MobileEventController {
             capabilities.setCapability("useNewWDA", false);
         }
 
-        if (!StringUtils.isEmpty(System.getenv(FrameworkConstants.SAUCELABS_TUNNEL_IDENTIFIER_PROPERTY))) {
-            capabilities.setCapability(FrameworkConstants.TUNNEL_NAME_PROPERTY, System.getenv(FrameworkConstants.SAUCELABS_TUNNEL_IDENTIFIER_PROPERTY));
+        if (StringUtils.isNotEmpty(System.getProperty(FrameworkConstants.SAUCE_LABS_TUNNEL_NAME_PROPERTY))) {
+            capabilities.setCapability(FrameworkConstants.SAUCE_LABS_TUNNEL_NAME_PROPERTY, System.getProperty(FrameworkConstants.SAUCE_LABS_TUNNEL_NAME_PROPERTY));
         }
 
         capabilities.setCapability(FrameworkConstants.TIME_ZONE_CAPABILITY, GridUtils.initTimeZone());
