@@ -2,6 +2,7 @@ package com.pwc.core.framework;
 
 import com.pwc.core.framework.data.CssProperty;
 import com.pwc.core.framework.data.WebElementAttribute;
+import com.pwc.logging.service.LoggerService;
 import org.openqa.selenium.logging.LogEntry;
 import org.openqa.selenium.logging.LogType;
 
@@ -637,8 +638,12 @@ public abstract class DeclarativeTestCase extends MicroserviceTestSuite {
     protected List<LogEntry> getNetworkLogEntries() {
 
         List<LogEntry> logEntries = new ArrayList<>();
-        logEntries.addAll(webEventController.getWebEventService().getMicroserviceWebDriver().manage().logs().get(LogType.BROWSER).getAll());
-        logEntries.addAll(webEventController.getWebEventService().getMicroserviceWebDriver().manage().logs().get(LogType.PERFORMANCE).getAll());
+        try {
+            logEntries.addAll(webEventController.getWebEventService().getMicroserviceWebDriver().manage().logs().get(LogType.BROWSER).getAll());
+            logEntries.addAll(webEventController.getWebEventService().getMicroserviceWebDriver().manage().logs().get(LogType.PERFORMANCE).getAll());
+        } catch (Exception e) {
+            LoggerService.LOG(false, "Unable to get all network requests due to e=%s", e);
+        }
         return logEntries;
     }
 

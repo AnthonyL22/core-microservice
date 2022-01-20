@@ -30,6 +30,8 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.ie.InternetExplorerOptions;
+import org.openqa.selenium.logging.LogType;
+import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.AbstractDriverOptions;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.LocalFileDetector;
@@ -47,6 +49,7 @@ import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -335,6 +338,11 @@ public class WebEventController {
             if (StringUtils.isNotEmpty(System.getProperty(FrameworkConstants.PLATFORM_NAME_PROPERTY))) {
                 abstractDriverOptions.setPlatformName(System.getProperty(FrameworkConstants.PLATFORM_NAME_PROPERTY));
             }
+
+            LoggingPreferences loggingPreferences = new LoggingPreferences();
+            loggingPreferences.enable(LogType.PERFORMANCE, Level.ALL);
+            loggingPreferences.enable(LogType.BROWSER, Level.ALL);
+            abstractDriverOptions.setCapability(CapabilityType.LOGGING_PREFS, loggingPreferences);
 
             abstractDriverOptions.setCapability(FrameworkConstants.TIME_ZONE_CAPABILITY, GridUtils.initTimeZone());
             abstractDriverOptions.setCapability(CapabilityType.TAKES_SCREENSHOT, true);
