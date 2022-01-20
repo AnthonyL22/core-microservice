@@ -233,7 +233,7 @@ public class WebEventController {
      */
     private boolean isBrowserStackEnabled() {
 
-        return StringUtils.isNotEmpty(browserstackUser) && StringUtils.isNotEmpty(browserstackAccesskey);
+        return gridEnabled && StringUtils.isNotEmpty(browserstackUser) && StringUtils.isNotEmpty(browserstackAccesskey);
     }
 
     /**
@@ -243,8 +243,9 @@ public class WebEventController {
      */
     private boolean isSauceLabsEnabled() {
 
-        return (StringUtils.isNotEmpty(sauceLabsAccesskey) && StringUtils.isNotEmpty(sauceLabsUser)) || (StringUtils.isNotEmpty(System.getenv(FrameworkConstants.SAUCE_LABS_BROWSER_PROPERTY))
-                        && StringUtils.isNotEmpty(System.getenv(FrameworkConstants.BROWSER_VERSION_PROPERTY)) && StringUtils.isNotEmpty(System.getenv(FrameworkConstants.PLATFORM_NAME_PROPERTY)));
+        return gridEnabled && (StringUtils.isNotEmpty(sauceLabsAccesskey) && StringUtils.isNotEmpty(sauceLabsUser))
+                        || (StringUtils.isNotEmpty(System.getenv(FrameworkConstants.SAUCE_LABS_BROWSER_PROPERTY)) && StringUtils.isNotEmpty(System.getenv(FrameworkConstants.BROWSER_VERSION_PROPERTY))
+                                        && StringUtils.isNotEmpty(System.getenv(FrameworkConstants.PLATFORM_NAME_PROPERTY)));
     }
 
     /**
@@ -254,7 +255,7 @@ public class WebEventController {
      */
     private boolean isDigitalAIEnabled() {
 
-        return StringUtils.isNotEmpty(experitestAccesskey);
+        return gridEnabled && StringUtils.isNotEmpty(experitestAccesskey);
     }
 
     /**
@@ -326,7 +327,7 @@ public class WebEventController {
                 LOG(true, "Initiating BrowserStack test execution with browser='%s'", StringUtils.trim(System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY)));
 
             } else {
-                LOG(true, "Initiating Local test execution");
+                LOG(true, "Initiating Local test execution with browser='%s'", StringUtils.trim(System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY)));
                 GridUtils.initBrowserType();
             }
 
