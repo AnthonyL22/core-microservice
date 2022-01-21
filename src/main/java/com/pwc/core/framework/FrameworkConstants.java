@@ -14,15 +14,15 @@ public final class FrameworkConstants {
     public static final String AUTOMATION_ORIENTATION_PROPERTY = "deviceOrientation";
     public static final String AUTOMATION_NAME_PROPERTY = "name";
     public static final String AUTOMATION_BUILD_PROPERTY = "build";
+    public static final String AUTOMATION_RESOLUTION_PROPERTY = "resolution";
     public static final String BROWSER_VERSION_PROPERTY = "version";
     public static final String AUTOMATION_VIDEO_PROPERTY = "video";
     public static final String CLOUD_OPTIONS_PROPERTY = "cloud:options";
     public static final String PLATFORM_NAME_PROPERTY = "platformName";
-    public static final String AUTOMATION_RESOLUTION_PROPERTY = "resolution";
+    public static final String ACCESS_KEY_PROPERTY = "accessKey";
+    public static final String TEST_NAME_PROPERTY = "testName";
 
-    public static final String EXPERITEST_ACCESS_KEY_PROPERTY = "accessKey";
-    public static final String EXPERITEST_TEST_NAME_PROPERTY = "testName";
-
+    public static final String SAUCE_LABS_USERNAME_PROPERTY = "username";
     public static final String SAUCE_LABS_TUNNEL_NAME_PROPERTY = "tunnelName";
     public static final String SAUCE_LABS_OPTIONS_PROPERTY = "sauce:options";
     public static final String SAUCE_LABS_BROWSER_PROPERTY = "SELENIUM_BROWSER";
