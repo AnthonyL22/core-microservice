@@ -336,7 +336,6 @@ public class WebEventController {
                 GridUtils.initBrowserType();
             }
 
-            abstractDriverOptions.setBrowserVersion(StringUtils.defaultIfBlank(System.getProperty(FrameworkConstants.BROWSER_VERSION_PROPERTY), "latest"));
             if (StringUtils.isNotEmpty(System.getProperty(FrameworkConstants.PLATFORM_NAME_PROPERTY))) {
                 abstractDriverOptions.setPlatformName(System.getProperty(FrameworkConstants.PLATFORM_NAME_PROPERTY));
             }
@@ -366,6 +365,7 @@ public class WebEventController {
 
         LOG("Starting Chrome browser");
         ChromeOptions browserOptions = (ChromeOptions) getBrowser(new ChromeOptions());
+        browserOptions.setBrowserVersion(StringUtils.defaultIfBlank(System.getProperty(FrameworkConstants.BROWSER_VERSION_PROPERTY), "latest"));
         browserOptions.setAcceptInsecureCerts(true);
         browserOptions.addArguments(SeleniumArgument.START_MAXIMIZED.getValue());
         browserOptions.addArguments(SeleniumArgument.DISABLE_SHM.getValue());
@@ -404,6 +404,7 @@ public class WebEventController {
 
         LOG("Starting Headless Chrome browser");
         ChromeOptions browserOptions = (ChromeOptions) getBrowser(new ChromeOptions());
+        browserOptions.setBrowserVersion(StringUtils.defaultIfBlank(System.getProperty(FrameworkConstants.BROWSER_VERSION_PROPERTY), "latest"));
         browserOptions.setHeadless(true);
         browserOptions.addArguments("window-size=1920,1080");
         browserOptions.addArguments(SeleniumArgument.DISABLE_SHM.getValue());
@@ -442,6 +443,7 @@ public class WebEventController {
 
         LOG("Starting Microsoft Edge browser");
         EdgeOptions browserOptions = (EdgeOptions) getBrowser(new EdgeOptions());
+        browserOptions.setBrowserVersion(StringUtils.defaultIfBlank(System.getProperty(FrameworkConstants.BROWSER_VERSION_PROPERTY), "latest"));
         browserOptions.addArguments(SeleniumArgument.START_MAXIMIZED.getValue());
 
         MicroserviceRemoteWebDriver microserviceRemoteWebDriver = null;
@@ -474,6 +476,7 @@ public class WebEventController {
 
         LOG("Starting Headless Microsoft Edge browser");
         EdgeOptions browserOptions = (EdgeOptions) getBrowser(new EdgeOptions());
+        browserOptions.setBrowserVersion(StringUtils.defaultIfBlank(System.getProperty(FrameworkConstants.BROWSER_VERSION_PROPERTY), "latest"));
         browserOptions.addArguments(SeleniumArgument.START_MAXIMIZED.getValue());
         browserOptions.addArguments("headless");
         browserOptions.addArguments("disable-gpu");
@@ -508,6 +511,7 @@ public class WebEventController {
 
         LOG("Starting Internet Explorer browser");
         InternetExplorerOptions browserOptions = (InternetExplorerOptions) getBrowser(new InternetExplorerOptions());
+        browserOptions.setBrowserVersion(StringUtils.defaultIfBlank(System.getProperty(FrameworkConstants.BROWSER_VERSION_PROPERTY), "latest"));
 
         MicroserviceRemoteWebDriver microserviceRemoteWebDriver = null;
         try {
