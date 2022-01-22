@@ -587,48 +587,20 @@ Add the following section to your **settings.xml** in order to connect your loca
 </profile>
 ```
 
-### Sauce Connect Plugin Step-By-Step
-To execute your tests from your local environment to Sauce Labs you will need to configure the 
-[Sauce Connect plugin](https://docs.saucelabs.com/reference/sauce-connect/).  Follow the steps below to configure on a PC.
+### Sauce Connect Plugin from your Local Test Environment
+To execute your tests from your local environment to Sauce Labs you will need to configure via:
 
-1. Download [Sauce Connect plugin](https://docs.saucelabs.com/reference/sauce-connect/)
-2. Install to a location on your PC without spaces.  Example: **C:\dev\tools\sc-4.3.11-win32**
-3. Create empty batch file in this directory
-4. Add the command below to your batch file.
-5. Add a unique tunnel identifier in place of **YOUR_TUNNEL_NAME**.  Any name will suffice without spaces.
-6. Edit the path of your executable to match your environment. Example: **cd C:\dev\tools\sc-4.3.11-win32**
-7. Add your Sauce labs user in place of **YOUR_USERNAME**
-8. Add your Sauce labs access key in place of **YOUR_ACCESS_KEY**
+1. Follow instructions for [Sauce Connect proxy](https://app.saucelabs.com/tunnels/)
+2. Get the latest Sauce Connect Proxy
+3. Install to a location on your computer without spaces.  Example: **\dev\tools\sc-4.3.11-win32**
+4. Open a command prompt and change directory to the dir in step 3
+5. After extracting, go to the install directory and run the command displayed at the bottom of [Sauce Connect proxy](https://app.saucelabs.com/tunnels/)
+6. Wait for tunnel to start
+7. Verify your grid.properties file for the AUT is set to **grid.enabled=true**
+8. Open the automation.properties file for the AUT and set the **saucelabs.username=USER_FROM_STEP_1**
+9. Open the automation.properties file for the AUT and set the **saucelabs.accesskey=ACCESS_KEY_FROM_STEP_1**
+10. `mvn clean install`
 
-YOU MUST BE ON THE YOUR COMPANIES VPN FOR THIS TO WORK
-
-#### Starting Sauce Connect - PC
-
-Create a batch file with the following
-
-```
-set tunnelId=YOUR_TUNNEL_NAME
-setx -m TUNNEL_IDENTIFIER %tunnelId%
-
-cd C:\dev\tools\sc-4.3.11-win32\bin
-
-sc -u YOUR_USERNAME -k YOUR_ACCESS_KEY -i %tunnelId%
-```
-
-#### Starting Sauce Connect - LINUX
-
-1. Open/edit .tcshrc
-2. Add an environment variable
-``` 
-setenv TUNNEL_IDENTIFIER YOUR_TUNNEL_NAME 
-```
-3. Save changes
-4. Run command - source .tcshrc
-5. Create a shell script or run command 
-```
-sc -u YOUR_USERNAME -k YOUR_ACCESS_KEY -i $TUNNEL_IDENTIFIER
-```
- 
 # External Dependencies
 
 ## Runtime Microservice
