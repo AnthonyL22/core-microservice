@@ -23,11 +23,7 @@ public final class FrameworkConstants {
     public static final String TEST_NAME_PROPERTY = "testName";
 
     public static final String SAUCE_LABS_USERNAME_PROPERTY = "username";
-    public static final String SAUCE_LABS_TUNNEL_NAME_PROPERTY = "tunnelName";
     public static final String TUNNEL_IDENTIFIER_CAPABILITY = "tunnelIdentifier";
-    public static final String SAUCELABS_TUNNEL_IDENTIFIER_PROPERTY = "TUNNEL_IDENTIFIER";
-    public static final String SAUCELABS_BROWSER_VERSION_PROPERTY = "SELENIUM_VERSION";
-    public static final String SAUCELABS_PLATFORM_PROPERTY = "SELENIUM_PLATFORM";
     public static final String SAUCE_LABS_OPTIONS_PROPERTY = "sauce:options";
     public static final String SAUCE_LABS_BROWSER_PROPERTY = "SELENIUM_BROWSER";
 

@@ -70,7 +70,7 @@ public class WebEventControllerTest {
         PropertiesUtils.setEnv(envVariable);
         envVariable.put(FrameworkConstants.PLATFORM_NAME_PROPERTY, "Windows 10");
         PropertiesUtils.setEnv(envVariable);
-        envVariable.put(FrameworkConstants.SAUCE_LABS_TUNNEL_NAME_PROPERTY, UNIT_TEST_TUNNEL_IDENTIFIER);
+        envVariable.put(FrameworkConstants.TUNNEL_IDENTIFIER_CAPABILITY, UNIT_TEST_TUNNEL_IDENTIFIER);
         PropertiesUtils.setEnv(envVariable);
 
     }
@@ -81,7 +81,7 @@ public class WebEventControllerTest {
         resetSauceLabsEnvVariableMap();
 
         HashMap<String, String> envVariable = new HashMap();
-        envVariable.put(FrameworkConstants.SAUCE_LABS_TUNNEL_NAME_PROPERTY, "");
+        envVariable.put(FrameworkConstants.TUNNEL_IDENTIFIER_CAPABILITY, "");
         PropertiesUtils.setEnv(envVariable);
 
     }

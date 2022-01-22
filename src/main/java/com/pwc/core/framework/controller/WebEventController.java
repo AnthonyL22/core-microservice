@@ -301,11 +301,10 @@ public class WebEventController {
                 if (StringUtils.isNotEmpty(System.getProperty(FrameworkConstants.AUTOMATION_ORIENTATION_PROPERTY))) {
                     sauceOptions.put(FrameworkConstants.AUTOMATION_ORIENTATION_PROPERTY, System.getProperty(FrameworkConstants.AUTOMATION_ORIENTATION_PROPERTY));
                 }
-                if (StringUtils.isNotEmpty(System.getProperty(FrameworkConstants.SAUCE_LABS_TUNNEL_NAME_PROPERTY))) {
-                    sauceOptions.put(FrameworkConstants.SAUCE_LABS_TUNNEL_NAME_PROPERTY, System.getProperty(FrameworkConstants.SAUCE_LABS_TUNNEL_NAME_PROPERTY));
-                }
-                if (!StringUtils.isEmpty(System.getenv(FrameworkConstants.SAUCELABS_TUNNEL_IDENTIFIER_PROPERTY))) {
-                    abstractDriverOptions.setCapability(FrameworkConstants.TUNNEL_IDENTIFIER_CAPABILITY, System.getenv(FrameworkConstants.SAUCELABS_TUNNEL_IDENTIFIER_PROPERTY));
+                if (StringUtils.isNotEmpty(System.getProperty(FrameworkConstants.TUNNEL_IDENTIFIER_CAPABILITY))) {
+                    sauceOptions.put(FrameworkConstants.TUNNEL_IDENTIFIER_CAPABILITY, System.getProperty(FrameworkConstants.TUNNEL_IDENTIFIER_CAPABILITY));
+                } else if (StringUtils.isNotEmpty(System.getenv(FrameworkConstants.TUNNEL_IDENTIFIER_CAPABILITY))) {
+                    sauceOptions.put(FrameworkConstants.TUNNEL_IDENTIFIER_CAPABILITY, System.getenv(FrameworkConstants.TUNNEL_IDENTIFIER_CAPABILITY));
                 }
                 abstractDriverOptions.setCapability(FrameworkConstants.SAUCE_LABS_OPTIONS_PROPERTY, sauceOptions);
 

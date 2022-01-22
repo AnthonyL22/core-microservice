@@ -151,8 +151,10 @@ public class MobileEventController {
             capabilities.setCapability("useNewWDA", false);
         }
 
-        if (StringUtils.isNotEmpty(System.getProperty(FrameworkConstants.SAUCE_LABS_TUNNEL_NAME_PROPERTY))) {
-            capabilities.setCapability(FrameworkConstants.SAUCE_LABS_TUNNEL_NAME_PROPERTY, System.getProperty(FrameworkConstants.SAUCE_LABS_TUNNEL_NAME_PROPERTY));
+        if (StringUtils.isNotEmpty(System.getProperty(FrameworkConstants.TUNNEL_IDENTIFIER_CAPABILITY))) {
+            capabilities.setCapability(FrameworkConstants.TUNNEL_IDENTIFIER_CAPABILITY, System.getProperty(FrameworkConstants.TUNNEL_IDENTIFIER_CAPABILITY));
+        } else if (StringUtils.isNotEmpty(System.getenv(FrameworkConstants.TUNNEL_IDENTIFIER_CAPABILITY))) {
+            capabilities.setCapability(FrameworkConstants.TUNNEL_IDENTIFIER_CAPABILITY, System.getenv(FrameworkConstants.TUNNEL_IDENTIFIER_CAPABILITY));
         }
 
         capabilities.setCapability(FrameworkConstants.TIME_ZONE_CAPABILITY, GridUtils.initTimeZone());
