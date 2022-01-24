@@ -305,6 +305,8 @@ public class WebEventController {
                     sauceOptions.put(FrameworkConstants.TUNNEL_IDENTIFIER_CAPABILITY, System.getProperty(FrameworkConstants.TUNNEL_IDENTIFIER_CAPABILITY));
                 } else if (StringUtils.isNotEmpty(System.getenv(FrameworkConstants.TUNNEL_IDENTIFIER_CAPABILITY))) {
                     sauceOptions.put(FrameworkConstants.TUNNEL_IDENTIFIER_CAPABILITY, System.getenv(FrameworkConstants.TUNNEL_IDENTIFIER_CAPABILITY));
+                } else if (!StringUtils.isEmpty(System.getenv(FrameworkConstants.SAUCE_ON_DEMAND_JENKINS_PLUGIN_TUNNEL_IDENTIFIER_PROPERTY))) {
+                    sauceOptions.put(FrameworkConstants.TUNNEL_IDENTIFIER_CAPABILITY, System.getenv(FrameworkConstants.SAUCE_ON_DEMAND_JENKINS_PLUGIN_TUNNEL_IDENTIFIER_PROPERTY));
                 }
                 abstractDriverOptions.setCapability(FrameworkConstants.SAUCE_LABS_OPTIONS_PROPERTY, sauceOptions);
 

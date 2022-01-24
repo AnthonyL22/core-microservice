@@ -23,6 +23,7 @@ public final class FrameworkConstants {
     public static final String TEST_NAME_PROPERTY = "testName";
 
     public static final String SAUCE_LABS_USERNAME_PROPERTY = "username";
+    public static final String SAUCE_ON_DEMAND_JENKINS_PLUGIN_TUNNEL_IDENTIFIER_PROPERTY = "TUNNEL_IDENTIFIER";
     public static final String TUNNEL_IDENTIFIER_CAPABILITY = "tunnelIdentifier";
     public static final String SAUCE_LABS_OPTIONS_PROPERTY = "sauce:options";
     public static final String SAUCE_LABS_BROWSER_PROPERTY = "SELENIUM_BROWSER";
