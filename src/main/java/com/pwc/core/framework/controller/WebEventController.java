@@ -146,6 +146,8 @@ public class WebEventController {
                 this.remoteWebDriver = getInternetExplorerBrowser();
             } else if (StringUtils.equals(System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY), FrameworkConstants.EDGE_BROWSER_MODE)) {
                 this.remoteWebDriver = getEdgeBrowser();
+            } else if (StringUtils.equals(System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY), FrameworkConstants.HEADLESS_EDGE_BROWSER_MODE)) {
+                this.remoteWebDriver = getHeadlessEdgeBrowser();
             } else if (StringUtils.equals(System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY), FrameworkConstants.SAFARI_BROWSER_MODE)) {
                 this.remoteWebDriver = getSafariBrowser();
             } else {
