@@ -58,8 +58,8 @@ import static com.pwc.logging.service.LoggerService.LOG;
 @Component
 public class WebEventController {
 
-    private static final String WINDOWS_OS = "windows";
-    private static final String LINUX_OS = "linux";
+    protected static final String WINDOWS_OS = "windows";
+    protected static final String LINUX_OS = "linux";
 
     @Value("${web.url}")
     private String webUrl;
@@ -645,9 +645,9 @@ public class WebEventController {
         File executable;
 
         if (StringUtils.equalsIgnoreCase(DESIRED_BROWSER, FrameworkConstants.FIREFOX_BROWSER_MODE) || StringUtils.equalsIgnoreCase(DESIRED_BROWSER, FrameworkConstants.HEADLESS_FIREFOX_BROWSER_MODE)) {
-            if (StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), WINDOWS_OS)) {
+            if (isWindowsOperatingSystem()) {
                 executable = PropertiesUtils.getFirstFileFromTestResources("geckodriver.exe");
-            } else if (StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), LINUX_OS)) {
+            } else if (isLinuxOperatingSystem()) {
                 executable = PropertiesUtils.getFirstFileFromTestResources("geckodriver_linux_64");
             } else {
                 executable = PropertiesUtils.getFirstFileFromTestResources("geckodriver_mac");
@@ -658,16 +658,25 @@ public class WebEventController {
                             : PropertiesUtils.getFirstFileFromTestResources("ie_win64.exe");
             System.setProperty(FrameworkConstants.WEB_DRIVER_IE, PropertiesUtils.getPath(executable));
         } else if (StringUtils.equalsIgnoreCase(DESIRED_BROWSER, FrameworkConstants.EDGE_BROWSER_MODE)) {
-            if (StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), WINDOWS_OS)) {
+            if (isWindowsOperatingSystem()) {
                 executable = PropertiesUtils.getFirstFileFromTestResources("edge_win.exe");
             } else {
                 executable = PropertiesUtils.getFirstFileFromTestResources("edge_mac");
             }
             System.setProperty(FrameworkConstants.WEB_DRIVER_EDGE, PropertiesUtils.getPath(executable));
-        } else if (StringUtils.equalsIgnoreCase(DESIRED_BROWSER, FrameworkConstants.CHROME_BROWSER_MODE) || StringUtils.isEmpty(DESIRED_BROWSER)) {
-            if (StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), WINDOWS_OS)) {
+        } else if (StringUtils.equalsIgnoreCase(DESIRED_BROWSER, FrameworkConstants.HEADLESS_CHROME_BROWSER_MODE)) {
+            if (isWindowsOperatingSystem()) {
                 executable = PropertiesUtils.getFirstFileFromTestResources("chrome_win.exe");
-            } else if (StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), LINUX_OS)) {
+            } else if (isLinuxOperatingSystem()) {
+                executable = PropertiesUtils.getFirstFileFromTestResources("chrome_linux_64");
+            } else {
+                executable = PropertiesUtils.getFirstFileFromTestResources("chrome_mac");
+            }
+            System.setProperty(FrameworkConstants.WEB_DRIVER_CHROME, PropertiesUtils.getPath(executable));
+        } else if (StringUtils.equalsIgnoreCase(DESIRED_BROWSER, FrameworkConstants.CHROME_BROWSER_MODE) || StringUtils.isEmpty(DESIRED_BROWSER)) {
+            if (isWindowsOperatingSystem()) {
+                executable = PropertiesUtils.getFirstFileFromTestResources("chrome_win.exe");
+            } else if (isLinuxOperatingSystem()) {
                 executable = PropertiesUtils.getFirstFileFromTestResources("chrome_linux_64");
             } else {
                 executable = PropertiesUtils.getFirstFileFromTestResources("chrome_mac");
@@ -675,6 +684,22 @@ public class WebEventController {
             System.setProperty(FrameworkConstants.WEB_DRIVER_CHROME, PropertiesUtils.getPath(executable));
             System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.CHROME_BROWSER_MODE);
         }
+    }
+
+    /**
+     * Check if the current operating system is Windows.
+     * @return flag true if Windows OS
+     */
+    protected boolean isWindowsOperatingSystem() {
+        return StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), WINDOWS_OS);
+    }
+
+    /**
+     * Check if the current operating system is Linux.
+     * @return flag true if Linux OS
+     */
+    protected boolean isLinuxOperatingSystem() {
+        return StringUtils.containsIgnoreCase(System.getProperty(FrameworkConstants.SYSTEM_OS_NAME), LINUX_OS);
     }
 
     /**

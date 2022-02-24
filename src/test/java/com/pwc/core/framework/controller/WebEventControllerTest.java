@@ -19,6 +19,8 @@ import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.pwc.core.framework.controller.WebEventController.LINUX_OS;
+import static com.pwc.core.framework.controller.WebEventController.WINDOWS_OS;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -110,6 +112,20 @@ public class WebEventControllerTest {
         envVariable.put(FrameworkConstants.SAUCE_LABS_BROWSER_PROPERTY, "Firefox");
         PropertiesUtils.setEnv(envVariable);
 
+    }
+
+    @Test
+    public void isWindowsOperatingSystemTest() {
+        System.setProperty(FrameworkConstants.SYSTEM_OS_NAME, WINDOWS_OS);
+        boolean answer = webEventController.isWindowsOperatingSystem();
+        Assert.assertTrue(answer);
+    }
+
+    @Test
+    public void isLinuxOperatingSystemTest() {
+        System.setProperty(FrameworkConstants.SYSTEM_OS_NAME, LINUX_OS);
+        boolean answer = webEventController.isLinuxOperatingSystem();
+        Assert.assertTrue(answer);
     }
 
     @Test(expected = AssertionError.class)
