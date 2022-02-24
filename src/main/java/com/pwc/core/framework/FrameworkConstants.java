@@ -56,6 +56,7 @@ public final class FrameworkConstants {
     public static final String IOS_MODE = "iOS";
     public static final String INTERNET_EXPLORER_BROWSER_MODE = "ie";
     public static final String EDGE_BROWSER_MODE = "edge";
+    public static final String HEADLESS_EDGE_BROWSER_MODE = "headless_edge";
     public static final String SAFARI_BROWSER_MODE = "safari";
     public static final String NONE_BROWSER_MODE = "none";
 
