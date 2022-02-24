@@ -659,7 +659,8 @@ public class WebEventController {
             executable = StringUtils.equals(System.getProperty(FrameworkConstants.SYSTEM_JVM_TYPE), "32") ? PropertiesUtils.getFirstFileFromTestResources("ie_win32.exe")
                             : PropertiesUtils.getFirstFileFromTestResources("ie_win64.exe");
             System.setProperty(FrameworkConstants.WEB_DRIVER_IE, PropertiesUtils.getPath(executable));
-        } else if (StringUtils.equalsIgnoreCase(DESIRED_BROWSER, FrameworkConstants.EDGE_BROWSER_MODE)) {
+        } else if (StringUtils.equalsIgnoreCase(DESIRED_BROWSER, FrameworkConstants.EDGE_BROWSER_MODE)
+                        || StringUtils.equalsIgnoreCase(DESIRED_BROWSER, FrameworkConstants.HEADLESS_EDGE_BROWSER_MODE)) {
             if (isWindowsOperatingSystem()) {
                 executable = PropertiesUtils.getFirstFileFromTestResources("edge_win.exe");
             } else {
