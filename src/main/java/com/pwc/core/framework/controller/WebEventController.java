@@ -483,8 +483,8 @@ public class WebEventController {
         LOG("Starting Headless Microsoft Edge browser");
         EdgeOptions browserOptions = (EdgeOptions) getBrowser(new EdgeOptions());
         browserOptions.setBrowserVersion(StringUtils.defaultIfBlank(System.getProperty(FrameworkConstants.BROWSER_VERSION_PROPERTY), "latest"));
+        browserOptions.setHeadless(true);
         browserOptions.addArguments(SeleniumArgument.START_MAXIMIZED.getValue());
-        browserOptions.addArguments("headless");
         browserOptions.addArguments("disable-gpu");
 
         MicroserviceRemoteWebDriver microserviceRemoteWebDriver = null;
