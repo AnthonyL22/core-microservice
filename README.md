@@ -362,7 +362,7 @@ Simply define the following at runtime via **-D** system variables:
 
 | User Defined Command  | Options                                                                                           | Default     | Example                      |
 | ----------------------|---------------------------------------------------------------------------------------------------|-------------|------------------------------|
-| -Dbrowser             | chrome, headless_ch, firefox, headless_ff, ie, safari, edge, headless_ed                          | Chrome      | -Dbrowser=ff                 |
+| -Dbrowser             | chrome, headless_ch, firefox, headless_ff, ie, safari, edge, headless_edge                        | Chrome      | -Dbrowser=ff                 |
 | -Dbrowser.version     | any available                                                                                     | latest          | -Dbrowser.version=38.0       |
 | -Dbrowser.resolution  | 800x600, 1024x768, 1152x864, 1280x800, 1280x960, 1280x1024, all mobile resolutions in Chrome      | 1024x768    | -Dbrowser.resolution=360x640 |
 | -DplatformName        | macOS, osx, linux, windows, windows 10, windows 8, windows 8.1, windows 7, windows xp, xp         | Windows       | -Dplatform=xp                |
@@ -566,7 +566,7 @@ Important: the headless browser(s) are executed on the system that is executing 
 The following system environment variables must be set to run the Headless Chrome browser in a runtime environment
 
 ```
--Dbrowser=headless_ch OR headless_ff OR headless_ed
+-Dbrowser=headless_ch OR headless_ff OR headless_edge
 ```
 
 ## Sauce Labs

@@ -28,6 +28,7 @@ import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeOptions;
+import org.openqa.selenium.firefox.FirefoxBinary;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.ie.InternetExplorerOptions;
 import org.openqa.selenium.logging.LogType;
@@ -386,12 +387,12 @@ public class WebEventController {
                 browserOptions.setCapability(CapabilityType.PROXY, setupProxy());
             }
             if (gridEnabled) {
-                if (this.remoteWebDriver == null) {
+                if (null == this.remoteWebDriver) {
                     microserviceRemoteWebDriver = new MicroserviceRemoteWebDriver(new URL(gridUrl), browserOptions);
                     microserviceRemoteWebDriver.setFileDetector(new LocalFileDetector());
                 }
             } else {
-                if (this.remoteWebDriver == null) {
+                if (null == this.remoteWebDriver) {
                     return (new MicroserviceChromeDriver(browserOptions));
                 }
             }
@@ -425,12 +426,12 @@ public class WebEventController {
                 browserOptions.setCapability(CapabilityType.PROXY, setupProxy());
             }
             if (gridEnabled) {
-                if (this.remoteWebDriver == null) {
+                if (null == this.remoteWebDriver) {
                     microserviceRemoteWebDriver = new MicroserviceRemoteWebDriver(new URL(gridUrl), browserOptions);
                     microserviceRemoteWebDriver.setFileDetector(new LocalFileDetector());
                 }
             } else {
-                if (this.remoteWebDriver == null) {
+                if (null == this.remoteWebDriver) {
                     return (new MicroserviceChromeDriver(browserOptions));
                 }
             }
@@ -458,12 +459,12 @@ public class WebEventController {
                 browserOptions.setCapability(CapabilityType.PROXY, setupProxy());
             }
             if (gridEnabled) {
-                if (this.remoteWebDriver == null) {
+                if (null == this.remoteWebDriver) {
                     microserviceRemoteWebDriver = new MicroserviceRemoteWebDriver(new URL(gridUrl), browserOptions);
                     microserviceRemoteWebDriver.setFileDetector(new LocalFileDetector());
                 }
             } else {
-                if (this.remoteWebDriver == null) {
+                if (null == this.remoteWebDriver) {
                     return (new MicroserviceEdgeDriver(browserOptions));
                 }
             }
@@ -482,10 +483,8 @@ public class WebEventController {
 
         LOG("Starting Headless Microsoft Edge browser");
         EdgeOptions browserOptions = (EdgeOptions) getBrowser(new EdgeOptions());
-        browserOptions.setBrowserVersion(StringUtils.defaultIfBlank(System.getProperty(FrameworkConstants.BROWSER_VERSION_PROPERTY), "latest"));
         browserOptions.setHeadless(true);
-        browserOptions.addArguments(SeleniumArgument.START_MAXIMIZED.getValue());
-        browserOptions.addArguments("disable-gpu");
+        browserOptions.addArguments("--headless");
 
         MicroserviceRemoteWebDriver microserviceRemoteWebDriver = null;
         try {
@@ -493,12 +492,12 @@ public class WebEventController {
                 browserOptions.setCapability(CapabilityType.PROXY, setupProxy());
             }
             if (gridEnabled) {
-                if (this.remoteWebDriver == null) {
+                if (null == this.remoteWebDriver) {
                     microserviceRemoteWebDriver = new MicroserviceRemoteWebDriver(new URL(gridUrl), browserOptions);
                     microserviceRemoteWebDriver.setFileDetector(new LocalFileDetector());
                 }
             } else {
-                if (this.remoteWebDriver == null) {
+                if (null == this.remoteWebDriver) {
                     return (new MicroserviceEdgeDriver(browserOptions));
                 }
             }
@@ -525,12 +524,12 @@ public class WebEventController {
                 browserOptions.setCapability(CapabilityType.PROXY, setupProxy());
             }
             if (gridEnabled) {
-                if (this.remoteWebDriver == null) {
+                if (null == this.remoteWebDriver) {
                     microserviceRemoteWebDriver = new MicroserviceRemoteWebDriver(new URL(gridUrl), browserOptions);
                     microserviceRemoteWebDriver.setFileDetector(new LocalFileDetector());
                 }
             } else {
-                if (this.remoteWebDriver == null) {
+                if (null == this.remoteWebDriver) {
                     return (new MicroserviceInternetExplorerDriver(browserOptions));
                 }
             }
@@ -556,12 +555,12 @@ public class WebEventController {
                 browserOptions.setCapability(CapabilityType.PROXY, setupProxy());
             }
             if (gridEnabled) {
-                if (this.remoteWebDriver == null) {
+                if (null == this.remoteWebDriver) {
                     microserviceRemoteWebDriver = new MicroserviceRemoteWebDriver(new URL(gridUrl), browserOptions);
                     microserviceRemoteWebDriver.setFileDetector(new LocalFileDetector());
                 }
             } else {
-                if (this.remoteWebDriver == null) {
+                if (null == this.remoteWebDriver) {
                     return (new MicroserviceSafariDriver(browserOptions));
                 }
             }
@@ -587,12 +586,12 @@ public class WebEventController {
                 browserOptions.setCapability(CapabilityType.PROXY, setupProxy());
             }
             if (gridEnabled) {
-                if (this.remoteWebDriver == null) {
+                if (null == this.remoteWebDriver) {
                     microserviceRemoteWebDriver = new MicroserviceRemoteWebDriver(new URL(gridUrl), browserOptions);
                     microserviceRemoteWebDriver.setFileDetector(new LocalFileDetector());
                 }
             } else {
-                if (this.remoteWebDriver == null) {
+                if (null == this.remoteWebDriver) {
                     return (new MicroserviceFirefoxDriver(browserOptions));
                 }
             }
@@ -610,10 +609,10 @@ public class WebEventController {
     public MicroserviceWebDriver getHeadlessFirefoxBrowser() {
 
         LOG("Starting Headless Firefox browser");
+        FirefoxBinary firefoxBinary = new FirefoxBinary();
+        firefoxBinary.addCommandLineOptions("--headless");
         FirefoxOptions browserOptions = (FirefoxOptions) getBrowser(new FirefoxOptions());
-        browserOptions.setHeadless(true);
-        browserOptions.addArguments("window-size=1920,1080");
-        browserOptions.setCapability(FrameworkConstants.AUTOMATION_VIDEO_PROPERTY, "True");
+        browserOptions.setBinary(firefoxBinary);
 
         MicroserviceRemoteWebDriver microserviceRemoteWebDriver = null;
         try {
@@ -621,12 +620,12 @@ public class WebEventController {
                 browserOptions.setCapability(CapabilityType.PROXY, setupProxy());
             }
             if (gridEnabled) {
-                if (this.remoteWebDriver == null) {
+                if (null == this.remoteWebDriver) {
                     microserviceRemoteWebDriver = new MicroserviceRemoteWebDriver(new URL(gridUrl), browserOptions);
                     microserviceRemoteWebDriver.setFileDetector(new LocalFileDetector());
                 }
             } else {
-                if (this.remoteWebDriver == null) {
+                if (null == this.remoteWebDriver) {
                     return (new MicroserviceFirefoxDriver(browserOptions));
                 }
             }

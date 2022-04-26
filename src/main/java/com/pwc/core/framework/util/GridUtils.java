@@ -18,6 +18,7 @@ public class GridUtils {
     private static final Pattern IOS_REGEX = Pattern.compile("^.*?(iphone|ipad)+?");
     private static final Pattern INTERNET_EXPLORER_REGEX = Pattern.compile("^.*?(ie|internet\\sexplorer|explorer)+?");
     private static final Pattern EDGE_EXPLORER_REGEX = Pattern.compile("^.*?(ie|ms\\sedge|edge|msedge)+?");
+    private static final Pattern EDGE_HEADLESS_REGEX = Pattern.compile("^.*?(headless_edge|headlessedge)+?");
     private static final Pattern SAFARI_REGEX = Pattern.compile("^.*?(safari|sf)+?");
     private static final Pattern NO_BROWSER_REGEX = Pattern.compile("^.*?(none)+?");
 
@@ -76,6 +77,11 @@ public class GridUtils {
             browserMatcher = EDGE_EXPLORER_REGEX.matcher(property);
             if (browserMatcher.find()) {
                 System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.EDGE_BROWSER_MODE);
+                return;
+            }
+            browserMatcher = EDGE_HEADLESS_REGEX.matcher(property);
+            if (browserMatcher.find()) {
+                System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.HEADLESS_EDGE_BROWSER_MODE);
                 return;
             }
             browserMatcher = SAFARI_REGEX.matcher(property);
