@@ -36,6 +36,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.logging.LogEntries;
@@ -282,8 +283,6 @@ public class WebEventService extends WebEventController {
      * @return WebElement to then be used to interact with the AUT
      */
     public WebElement findWebElement(final String elementIdentifier) {
-
-        waitForBrowserToLoad();
 
         if (StringUtils.startsWith(elementIdentifier, "//") && elementIdentifier.matches(FrameworkConstants.XPATH_REGEX)) {
             try {
@@ -619,14 +618,7 @@ public class WebEventService extends WebEventController {
 
         StopWatch sw = new StopWatch();
         try {
-            if (StringUtils.endsWith(microserviceWebDriver.getCurrentUrl(), getSiteMinderRedirectUrl())) {
-                currentUrl = url;
-            } else if (url.startsWith("/")) {
-                currentUrl = constructUrlWithFullHostFromCurrentUrl(url);
-            } else if (StringUtils.containsAny(url, '=')) {
-                currentUrl = constructUrlWithQueryParameter(url);
-            }
-
+            currentUrl = constructUrl(url, currentUrl);
             synchronized (currentUrl) {
                 this.url = currentUrl;
             }
@@ -641,6 +633,13 @@ public class WebEventService extends WebEventController {
 
             record();
 
+        } catch (WebDriverException e) {
+            LOG(true, "RETRY redirect 1x to url='%s'", url);
+            currentUrl = constructUrl(url, currentUrl);
+            synchronized (currentUrl) {
+                this.url = currentUrl;
+            }
+            microserviceWebDriver.get(currentUrl);
         } catch (Exception e) {
             e.printStackTrace();
             LOG(true, "Unable to redirect to URL='%s' due to exception='%s'", getUrl(), e.getMessage());
@@ -648,6 +647,25 @@ public class WebEventService extends WebEventController {
 
         return sw.getTotalTimeMillis();
 
+    }
+
+    /**
+     * Construct URL for redirection.
+     *
+     * @param url        base url
+     * @param currentUrl url to append to
+     * @return new url
+     */
+    private String constructUrl(final String url, String currentUrl) {
+
+        if (StringUtils.endsWith(microserviceWebDriver.getCurrentUrl(), getSiteMinderRedirectUrl())) {
+            currentUrl = url;
+        } else if (url.startsWith("/")) {
+            currentUrl = constructUrlWithFullHostFromCurrentUrl(url);
+        } else if (StringUtils.containsAny(url, '=')) {
+            currentUrl = constructUrlWithQueryParameter(url);
+        }
+        return currentUrl;
     }
 
     /**
@@ -1479,23 +1497,13 @@ public class WebEventService extends WebEventController {
         if (isWaitForAjaxRequestsEnabled()) {
 
             try {
-                (new WebDriverWait(this.microserviceWebDriver, Duration.ofSeconds(timeOutInSeconds), Duration.ofMillis(sleepInMillis))).until(new ExpectedCondition<Boolean>() {
-                    boolean noActiveRequests = false;
-                    int countDown = (int) pageTimeoutInSeconds;
 
-                    public Boolean apply(WebDriver driver) {
-                        noActiveRequests = Boolean.parseBoolean(((JavascriptExecutor) driver).executeScript(JavascriptConstants.IS_DOCUMENT_READY).toString());
-                        if (!noActiveRequests && countDown > 0) {
-                            LOG(true, "Waiting - BROWSER NOT READY. Retrying for %s seconds ****", countDown--);
-                        }
-                        return noActiveRequests;
-                    }
-                });
+                WebDriverWait wait = new WebDriverWait(this.microserviceWebDriver, Duration.ofSeconds(timeOutInSeconds));
+                wait.until(webDriver -> "complete".equals(((JavascriptExecutor) webDriver).executeScript("return document.readyState")));
 
             } catch (Exception e) {
                 Assert.fail(String.format("Browser didn't appear READY in allotted time of %s seconds", pageTimeoutInSeconds), e);
             }
-
         }
 
     }

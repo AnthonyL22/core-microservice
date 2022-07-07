@@ -714,12 +714,10 @@ public class WebEventController {
             StopWatch stopWatch = new StopWatch();
             stopWatch.start();
             MouseActivityProcessor.getInstance().webAction(webElement, webElementValue);
-            getWebEventService().waitForBrowserToLoad();
             stopWatch.stop();
             return stopWatch.getTotalTimeMillis();
         } else if (KeyboardActivityProcessor.applies(webElement)) {
             KeyboardActivityProcessor.getInstance().webAction(webElement, webElementValue);
-            getWebEventService().waitForBrowserToLoad();
         } else if (ViewActivityProcessor.applies(webElement)) {
             ViewActivityProcessor.getInstance().webAction(webElement, webElementValue);
         }
