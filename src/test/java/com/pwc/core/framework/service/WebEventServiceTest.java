@@ -1084,7 +1084,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
         Assert.assertNotNull(webElement);
     }
 
-    @Test(expected = AssertionError.class)
+    @Test(expected = ClassCastException.class)
     public void hoverContainsTest() {
         when(specialMockWebElement.isDisplayed()).thenReturn(true);
         when(specialMockWebElement.getAttribute(WebElementAttribute.ID.attribute)).thenReturn("777");

@@ -1,7 +1,7 @@
 package com.pwc.core.framework.driver;
 
-import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.safari.SafariDriver;
+import org.openqa.selenium.safari.SafariDriverService;
 import org.openqa.selenium.safari.SafariOptions;
 
 public class MicroserviceSafariDriver extends SafariDriver implements MicroserviceWebDriver {
@@ -10,8 +10,8 @@ public class MicroserviceSafariDriver extends SafariDriver implements Microservi
         super();
     }
 
-    public MicroserviceSafariDriver(Capabilities capabilities) {
-        super(capabilities);
+    public MicroserviceSafariDriver(SafariDriverService safariDriverService) {
+        super(safariDriverService);
     }
 
     public MicroserviceSafariDriver(SafariOptions options) {

@@ -350,12 +350,6 @@ public class WebEventController {
             LoggingPreferences loggingPreferences = new LoggingPreferences();
             loggingPreferences.enable(LogType.PERFORMANCE, Level.ALL);
             loggingPreferences.enable(LogType.BROWSER, Level.ALL);
-            abstractDriverOptions.setCapability(CapabilityType.LOGGING_PREFS, loggingPreferences);
-
-            abstractDriverOptions.setCapability(FrameworkConstants.TIME_ZONE_CAPABILITY, GridUtils.initTimeZone());
-            abstractDriverOptions.setCapability(CapabilityType.TAKES_SCREENSHOT, true);
-            abstractDriverOptions.setCapability(CapabilityType.SUPPORTS_JAVASCRIPT, true);
-            abstractDriverOptions.setCapability(FrameworkConstants.SCRIPT_NAME_CAPABILITY, getReadableTestName());
 
         } catch (Exception e) {
             LOG(true, "Failed to initiate Selenium Driver due to e=%s", e);

@@ -256,14 +256,14 @@ public class GridUtilsTest {
     public void initPlatformTypeWindows10Test() {
         System.setProperty(FrameworkConstants.AUTOMATION_PLATFORM_PROPERTY, "windows 10");
         String actualPlatform = GridUtils.initPlatformType();
-        Assert.assertEquals("WIN10", actualPlatform);
+        Assert.assertEquals("Windows 10", actualPlatform);
     }
 
     @Test
     public void initPlatformTypeCapitalWindows10Test() {
         System.setProperty(FrameworkConstants.AUTOMATION_PLATFORM_PROPERTY, "Windows 10");
         String actualPlatform = GridUtils.initPlatformType();
-        Assert.assertEquals("WIN10", actualPlatform);
+        Assert.assertEquals("Windows 10", actualPlatform);
     }
 
     @Test

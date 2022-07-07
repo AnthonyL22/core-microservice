@@ -85,7 +85,7 @@
     <restassured.version>2.9.0</restassured.version>
     <saucelabs-java.version>2.1.23</saucelabs-java.version>
     <saucelabs.version>1.0.35</saucelabs.version>
-    <selenium.version>4.1.1</selenium.version>
+    <selenium.version>4.3.0</selenium.version>
     <skip.plugins>false</skip.plugins>
     <sortpom-maven-plugin.version>2.6.0</sortpom-maven-plugin.version>
     <spring-mongodb.version>1.2.0.RELEASE</spring-mongodb.version>
@@ -250,6 +250,11 @@
     <dependency>
       <groupId>org.seleniumhq.selenium</groupId>
       <artifactId>selenium-chrome-driver</artifactId>
+      <version>${selenium.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.seleniumhq.selenium</groupId>
+      <artifactId>selenium-devtools-v103</artifactId>
       <version>${selenium.version}</version>
     </dependency>
     <dependency>
