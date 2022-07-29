@@ -89,7 +89,8 @@ public class MicroserviceTestListener extends TestListenerAdapter implements ITe
 
     /**
      * Set the Sauce Labs tunnelIdentifier according to that found in the 'automation.properties' file and the active tunnel
-     * in Sauce Labs.
+     * in Sauce Labs.  The automation.properties "saucelabs.username" must match the Jenkins Sauce Connect account used in the
+     * Jenkins pipeline.
      */
     private void setSauceLabsTunnel() {
 
