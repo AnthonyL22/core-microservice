@@ -16,7 +16,6 @@ import java.util.Properties;
 
 public class PropertiesUtilsTest {
 
-    private static final String PROPERTIES_FILE = "automation.properties";
     private static final String WORD_DOCUMENT_FILE = "training.docx";
     private static final int EXPECTED_NUM_OF_PROPERTIES = 24;
 
@@ -27,7 +26,7 @@ public class PropertiesUtilsTest {
     @Test
     public void readResourceFileTest() {
 
-        List<String> lines = PropertiesUtils.readResourceFile("config/dev-env/" + PROPERTIES_FILE);
+        List<String> lines = PropertiesUtils.readResourceFile("config/dev-env/" + FrameworkConstants.AUTOMATION_PROPERTIES_FILE);
         Assert.assertEquals(EXPECTED_NUM_OF_PROPERTIES, lines.size());
         Assert.assertEquals(lines.get(0), "web.url=http://my-web-application.mywebsite.com");
         Assert.assertEquals(lines.get(1), "web.services.url=http://my-web-services.com");
@@ -52,11 +51,11 @@ public class PropertiesUtilsTest {
     @Test
     public void getPathValidFileTest() {
 
-        File file = PropertiesUtils.getFileFromResources("config" + FrameworkConstants.SEPARATOR + "dev-env" + FrameworkConstants.SEPARATOR + PROPERTIES_FILE);
+        File file = PropertiesUtils.getFileFromResources("config" + FrameworkConstants.SEPARATOR + "dev-env" + FrameworkConstants.SEPARATOR + FrameworkConstants.AUTOMATION_PROPERTIES_FILE);
         String path = PropertiesUtils.getPath(file);
         Assert.assertTrue(path.contains("config"));
         Assert.assertTrue(path.contains("dev-env"));
-        Assert.assertTrue(path.contains(PROPERTIES_FILE));
+        Assert.assertTrue(path.contains(FrameworkConstants.AUTOMATION_PROPERTIES_FILE));
     }
 
     @Test
@@ -76,8 +75,8 @@ public class PropertiesUtilsTest {
     @Test
     public void getFileFromResourcesTest() {
 
-        File file = PropertiesUtils.getFileFromResources("config" + FrameworkConstants.SEPARATOR + "dev-env" + FrameworkConstants.SEPARATOR + PROPERTIES_FILE);
-        Assert.assertTrue(StringUtils.contains(file.getPath(), PROPERTIES_FILE));
+        File file = PropertiesUtils.getFileFromResources("config" + FrameworkConstants.SEPARATOR + "dev-env" + FrameworkConstants.SEPARATOR + FrameworkConstants.AUTOMATION_PROPERTIES_FILE);
+        Assert.assertTrue(StringUtils.contains(file.getPath(), FrameworkConstants.AUTOMATION_PROPERTIES_FILE));
         Assert.assertTrue(StringUtils.contains(file.getPath(), "config"));
     }
 
@@ -99,9 +98,9 @@ public class PropertiesUtilsTest {
     @Test
     public void getFirstFileFromResourcesTest() {
 
-        File file = PropertiesUtils.getFirstFileFromTestResources("dev-env" + FrameworkConstants.SEPARATOR + PROPERTIES_FILE);
-        Assert.assertEquals(PROPERTIES_FILE, file.getName());
-        Assert.assertTrue(StringUtils.contains(file.getPath(), PROPERTIES_FILE));
+        File file = PropertiesUtils.getFirstFileFromTestResources("dev-env" + FrameworkConstants.SEPARATOR + FrameworkConstants.AUTOMATION_PROPERTIES_FILE);
+        Assert.assertEquals(FrameworkConstants.AUTOMATION_PROPERTIES_FILE, file.getName());
+        Assert.assertTrue(StringUtils.contains(file.getPath(), FrameworkConstants.AUTOMATION_PROPERTIES_FILE));
         try {
             List<String> lines = FileUtils.readLines(file, StandardCharsets.UTF_8);
             Assert.assertEquals(EXPECTED_NUM_OF_PROPERTIES, lines.size());
@@ -138,21 +137,21 @@ public class PropertiesUtilsTest {
     @Test
     public void getValidPropertyFromPropertyFileTest() {
 
-        String property = PropertiesUtils.getPropertyFromPropertiesFile("config/dev-env/" + PROPERTIES_FILE, "enable.hard.assert");
+        String property = PropertiesUtils.getPropertyFromPropertiesFile("config/dev-env/" + FrameworkConstants.AUTOMATION_PROPERTIES_FILE, "enable.hard.assert");
         Assert.assertEquals("false", property);
     }
 
     @Test
     public void getInvalidPropertyFromPropertyFileTest() {
 
-        String property = PropertiesUtils.getPropertyFromPropertiesFile("config/dev-env/" + PROPERTIES_FILE, "enable.hard.asser");
+        String property = PropertiesUtils.getPropertyFromPropertiesFile("config/dev-env/" + FrameworkConstants.AUTOMATION_PROPERTIES_FILE, "enable.hard.asser");
         Assert.assertNull(property);
     }
 
     @Test
     public void getPropertiesFromPropertyFileTest() {
 
-        Properties properties = PropertiesUtils.getPropertiesFromPropertyFile("config/dev-env/" + PROPERTIES_FILE);
+        Properties properties = PropertiesUtils.getPropertiesFromPropertyFile("config/dev-env/" + FrameworkConstants.AUTOMATION_PROPERTIES_FILE);
         Assert.assertEquals(EXPECTED_NUM_OF_PROPERTIES, properties.size());
     }
 

@@ -21,6 +21,9 @@ public final class FrameworkConstants {
     public static final String PLATFORM_NAME_PROPERTY = "platformName";
     public static final String ACCESS_KEY_PROPERTY = "accessKey";
     public static final String TEST_NAME_PROPERTY = "testName";
+    public static final String SAUCE_LABS_USERNAME_SETTING = "saucelabs.username";
+    public static final String SAUCE_LABS_ACCESSKEY_SETTING = "saucelabs.accesskey";
+    public static final String GRID_ENABLED_SETTING = "grid.enabled";
 
     public static final String SAUCE_LABS_USERNAME_PROPERTY = "username";
     public static final String SAUCE_ON_DEMAND_JENKINS_PLUGIN_TUNNEL_IDENTIFIER_PROPERTY = "TUNNEL_IDENTIFIER";
@@ -38,6 +41,8 @@ public final class FrameworkConstants {
     public static final String BROWSER_STACK_OPTIONS_PROPERTY = "bstack:options";
 
     // System Properties Supported
+    public static final String AUTOMATION_PROPERTIES_FILE = "automation.properties";
+    public static final String GRID_PROPERTIES_FILE = "grid.properties";
     public static final String SEPARATOR = System.getProperty("file.separator");
     public static final String AUTOMATION_CONTEXT_XML = "automation-context.xml";
     public static final String SYSTEM_OS_NAME = "os.name";
