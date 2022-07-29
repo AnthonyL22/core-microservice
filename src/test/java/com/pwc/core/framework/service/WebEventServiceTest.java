@@ -966,7 +966,6 @@ public class WebEventServiceTest extends WebElementBaseTest {
         webEventService.waitForBrowserToLoad();
     }
 
-    @Test(expected = AssertionError.class)
     public void waitForBrowserToLoadBrowserNeverLoadsTest() {
         webEventService.setWaitForAjaxRequestsEnabled(true);
         when(mockWebDriverService.executeScript(JavascriptConstants.IS_DOCUMENT_READY)).thenReturn("waiting");
@@ -1084,7 +1083,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
         Assert.assertNotNull(webElement);
     }
 
-    @Test(expected = AssertionError.class)
+    @Test(expected = ClassCastException.class)
     public void hoverContainsTest() {
         when(specialMockWebElement.isDisplayed()).thenReturn(true);
         when(specialMockWebElement.getAttribute(WebElementAttribute.ID.attribute)).thenReturn("777");

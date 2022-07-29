@@ -89,7 +89,9 @@ public class MicroserviceDriversTest {
 
     @Test(expected = Exception.class)
     public void internetExplorerDriverTest() {
-        driver = new MicroserviceInternetExplorerDriver(desiredCapabilities);
+        InternetExplorerOptions internetExplorerOptions = new InternetExplorerOptions();
+        internetExplorerOptions.setAcceptInsecureCerts(true);
+        driver = new MicroserviceInternetExplorerDriver(internetExplorerOptions);
     }
 
     @Test(expected = Exception.class)
@@ -106,8 +108,10 @@ public class MicroserviceDriversTest {
 
     @Test(expected = Exception.class)
     public void internetExplorerDriverServiceAndCapabilitiesTest() {
+        InternetExplorerOptions internetExplorerOptions = new InternetExplorerOptions();
+        internetExplorerOptions.setAcceptInsecureCerts(true);
         InternetExplorerDriverService internetExplorerDriverService = InternetExplorerDriverService.createDefaultService();
-        driver = new MicroserviceInternetExplorerDriver(internetExplorerDriverService, desiredCapabilities);
+        driver = new MicroserviceInternetExplorerDriver(internetExplorerDriverService, internetExplorerOptions);
     }
 
 }

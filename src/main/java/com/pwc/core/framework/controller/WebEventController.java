@@ -350,12 +350,6 @@ public class WebEventController {
             LoggingPreferences loggingPreferences = new LoggingPreferences();
             loggingPreferences.enable(LogType.PERFORMANCE, Level.ALL);
             loggingPreferences.enable(LogType.BROWSER, Level.ALL);
-            abstractDriverOptions.setCapability(CapabilityType.LOGGING_PREFS, loggingPreferences);
-
-            abstractDriverOptions.setCapability(FrameworkConstants.TIME_ZONE_CAPABILITY, GridUtils.initTimeZone());
-            abstractDriverOptions.setCapability(CapabilityType.TAKES_SCREENSHOT, true);
-            abstractDriverOptions.setCapability(CapabilityType.SUPPORTS_JAVASCRIPT, true);
-            abstractDriverOptions.setCapability(FrameworkConstants.SCRIPT_NAME_CAPABILITY, getReadableTestName());
 
         } catch (Exception e) {
             LOG(true, "Failed to initiate Selenium Driver due to e=%s", e);
@@ -720,12 +714,10 @@ public class WebEventController {
             StopWatch stopWatch = new StopWatch();
             stopWatch.start();
             MouseActivityProcessor.getInstance().webAction(webElement, webElementValue);
-            getWebEventService().waitForBrowserToLoad();
             stopWatch.stop();
             return stopWatch.getTotalTimeMillis();
         } else if (KeyboardActivityProcessor.applies(webElement)) {
             KeyboardActivityProcessor.getInstance().webAction(webElement, webElementValue);
-            getWebEventService().waitForBrowserToLoad();
         } else if (ViewActivityProcessor.applies(webElement)) {
             ViewActivityProcessor.getInstance().webAction(webElement, webElementValue);
         }
