@@ -601,6 +601,8 @@ To execute your tests from your local environment to Sauce Labs you will need to
 9. Open the automation.properties file for the AUT and set the **saucelabs.accesskey=ACCESS_KEY_FROM_STEP_1**
 10. `mvn clean install`
 
+**IMPORTANT**: The automation.properties 'saucelabs.username' value must match the Jenkins Sauce Connect account used in the Jenkins pipeline.
+
 # External Dependencies
 
 ## Runtime Microservice

@@ -89,7 +89,8 @@ public class MicroserviceTestListener extends TestListenerAdapter implements ITe
 
     /**
      * Set the Sauce Labs tunnelIdentifier according to that found in the 'automation.properties' file and the active tunnel
-     * in Sauce Labs.
+     * in Sauce Labs.  The automation.properties "saucelabs.username" must match the Jenkins Sauce Connect account used in the
+     * Jenkins pipeline.
      */
     private void setSauceLabsTunnel() {
 
@@ -99,8 +100,8 @@ public class MicroserviceTestListener extends TestListenerAdapter implements ITe
             try (CloseableHttpClient httpClient = HttpClients.custom().setSSLContext(new SSLContextBuilder().build()).setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE).build()) {
 
                 LOG(true, "Preparing to set Sauce Labs %s", "tunnel");
-                String sauceLabsUsername = getAutomationPropertiesFileProperty(FrameworkConstants.SAUCE_LABS_USERNAME_SETTING);
-                String accessKey = getAutomationPropertiesFileProperty(FrameworkConstants.SAUCE_LABS_ACCESSKEY_SETTING);
+                String sauceLabsUsername = getAutomationPropertiesFileProperty(FrameworkConstants.AUTOMATION_PROPERTIES_FILE, FrameworkConstants.SAUCE_LABS_USERNAME_SETTING);
+                String accessKey = getAutomationPropertiesFileProperty(FrameworkConstants.AUTOMATION_PROPERTIES_FILE, FrameworkConstants.SAUCE_LABS_ACCESSKEY_SETTING);
                 String apiUrl = String.format(SAUCE_LABS_API + "/%s/tunnels?full=true", sauceLabsUsername);
                 HttpGet httpGet = new HttpGet(apiUrl);
                 httpGet.setHeader(HttpHeaders.CONTENT_TYPE, "application/json");
@@ -138,18 +139,6 @@ public class MicroserviceTestListener extends TestListenerAdapter implements ITe
     private String getAutomationPropertiesFileProperty(final String propertyFileName, final String propertyName) {
 
         return PropertiesUtils.getPropertyFromPropertiesFile(String.format("config/%s/%s", System.getProperty(FrameworkConstants.AUTOMATION_TEST_ENVIRONMENT), propertyFileName), propertyName);
-    }
-
-    /**
-     * Fetch the property from the automation.properties file in the active test.env.
-     *
-     * @param propertyName property to get from automation.properties file
-     * @return property
-     */
-    private String getAutomationPropertiesFileProperty(final String propertyName) {
-
-        return PropertiesUtils.getPropertyFromPropertiesFile(
-                        String.format("config/%s/%s", System.getProperty(FrameworkConstants.AUTOMATION_TEST_ENVIRONMENT), FrameworkConstants.AUTOMATION_PROPERTIES_FILE), propertyName);
     }
 
     @Override
