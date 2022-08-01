@@ -155,7 +155,11 @@ public class WebEventController {
                 this.remoteWebDriver = getChromeBrowser();
             }
 
-            currentJobId = ((RemoteWebDriver) this.remoteWebDriver).getSessionId().toString();
+            try {
+                currentJobId = ((RemoteWebDriver) this.remoteWebDriver).getSessionId().toString();
+            } catch (Exception exception) {
+                LOG(true, "Unable to set Sauce Labs '%s' field", "jobId");
+            }
 
             webEventService = new WebEventService(remoteWebDriver);
             if (isSiteMinderEnabled()) {

@@ -237,7 +237,9 @@ public class MicroserviceTestListener extends TestListenerAdapter implements ITe
             Map<String, Object> updates = new HashMap<>();
             updates.put("name", testName);
             updates.put("passed", didTestPass);
-            if (jobExistsInSaucelabs(jobId)) {
+            if (StringUtils.isEmpty(jobId)) {
+                LOG(true, "Failed to set SauceOnDemandSessionID for job-name=%s", testName);
+            } else if (jobExistsInSaucelabs(jobId)) {
                 LOG(true, "SauceOnDemandSessionID=%s job-name=%s", jobId, testName);
                 sauceInstance.updateJobInfo(jobId, updates);
             } else if (jobExistsInBrowserStack(jobId)) {
