@@ -155,10 +155,8 @@ public class WebEventController {
                 this.remoteWebDriver = getChromeBrowser();
             }
 
-            try {
+            if (null != ((RemoteWebDriver) this.remoteWebDriver).getSessionId()) {
                 currentJobId = ((RemoteWebDriver) this.remoteWebDriver).getSessionId().toString();
-            } catch (Exception exception) {
-                LOG(true, "Unable to set Sauce Labs '%s' field", "jobId");
             }
 
             webEventService = new WebEventService(remoteWebDriver);
@@ -688,6 +686,7 @@ public class WebEventController {
 
     /**
      * Check if the current operating system is Windows.
+     *
      * @return flag true if Windows OS
      */
     protected boolean isWindowsOperatingSystem() {
@@ -696,6 +695,7 @@ public class WebEventController {
 
     /**
      * Check if the current operating system is Linux.
+     *
      * @return flag true if Linux OS
      */
     protected boolean isLinuxOperatingSystem() {
