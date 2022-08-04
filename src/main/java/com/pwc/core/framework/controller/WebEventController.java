@@ -157,6 +157,10 @@ public class WebEventController {
 
             if (null != ((RemoteWebDriver) this.remoteWebDriver).getSessionId()) {
                 currentJobId = ((RemoteWebDriver) this.remoteWebDriver).getSessionId().toString();
+            } else {
+                LOG(true, "Retry getSessionId() %s time", "1");
+                this.remoteWebDriver = getChromeBrowser();
+                currentJobId = ((RemoteWebDriver) this.remoteWebDriver).getSessionId().toString();
             }
 
             webEventService = new WebEventService(remoteWebDriver);
