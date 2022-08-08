@@ -155,10 +155,10 @@ public class WebEventController {
                 this.remoteWebDriver = getChromeBrowser();
             }
 
-            if (null != ((RemoteWebDriver) this.remoteWebDriver).getSessionId()) {
+            try {
                 currentJobId = ((RemoteWebDriver) this.remoteWebDriver).getSessionId().toString();
-            } else {
-                LOG(true, "Retry getSessionId() %s time", "1");
+            } catch (Exception e) {
+                LOG(true, "Retry getSessionId() 1x time due to e=%s", e.getCause());
                 this.remoteWebDriver = getChromeBrowser();
                 currentJobId = ((RemoteWebDriver) this.remoteWebDriver).getSessionId().toString();
             }
@@ -413,12 +413,12 @@ public class WebEventController {
         ChromeOptions browserOptions = (ChromeOptions) getBrowser(new ChromeOptions());
         browserOptions.setBrowserVersion(StringUtils.defaultIfBlank(System.getProperty(FrameworkConstants.BROWSER_VERSION_PROPERTY), "latest"));
         browserOptions.setHeadless(true);
-        browserOptions.addArguments("window-size=1920,1080");
+        browserOptions.addArguments("--no-sandbox");
+        browserOptions.addArguments("--disable-setuid-sandbox");
         browserOptions.addArguments(SeleniumArgument.DISABLE_SHM.getValue());
         browserOptions.addArguments(SeleniumArgument.DISABLE_WEB_SECURITY.getValue());
         browserOptions.addArguments(SeleniumArgument.IGNORE_CERTIFICATE_ERRORS.getValue());
         browserOptions.addArguments(SeleniumArgument.ALLOW_INSECURE_CONTENT.getValue());
-        browserOptions.addArguments(FrameworkConstants.AUTOMATION_VIDEO_PROPERTY, "True");
 
         MicroserviceRemoteWebDriver microserviceRemoteWebDriver = null;
         try {
