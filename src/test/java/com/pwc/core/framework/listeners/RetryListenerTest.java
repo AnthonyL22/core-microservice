@@ -39,8 +39,6 @@ public class RetryListenerTest extends MicroserviceTestListener {
     public void setUp() {
 
         mockRetry = mock(Retry.class);
-        MicroserviceTestSuite mockMicroserviceTestSuite = mock(MicroserviceTestSuite.class);
-        setSessionIdProvider(mockMicroserviceTestSuite);
 
         SauceREST mockSauceREST = mock(SauceREST.class);
         setSauceInstance(mockSauceREST);
@@ -61,6 +59,8 @@ public class RetryListenerTest extends MicroserviceTestListener {
 
         ITestClass mockITestClass = mock(ITestClass.class);
         when(mockITestClass.getTestName()).thenReturn("[TestClass name=class com.pwc.automation.tests.web.BasicTest]");
+
+        MicroserviceTestSuite mockMicroserviceTestSuite = mock(MicroserviceTestSuite.class);
 
         mockConstructorOrMethod = mock(ConstructorOrMethod.class);
         mockITestNGMethod = mock(ITestNGMethod.class);

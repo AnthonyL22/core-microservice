@@ -38,7 +38,6 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
@@ -51,7 +50,6 @@ public class MicroserviceTestListener extends TestListenerAdapter implements ITe
     private static final Pattern TEST_CASE_PATTERN = Pattern.compile(TEST_CASE_ID_REGEX);
     private static final String SAUCE_LABS_API = "https://api.us-west-1.saucelabs.com/rest/v1";
 
-    private MicroserviceTestSuite sessionIdProvider;
     private SauceREST sauceInstance;
     private BrowserStackREST browserStackInstance;
     private boolean gridEnabled;
@@ -163,7 +161,6 @@ public class MicroserviceTestListener extends TestListenerAdapter implements ITe
     @Override
     public void onTestFailure(ITestResult testResult) {
 
-        sessionIdProvider = (MicroserviceTestSuite) testResult.getInstance();
         logIssueAnnotationInformation(testResult);
         publishJiraTestResults(testResult);
         LOG(true, "%s--Description: %s", testResult.getName(), !StringUtils.isEmpty(testResult.getMethod().getDescription()) ? testResult.getMethod().getDescription() : "N/A");
@@ -174,8 +171,6 @@ public class MicroserviceTestListener extends TestListenerAdapter implements ITe
     @Override
     public void onTestSkipped(ITestResult testResult) {
 
-        sessionIdProvider = (MicroserviceTestSuite) testResult.getInstance();
-        markJobResults(testResult, sessionIdProvider.getCurrentJobId(), false);
         logIssueAnnotationInformation(testResult);
         publishJiraTestResults(testResult);
         LOG(true, "%s--Description: %s", testResult.getName(), !StringUtils.isEmpty(testResult.getMethod().getDescription()) ? testResult.getMethod().getDescription() : "N/A");
@@ -186,8 +181,6 @@ public class MicroserviceTestListener extends TestListenerAdapter implements ITe
     @Override
     public void onTestSuccess(ITestResult testResult) {
 
-        sessionIdProvider = (MicroserviceTestSuite) testResult.getInstance();
-        markJobResults(testResult, sessionIdProvider.getCurrentJobId(), true);
         logIssueAnnotationInformation(testResult);
         publishJiraTestResults(testResult);
         LOG(true, "%s--Description: %s", testResult.getName(), !StringUtils.isEmpty(testResult.getMethod().getDescription()) ? testResult.getMethod().getDescription() : "N/A");
@@ -211,78 +204,6 @@ public class MicroserviceTestListener extends TestListenerAdapter implements ITe
         } catch (Exception e) {
             e.getMessage();
         }
-    }
-
-    /**
-     * Report test results to Saucelabs via their REST api.
-     *
-     * @param testResult  current test result
-     * @param didTestPass test result status
-     */
-    private void markJobResults(ITestResult testResult, String jobId, boolean didTestPass) {
-
-        try {
-            String testName = LoggerHelper.getClassNameFromClasspath(testResult.getMethod());
-            Map<String, Object> updates = new HashMap<>();
-            updates.put("name", testName);
-            updates.put("passed", didTestPass);
-            if (StringUtils.isEmpty(jobId)) {
-                LOG(true, "Failed to set SauceOnDemandSessionID for job-name=%s", testName);
-            } else if (jobExistsInSaucelabs(jobId)) {
-                LOG(true, "SauceOnDemandSessionID=%s job-name=%s", jobId, testName);
-                sauceInstance.updateJobInfo(jobId, updates);
-            } else if (jobExistsInBrowserStack(jobId)) {
-                updates.clear();
-                updates = new HashMap<>();
-                if (didTestPass) {
-                    updates.put("status", "passed");
-                } else {
-                    updates.put("status", "failed");
-                }
-                LOG(true, "BrowserStackSessionID=%s job-name=%s", jobId, testName);
-                browserStackInstance.updateJobInfo(jobId, updates);
-            }
-        } catch (Exception eatMessage) {
-            eatMessage.getMessage();
-        }
-    }
-
-    /**
-     * Check if the current job ID exists in Saucelabs environment.  If it does then the
-     * job will be updated with the current test results for this test execution.
-     *
-     * @return job exists in Saucelabs
-     */
-    private boolean jobExistsInSaucelabs(String jobId) {
-        try {
-            if (gridEnabled && StringUtils.containsIgnoreCase(gridUrl, "saucelabs")) {
-                if (sauceInstance != null && !StringUtils.isEmpty(jobId)) {
-                    return !StringUtils.isEmpty(sauceInstance.getJobInfo(jobId));
-                }
-            }
-        } catch (Exception e) {
-            return false;
-        }
-        return false;
-    }
-
-    /**
-     * Check if the current job ID exists in BrowserStack environment.  If it does then the
-     * job will be updated with the current test results for this test execution.
-     *
-     * @return job exists in BrowserStack
-     */
-    private boolean jobExistsInBrowserStack(String jobId) {
-        try {
-            if (gridEnabled && StringUtils.containsIgnoreCase(gridUrl, "browserstack")) {
-                if (browserStackInstance != null && !StringUtils.isEmpty(jobId)) {
-                    return true;
-                }
-            }
-        } catch (Exception e) {
-            return false;
-        }
-        return false;
     }
 
     /**
@@ -321,10 +242,6 @@ public class MicroserviceTestListener extends TestListenerAdapter implements ITe
 
     public void setGridUrl(String gridUrl) {
         this.gridUrl = gridUrl;
-    }
-
-    public void setSessionIdProvider(MicroserviceTestSuite sessionIdProvider) {
-        this.sessionIdProvider = sessionIdProvider;
     }
 
     public void setGridEnabled(boolean gridEnabled) {
