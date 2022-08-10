@@ -104,7 +104,7 @@ public abstract class MicroserviceTestSuite {
     private void sendSauceLabsResults(ITestResult testResult) {
 
         String status = testResult.isSuccess() ? "passed" : "failed";
-        webEventController.getWebEventService().executeJavascript("sauce:job-result=" + status);
+        webEventController.getWebEventService().executeJavascript(JavascriptConstants.SEND_SAUCE_LABS_RESULTS + status);
     }
 
     @BeforeClass(alwaysRun = true, dependsOnMethods = "setUpRunner")

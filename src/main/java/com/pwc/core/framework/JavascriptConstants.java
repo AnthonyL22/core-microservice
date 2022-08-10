@@ -56,6 +56,9 @@ public final class JavascriptConstants {
     public static final String SCROLL_TO_ELEMENT_POSITION_ACTION = "window.scrollTo('%s','%s');";
     public static final String URL_REDIRECT_ACTION = "window.location.replace('%s')";
 
+    // OTHER Actions
+    public static final String SEND_SAUCE_LABS_RESULTS = "sauce:job-result=";
+
     private JavascriptConstants() {
     }
 
