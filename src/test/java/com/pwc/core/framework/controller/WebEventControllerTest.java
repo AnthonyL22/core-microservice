@@ -137,28 +137,6 @@ public class WebEventControllerTest {
     }
 
     @Test(expected = AssertionError.class)
-    public void siteMinderTest() {
-        webEventController.setRemoteWebDriver(mockWebDriverService);
-        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, "");
-        webEventController.setSiteMinderEnabled(true);
-        webEventController.setWebUrl(APPLICATION_WEB_URL);
-        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, "");
-        webEventController.initiateBrowser(credentials);
-    }
-
-    @Test(expected = AssertionError.class)
-    public void initiateBrowserNullBrowserPropertyTest() {
-        sauceEnvVariableMap = new HashMap<>();
-        sauceEnvVariableMap.put(FrameworkConstants.SAUCE_LABS_BROWSER_PROPERTY, "chrome");
-        sauceEnvVariableMap.put(FrameworkConstants.BROWSER_VERSION_PROPERTY, "26");
-        sauceEnvVariableMap.put(FrameworkConstants.PLATFORM_NAME_PROPERTY, "Windows 2003");
-        PropertiesUtils.setEnv(sauceEnvVariableMap);
-
-        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, "");
-        webEventController.initiateBrowser(null);
-    }
-
-    @Test(expected = AssertionError.class)
     public void initiateBrowserInvalidChromeBrowserDriverLocationTest() {
         Assert.assertNull(System.getProperty(FrameworkConstants.AUTOMATION_PLATFORM_PROPERTY));
         System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.CHROME_BROWSER_MODE);
@@ -167,34 +145,6 @@ public class WebEventControllerTest {
         Assert.assertNotNull(System.getProperty(FrameworkConstants.AUTOMATION_PLATFORM_PROPERTY));
         Assert.assertNotNull(webEventController.getChromeBrowser().getCapabilities().getCapability(CapabilityType.PLATFORM));
         Assert.assertEquals(webEventController.getChromeBrowser().getCapabilities().getCapability("takesScreenshot"), true);
-    }
-
-    @Test(expected = AssertionError.class)
-    public void initiateBrowserInvalidInternetExploreBrowserDriverLocationTest() {
-        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.INTERNET_EXPLORER_BROWSER_MODE);
-        webEventController.initiateBrowser(null);
-    }
-
-    @Test(expected = AssertionError.class)
-    public void initiateBrowserInvalidDefaultFirefoxBrowserDriverLocationTest() {
-        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, "use my default browser");
-        webEventController.setRemoteWebDriver(mockWebDriverService);
-        webEventController.initiateBrowser(null);
-    }
-
-    @Test(expected = AssertionError.class)
-    public void unableToNavigateToUrlTest() {
-        webEventController.setRemoteWebDriver(mockWebDriverService);
-        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, "");
-        webEventController.initiateBrowser(null);
-    }
-
-    @Test(expected = AssertionError.class)
-    public void initiateInternalUrlTest() {
-        webEventController.setRemoteWebDriver(mockWebDriverService);
-        webEventController.setWebUrl(APPLICATION_WEB_URL);
-        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.FIREFOX_BROWSER_MODE);
-        webEventController.initiateBrowser(null);
     }
 
     @Test

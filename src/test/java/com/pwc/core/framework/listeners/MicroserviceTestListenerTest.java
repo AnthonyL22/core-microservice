@@ -35,7 +35,6 @@ public class MicroserviceTestListenerTest extends MicroserviceTestListener {
 
     private static final String TEST_NAME = "MyUnitTest";
     private static final String VALID_JOB_ID = "43b82b9bdff54c5086ff5de86dcfbda5";
-    private static final String INVALID_JOB_ID = "123456789";
     private ITestResult mockITestResult;
     private SauceREST mockSauceREST;
     private TestRunner testRunner;
@@ -46,7 +45,6 @@ public class MicroserviceTestListenerTest extends MicroserviceTestListener {
     public void setUp() throws NoSuchMethodException {
 
         mockMicroserviceTestSuite = mock(MicroserviceTestSuite.class);
-        setSessionIdProvider(mockMicroserviceTestSuite);
 
         mockSauceREST = mock(SauceREST.class);
         setSauceInstance(mockSauceREST);
@@ -99,8 +97,6 @@ public class MicroserviceTestListenerTest extends MicroserviceTestListener {
 
         setGridEnabled(true);
 
-        when(mockMicroserviceTestSuite.getCurrentJobId()).thenReturn(VALID_JOB_ID);
-
     }
 
     @Test
@@ -109,7 +105,6 @@ public class MicroserviceTestListenerTest extends MicroserviceTestListener {
         when(mockSauceREST.getJobInfo(VALID_JOB_ID)).thenReturn(VALID_JOB_ID);
 
         setGridUrl("http://bruce:wilson1234567@ondemand.saucelabs.com:80/wd/hub");
-        when(mockMicroserviceTestSuite.getCurrentJobId()).thenReturn(VALID_JOB_ID);
         SampleTest sample = new SampleTest();
         Method mockMethod = sample.getClass().getMethod("testLoginNoAnnotationTest");
 
@@ -126,7 +121,6 @@ public class MicroserviceTestListenerTest extends MicroserviceTestListener {
     public void browserStackMarkJobResultsTest() throws NoSuchMethodException {
 
         setGridUrl("http://brian:bar1234567@hub-cloud.browserstack.com/wd/hub");
-        when(mockMicroserviceTestSuite.getCurrentJobId()).thenReturn(VALID_JOB_ID);
         SampleTest sample = new SampleTest();
         Method mockMethod = sample.getClass().getMethod("testLoginNoAnnotationTest");
 
@@ -142,7 +136,6 @@ public class MicroserviceTestListenerTest extends MicroserviceTestListener {
     @Test
     public void storyIssueLoggingTest() throws NoSuchMethodException {
 
-        when(mockMicroserviceTestSuite.getCurrentJobId()).thenReturn(VALID_JOB_ID);
         SampleTest sample = new SampleTest();
         Method mockMethod = sample.getClass().getMethod("testLoginNoAnnotationTest");
 
@@ -157,14 +150,12 @@ public class MicroserviceTestListenerTest extends MicroserviceTestListener {
 
     @Test
     public void jobDoesNotExistInSauceLabsTest() {
-        when(mockMicroserviceTestSuite.getCurrentJobId()).thenReturn(INVALID_JOB_ID);
         onTestSuccess(mockITestResult);
         verify(mockITestResult, times(4)).getName();
     }
 
     @Test
     public void jobDoesExistsInSauceLabsTest() {
-        when(mockMicroserviceTestSuite.getCurrentJobId()).thenReturn(VALID_JOB_ID);
         onTestSkipped(mockITestResult);
         verify(mockITestResult, times(4)).getName();
     }

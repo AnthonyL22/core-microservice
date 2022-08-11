@@ -36,7 +36,6 @@ import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.AbstractDriverOptions;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.LocalFileDetector;
-import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariOptions;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -121,7 +120,6 @@ public class WebEventController {
     private MicroserviceWebDriver remoteWebDriver;
     private WebEventService webEventService;
     private String currentTestName;
-    private String currentJobId;
     private BrowserMobProxy browserProxy;
 
     /**
@@ -153,14 +151,6 @@ public class WebEventController {
                 this.remoteWebDriver = getSafariBrowser();
             } else {
                 this.remoteWebDriver = getChromeBrowser();
-            }
-
-            try {
-                currentJobId = ((RemoteWebDriver) this.remoteWebDriver).getSessionId().toString();
-            } catch (Exception e) {
-                LOG(true, "Retry getSessionId() 1x time due to e=%s", e.getCause());
-                this.remoteWebDriver = getChromeBrowser();
-                currentJobId = ((RemoteWebDriver) this.remoteWebDriver).getSessionId().toString();
             }
 
             webEventService = new WebEventService(remoteWebDriver);
@@ -825,10 +815,6 @@ public class WebEventController {
 
     public void setReadableTestName(String name) {
         this.currentTestName = name;
-    }
-
-    public String getCurrentJobId() {
-        return currentJobId;
     }
 
     public boolean isVideoCaptureEnabled() {

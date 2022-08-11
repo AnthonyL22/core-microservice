@@ -26,6 +26,7 @@ import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.testng.ITestResult;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
@@ -62,8 +63,6 @@ public abstract class MicroserviceTestSuite {
     @Autowired
     protected static JiraController jiraController;
 
-    private String currentJobId;
-
     public abstract void beforeMethod();
 
     public abstract void afterMethod();
@@ -86,14 +85,26 @@ public abstract class MicroserviceTestSuite {
     }
 
     @AfterMethod(alwaysRun = true)
-    public void tearDownMethod() {
+    public void tearDownMethod(ITestResult result) {
 
         try {
+            sendSauceLabsResults(result);
             this.afterMethod();
         } catch (Exception e) {
             e.printStackTrace();
             LOG(true, "tearDownMethod() FAILED. Test='%s' Exception='%s'", StringUtils.substringAfterLast(this.getClass().getName(), "."), e.getMessage());
         }
+    }
+
+    /**
+     * If using Sauce Labs integration, send job result to Sauce Labs api.
+     *
+     * @param testResult current test result
+     */
+    private void sendSauceLabsResults(ITestResult testResult) {
+
+        String status = testResult.isSuccess() ? "passed" : "failed";
+        webEventController.getWebEventService().executeJavascript(JavascriptConstants.SEND_SAUCE_LABS_RESULTS + status);
     }
 
     @BeforeClass(alwaysRun = true, dependsOnMethods = "setUpRunner")
@@ -172,7 +183,6 @@ public abstract class MicroserviceTestSuite {
         if (webEventController == null) {
             webEventController = (WebEventController) ctx.getBean("webEventController");
             webEventController.initiateBrowser(credentials);
-            setCurrentJobId(webEventController.getCurrentJobId());
         }
     }
 
@@ -211,7 +221,6 @@ public abstract class MicroserviceTestSuite {
         if (webEventController == null) {
             webEventController = (WebEventController) ctx.getBean("webEventController");
             webEventController.initiateBrowser(null);
-            setCurrentJobId(webEventController.getCurrentJobId());
         }
         webEventController.getWebEventService().waitForBrowserToLoad();
         webEventController.getWebEventService().waitForElementToDisplay(elementIdentifier);
@@ -263,7 +272,6 @@ public abstract class MicroserviceTestSuite {
         if (mobileEventController == null) {
             mobileEventController = (MobileEventController) ctx.getBean("mobileEventController");
             mobileEventController.initiateDevice();
-            setCurrentJobId(mobileEventController.getCurrentJobId());
         }
         MobileElement mobileElement = mobileEventController.getMobileEventService().findMobileElement(elementIdentifier);
         if (mobileElement != null) {
@@ -694,12 +702,8 @@ public abstract class MicroserviceTestSuite {
         return ctx;
     }
 
-    public String getCurrentJobId() {
-        return currentJobId;
-    }
-
-    public void setCurrentJobId(String currentJobId) {
-        this.currentJobId = currentJobId;
+    public WebEventController getController() {
+        return webEventController;
     }
 
     public static JiraController getJiraController() {
