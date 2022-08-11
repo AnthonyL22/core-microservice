@@ -131,11 +131,6 @@ public class MicroserviceTestSuiteTest extends MicroserviceTestSuiteBaseTest {
     }
 
     @Test
-    public void tearDownMethodTest(ITestResult result) {
-        tearDownMethod(result);
-    }
-
-    @Test
     public void setUpClassTest() {
         setUpClass();
     }

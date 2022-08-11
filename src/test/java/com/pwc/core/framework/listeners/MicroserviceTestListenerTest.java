@@ -15,6 +15,7 @@ import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
 import org.testng.SuiteRunner;
 import org.testng.TestRunner;
+import org.testng.annotations.AfterMethod;
 import org.testng.internal.ConstructorOrMethod;
 import org.testng.internal.IConfiguration;
 import org.testng.xml.XmlSuite;
@@ -35,7 +36,6 @@ public class MicroserviceTestListenerTest extends MicroserviceTestListener {
 
     private static final String TEST_NAME = "MyUnitTest";
     private static final String VALID_JOB_ID = "43b82b9bdff54c5086ff5de86dcfbda5";
-    private static final String INVALID_JOB_ID = "123456789";
     private ITestResult mockITestResult;
     private SauceREST mockSauceREST;
     private TestRunner testRunner;

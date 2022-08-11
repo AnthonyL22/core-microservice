@@ -234,7 +234,6 @@ public class WebEventServiceTest extends WebElementBaseTest {
 
         Assert.assertEquals(webEventService.getUrl(), DEFAULT_URL + "myDetails/777");
         verify(mockWebDriverService, times(2)).getCurrentUrl();
-        verify(mockWebDriverService, times(2)).manage();
     }
 
     @Test
@@ -397,20 +396,6 @@ public class WebEventServiceTest extends WebElementBaseTest {
 
         Assert.assertEquals(webEventService.getUrl(), DEFAULT_URL + "myDetails/1234");
         verify(mockWebDriverService, times(2)).getCurrentUrl();
-        verify(mockWebDriverService, times(2)).manage();
-    }
-
-    @Test
-    public void redirectPreviouslyDecoratedUrlTest() {
-        when(mockWebDriverService.getCurrentUrl()).thenReturn(DEFAULT_URL + "/myDetails/1234");
-        when(mockWebDriverService.manage()).thenReturn(mockOptions);
-        when(mockOptions.window()).thenReturn(mockWindow);
-        webEventService.setMicroserviceWebDriver(mockWebDriverService);
-        webEventService.redirectToUrl("/myDetails/777");
-
-        Assert.assertEquals(webEventService.getUrl(), DEFAULT_URL + "myDetails/777");
-        verify(mockWebDriverService, times(2)).getCurrentUrl();
-        verify(mockWebDriverService, times(2)).manage();
     }
 
     @Test
@@ -423,7 +408,6 @@ public class WebEventServiceTest extends WebElementBaseTest {
 
         Assert.assertEquals(webEventService.getUrl(), DEFAULT_URL + "foobar");
         verify(mockWebDriverService, times(2)).getCurrentUrl();
-        verify(mockWebDriverService, times(2)).manage();
     }
 
     @Test

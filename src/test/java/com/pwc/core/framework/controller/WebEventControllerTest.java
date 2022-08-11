@@ -137,16 +137,6 @@ public class WebEventControllerTest {
     }
 
     @Test(expected = AssertionError.class)
-    public void siteMinderTest() {
-        webEventController.setRemoteWebDriver(mockWebDriverService);
-        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, "");
-        webEventController.setSiteMinderEnabled(true);
-        webEventController.setWebUrl(APPLICATION_WEB_URL);
-        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, "");
-        webEventController.initiateBrowser(credentials);
-    }
-
-    @Test(expected = AssertionError.class)
     public void initiateBrowserInvalidChromeBrowserDriverLocationTest() {
         Assert.assertNull(System.getProperty(FrameworkConstants.AUTOMATION_PLATFORM_PROPERTY));
         System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.CHROME_BROWSER_MODE);
