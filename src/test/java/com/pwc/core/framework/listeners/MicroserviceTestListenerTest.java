@@ -15,7 +15,6 @@ import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
 import org.testng.SuiteRunner;
 import org.testng.TestRunner;
-import org.testng.annotations.AfterMethod;
 import org.testng.internal.ConstructorOrMethod;
 import org.testng.internal.IConfiguration;
 import org.testng.xml.XmlSuite;

@@ -19,7 +19,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.openqa.selenium.WebElement;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.testng.Assert;
-import org.testng.ITestResult;
 
 import java.util.ArrayList;
 import java.util.Arrays;
