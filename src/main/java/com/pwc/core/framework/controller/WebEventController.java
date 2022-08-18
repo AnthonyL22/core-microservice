@@ -281,8 +281,8 @@ public class WebEventController {
 
             if (isDigitalAIEnabled()) {
 
-                abstractDriverOptions.setCapability(FrameworkConstants.ACCESS_KEY_PROPERTY, experitestAccesskey);
-                abstractDriverOptions.setCapability(FrameworkConstants.TEST_NAME_PROPERTY, this.currentTestName);
+                abstractDriverOptions.setCapability(FrameworkConstants.EXPERITEST_ACCESS_KEY_PROPERTY, experitestAccesskey);
+                abstractDriverOptions.setCapability(FrameworkConstants.EXPERITEST_TEST_NAME_PROPERTY, this.currentTestName);
 
                 LOG(true, "Initiating Digital.ai test execution with browser='%s'", StringUtils.trim(System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY)));
 
@@ -292,7 +292,7 @@ public class WebEventController {
                 sauceOptions.put(FrameworkConstants.AUTOMATION_BUILD_PROPERTY, this.currentTestName);
                 sauceOptions.put(FrameworkConstants.AUTOMATION_NAME_PROPERTY, this.currentTestName);
                 sauceOptions.put(FrameworkConstants.SAUCE_LABS_USERNAME_PROPERTY, sauceLabsUser);
-                sauceOptions.put(FrameworkConstants.ACCESS_KEY_PROPERTY, sauceLabsAccesskey);
+                sauceOptions.put(FrameworkConstants.EXPERITEST_ACCESS_KEY_PROPERTY, sauceLabsAccesskey);
 
                 if (StringUtils.isNotEmpty(System.getProperty(FrameworkConstants.AUTOMATION_DEVICE_NAME_PROPERTY))) {
                     sauceOptions.put(FrameworkConstants.AUTOMATION_DEVICE_NAME_PROPERTY, System.getProperty(FrameworkConstants.AUTOMATION_DEVICE_NAME_PROPERTY));
