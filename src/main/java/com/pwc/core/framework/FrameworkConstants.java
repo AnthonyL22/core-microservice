@@ -19,8 +19,8 @@ public final class FrameworkConstants {
     public static final String AUTOMATION_VIDEO_PROPERTY = "video";
     public static final String CLOUD_OPTIONS_PROPERTY = "cloud:options";
     public static final String PLATFORM_NAME_PROPERTY = "platformName";
-    public static final String ACCESS_KEY_PROPERTY = "accessKey";
-    public static final String TEST_NAME_PROPERTY = "testName";
+    public static final String EXPERITEST_ACCESS_KEY_PROPERTY = "experitest:accessKey";
+    public static final String EXPERITEST_TEST_NAME_PROPERTY = "experitest:testName";
     public static final String SAUCE_LABS_USERNAME_SETTING = "saucelabs.username";
     public static final String SAUCE_LABS_ACCESSKEY_SETTING = "saucelabs.accesskey";
     public static final String GRID_ENABLED_SETTING = "grid.enabled";
