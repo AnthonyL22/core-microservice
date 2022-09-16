@@ -405,19 +405,23 @@ testing environment.  Full list of options can be found in the
 
 Simply define the following at runtime via **-D** system variables.  Use double quotes around properties that contain spaces.
 
-| User Defined Command  | Options                                                                                 | Default         | Mandatory | Example                      |
-| ----------------------|-----------------------------------------------------------------------------------------|-----------------|-----------|------------------------------|
-| -Dos                  | Windows, OS X                                                                           | Windows         | No       | -Dos="OS X"                  |
-| -Dos                  | Windows, OS X                                                                           | Windows         | No        | -Dos="OS X"                  |
-| -Dos_version          | 10, 8.1, 8, 7, XP, Mojave, Lion, etc...                                                 | latest Windows  | No        | -Dos_version=xp              |
-| -Dbrowser             | Chrome, Firefox, Safari, Opera, Edge                                                    | Chrome          | No        | -Dbrowser=Firefox            |
-| -Dbrowser_version     | 72.0, 64.0, etc...                                                                      | latest version  | No        | -Dbrowser_version=71.0       |
-| -Dresolution          | 1024x768, 1280x960, 1280x1024, 1600x1200, 1920x1080                                     | 1024x768        | No        | -Dresolution=1920x1080       |
-| -Dproject             | Specify a name for a logical group of builds                                            | BLANK           | No        | -Dproject="RC Testing"       |
-| -Dbuild               | Specify a name for a logical group of tests                                             | BLANK           | No        | -Dbuild="API Tests"          |
-| -Dname                | Specify an identifier for the test run                                                  | BLANK           | No        | -Dname="Smoke Tests"         |
-| -Dbrowserstack.local  | Test localhost / internal servers in your network                                       | false           | No        | -Dbrowserstack.local=false   |
-| -Dbrowserstack.timezone   | Configure tests to run on a custom time zone                                        | UTC             | No        | -Dbrowserstack.timezone=PCT  |
+| User Defined Command      | Options                                                                                 | Default         | Mandatory | Example                      |
+| --------------------------|-----------------------------------------------------------------------------------------|-----------------|-----------|------------------------------|
+| -Dos                      | Windows, OS X                                                                           | Windows         | No        | -Dos="OS X"                  |
+| -Dos                      | Windows, OS X                                                                           | Windows         | No        | -Dos="OS X"                  |
+| -Dos_version              | 10, 8.1, 8, 7, XP, Mojave, Lion, etc...                                                 | latest Windows  | No        | -Dos_version=xp              |
+| -Dbrowser                 | Chrome, Firefox, Safari, Opera, Edge                                                    | Chrome          | No        | -Dbrowser=Firefox            |
+| -Dbrowser_version         | 72.0, 64.0, etc...                                                                      | latest version  | No        | -Dbrowser_version=71.0       |
+| -Dresolution              | 1024x768, 1280x960, 1280x1024, 1600x1200, 1920x1080                                     | 1024x768        | No        | -Dresolution=1920x1080       |
+| -Dproject                 | Specify a name for a logical group of builds                                            | BLANK           | No        | -Dproject="RC Testing"       |
+| -Dbuild                   | Specify a name for a logical group of tests                                             | BLANK           | No        | -Dbuild="API Tests"          |
+| -Dname                    | Specify an identifier for the test run                                                  | BLANK           | No        | -Dname="Smoke Tests"         |
+| -Dbrowserstack.local      | Test localhost / internal servers in your network                                       | false           | No        | -Dbrowserstack.local=false   |
+| -Dbrowserstack.timezone   | Configure tests to run on a custom time zone                                            | UTC             | No        | -Dbrowserstack.timezone=PCT  |
+| -DcommandTimeout          | Sauce Labs sets command timeout in seconds                                              | 300             | No        | -DcommandTimeout=600         |
+| -DidleTimeout             | Sauce Labs sets idle test timeout in seconds. Prevent tests from running too long       | 90              | No        | -DidleTimeout=600            |
+| -DrecordVideo             | Sauce Labs use this to disable video recording                                          | false           | No        | -DrecordVideo=false          |
+| -DrecordScreenshots       | Sauce Labs use this to disable screen shot recording                                    | false           | No        | -DrecordScreenshots=false    |
 
 ### BrowserStack Jenkins Integration
 In order to execute tests from a Jenkins system to the BrowserStack service you normally should create a unique tunnel

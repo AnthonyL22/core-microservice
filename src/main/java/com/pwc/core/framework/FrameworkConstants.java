@@ -25,6 +25,10 @@ public final class FrameworkConstants {
     public static final String SAUCE_LABS_ACCESSKEY_SETTING = "saucelabs.accesskey";
     public static final String GRID_ENABLED_SETTING = "grid.enabled";
 
+    public static final String SAUCE_LABS_COMMAND_TIMEOUT_PROPERTY = "commandTimeout";
+    public static final String SAUCE_LABS_IDLE_TIMEOUT_PROPERTY = "idleTimeout";
+    public static final String SAUCE_LABS_RECORD_VIDEO_PROPERTY = "recordVideo";
+    public static final String SAUCE_LABS_RECORD_SCREEN_SHOTS_PROPERTY = "recordScreenshots";
     public static final String SAUCE_LABS_USERNAME_PROPERTY = "username";
     public static final String SAUCE_ON_DEMAND_JENKINS_PLUGIN_TUNNEL_IDENTIFIER_PROPERTY = "TUNNEL_IDENTIFIER";
     public static final String TUNNEL_IDENTIFIER_CAPABILITY = "tunnelIdentifier";
