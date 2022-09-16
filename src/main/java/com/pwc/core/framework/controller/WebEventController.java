@@ -294,6 +294,18 @@ public class WebEventController {
                 sauceOptions.put(FrameworkConstants.SAUCE_LABS_USERNAME_PROPERTY, sauceLabsUser);
                 sauceOptions.put(FrameworkConstants.EXPERITEST_ACCESS_KEY_PROPERTY, sauceLabsAccesskey);
 
+                if (StringUtils.isNotEmpty(System.getProperty(FrameworkConstants.SAUCE_LABS_COMMAND_TIMEOUT_PROPERTY))) {
+                    sauceOptions.put(FrameworkConstants.SAUCE_LABS_COMMAND_TIMEOUT_PROPERTY, Integer.parseInt(System.getProperty(FrameworkConstants.SAUCE_LABS_COMMAND_TIMEOUT_PROPERTY)));
+                }
+                if (StringUtils.isNotEmpty(System.getProperty(FrameworkConstants.SAUCE_LABS_IDLE_TIMEOUT_PROPERTY))) {
+                    sauceOptions.put(FrameworkConstants.SAUCE_LABS_IDLE_TIMEOUT_PROPERTY, Integer.parseInt(System.getProperty(FrameworkConstants.SAUCE_LABS_IDLE_TIMEOUT_PROPERTY)));
+                }
+                if (StringUtils.isNotEmpty(System.getProperty(FrameworkConstants.SAUCE_LABS_RECORD_VIDEO_PROPERTY))) {
+                    sauceOptions.put(FrameworkConstants.SAUCE_LABS_RECORD_VIDEO_PROPERTY, Boolean.valueOf(System.getProperty(FrameworkConstants.SAUCE_LABS_RECORD_VIDEO_PROPERTY)));
+                }
+                if (StringUtils.isNotEmpty(System.getProperty(FrameworkConstants.SAUCE_LABS_RECORD_SCREEN_SHOTS_PROPERTY))) {
+                    sauceOptions.put(FrameworkConstants.SAUCE_LABS_RECORD_SCREEN_SHOTS_PROPERTY, Boolean.valueOf(System.getProperty(FrameworkConstants.SAUCE_LABS_RECORD_SCREEN_SHOTS_PROPERTY)));
+                }
                 if (StringUtils.isNotEmpty(System.getProperty(FrameworkConstants.AUTOMATION_DEVICE_NAME_PROPERTY))) {
                     sauceOptions.put(FrameworkConstants.AUTOMATION_DEVICE_NAME_PROPERTY, System.getProperty(FrameworkConstants.AUTOMATION_DEVICE_NAME_PROPERTY));
                 }
