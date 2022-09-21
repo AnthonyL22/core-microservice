@@ -292,7 +292,7 @@ public class WebEventController {
                 sauceOptions.put(FrameworkConstants.AUTOMATION_BUILD_PROPERTY, this.currentTestName);
                 sauceOptions.put(FrameworkConstants.AUTOMATION_NAME_PROPERTY, this.currentTestName);
                 sauceOptions.put(FrameworkConstants.SAUCE_LABS_USERNAME_PROPERTY, sauceLabsUser);
-                sauceOptions.put(FrameworkConstants.SAUCE_LABS_ACCESSKEY_SETTING, sauceLabsAccesskey);
+                sauceOptions.put(FrameworkConstants.SAUCE_LABS_ACCESS_KEY_PROPERTY, sauceLabsAccesskey);
 
                 if (StringUtils.isNotEmpty(System.getProperty(FrameworkConstants.SAUCE_LABS_COMMAND_TIMEOUT_PROPERTY))) {
                     sauceOptions.put(FrameworkConstants.SAUCE_LABS_COMMAND_TIMEOUT_PROPERTY, Integer.parseInt(System.getProperty(FrameworkConstants.SAUCE_LABS_COMMAND_TIMEOUT_PROPERTY)));

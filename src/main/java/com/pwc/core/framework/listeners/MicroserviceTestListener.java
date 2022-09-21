@@ -98,8 +98,8 @@ public class MicroserviceTestListener extends TestListenerAdapter implements ITe
             try (CloseableHttpClient httpClient = HttpClients.custom().setSSLContext(new SSLContextBuilder().build()).setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE).build()) {
 
                 LOG(true, "Preparing to set Sauce Labs %s", "tunnel");
-                String sauceLabsUsername = getAutomationPropertiesFileProperty(FrameworkConstants.AUTOMATION_PROPERTIES_FILE, FrameworkConstants.SAUCE_LABS_USERNAME_SETTING);
-                String accessKey = getAutomationPropertiesFileProperty(FrameworkConstants.AUTOMATION_PROPERTIES_FILE, FrameworkConstants.SAUCE_LABS_ACCESSKEY_SETTING);
+                String sauceLabsUsername = getAutomationPropertiesFileProperty(FrameworkConstants.AUTOMATION_PROPERTIES_FILE, FrameworkConstants.SAUCE_LABS_USERNAME_PROPERTY);
+                String accessKey = getAutomationPropertiesFileProperty(FrameworkConstants.AUTOMATION_PROPERTIES_FILE, FrameworkConstants.SAUCE_LABS_ACCESS_KEY_PROPERTY);
                 String apiUrl = String.format(SAUCE_LABS_API + "/%s/tunnels?full=true", sauceLabsUsername);
                 HttpGet httpGet = new HttpGet(apiUrl);
                 httpGet.setHeader(HttpHeaders.CONTENT_TYPE, "application/json");
