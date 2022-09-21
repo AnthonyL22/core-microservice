@@ -21,8 +21,8 @@ public final class FrameworkConstants {
     public static final String PLATFORM_NAME_PROPERTY = "platformName";
     public static final String EXPERITEST_ACCESS_KEY_PROPERTY = "experitest:accessKey";
     public static final String EXPERITEST_TEST_NAME_PROPERTY = "experitest:testName";
-    public static final String SAUCE_LABS_USERNAME_SETTING = "saucelabs.username";
-    public static final String SAUCE_LABS_ACCESSKEY_SETTING = "saucelabs.accesskey";
+    public static final String SAUCE_LABS_USERNAME_SETTING = "username";
+    public static final String SAUCE_LABS_ACCESSKEY_SETTING = "accesskey";
     public static final String GRID_ENABLED_SETTING = "grid.enabled";
 
     public static final String SAUCE_LABS_COMMAND_TIMEOUT_PROPERTY = "commandTimeout";
