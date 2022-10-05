@@ -2,7 +2,6 @@ package com.pwc.core.framework.controller;
 
 import com.pwc.core.framework.FrameworkConstants;
 import com.pwc.core.framework.data.MobileGesture;
-import com.pwc.core.framework.driver.MicroserviceAndroidMobileDriver;
 import com.pwc.core.framework.driver.MicroserviceIOSMobileDriver;
 import com.pwc.core.framework.driver.MicroserviceMobileDriver;
 import com.pwc.core.framework.driver.MicroserviceRemoteMobileDriver;
@@ -15,10 +14,8 @@ import com.pwc.core.framework.util.GridUtils;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.remote.MobileCapabilityType;
 import org.apache.commons.lang3.StringUtils;
-import org.openqa.selenium.remote.BrowserType;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.remote.LocalFileDetector;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -196,35 +193,6 @@ public class MobileEventController {
         } else {
             if (this.remoteMobileDriver == null) {
                 return (new MicroserviceIOSMobileDriver(capabilities));
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Get Android Web Driver for local or RemoteWebDriver capability
-     *
-     * @return MicroserviceWebDriver instance
-     * @throws java.net.MalformedURLException url exception
-     */
-    public MicroserviceMobileDriver getAndroidDriver() throws Exception {
-
-        LOG("starting android driver");
-        //setDriverExecutable();
-        capabilities.setCapability(CapabilityType.BROWSER_NAME, BrowserType.ANDROID);
-        if (StringUtils.isNotEmpty(experitestAccesskey)) {
-            capabilities.setCapability("accessKey", experitestAccesskey);
-            capabilities.setCapability("testName", this.currentTestName);
-        }
-        if (gridEnabled) {
-            if (this.remoteMobileDriver == null) {
-                MicroserviceRemoteMobileDriver microserviceRemoteMobileDriver = new MicroserviceRemoteMobileDriver(new URL(gridUrl), capabilities);
-                microserviceRemoteMobileDriver.setFileDetector(new LocalFileDetector());
-                return microserviceRemoteMobileDriver;
-            }
-        } else {
-            if (this.remoteMobileDriver == null) {
-                return (new MicroserviceAndroidMobileDriver(capabilities));
             }
         }
         return null;

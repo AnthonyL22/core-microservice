@@ -85,7 +85,7 @@
     <restassured.version>2.9.0</restassured.version>
     <saucelabs-java.version>2.1.23</saucelabs-java.version>
     <saucelabs.version>1.0.35</saucelabs.version>
-    <selenium.version>4.4.0</selenium.version>
+    <selenium.version>4.5.0</selenium.version>
     <skip.plugins>false</skip.plugins>
     <sortpom-maven-plugin.version>2.6.0</sortpom-maven-plugin.version>
     <spring-mongodb.version>1.2.0.RELEASE</spring-mongodb.version>
@@ -254,7 +254,7 @@
     </dependency>
     <dependency>
       <groupId>org.seleniumhq.selenium</groupId>
-      <artifactId>selenium-devtools-v104</artifactId>
+      <artifactId>selenium-devtools-v106</artifactId>
       <version>${selenium.version}</version>
     </dependency>
     <dependency>
@@ -275,11 +275,6 @@
     <dependency>
       <groupId>org.seleniumhq.selenium</groupId>
       <artifactId>selenium-java</artifactId>
-      <version>${selenium.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.seleniumhq.selenium</groupId>
-      <artifactId>selenium-opera-driver</artifactId>
       <version>${selenium.version}</version>
     </dependency>
     <dependency>

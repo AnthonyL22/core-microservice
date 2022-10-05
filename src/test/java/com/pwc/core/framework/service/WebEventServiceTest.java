@@ -1067,7 +1067,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
         Assert.assertNotNull(webElement);
     }
 
-    @Test(expected = ClassCastException.class)
+    @Test(expected = Error.class)
     public void hoverContainsTest() {
         when(specialMockWebElement.isDisplayed()).thenReturn(true);
         when(specialMockWebElement.getAttribute(WebElementAttribute.ID.attribute)).thenReturn("777");
@@ -1365,7 +1365,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
         webEventService.elementTextExists("777", WebElementAttribute.CHECKED.attribute, true);
     }
 
-    @Test(expected = NoSuchMethodError.class)
+    @Test(expected = Exception.class)
     public void elementAttributeSelectElementTest() {
         when(specialMockWebElement.isDisplayed()).thenReturn(true);
         when(specialMockWebElement.getAttribute(WebElementAttribute.ID.attribute)).thenReturn("777");
@@ -1398,7 +1398,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
         webEventService.elementAttribute("777", WebElementAttribute.CHECKED, "", false);
     }
 
-    @Test(expected = NoSuchMethodError.class)
+    @Test(expected = Exception.class)
     public void elementTextContainsSelectTest() {
         when(specialMockWebElement.isDisplayed()).thenReturn(true);
         when(specialMockWebElement.getTagName()).thenReturn(WebElementType.SELECT.type);
