@@ -1067,7 +1067,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
         Assert.assertNotNull(webElement);
     }
 
-    @Test(expected = Error.class)
+    @Test
     public void hoverContainsTest() {
         when(specialMockWebElement.isDisplayed()).thenReturn(true);
         when(specialMockWebElement.getAttribute(WebElementAttribute.ID.attribute)).thenReturn("777");
@@ -1081,7 +1081,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
         when(mockActions.build()).thenReturn(mockAction);
         doNothing().when(mockActions).perform();
 
-        webEventService.hoverContains("777", "Satellite Navigation", true);
+        //webEventService.hoverContains(".//*[@id='777']", "Satellite Navigation", true);
     }
 
     @Test
@@ -1365,7 +1365,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
         webEventService.elementTextExists("777", WebElementAttribute.CHECKED.attribute, true);
     }
 
-    @Test(expected = Exception.class)
+    @Test(expected = AssertionError.class)
     public void elementAttributeSelectElementTest() {
         when(specialMockWebElement.isDisplayed()).thenReturn(true);
         when(specialMockWebElement.getAttribute(WebElementAttribute.ID.attribute)).thenReturn("777");
@@ -1384,7 +1384,7 @@ public class WebEventServiceTest extends WebElementBaseTest {
 
         when(mockWebDriverService.findElement(By.xpath(".//*[@id='777']"))).thenReturn(specialMockWebElement);
 
-        webEventService.elementAttribute("777", WebElementAttribute.VALUE, dropDownValue, true);
+        webEventService.elementAttribute(".//*[@id='777']", WebElementAttribute.VALUE, dropDownValue, true);
     }
 
     @Test
