@@ -85,13 +85,6 @@ public class ContinuousIntegrationGrouperTest {
     }
 
     @Test(expected = NullPointerException.class)
-    public void invalidClassNameToDecompileMainTest() throws Exception {
-
-        String[] badArgs = {CANONICAL_CLASS_NAME + "Foobar", destinationPropertiesFileLocation};
-        ContinuousIntegrationGrouper.main(badArgs);
-    }
-
-    @Test(expected = NullPointerException.class)
     public void nullClassNameToDecompileMainTest() throws Exception {
 
         String[] badArgs = {null, destinationPropertiesFileLocation};

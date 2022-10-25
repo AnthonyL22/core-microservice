@@ -77,7 +77,7 @@ public class ComboBoxElementTest extends WebElementBaseTest {
         Assert.assertFalse(result);
     }
 
-    @Test(expected = NoSuchMethodError.class)
+    @Test
     public void selectWebElementTest() {
         WebElement mockListOptionElement = mock(WebElement.class);
         when(mockListOptionElement.getText()).thenReturn(DROP_DOWN_VALUE);
@@ -97,7 +97,7 @@ public class ComboBoxElementTest extends WebElementBaseTest {
         comboBoxElement.webAction(null, DROP_DOWN_VALUE);
     }
 
-    @Test(expected = NoSuchMethodError.class)
+    @Test
     public void selectNonExtJsWebElementTest() {
         WebElement mockElement = mock(WebElement.class);
         Select mockSelectElement = mock(Select.class);
@@ -108,7 +108,7 @@ public class ComboBoxElementTest extends WebElementBaseTest {
         comboBoxElement.webAction(mockElement, DROP_DOWN_VALUE);
     }
 
-    @Test(expected = NoSuchMethodError.class)
+    @Test
     public void webActionSelectTest() {
         WebElement mockElement = mock(WebElement.class);
         Select mockSelectElement = mock(Select.class);

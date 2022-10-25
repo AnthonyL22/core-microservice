@@ -232,13 +232,6 @@ public class GridUtilsTest {
     }
 
     @Test
-    public void initPlatformTypeWin7Test() {
-        System.setProperty(FrameworkConstants.AUTOMATION_PLATFORM_PROPERTY, "win7");
-        String actualPlatform = GridUtils.initPlatformType();
-        Assert.assertEquals(Platform.VISTA.toString(), actualPlatform);
-    }
-
-    @Test
     public void initPlatformTypeLowercaseWindows8Test() {
         System.setProperty(FrameworkConstants.AUTOMATION_PLATFORM_PROPERTY, "windows 8");
         String actualPlatform = GridUtils.initPlatformType();
@@ -256,14 +249,14 @@ public class GridUtilsTest {
     public void initPlatformTypeWindows10Test() {
         System.setProperty(FrameworkConstants.AUTOMATION_PLATFORM_PROPERTY, "windows 10");
         String actualPlatform = GridUtils.initPlatformType();
-        Assert.assertEquals("Windows 10", actualPlatform);
+        Assert.assertEquals(Platform.WIN10.toString(), actualPlatform);
     }
 
     @Test
     public void initPlatformTypeCapitalWindows10Test() {
         System.setProperty(FrameworkConstants.AUTOMATION_PLATFORM_PROPERTY, "Windows 10");
         String actualPlatform = GridUtils.initPlatformType();
-        Assert.assertEquals("Windows 10", actualPlatform);
+        Assert.assertEquals(Platform.WIN10.toString(), actualPlatform);
     }
 
     @Test
@@ -281,15 +274,8 @@ public class GridUtilsTest {
     }
 
     @Test
-    public void initPlatformTypeWindows7Test() {
-        System.setProperty(FrameworkConstants.AUTOMATION_PLATFORM_PROPERTY, "windows 7");
-        String actualPlatform = GridUtils.initPlatformType();
-        Assert.assertEquals(Platform.VISTA.toString(), actualPlatform);
-    }
-
-    @Test
-    public void initPlatformTypeCapitalWindows7Test() {
-        System.setProperty(FrameworkConstants.AUTOMATION_PLATFORM_PROPERTY, "Windows 7");
+    public void initPlatformTypeWindowsVistaTest() {
+        System.setProperty(FrameworkConstants.AUTOMATION_PLATFORM_PROPERTY, "windows vista");
         String actualPlatform = GridUtils.initPlatformType();
         Assert.assertEquals(Platform.VISTA.toString(), actualPlatform);
     }

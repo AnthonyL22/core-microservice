@@ -141,7 +141,7 @@ public class MouseActivityProcessorTest extends WebElementBaseTest {
         verify(mockWebElement, times(19)).getTagName();
     }
 
-    @Test(expected = NoSuchMethodError.class)
+    @Test(expected = AssertionError.class)
     public void webActionSelectableTest() {
         when(mockWebElement.getTagName()).thenReturn(WebElementType.SELECT.type);
         mouseActivityProcessor.webAction(mockWebElement, ATTRIBUTE);
