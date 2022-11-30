@@ -2,34 +2,34 @@ package com.pwc.core.framework.processors.mobile.elements;
 
 import com.pwc.core.framework.data.WebElementAttribute;
 import com.pwc.core.framework.data.XCUIElementType;
-import io.appium.java_client.MobileElement;
 import org.apache.commons.lang3.StringUtils;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 
 import static com.pwc.assertion.AssertService.assertFail;
 import static com.pwc.logging.service.LoggerService.LOG;
 
-public class XCUIElementTypeScrollBarImpl implements MicroserviceMobileElement {
+public class XCUIElementTypeScrollBarImpl implements MicroserviceWebElementElement {
 
-    public static boolean applies(MobileElement element) {
+    public static boolean applies(WebElement element) {
         return (StringUtils.equalsIgnoreCase(element.getTagName(), XCUIElementType.SCROLL_BAR.type));
     }
 
-    public void mobileAction(final MobileElement mobileElement, final Object attributeValue) {
+    public void mobileAction(final WebElement WebElement, final Object attributeValue) {
         try {
             if (attributeValue == null) {
-                LOG(true, "Click SCROLL BAR %s", getElementText(mobileElement));
-                mobileElement.click();
+                LOG(true, "Click SCROLL BAR %s", getElementText(WebElement));
+                WebElement.click();
             } else {
                 LOG(true, "Verify SCROLL BAR :: value='%s'", attributeValue);
-                Assert.assertEquals(mobileElement.getText(), attributeValue);
+                Assert.assertEquals(WebElement.getText(), attributeValue);
             }
         } catch (Exception e) {
             assertFail("Failed SCROLL BAR action due to exception=%s", e.getMessage());
         }
     }
 
-    public String getElementText(MobileElement mobileElement) {
+    public String getElementText(WebElement mobileElement) {
 
         String elementText = "";
         if (!StringUtils.isEmpty(mobileElement.getText())) {

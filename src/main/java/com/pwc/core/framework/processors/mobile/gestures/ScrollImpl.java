@@ -3,8 +3,8 @@ package com.pwc.core.framework.processors.mobile.gestures;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.pwc.core.framework.data.MobileGesture;
-import io.appium.java_client.MobileElement;
 import org.apache.commons.lang3.StringUtils;
+import org.openqa.selenium.WebElement;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,7 +18,7 @@ public class ScrollImpl {
         return (StringUtils.equalsIgnoreCase(gesture.gesture, MobileGesture.SCROLL.gesture));
     }
 
-    public Map buildParameters(final MobileElement element, MobileGesture mobileGesture, Scroll scrollParameters) {
+    public Map buildParameters(final WebElement element, MobileGesture mobileGesture, Scroll scrollParameters) {
 
         Map<String, Object> convertedParameters = new HashMap();
         try {
@@ -26,6 +26,12 @@ public class ScrollImpl {
             ObjectMapper mapper = new ObjectMapper();
             mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
             if (null == scrollParameters) {
+
+                TouchAction().press(el0).moveTo(el1).release()
+
+
+
+
                 scrollParameters = Scroll.builder() //
                                 .element(element.getId()) //
                                 .direction("down") //

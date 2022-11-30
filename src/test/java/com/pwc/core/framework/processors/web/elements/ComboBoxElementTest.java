@@ -113,6 +113,7 @@ public class ComboBoxElementTest extends WebElementBaseTest {
         WebElement mockElement = mock(WebElement.class);
         Select mockSelectElement = mock(Select.class);
         when(mockElement.getAttribute(WebElementAttribute.ID.attribute)).thenReturn("777");
+        //when(mockElement.getDomAttribute("multiple")).thenReturn("true");
         when(mockElement.getTagName()).thenReturn(WebElementType.SELECT.type);
         doNothing().when(mockSelectElement).selectByVisibleText(DROP_DOWN_VALUE);
         comboBoxElement.webAction(mockElement, DROP_DOWN_VALUE);

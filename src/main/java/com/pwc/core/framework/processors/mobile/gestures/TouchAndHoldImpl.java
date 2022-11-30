@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.pwc.core.framework.data.MobileGesture;
 import io.appium.java_client.MobileElement;
 import org.apache.commons.lang3.StringUtils;
+import org.openqa.selenium.WebElement;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,7 +19,7 @@ public class TouchAndHoldImpl {
         return (StringUtils.equalsIgnoreCase(gesture.gesture, MobileGesture.TOUCH_AND_HOLD.gesture));
     }
 
-    public Map buildParameters(final MobileElement element, MobileGesture mobileGesture, TouchAndHold touchAndHoldParameters) {
+    public Map buildParameters(final WebElement element, MobileGesture mobileGesture, TouchAndHold touchAndHoldParameters) {
 
         Map<String, Object> convertedParameters = new HashMap();
         try {

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.pwc.core.framework.data.MobileGesture;
 import io.appium.java_client.MobileElement;
 import org.apache.commons.lang3.StringUtils;
+import org.openqa.selenium.WebElement;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,7 +19,7 @@ public class TwoFingerTapImpl {
         return (StringUtils.equalsIgnoreCase(gesture.gesture, MobileGesture.TWO_FINGER_TAP.gesture));
     }
 
-    public Map buildParameters(final MobileElement element, MobileGesture mobileGesture, TwoFingerTap twoFingerTapParameters) {
+    public Map buildParameters(final WebElement element, MobileGesture mobileGesture, TwoFingerTap twoFingerTapParameters) {
 
         Map<String, Object> convertedParameters = new HashMap();
         try {

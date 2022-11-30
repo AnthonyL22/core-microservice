@@ -2,42 +2,42 @@ package com.pwc.core.framework.processors.mobile.elements;
 
 import com.pwc.core.framework.data.WebElementAttribute;
 import com.pwc.core.framework.data.XCUIElementType;
-import io.appium.java_client.MobileElement;
 import org.apache.commons.lang3.StringUtils;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 
 import static com.pwc.assertion.AssertService.assertFail;
 import static com.pwc.logging.service.LoggerService.LOG;
 
-public class XCUIElementTypeTableRowImpl implements MicroserviceMobileElement {
+public class XCUIElementTypeTableRowImpl implements MicroserviceWebElementElement {
 
-    public static boolean applies(MobileElement element) {
+    public static boolean applies(WebElement element) {
         return (StringUtils.equalsIgnoreCase(element.getTagName(), XCUIElementType.TABLE_ROW.type));
     }
 
-    public void mobileAction(final MobileElement mobileElement, final Object attributeValue) {
+    public void mobileAction(final WebElement WebElement, final Object attributeValue) {
         try {
             if (attributeValue == null) {
-                LOG(true, "Click TABLE ROW %s", getElementText(mobileElement));
-                mobileElement.click();
+                LOG(true, "Click TABLE ROW %s", getElementText(WebElement));
+                WebElement.click();
             } else {
                 LOG(true, "Verify TABLE ROW :: value='%s'", attributeValue);
-                Assert.assertEquals(mobileElement.getText(), attributeValue);
+                Assert.assertEquals(WebElement.getText(), attributeValue);
             }
         } catch (Exception e) {
             assertFail("Failed TABLE ROW action due to exception=%s", e.getMessage());
         }
     }
 
-    public String getElementText(MobileElement mobileElement) {
+    public String getElementText(WebElement WebElement) {
 
         String elementText = "";
-        if (!StringUtils.isEmpty(mobileElement.getText())) {
-            elementText = String.format(":: text='%s'", mobileElement.getText());
-        } else if (!StringUtils.isEmpty(mobileElement.getAttribute(WebElementAttribute.VALUE.attribute))) {
-            elementText = String.format(":: value='%s'", mobileElement.getAttribute(WebElementAttribute.VALUE.attribute));
-        } else if (!StringUtils.isEmpty(mobileElement.getAttribute(WebElementAttribute.ID.attribute))) {
-            elementText = String.format(":: id='%s'", mobileElement.getAttribute(WebElementAttribute.ID.attribute));
+        if (!StringUtils.isEmpty(WebElement.getText())) {
+            elementText = String.format(":: text='%s'", WebElement.getText());
+        } else if (!StringUtils.isEmpty(WebElement.getAttribute(WebElementAttribute.VALUE.attribute))) {
+            elementText = String.format(":: value='%s'", WebElement.getAttribute(WebElementAttribute.VALUE.attribute));
+        } else if (!StringUtils.isEmpty(WebElement.getAttribute(WebElementAttribute.ID.attribute))) {
+            elementText = String.format(":: id='%s'", WebElement.getAttribute(WebElementAttribute.ID.attribute));
         }
         return elementText;
     }

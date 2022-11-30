@@ -43,7 +43,7 @@
     </snapshotRepository>
   </distributionManagement>
   <properties>
-    <appium.version>7.3.0</appium.version>
+    <appium.version>8.2.0</appium.version>
     <assertion-microservice.version>1.0.5</assertion-microservice.version>
     <automate-client-java.version>0.4</automate-client-java.version>
     <browsermob-core.version>2.1.5</browsermob-core.version>
@@ -365,6 +365,16 @@
       <artifactId>mockito-core</artifactId>
       <version>${mockito.version}</version>
       <scope>test</scope>
+    </dependency>
+      <dependency>
+          <groupId>org.seleniumhq.selenium</groupId>
+          <artifactId>selenium-api</artifactId>
+          <version>4.0.0</version>
+      </dependency>
+    <dependency>
+      <groupId>org.seleniumhq.selenium</groupId>
+      <artifactId>selenium-api</artifactId>
+      <version>4.0.0</version>
     </dependency>
   </dependencies>
   <build>
