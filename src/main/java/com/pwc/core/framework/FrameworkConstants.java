@@ -119,8 +119,8 @@ public final class FrameworkConstants {
     public static final String IPHONE_X_RESOLUTION = "375x812";
     public static final String IPAD_RESOLUTION = "768x1024";
     public static final String IPAD_PRO_RESOLUTION = "1024x1366";
+    public static final String BROWSER_RESOLUTION_DEFAULT = "1280x1024";
     public static final String BROWSER_RESOLUTION_800X600 = "800x600";
-    public static final String BROWSER_RESOLUTION_DEFAULT = "1024x768";
     public static final String BROWSER_RESOLUTION_1024X768 = "1024x768";
     public static final String BROWSER_RESOLUTION_1152X864 = "1152x864";
     public static final String BROWSER_RESOLUTION_1280X800 = "1280x800";
