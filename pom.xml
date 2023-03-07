@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.pacificwebconsulting.core</groupId>
   <artifactId>core-microservice</artifactId>
-  <version>2.0.108-SNAPSHOT</version>
+  <version>2.0.108</version>
   <packaging>jar</packaging>
   <name>Core Automation Microservice</name>
   <description>Central automated test execution framework</description>
@@ -29,7 +29,7 @@
   <scm>
     <connection>scm:git:https://github.com/AnthonyL22/core-microservice</connection>
     <developerConnection>scm:git:https://github.com/AnthonyL22/core-microservice</developerConnection>
-    <tag>HEAD</tag>
+    <tag>2.0.108</tag>
     <url>scm:git:https://github.com/AnthonyL22/core-microservice</url>
   </scm>
   <distributionManagement>
