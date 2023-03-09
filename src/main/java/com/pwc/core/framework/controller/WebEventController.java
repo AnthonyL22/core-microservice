@@ -375,12 +375,13 @@ public class WebEventController {
 
         LOG("Starting Chrome browser");
         ChromeOptions browserOptions = (ChromeOptions) getBrowser(new ChromeOptions());
-        browserOptions.addArguments("--no-sandbox");
-        browserOptions.addArguments("--disable-setuid-sandbox");
+        browserOptions.addArguments(SeleniumArgument.NO_SANDBOX.getValue());
+        browserOptions.addArguments(SeleniumArgument.DISABLE_SETUID_SANDBOX.getValue());
         browserOptions.addArguments(SeleniumArgument.DISABLE_SHM.getValue());
         browserOptions.addArguments(SeleniumArgument.DISABLE_WEB_SECURITY.getValue());
         browserOptions.addArguments(SeleniumArgument.IGNORE_CERTIFICATE_ERRORS.getValue());
         browserOptions.addArguments(SeleniumArgument.ALLOW_INSECURE_CONTENT.getValue());
+        browserOptions.addArguments(SeleniumArgument.REMOTE_ALLOW_ORIGINS.getValue());
 
         MicroserviceRemoteWebDriver microserviceRemoteWebDriver = null;
         try {
@@ -414,12 +415,13 @@ public class WebEventController {
         ChromeOptions browserOptions = (ChromeOptions) getBrowser(new ChromeOptions());
         browserOptions.setHeadless(true);
         browserOptions.setAcceptInsecureCerts(true);
-        browserOptions.addArguments("--no-sandbox");
-        browserOptions.addArguments("--disable-setuid-sandbox");
+        browserOptions.addArguments(SeleniumArgument.NO_SANDBOX.getValue());
+        browserOptions.addArguments(SeleniumArgument.DISABLE_SETUID_SANDBOX.getValue());
         browserOptions.addArguments(SeleniumArgument.DISABLE_SHM.getValue());
         browserOptions.addArguments(SeleniumArgument.DISABLE_WEB_SECURITY.getValue());
         browserOptions.addArguments(SeleniumArgument.IGNORE_CERTIFICATE_ERRORS.getValue());
         browserOptions.addArguments(SeleniumArgument.ALLOW_INSECURE_CONTENT.getValue());
+        browserOptions.addArguments(SeleniumArgument.REMOTE_ALLOW_ORIGINS.getValue());
 
         MicroserviceRemoteWebDriver microserviceRemoteWebDriver = null;
         try {
