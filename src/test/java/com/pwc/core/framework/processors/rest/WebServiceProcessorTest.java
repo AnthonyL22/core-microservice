@@ -450,7 +450,7 @@ public class WebServiceProcessorTest {
         Assert.assertEquals("Method Not Allowed", response.getString(FrameworkConstants.HTTP_STATUS_REASON_PHRASE_KEY));
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void executeWithParametersDELETETest() throws IOException {
         when(webServiceProcessor.getAuthenticatedClient(URL_PATH, USER, PASS)).thenReturn(mockCloseableHttpClient);
         HttpDelete mockHttpDelete = mock(HttpDelete.class);
@@ -458,7 +458,7 @@ public class WebServiceProcessorTest {
         webServiceProcessor.execute(URL_PATH, USER, PASS, UsersWebServiceWebServiceCommand.DELETE_BY_LAST_NAME, "jones");
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void executeWithParametersMapEmptyTest() {
         JsonPath response = (JsonPath) webServiceProcessor.execute(URL_PATH, USER, PASS, UsersWebServiceWebServiceCommand.GET_BY_LAST_NAME);
         Assert.assertTrue(Integer.valueOf(response.getString(FrameworkConstants.HTTP_STATUS_VALUE_KEY)) > 400);
