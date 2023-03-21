@@ -394,7 +394,6 @@ public class GridUtilsTest {
 
     @Test
     public void initBrowserResolutionDefaultResTest() {
-        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_RESOLUTION_PROPERTY, "400x400");
         String actualResolution = GridUtils.initBrowserResolution();
         Assert.assertEquals(FrameworkConstants.BROWSER_RESOLUTION_DEFAULT, actualResolution);
     }
@@ -508,7 +507,7 @@ public class GridUtilsTest {
     public void initBrowserResolution1280X1024OffByOneNumberTest() {
         System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_RESOLUTION_PROPERTY, "1280x1023");
         String actualResolution = GridUtils.initBrowserResolution();
-        Assert.assertEquals(FrameworkConstants.BROWSER_RESOLUTION_DEFAULT, actualResolution);
+        Assert.assertEquals("1280x1023", actualResolution);
     }
 
     @Test

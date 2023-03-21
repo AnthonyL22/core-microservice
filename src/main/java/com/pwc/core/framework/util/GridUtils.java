@@ -281,7 +281,7 @@ public class GridUtils {
                 return "";
             }
             default: {
-                return FrameworkConstants.BROWSER_RESOLUTION_DEFAULT;
+                return property;
             }
         }
     }
