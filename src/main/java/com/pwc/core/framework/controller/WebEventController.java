@@ -375,6 +375,7 @@ public class WebEventController {
 
         LOG("Starting Chrome browser");
         ChromeOptions browserOptions = (ChromeOptions) getBrowser(new ChromeOptions());
+        browserOptions.setCapability("enableVNC", true);
         browserOptions.addArguments(SeleniumArgument.NO_SANDBOX.getValue());
         browserOptions.addArguments(SeleniumArgument.DISABLE_SETUID_SANDBOX.getValue());
         browserOptions.addArguments(SeleniumArgument.DISABLE_SHM.getValue());
