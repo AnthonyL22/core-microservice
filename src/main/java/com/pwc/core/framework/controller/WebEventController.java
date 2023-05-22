@@ -454,6 +454,7 @@ public class WebEventController {
 
         LOG("Starting Microsoft Edge browser");
         EdgeOptions browserOptions = (EdgeOptions) getBrowser(new EdgeOptions());
+        browserOptions.setCapability("enableVNC", true);
         browserOptions.addArguments(SeleniumArgument.START_MAXIMIZED.getValue());
 
         MicroserviceRemoteWebDriver microserviceRemoteWebDriver = null;
@@ -550,6 +551,7 @@ public class WebEventController {
 
         LOG("Starting Safari browser");
         SafariOptions browserOptions = (SafariOptions) getBrowser(new SafariOptions());
+        browserOptions.setCapability("enableVNC", true);
 
         MicroserviceRemoteWebDriver microserviceRemoteWebDriver = null;
         try {
