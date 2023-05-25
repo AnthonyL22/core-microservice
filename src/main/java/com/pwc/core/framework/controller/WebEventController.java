@@ -23,6 +23,9 @@ import net.lightbody.bmp.BrowserMobProxyServer;
 import net.lightbody.bmp.client.ClientUtil;
 import net.lightbody.bmp.proxy.CaptureType;
 import org.apache.commons.lang3.StringUtils;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebElement;
@@ -188,6 +191,58 @@ public class WebEventController {
             e.printStackTrace();
             Assert.fail("Unable to initialize a valid browser for the RemoteWebDriver", e);
         }
+    }
+
+    /**
+     * Alter any RESPONSE given the target URL.
+     *
+     * @param targetUrl      endpoint to proxy and modify
+     * @param replace        response text to replace
+     * @param parentField    response top-most parent field to find off of
+     * @param fieldToReplace response inner field to replace contents of
+     */
+    public void alterResponse(final String targetUrl, final String replace, final String parentField, final String fieldToReplace) {
+
+        getBrowserProxy().addResponseFilter((request, contents, messageInfo) -> {
+            if (StringUtils.containsIgnoreCase(messageInfo.getOriginalUrl(), targetUrl)) {
+                String originalResponseContents = contents.getTextContents();
+                JSONObject jsonObject = new JSONObject(originalResponseContents);
+                boolean successfulMock = false;
+                try {
+                    JSONObject parentElement = jsonObject.getJSONObject(parentField);
+                    JSONArray replacementArrayElement = new JSONArray(replace);
+                    parentElement.put(fieldToReplace, replacementArrayElement);
+                    successfulMock = true;
+                } catch (JSONException e) {
+                    LOG(false, "Unable to alter array-based JSON e=%s", e.getMessage());
+                }
+
+                if (!successfulMock) {
+                    try {
+                        jsonObject.getJSONObject(parentField).put(fieldToReplace, replace);
+                        successfulMock = true;
+                    } catch (JSONException e) {
+                        LOG(false, "Unable to alter parent-child JSON e=%s", e.getMessage());
+                    }
+                }
+                if (!successfulMock) {
+                    try {
+                        jsonObject.getJSONObject(fieldToReplace).put(fieldToReplace, replace);
+                        successfulMock = true;
+                    } catch (JSONException e) {
+                        LOG(false, "Unable to simple JSON e=%s", e.getMessage());
+                    }
+                }
+
+                String updatedContents;
+                if (!successfulMock) {
+                    updatedContents = originalResponseContents;
+                } else {
+                    updatedContents = jsonObject.toString();
+                }
+                contents.setTextContents(updatedContents);
+            }
+        });
     }
 
     /**
