@@ -216,7 +216,15 @@ public class WebEventController {
                 } catch (JSONException e) {
                     LOG(false, "Unable to alter array-based JSON e=%s", e.getMessage());
                 }
-
+                if (!successfulMock) {
+                    try {
+                        JSONObject replacementObject = new JSONObject(replace);
+                        jsonObject.getJSONObject(parentField).put(fieldToReplace, replacementObject);
+                        successfulMock = true;
+                    } catch (JSONException e) {
+                        LOG(false, "Unable to alter object replacement JSON e=%s", e.getMessage());
+                    }
+                }
                 if (!successfulMock) {
                     try {
                         jsonObject.getJSONObject(parentField).put(fieldToReplace, replace);
