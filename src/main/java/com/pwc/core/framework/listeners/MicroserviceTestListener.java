@@ -153,7 +153,9 @@ public class MicroserviceTestListener extends TestListenerAdapter implements ITe
         LOG(true, StringUtils.repeat("\n", 2));
         LOG(true, StringUtils.repeat("-", 100));
         LOG(true, "TEST EXECUTION COMPLETE");
-        LOG(true, "%s--Executed in Environment: %s", testContext.getName(), System.getProperty(FrameworkConstants.AUTOMATION_TEST_ENVIRONMENT).toUpperCase());
+        if (StringUtils.isNotEmpty(System.getProperty(FrameworkConstants.AUTOMATION_TEST_ENVIRONMENT))) {
+            LOG(true, "%s--Executed in Environment: %s", testContext.getName(), System.getProperty(FrameworkConstants.AUTOMATION_TEST_ENVIRONMENT).toUpperCase());
+        }
         LOG(true, "%s--Executed on Date/Time: %s", testContext.getName(), LoggerHelper.getDateTime(FrameworkConstants.DATETIME_LOGGER_DATETIME_PATTER, FrameworkConstants.SYSTEM_DEFAULT_TIMEZONE, 0));
         LOG(true, StringUtils.repeat("-", 100));
     }

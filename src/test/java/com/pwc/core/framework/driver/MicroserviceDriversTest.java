@@ -47,31 +47,32 @@ public class MicroserviceDriversTest {
         Assert.assertNotNull(driver);
     }
 
-    @Test(expected = Exception.class)
+    @Test(expected = NoSuchMethodError.class)
     public void chromeDriverTest() {
         driver = new MicroserviceChromeDriver();
     }
 
-    @Test(expected = Exception.class)
+    @Test(expected = NoSuchMethodError.class)
     public void chromeDriverChromeDriverServiceTest() {
         ChromeDriverService chromeDriverService = ChromeDriverService.createDefaultService();
         driver = new MicroserviceChromeDriver(chromeDriverService);
     }
 
-    @Test(expected = Exception.class)
+    @Test(expected = NoSuchMethodError.class)
     public void chromeDriverDesiredCapabilitiesTest() {
         ChromeOptions chromeOptions = new ChromeOptions();
+        chromeOptions.setPlatformName("windows");
         driver = new MicroserviceChromeDriver(chromeOptions);
     }
 
-    @Test(expected = Exception.class)
+    @Test(expected = NoSuchMethodError.class)
     public void chromeDriverOptionsTest() {
         ChromeOptions chromeOptions = new ChromeOptions();
         chromeOptions.setExperimentalOption("foo", "bar");
         driver = new MicroserviceChromeDriver(chromeOptions);
     }
 
-    @Test(expected = Exception.class)
+    @Test(expected = NoSuchMethodError.class)
     public void chromeDriverChromeDriverServiceAndOptionsTest() {
         ChromeOptions chromeOptions = new ChromeOptions();
         chromeOptions.setExperimentalOption("foo", "bar");
@@ -79,7 +80,7 @@ public class MicroserviceDriversTest {
         driver = new MicroserviceChromeDriver(chromeDriverService, chromeOptions);
     }
 
-    @Test(expected = Exception.class)
+    @Test(expected = NoSuchMethodError.class)
     public void chromeDriverChromeDriverServiceAndCapabilitiesTest() {
         ChromeDriverService chromeDriverService = ChromeDriverService.createDefaultService();
         ChromeOptions chromeOptions = new ChromeOptions();

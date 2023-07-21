@@ -60,7 +60,7 @@
     <java.version>11</java.version>
     <javatuples.version>1.2</javatuples.version>
     <jsoup.version>1.15.3</jsoup.version>
-    <junit.version>4.13.1</junit.version>
+    <junit.version>4.13.2</junit.version>
     <logging-microservice.version>1.0.9</logging-microservice.version>
     <lombok.version>1.18.4</lombok.version>
     <maven-clean-plugin.version>2.4.1</maven-clean-plugin.version>
@@ -74,14 +74,13 @@
     <maven-scm-plugin.version>1.8.1</maven-scm-plugin.version>
     <maven-scm-provider-gitxexe.version>1.9</maven-scm-provider-gitxexe.version>
     <maven-source-plugin.version>3.0.1</maven-source-plugin.version>
-    <maven-surefire-plugin.version>2.14</maven-surefire-plugin.version>
     <maven.checkstyle.plugin.version>2.17</maven.checkstyle.plugin.version>
     <mockito.version>1.10.19</mockito.version>
     <mongodb-driver.version>3.0.2</mongodb-driver.version>
     <netty-all.version>4.1.72.Final</netty-all.version>
     <opera.version>1.5</opera.version>
     <poi-ooxml.version>3.15</poi-ooxml.version>
-    <procyon.version>0.5.28</procyon.version>
+    <procyon.version>0.6.0</procyon.version>
     <restassured.version>2.9.0</restassured.version>
     <saucelabs-java.version>2.1.23</saucelabs-java.version>
     <saucelabs.version>1.0.35</saucelabs.version>
@@ -90,8 +89,7 @@
     <sortpom-maven-plugin.version>2.6.0</sortpom-maven-plugin.version>
     <spring-mongodb.version>1.2.0.RELEASE</spring-mongodb.version>
     <spring.version>5.1.0.RELEASE</spring.version>
-    <surefire-junit47.version>2.12</surefire-junit47.version>
-    <surefire.junit.version>2.18.1</surefire.junit.version>
+    <surefire-plugin.version>2.19.1</surefire-plugin.version>
     <testng.version>6.9.8</testng.version>
     <versions-maven-plugin.version>2.1</versions-maven-plugin.version>
     <visual.version>0.10</visual.version>
@@ -424,6 +422,11 @@
             <target>${java.version}</target>
           </configuration>
         </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>${surefire-plugin.version}</version>
+        </plugin>
       </plugins>
     </pluginManagement>
     <plugins>
@@ -548,14 +551,12 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>${maven-surefire-plugin.version}</version>
-        <dependencies>
-          <dependency>
-            <groupId>org.apache.maven.surefire</groupId>
-            <artifactId>surefire-junit47</artifactId>
-            <version>${surefire.junit.version}</version>
-          </dependency>
-        </dependencies>
+        <version>${surefire-plugin.version}</version>
+        <configuration>
+          <forkCount>3</forkCount>
+          <reuseForks>true</reuseForks>
+          <argLine>-Xmx1024m -XX:MaxPermSize=256m</argLine>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
