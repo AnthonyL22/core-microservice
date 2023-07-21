@@ -102,7 +102,6 @@ public class WebEventServiceTest extends WebElementBaseTest {
         when(mockWebDriverService.switchTo().alert()).thenReturn(mockAlert);
 
         DesiredCapabilities capabilities = new DesiredCapabilities();
-        capabilities.setJavascriptEnabled(true);
         when(mockWebDriverService.getCapabilities()).thenReturn(capabilities);
 
         ELEMENT_XPATHS.add("//div[@style='nothing']");

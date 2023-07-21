@@ -3,8 +3,8 @@ package com.pwc.core.framework.processors.mobile.gestures;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.pwc.core.framework.data.MobileGesture;
-import io.appium.java_client.MobileElement;
 import org.apache.commons.lang3.StringUtils;
+import org.openqa.selenium.WebElement;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,7 +18,7 @@ public class DragFromToForDurationImpl {
         return (StringUtils.equalsIgnoreCase(gesture.gesture, MobileGesture.DRAG_FROM_TO_FOR_DURATION.gesture));
     }
 
-    public Map buildParameters(final MobileElement element, MobileGesture mobileGesture, DragFromToForDuration dragFromToForDurationParameters) {
+    public Map buildParameters(final WebElement element, MobileGesture mobileGesture, DragFromToForDuration dragFromToForDurationParameters) {
 
         Map<String, Object> convertedParameters = new HashMap();
         try {
@@ -27,14 +27,14 @@ public class DragFromToForDurationImpl {
             mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
             if (null == dragFromToForDurationParameters) {
                 dragFromToForDurationParameters = DragFromToForDuration.builder() //
-                                .element(element.getId()) //
+                                .element(element) //
                                 .duration(5) //
                                 .fromX(100) //
                                 .fromY(100) //
                                 .toX(200) //
                                 .toY(100).build();
             } else {
-                dragFromToForDurationParameters.setElement(element.getId());
+                dragFromToForDurationParameters.setElement(element);
             }
             convertedParameters = mapper.convertValue(dragFromToForDurationParameters, Map.class);
         } catch (Exception e) {

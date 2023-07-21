@@ -11,10 +11,9 @@ import com.pwc.core.framework.processors.mobile.TapActivityProcessor;
 import com.pwc.core.framework.processors.mobile.ViewActivityProcessor;
 import com.pwc.core.framework.service.MobileEventService;
 import com.pwc.core.framework.util.GridUtils;
-import io.appium.java_client.MobileElement;
 import io.appium.java_client.remote.MobileCapabilityType;
 import org.apache.commons.lang3.StringUtils;
-import org.openqa.selenium.remote.CapabilityType;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.beans.factory.annotation.Value;
@@ -156,8 +155,6 @@ public class MobileEventController {
 
         capabilities.setCapability(FrameworkConstants.TIME_ZONE_CAPABILITY, GridUtils.initTimeZone());
         capabilities.setCapability(FrameworkConstants.SCREEN_RESOLUTION_CAPABILITY, GridUtils.initBrowserResolution());
-        capabilities.setCapability(CapabilityType.TAKES_SCREENSHOT, true);
-        capabilities.setCapability(CapabilityType.SUPPORTS_JAVASCRIPT, true);
         capabilities.setCapability(FrameworkConstants.SCRIPT_NAME_CAPABILITY, getReadableTestName());
 
     }
@@ -170,25 +167,16 @@ public class MobileEventController {
      */
     public MicroserviceMobileDriver getIOSDriver() throws Exception {
 
-        LOG("starting iOS driver");
+        LOG("Starting iOS device driver");
         if (StringUtils.isNotEmpty(experitestAccesskey)) {
             capabilities.setCapability("accessKey", experitestAccesskey);
             capabilities.setCapability("testName", this.currentTestName);
         }
         if (gridEnabled) {
-            if (this.remoteMobileDriver == null) {
-                //                IOSDriver iosDriver = new IOSDriver(new URL(gridUrl), capabilities);
-                //                iosDriver.findElementByIosNsPredicate("type == 'XCUIElementTypeStaticText' and name == 'General'");
-
+            if (null == this.remoteMobileDriver) {
                 MicroserviceRemoteMobileDriver microserviceRemoteMobileDriver = new MicroserviceRemoteMobileDriver(new URL(gridUrl), capabilities);
                 microserviceRemoteMobileDriver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
                 return microserviceRemoteMobileDriver;
-
-                //This works!!!
-                //                MicroserviceRemoteMobileDriver microserviceRemoteMobileDriver = new MicroserviceRemoteMobileDriver(new URL(gridUrl), capabilities);
-                //                microserviceRemoteMobileDriver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
-                //                MobileElement element = (MobileElement) microserviceRemoteMobileDriver.findElementByIosNsPredicate("type == 'XCUIElementTypeStaticText' and name == 'General'");
-                //                System.out.println();
             }
         } else {
             if (this.remoteMobileDriver == null) {
@@ -205,7 +193,7 @@ public class MobileEventController {
      * @param mobileElementValue DOM element value to alter
      * @return time in milliseconds for Mouse-specific web event to execute
      */
-    public long mobileAction(final MobileElement mobileElement, final Object mobileElementValue) {
+    public long mobileAction(final WebElement mobileElement, final Object mobileElementValue) {
 
         if (TapActivityProcessor.applies(mobileElement)) {
             StopWatch stopWatch = new StopWatch();
@@ -229,7 +217,7 @@ public class MobileEventController {
      * @param parameters    mobile gesture parameters
      * @return time in milliseconds for Mouse-specific web event to execute
      */
-    public long mobileAction(final MobileElement mobileElement, final MobileGesture gesture, final Object parameters) {
+    public long mobileAction(final WebElement mobileElement, final MobileGesture gesture, final Object parameters) {
 
         if (GestureActivityProcessor.applies(gesture)) {
             StopWatch stopWatch = new StopWatch();
@@ -270,7 +258,7 @@ public class MobileEventController {
     public void closeApp() {
 
         try {
-            this.remoteMobileDriver.closeApp();
+            //this.remoteMobileDriver.closeApp();
         } catch (Exception e) {
             e.getMessage();
         }

@@ -18,4 +18,5 @@ public class MicroserviceIOSMobileDriver extends IOSDriver implements Microservi
     public DeviceRotation rotation() {
         return null;
     }
+
 }

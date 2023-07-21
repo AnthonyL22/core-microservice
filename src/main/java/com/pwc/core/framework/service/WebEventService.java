@@ -11,7 +11,7 @@ import com.pwc.core.framework.driver.MicroserviceWebDriver;
 import com.pwc.core.framework.siteminder.Authenticator;
 import com.pwc.core.framework.util.DateUtils;
 import com.pwc.core.framework.util.DebuggingUtils;
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;

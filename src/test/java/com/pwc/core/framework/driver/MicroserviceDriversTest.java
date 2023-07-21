@@ -28,7 +28,6 @@ public class MicroserviceDriversTest {
         desiredCapabilities.setVersion("10");
 
         requiredCapabilities = new DesiredCapabilities();
-        requiredCapabilities.setJavascriptEnabled(true);
 
         edgeOptions = new EdgeOptions();
         edgeOptions.setPageLoadStrategy(PageLoadStrategy.EAGER);

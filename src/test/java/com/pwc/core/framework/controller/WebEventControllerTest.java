@@ -11,7 +11,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.Assert;
 
@@ -143,7 +142,6 @@ public class WebEventControllerTest {
         webEventController.initiateBrowser(null);
         Assert.assertEquals(System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY), FrameworkConstants.CHROME_BROWSER_MODE);
         Assert.assertNotNull(System.getProperty(FrameworkConstants.AUTOMATION_PLATFORM_PROPERTY));
-        Assert.assertNotNull(webEventController.getChromeBrowser().getCapabilities().getCapability(CapabilityType.PLATFORM));
         Assert.assertEquals(webEventController.getChromeBrowser().getCapabilities().getCapability("takesScreenshot"), true);
     }
 

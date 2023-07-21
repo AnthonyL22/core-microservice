@@ -5,10 +5,11 @@ import com.pwc.core.framework.data.MobileGesture;
 import com.pwc.core.framework.data.XCUIElementAttribute;
 import com.pwc.core.framework.data.XCUIElementType;
 import com.pwc.core.framework.driver.MicroserviceMobileDriver;
-import io.appium.java_client.MobileElement;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
+import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebElement;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -46,21 +47,21 @@ public class MobileEventService extends WebEventController {
      * Find WebElement by either XPath or IosNsPredicate.
      *
      * @param elementIdentifier unique element identifying locator
-     * @return MobileElement to then be used to interact with the AUT
+     * @return WebElement to then be used to interact with the AUT
      */
-    public MobileElement findMobileElement(final String elementIdentifier) {
+    public WebElement findMobileElement(final String elementIdentifier) {
 
         final String VARIABLE_ELEMENT_TYPE_PATH = "type == '%s' and (name == '%s' or label == '%s' or elementId == '%s')";
         final String VARIABLE_ELEMENT_ATTRIBUTE_PATH = "%s == '%s'";
 
-        MobileElement mobileElement;
+        WebElement webElement;
         if (StringUtils.startsWith(elementIdentifier, "//") && elementIdentifier.matches(REGEX_XPATH_FINDER)) {
 
-            mobileElement = findElementByXPath(elementIdentifier);
+            webElement = findElementByXPath(elementIdentifier);
 
         } else if (elementIdentifier.matches(PREDICATE_XPATH_FINDER)) {
 
-            mobileElement = findElementByIosNsPredicate(Arrays.asList(elementIdentifier));
+            webElement = findElementByIosNsPredicate(Arrays.asList(elementIdentifier));
 
         } else {
 
@@ -69,26 +70,26 @@ public class MobileEventService extends WebEventController {
                             .forEach(elementAttribute -> predicateLocatorList.add(String.format(VARIABLE_ELEMENT_ATTRIBUTE_PATH, elementAttribute.attribute, elementIdentifier)));
             Stream.of(XCUIElementType.values())
                             .forEach(elementType -> predicateLocatorList.add(String.format(VARIABLE_ELEMENT_TYPE_PATH, elementType.type, elementIdentifier, elementIdentifier, elementIdentifier)));
-            mobileElement = findElementByIosNsPredicate(predicateLocatorList);
+            webElement = findElementByIosNsPredicate(predicateLocatorList);
 
         }
-        return mobileElement;
+        return webElement;
     }
 
     /**
      * Find WebElement by IosNsPredicate based on a given list of possible matches.
      *
      * @param idsNsPredicateIdentifiers list of Predicate paths to search for element with
-     * @return MobileElement to then be used to interact with the AUT
+     * @return WebElement to then be used to interact with the AUT
      */
-    private MobileElement findElementByIosNsPredicate(List<String> idsNsPredicateIdentifiers) {
+    private WebElement findElementByIosNsPredicate(List<String> idsNsPredicateIdentifiers) {
 
         String elementIdentifier = "";
-        MobileElement element = null;
+        WebElement element = null;
         try {
             for (String identifier : idsNsPredicateIdentifiers) {
                 try {
-                    element = (MobileElement) this.microserviceMobileDriver.findElementByIosNsPredicate(identifier);
+                    element = (WebElement) this.microserviceMobileDriver.findElement(By.id(identifier));
                 } catch (Exception elementNotFound) {
                     elementNotFound.getMessage();
                 }
@@ -106,17 +107,17 @@ public class MobileEventService extends WebEventController {
      * Backup way of getting a <code>WebElement</code> which uses Selenium's parser.
      *
      * @param elementIdentifier xpath to search for element with
-     * @return MobileElement to then be used to interact with the AUT
+     * @return WebElement to then be used to interact with the AUT
      */
-    private MobileElement findElementByXPath(final String elementIdentifier) {
+    private WebElement findElementByXPath(final String elementIdentifier) {
 
-        MobileElement mobileElement = null;
+        WebElement webElement = null;
         try {
-            mobileElement = this.microserviceMobileDriver.findElementByXPath(elementIdentifier);
+            webElement = this.microserviceMobileDriver.findElement(By.xpath(elementIdentifier));
         } catch (Exception e) {
             LOG(false, "Unable to find element '%s' by xPath", elementIdentifier);
         }
-        return mobileElement;
+        return webElement;
     }
 
     /**
@@ -131,8 +132,8 @@ public class MobileEventService extends WebEventController {
 
         Object response = null;
         try {
-            MobileElement mobileElement = findMobileElement(elementIdentifier);
-            parameters.put("element", mobileElement.getId());
+            WebElement webElement = findMobileElement(elementIdentifier);
+            parameters.put("element", webElement);
             response = executeJavascript(mobileGesture, parameters);
         } catch (Exception e) {
             e.getMessage();
@@ -167,7 +168,7 @@ public class MobileEventService extends WebEventController {
      */
     public void activateApp(final String bundleId) {
 
-        this.microserviceMobileDriver.activateApp(bundleId);
+        //this.microserviceMobileDriver.activateApp(bundleId);
     }
 
     /**
@@ -175,7 +176,7 @@ public class MobileEventService extends WebEventController {
      */
     public void resetApp() {
 
-        this.microserviceMobileDriver.resetApp();
+        //this.microserviceMobileDriver.resetApp();
     }
 
     /**
@@ -185,7 +186,7 @@ public class MobileEventService extends WebEventController {
      */
     public void removeApp(final String bundleId) {
 
-        this.microserviceMobileDriver.removeApp(bundleId);
+        //this.microserviceMobileDriver.removeApp(bundleId);
     }
 
 }

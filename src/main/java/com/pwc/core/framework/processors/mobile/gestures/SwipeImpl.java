@@ -3,8 +3,8 @@ package com.pwc.core.framework.processors.mobile.gestures;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.pwc.core.framework.data.MobileGesture;
-import io.appium.java_client.MobileElement;
 import org.apache.commons.lang3.StringUtils;
+import org.openqa.selenium.WebElement;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,7 +18,7 @@ public class SwipeImpl {
         return (StringUtils.equalsIgnoreCase(gesture.gesture, MobileGesture.SWIPE.gesture));
     }
 
-    public Map buildParameters(final MobileElement element, MobileGesture mobileGesture, Swipe swipeParameters) {
+    public Map buildParameters(final WebElement element, MobileGesture mobileGesture, Swipe swipeParameters) {
 
         Map<String, Object> convertedParameters = new HashMap();
         try {
@@ -27,11 +27,11 @@ public class SwipeImpl {
             mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
             if (null == swipeParameters) {
                 swipeParameters = Swipe.builder() //
-                                .element(element.getId()) //
+                                .element(element) //
                                 .direction("down") //
                                 .build();
             } else {
-                swipeParameters.setElement(element.getId());
+                swipeParameters.setElement(element);
             }
             convertedParameters = mapper.convertValue(swipeParameters, Map.class);
         } catch (Exception e) {

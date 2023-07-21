@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.openqa.selenium.WebElement;
 
 @Data
 @Builder
@@ -11,6 +12,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class TwoFingerTap {
 
-    private String element;
+    private WebElement element;
 
 }

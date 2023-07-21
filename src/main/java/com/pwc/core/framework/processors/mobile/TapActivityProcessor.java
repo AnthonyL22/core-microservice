@@ -83,7 +83,7 @@ import com.pwc.core.framework.processors.mobile.elements.XCUIElementTypeTouchBar
 import com.pwc.core.framework.processors.mobile.elements.XCUIElementTypeValueIndicatorImpl;
 import com.pwc.core.framework.processors.mobile.elements.XCUIElementTypeWebViewImpl;
 import com.pwc.core.framework.processors.mobile.elements.XCUIElementTypeWindowImpl;
-import io.appium.java_client.MobileElement;
+import org.openqa.selenium.WebElement;
 
 public class TapActivityProcessor {
 
@@ -96,11 +96,11 @@ public class TapActivityProcessor {
         return instance;
     }
 
-    public static boolean applies(MobileElement mobileElement) {
+    public static boolean applies(WebElement mobileElement) {
         return XCUIElementTypeCellImpl.applies(mobileElement) || XCUIElementTypeStaticTextImpl.applies(mobileElement) || XCUIElementTypeButtonImpl.applies(mobileElement);
     }
 
-    public void mobileAction(MobileElement mobileElement, Object value) {
+    public void mobileAction(WebElement mobileElement, Object value) {
 
         if (XCUIElementTypeActivityIndicatorImpl.applies(mobileElement)) {
             XCUIElementTypeActivityIndicatorImpl element = new XCUIElementTypeActivityIndicatorImpl();

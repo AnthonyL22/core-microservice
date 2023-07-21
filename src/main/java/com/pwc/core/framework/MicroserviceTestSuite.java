@@ -18,7 +18,6 @@ import com.pwc.core.framework.data.PropertiesFile;
 import com.pwc.core.framework.data.SmSessionKey;
 import com.pwc.core.framework.listeners.MicroserviceTestListener;
 import com.pwc.core.framework.util.PropertiesUtils;
-import io.appium.java_client.MobileElement;
 import org.apache.commons.lang3.StringUtils;
 import org.javatuples.Pair;
 import org.junit.experimental.categories.Category;
@@ -240,7 +239,7 @@ public abstract class MicroserviceTestSuite {
      * data.  Typically a button click.
      *
      * @param elementIdentifier unique identifier for an mobile element
-     * @return tuple with MobileElement and time in milliseconds for action
+     * @return tuple with WebElement and time in milliseconds for action
      */
     protected Pair mobileAction(final String elementIdentifier) {
 
@@ -253,7 +252,7 @@ public abstract class MicroserviceTestSuite {
      *
      * @param elementIdentifier unique identifier for an mobile element
      * @param gesture           gesture to use
-     * @return tuple with MobileElement and time in milliseconds for action
+     * @return tuple with WebElement and time in milliseconds for action
      */
     protected Pair mobileAction(final String elementIdentifier, final MobileGesture gesture) {
 
@@ -266,7 +265,7 @@ public abstract class MicroserviceTestSuite {
      * @param elementIdentifier unique identifier for an mobile element
      * @param gesture           gesture to use
      * @param parameters        gesture parameters to leverage
-     * @return tuple with MobileElement and response time in milliseconds for user action
+     * @return tuple with WebElement and response time in milliseconds for user action
      */
     protected Pair mobileAction(final String elementIdentifier, MobileGesture gesture, final Object parameters) {
 
@@ -275,7 +274,7 @@ public abstract class MicroserviceTestSuite {
             mobileEventController = (MobileEventController) ctx.getBean("mobileEventController");
             mobileEventController.initiateDevice();
         }
-        MobileElement mobileElement = mobileEventController.getMobileEventService().findMobileElement(elementIdentifier);
+        WebElement mobileElement = mobileEventController.getMobileEventService().findMobileElement(elementIdentifier);
         if (mobileElement != null) {
             duration = mobileEventController.mobileAction(mobileElement, gesture, parameters);
         } else {

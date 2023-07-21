@@ -2,7 +2,7 @@ package com.pwc.core.framework.ci;
 
 import com.pwc.core.framework.FrameworkConstants;
 import com.pwc.logging.helper.LoggerHelper;
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
 import org.apache.commons.io.filefilter.TrueFileFilter;
