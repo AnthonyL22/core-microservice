@@ -84,6 +84,7 @@
     <restassured.version>2.9.0</restassured.version>
     <saucelabs-java.version>2.1.23</saucelabs-java.version>
     <saucelabs.version>1.0.35</saucelabs.version>
+    <selenium-devtools.artifactId>v112</selenium-devtools.artifactId>
     <selenium.version>4.10.0</selenium.version>
     <skip.plugins>false</skip.plugins>
     <sortpom-maven-plugin.version>2.6.0</sortpom-maven-plugin.version>
@@ -257,7 +258,7 @@
     </dependency>
     <dependency>
       <groupId>org.seleniumhq.selenium</groupId>
-      <artifactId>selenium-devtools-v114</artifactId>
+      <artifactId>selenium-devtools-${selenium-devtools.artifactId}</artifactId>
       <version>${selenium.version}</version>
     </dependency>
     <dependency>
