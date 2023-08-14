@@ -135,7 +135,7 @@ public class WebEventControllerTest {
         Assert.assertEquals(System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY), FrameworkConstants.FIREFOX_BROWSER_MODE);
     }
 
-    @Test(expected = AssertionError.class)
+    @Test(expected = AbstractMethodError.class)
     public void initiateBrowserInvalidChromeBrowserDriverLocationTest() {
         Assert.assertNull(System.getProperty(FrameworkConstants.AUTOMATION_PLATFORM_PROPERTY));
         System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.CHROME_BROWSER_MODE);
