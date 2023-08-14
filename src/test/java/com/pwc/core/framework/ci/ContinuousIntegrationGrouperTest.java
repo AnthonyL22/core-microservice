@@ -10,9 +10,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.testng.Assert;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.FileSystemException;
 import java.util.List;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -104,7 +104,7 @@ public class ContinuousIntegrationGrouperTest {
         Assert.assertEquals(lines.get(0), "input=hi,there,now,");
     }
 
-    @Test(expected = FileNotFoundException.class)
+    @Test(expected = FileSystemException.class)
     public void invalidOutputFilesWriteArrayToFileTest() throws Exception {
 
         ContinuousIntegrationGrouper.setDestinationPropertiesFileLocation("");

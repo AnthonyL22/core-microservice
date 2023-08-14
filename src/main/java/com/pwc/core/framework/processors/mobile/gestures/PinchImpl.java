@@ -3,8 +3,8 @@ package com.pwc.core.framework.processors.mobile.gestures;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.pwc.core.framework.data.MobileGesture;
-import io.appium.java_client.MobileElement;
 import org.apache.commons.lang3.StringUtils;
+import org.openqa.selenium.WebElement;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,7 +18,7 @@ public class PinchImpl {
         return (StringUtils.equalsIgnoreCase(gesture.gesture, MobileGesture.PINCH.gesture));
     }
 
-    public Map buildParameters(final MobileElement element, MobileGesture mobileGesture, Pinch pinchParameters) {
+    public Map buildParameters(final WebElement element, MobileGesture mobileGesture, Pinch pinchParameters) {
 
         Map<String, Object> convertedParameters = new HashMap();
         try {
@@ -27,12 +27,12 @@ public class PinchImpl {
             mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
             if (null == pinchParameters) {
                 pinchParameters = Pinch.builder() //
-                                .element(element.getId()) //
+                                .element(element) //
                                 .scale(0.1f) //
                                 .velocity(1.1f) //
                                 .build();
             } else {
-                pinchParameters.setElement(element.getId());
+                pinchParameters.setElement(element);
             }
             convertedParameters = mapper.convertValue(pinchParameters, Map.class);
         } catch (Exception e) {

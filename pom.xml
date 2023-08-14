@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.pacificwebconsulting.core</groupId>
   <artifactId>core-microservice</artifactId>
-  <version>2.0.115-SNAPSHOT</version>
+  <version>3.0.2-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>Core Automation Microservice</name>
   <description>Central automated test execution framework</description>
@@ -43,7 +43,7 @@
     </snapshotRepository>
   </distributionManagement>
   <properties>
-    <appium.version>7.3.0</appium.version>
+    <appium.version>8.5.1</appium.version>
     <assertion-microservice.version>1.0.5</assertion-microservice.version>
     <automate-client-java.version>0.4</automate-client-java.version>
     <browsermob-core.version>2.1.5</browsermob-core.version>
@@ -57,18 +57,18 @@
     <ios-server.version>0.6.2</ios-server.version>
     <jackson.json.version>2.10.0.pr1</jackson.json.version>
     <jacoco.version>0.7.5.201505241946</jacoco.version>
-    <java_code.version>1.8</java_code.version>
+    <java.version>11</java.version>
     <javatuples.version>1.2</javatuples.version>
     <jsoup.version>1.15.3</jsoup.version>
-    <junit.version>4.13.1</junit.version>
+    <junit.version>4.13.2</junit.version>
     <logging-microservice.version>1.0.9</logging-microservice.version>
     <lombok.version>1.18.4</lombok.version>
     <maven-clean-plugin.version>2.4.1</maven-clean-plugin.version>
-    <maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
+    <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
     <maven-dependency-plugin.version>2.10</maven-dependency-plugin.version>
     <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
     <maven-jar-plugin.version>2.4</maven-jar-plugin.version>
-    <maven-javadoc-plugin.version>3.0.0-M1</maven-javadoc-plugin.version>
+    <maven-javadoc-plugin.version>3.5.0</maven-javadoc-plugin.version>
     <maven-release-plugin.version>2.3.2</maven-release-plugin.version>
     <maven-resources-plugin.version>2.7</maven-resources-plugin.version>
     <maven-scm-plugin.version>1.8.1</maven-scm-plugin.version>
@@ -81,18 +81,18 @@
     <netty-all.version>4.1.72.Final</netty-all.version>
     <opera.version>1.5</opera.version>
     <poi-ooxml.version>3.15</poi-ooxml.version>
-    <procyon.version>0.5.28</procyon.version>
+    <procyon.version>0.6.0</procyon.version>
     <restassured.version>2.9.0</restassured.version>
     <saucelabs-java.version>2.1.23</saucelabs-java.version>
     <saucelabs.version>1.0.35</saucelabs.version>
-    <selenium-devtools.version>4.9.1</selenium-devtools.version>
+    <selenium-devtools.artifactId>v112</selenium-devtools.artifactId>
+    <selenium-devtools.version>4.10.0</selenium-devtools.version>
     <selenium.version>4.5.2</selenium.version>
     <skip.plugins>false</skip.plugins>
     <sortpom-maven-plugin.version>2.6.0</sortpom-maven-plugin.version>
     <spring-mongodb.version>1.2.0.RELEASE</spring-mongodb.version>
     <spring.version>5.1.0.RELEASE</spring.version>
-    <surefire-junit47.version>2.12</surefire-junit47.version>
-    <surefire.junit.version>2.18.1</surefire.junit.version>
+    <surefire-plugin.version>2.19.1</surefire-plugin.version>
     <testng.version>6.9.8</testng.version>
     <versions-maven-plugin.version>2.1</versions-maven-plugin.version>
     <visual.version>0.10</visual.version>
@@ -255,7 +255,7 @@
     </dependency>
     <dependency>
       <groupId>org.seleniumhq.selenium</groupId>
-      <artifactId>selenium-devtools-v113</artifactId>
+      <artifactId>selenium-devtools-${selenium-devtools.artifactId}</artifactId>
       <version>${selenium-devtools.version}</version>
     </dependency>
     <dependency>
@@ -416,9 +416,14 @@
           <artifactId>maven-compiler-plugin</artifactId>
           <version>${maven-compiler-plugin.version}</version>
           <configuration>
-            <source>${java_code.version}</source>
-            <target>${java_code.version}</target>
+            <source>${java.version}</source>
+            <target>${java.version}</target>
           </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>${surefire-plugin.version}</version>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -544,14 +549,12 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>${maven-surefire-plugin.version}</version>
-        <dependencies>
-          <dependency>
-            <groupId>org.apache.maven.surefire</groupId>
-            <artifactId>surefire-junit47</artifactId>
-            <version>${surefire.junit.version}</version>
-          </dependency>
-        </dependencies>
+        <version>${surefire-plugin.version}</version>
+        <configuration>
+          <forkCount>3</forkCount>
+          <reuseForks>true</reuseForks>
+          <argLine>-Xmx1024m -XX:MaxPermSize=256m</argLine>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>

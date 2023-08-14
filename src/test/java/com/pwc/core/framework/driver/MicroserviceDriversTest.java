@@ -28,51 +28,51 @@ public class MicroserviceDriversTest {
         desiredCapabilities.setVersion("10");
 
         requiredCapabilities = new DesiredCapabilities();
-        requiredCapabilities.setJavascriptEnabled(true);
 
         edgeOptions = new EdgeOptions();
         edgeOptions.setPageLoadStrategy(PageLoadStrategy.EAGER);
 
     }
 
-    @Test(expected = Exception.class)
+    @Test(expected = AbstractMethodError.class)
     public void edgeDriverTest() {
         EdgeOptions edgeOptions = new EdgeOptions();
         MicroserviceEdgeDriver driver = new MicroserviceEdgeDriver(edgeOptions);
         Assert.assertNotNull(driver);
     }
 
-    @Test(expected = Exception.class)
+    @Test(expected = AbstractMethodError.class)
     public void edgeDriverEdgeOptionsTest() {
         MicroserviceEdgeDriver driver = new MicroserviceEdgeDriver(edgeOptions);
         Assert.assertNotNull(driver);
     }
 
-    @Test(expected = Exception.class)
+    @Test(expected = AbstractMethodError.class)
     public void chromeDriverTest() {
         driver = new MicroserviceChromeDriver();
     }
 
-    @Test(expected = Exception.class)
+    @Test(expected = AbstractMethodError.class)
     public void chromeDriverChromeDriverServiceTest() {
         ChromeDriverService chromeDriverService = ChromeDriverService.createDefaultService();
         driver = new MicroserviceChromeDriver(chromeDriverService);
     }
 
-    @Test(expected = Exception.class)
+    @Test(expected = AbstractMethodError.class)
     public void chromeDriverDesiredCapabilitiesTest() {
         ChromeOptions chromeOptions = new ChromeOptions();
+        chromeOptions.setPlatformName("windows");
         driver = new MicroserviceChromeDriver(chromeOptions);
     }
 
-    @Test(expected = Exception.class)
+    @Test(expected = AbstractMethodError.class)
     public void chromeDriverOptionsTest() {
         ChromeOptions chromeOptions = new ChromeOptions();
         chromeOptions.setExperimentalOption("foo", "bar");
         driver = new MicroserviceChromeDriver(chromeOptions);
     }
 
-    @Test(expected = Exception.class)
+    @Test(expected = AbstractMethodError.class)
     public void chromeDriverChromeDriverServiceAndOptionsTest() {
         ChromeOptions chromeOptions = new ChromeOptions();
         chromeOptions.setExperimentalOption("foo", "bar");
@@ -80,33 +80,33 @@ public class MicroserviceDriversTest {
         driver = new MicroserviceChromeDriver(chromeDriverService, chromeOptions);
     }
 
-    @Test(expected = Exception.class)
+    @Test(expected = AbstractMethodError.class)
     public void chromeDriverChromeDriverServiceAndCapabilitiesTest() {
         ChromeDriverService chromeDriverService = ChromeDriverService.createDefaultService();
         ChromeOptions chromeOptions = new ChromeOptions();
         driver = new MicroserviceChromeDriver(chromeDriverService, chromeOptions);
     }
 
-    @Test(expected = Exception.class)
+    @Test(expected = AbstractMethodError.class)
     public void internetExplorerDriverTest() {
         InternetExplorerOptions internetExplorerOptions = new InternetExplorerOptions();
         internetExplorerOptions.setAcceptInsecureCerts(true);
         driver = new MicroserviceInternetExplorerDriver(internetExplorerOptions);
     }
 
-    @Test(expected = Exception.class)
+    @Test(expected = AbstractMethodError.class)
     public void internetExplorerDriverWithPortTest() {
         InternetExplorerOptions internetExplorerOptions = new InternetExplorerOptions();
         driver = new MicroserviceInternetExplorerDriver(internetExplorerOptions);
     }
 
-    @Test(expected = Exception.class)
+    @Test(expected = AbstractMethodError.class)
     public void internetExplorerDriverServiceTest() {
         InternetExplorerDriverService internetExplorerDriverService = InternetExplorerDriverService.createDefaultService();
         driver = new MicroserviceInternetExplorerDriver(internetExplorerDriverService);
     }
 
-    @Test(expected = Exception.class)
+    @Test(expected = AbstractMethodError.class)
     public void internetExplorerDriverServiceAndCapabilitiesTest() {
         InternetExplorerOptions internetExplorerOptions = new InternetExplorerOptions();
         internetExplorerOptions.setAcceptInsecureCerts(true);

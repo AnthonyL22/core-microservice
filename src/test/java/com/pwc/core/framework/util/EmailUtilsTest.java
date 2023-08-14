@@ -32,7 +32,7 @@ public class EmailUtilsTest {
         Assert.assertTrue(emails.size() >= 0);
     }
 
-    @Test(expected = Exception.class)
+    @Test
     public void getGetNadaEmailByIdTest() {
         GetNadaEmail emailToFind = new GetNadaEmail();
         emailToFind.setUid(GETNADA_EMAIL_ID);

@@ -3,7 +3,7 @@ package com.pwc.core.framework.processors.mobile;
 import com.pwc.core.framework.processors.mobile.elements.XCUIElementTypeButtonImpl;
 import com.pwc.core.framework.processors.mobile.elements.XCUIElementTypeCellImpl;
 import com.pwc.core.framework.processors.mobile.elements.XCUIElementTypeStaticTextImpl;
-import io.appium.java_client.MobileElement;
+import org.openqa.selenium.WebElement;
 
 public class KeypadActivityProcessor {
 
@@ -16,11 +16,11 @@ public class KeypadActivityProcessor {
         return instance;
     }
 
-    public static boolean applies(MobileElement mobileElement) {
+    public static boolean applies(WebElement mobileElement) {
         return XCUIElementTypeCellImpl.applies(mobileElement) || XCUIElementTypeStaticTextImpl.applies(mobileElement) || XCUIElementTypeButtonImpl.applies(mobileElement);
     }
 
-    public void mobileAction(MobileElement mobileElement, Object value) {
+    public void mobileAction(WebElement mobileElement, Object value) {
 
         if (XCUIElementTypeCellImpl.applies(mobileElement)) {
             XCUIElementTypeCellImpl element = new XCUIElementTypeCellImpl();

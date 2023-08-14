@@ -38,7 +38,6 @@ public class DebuggingUtilsTest extends WebElementBaseTest {
         webEventService.setMicroserviceWebDriver(mockWebDriverService);
 
         DesiredCapabilities capabilities = new DesiredCapabilities();
-        capabilities.setJavascriptEnabled(true);
         when(mockWebDriverService.getCapabilities()).thenReturn(capabilities);
 
         screenshotFile = PropertiesUtils.getFileFromResources("screenshots/UniqueTest_screenshot1.png");

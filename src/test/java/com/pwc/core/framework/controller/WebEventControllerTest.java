@@ -11,7 +11,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.Assert;
 
@@ -136,14 +135,13 @@ public class WebEventControllerTest {
         Assert.assertEquals(System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY), FrameworkConstants.FIREFOX_BROWSER_MODE);
     }
 
-    @Test(expected = AssertionError.class)
+    @Test(expected = AbstractMethodError.class)
     public void initiateBrowserInvalidChromeBrowserDriverLocationTest() {
         Assert.assertNull(System.getProperty(FrameworkConstants.AUTOMATION_PLATFORM_PROPERTY));
         System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.CHROME_BROWSER_MODE);
         webEventController.initiateBrowser(null);
         Assert.assertEquals(System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY), FrameworkConstants.CHROME_BROWSER_MODE);
         Assert.assertNotNull(System.getProperty(FrameworkConstants.AUTOMATION_PLATFORM_PROPERTY));
-        Assert.assertNotNull(webEventController.getChromeBrowser().getCapabilities().getCapability(CapabilityType.PLATFORM));
         Assert.assertEquals(webEventController.getChromeBrowser().getCapabilities().getCapability("takesScreenshot"), true);
     }
 

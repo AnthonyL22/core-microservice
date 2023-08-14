@@ -21,7 +21,7 @@ import com.pwc.core.framework.processors.mobile.gestures.TouchAndHold;
 import com.pwc.core.framework.processors.mobile.gestures.TouchAndHoldImpl;
 import com.pwc.core.framework.processors.mobile.gestures.TwoFingerTap;
 import com.pwc.core.framework.processors.mobile.gestures.TwoFingerTapImpl;
-import io.appium.java_client.MobileElement;
+import org.openqa.selenium.WebElement;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -43,7 +43,7 @@ public class GestureActivityProcessor {
                         || TwoFingerTapImpl.applies(gesture);
     }
 
-    public Map buildParameters(MobileElement mobileElement, MobileGesture gesture, Object customParameters) {
+    public Map buildParameters(WebElement mobileElement, MobileGesture gesture, Object customParameters) {
 
         Map params = new HashMap();
         if (TapImpl.applies(gesture)) {
