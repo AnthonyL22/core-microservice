@@ -10,7 +10,7 @@ The Core Automated Testing microservice is used to the perform functional system
 
 This service is an on-ramp for entire engineering teams to contribute to the functional testing of a product offering.  Also, to unify our testing teams with one automated testing solution.
 
-Currently capabilities include:
+Current capabilities include:
 
 * Browser (Internet Explorer, Firefox, Headless Firefox, Chrome, Headless Chrome, Edge, Headless Edge, Safari)
 * Mobile Browser (Android, iOS using Appium)
@@ -24,7 +24,7 @@ feature requests. Anything else, such as questions for help in using the library
 
 # Prerequisites
 
-1. Java 1.8
+1. Java 11
 2. Maven 3.x
 
 # Architecture Diagram
