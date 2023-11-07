@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.Assert;
@@ -135,16 +136,6 @@ public class WebEventControllerTest {
         Assert.assertEquals(System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY), FrameworkConstants.FIREFOX_BROWSER_MODE);
     }
 
-    @Test(expected = AbstractMethodError.class)
-    public void initiateBrowserInvalidChromeBrowserDriverLocationTest() {
-        Assert.assertNull(System.getProperty(FrameworkConstants.AUTOMATION_PLATFORM_PROPERTY));
-        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.CHROME_BROWSER_MODE);
-        webEventController.initiateBrowser(null);
-        Assert.assertEquals(System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY), FrameworkConstants.CHROME_BROWSER_MODE);
-        Assert.assertNotNull(System.getProperty(FrameworkConstants.AUTOMATION_PLATFORM_PROPERTY));
-        Assert.assertEquals(webEventController.getChromeBrowser().getCapabilities().getCapability("takesScreenshot"), true);
-    }
-
     @Test
     public void navigateToUrlSegmentTest() {
         when(mockWebDriverService.getCurrentUrl()).thenReturn(APPLICATION_WEB_URL);
@@ -165,7 +156,7 @@ public class WebEventControllerTest {
         webEventController.setRemoteWebDriver(mockWebDriverService);
         webEventController.setGridEnabled(true);
         webEventController.setGridUrl(GRID_URL);
-        MicroserviceWebDriver result = webEventController.getSafariBrowser();
+        WebDriver result = webEventController.getSafariBrowser();
         Assert.assertNull(result);
     }
 
@@ -174,7 +165,7 @@ public class WebEventControllerTest {
         webEventController.setRemoteWebDriver(mockWebDriverService);
         webEventController.setGridEnabled(true);
         webEventController.setGridUrl(GRID_URL);
-        MicroserviceWebDriver result = webEventController.getFirefoxBrowser();
+        WebDriver result = webEventController.getFirefoxBrowser();
         Assert.assertNull(result);
     }
 
@@ -184,7 +175,7 @@ public class WebEventControllerTest {
         webEventController.setGridEnabled(false);
         webEventController.setGridUrl(GRID_URL);
         webEventController.getFirefoxBrowser();
-        MicroserviceWebDriver result = webEventController.getFirefoxBrowser();
+        WebDriver result = webEventController.getFirefoxBrowser();
         Assert.assertNull(result);
     }
 
@@ -194,138 +185,8 @@ public class WebEventControllerTest {
         webEventController.setGridEnabled(false);
         webEventController.setGridUrl(GRID_URL);
         webEventController.getFirefoxBrowser();
-        MicroserviceWebDriver result = webEventController.getSafariBrowser();
+        WebDriver result = webEventController.getSafariBrowser();
         Assert.assertNull(result);
-    }
-
-    @Test
-    public void setDriverExecutableTest() {
-        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, "");
-        webEventController.setDriverExecutable();
-    }
-
-    @Test
-    public void setDriverExecutableEdgeWindowsDriverTest() {
-        System.setProperty(FrameworkConstants.MAC_SYSTEM_OS_NAME, "");
-        System.setProperty(FrameworkConstants.SYSTEM_OS_NAME, "windows 10");
-        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.EDGE_BROWSER_MODE);
-        webEventController.setDriverExecutable();
-        Assert.assertEquals(System.getProperty(FrameworkConstants.WEB_DRIVER_EDGE), "");
-    }
-
-    @Test
-    public void setDriverExecutableFirefoxWindowsDriverTest() {
-        System.setProperty(FrameworkConstants.MAC_SYSTEM_OS_NAME, "");
-        System.setProperty(FrameworkConstants.SYSTEM_OS_NAME, "windows 10");
-        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.FIREFOX_BROWSER_MODE);
-        webEventController.setDriverExecutable();
-        Assert.assertEquals(System.getProperty(FrameworkConstants.WEB_DRIVER_GECKO), "");
-    }
-
-    @Test
-    public void setDriverExecutableFirefoxMacDriverTest() {
-        System.setProperty(FrameworkConstants.SYSTEM_OS_NAME, "");
-        System.setProperty(FrameworkConstants.MAC_SYSTEM_OS_NAME, "Mac OSX");
-        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.FIREFOX_BROWSER_MODE);
-        webEventController.setDriverExecutable();
-        Assert.assertEquals(System.getProperty(FrameworkConstants.WEB_DRIVER_GECKO), "");
-    }
-
-    @Test
-    public void setDriverExecutableFirefoxLinuxDriverTest() {
-        System.setProperty(FrameworkConstants.SYSTEM_OS_NAME, "Linux");
-        System.setProperty(FrameworkConstants.MAC_SYSTEM_OS_NAME, "");
-        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.FIREFOX_BROWSER_MODE);
-        webEventController.setDriverExecutable();
-        Assert.assertEquals(System.getProperty(FrameworkConstants.WEB_DRIVER_GECKO), "");
-    }
-
-    @Test
-    public void setDriverExecutableHeadlessFirefoxWindowsDriverTest() {
-        System.setProperty(FrameworkConstants.MAC_SYSTEM_OS_NAME, "");
-        System.setProperty(FrameworkConstants.SYSTEM_OS_NAME, "windows 10");
-        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.HEADLESS_FIREFOX_BROWSER_MODE);
-        webEventController.setDriverExecutable();
-        Assert.assertEquals(System.getProperty(FrameworkConstants.WEB_DRIVER_GECKO), "");
-    }
-
-    @Test
-    public void setDriverExecutableHeadlessFirefoxMacDriverTest() {
-        System.setProperty(FrameworkConstants.SYSTEM_OS_NAME, "");
-        System.setProperty(FrameworkConstants.MAC_SYSTEM_OS_NAME, "Mac OSX");
-        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.HEADLESS_FIREFOX_BROWSER_MODE);
-        webEventController.setDriverExecutable();
-        Assert.assertEquals(System.getProperty(FrameworkConstants.WEB_DRIVER_GECKO), "");
-    }
-
-    @Test
-    public void setDriverExecutableHeadlessFirefoxLinuxDriverTest() {
-        System.setProperty(FrameworkConstants.SYSTEM_OS_NAME, "");
-        System.setProperty(FrameworkConstants.MAC_SYSTEM_OS_NAME, "");
-        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.HEADLESS_FIREFOX_BROWSER_MODE);
-        webEventController.setDriverExecutable();
-        Assert.assertEquals(System.getProperty(FrameworkConstants.WEB_DRIVER_GECKO), "");
-    }
-
-    @Test
-    public void setDriverExecutableChromeWindowsDriverTest() {
-        System.setProperty(FrameworkConstants.MAC_SYSTEM_OS_NAME, "");
-        System.setProperty(FrameworkConstants.SYSTEM_OS_NAME, "windows 10");
-        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.CHROME_BROWSER_MODE);
-        webEventController.setDriverExecutable();
-        Assert.assertEquals(System.getProperty(FrameworkConstants.WEB_DRIVER_CHROME), "");
-    }
-
-    @Test
-    public void setDriverExecutableChromeMacDriverTest() {
-        System.setProperty(FrameworkConstants.SYSTEM_OS_NAME, "");
-        System.setProperty(FrameworkConstants.MAC_SYSTEM_OS_NAME, "Mac OSX");
-        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.CHROME_BROWSER_MODE);
-        webEventController.setDriverExecutable();
-        Assert.assertEquals(System.getProperty(FrameworkConstants.WEB_DRIVER_CHROME), "");
-    }
-
-    @Test
-    public void setDriverExecutableChromeLinuxDriverTest() {
-        System.setProperty(FrameworkConstants.SYSTEM_OS_NAME, "Linux");
-        System.setProperty(FrameworkConstants.MAC_SYSTEM_OS_NAME, "");
-        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.CHROME_BROWSER_MODE);
-        webEventController.setDriverExecutable();
-        Assert.assertEquals(System.getProperty(FrameworkConstants.WEB_DRIVER_CHROME), "");
-    }
-
-    @Test
-    public void setDriverExecutableHeadlessChromeWindowsDriverTest() {
-        System.setProperty(FrameworkConstants.MAC_SYSTEM_OS_NAME, "");
-        System.setProperty(FrameworkConstants.SYSTEM_OS_NAME, "windows 10");
-        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.HEADLESS_CHROME_BROWSER_MODE);
-        webEventController.setDriverExecutable();
-        Assert.assertEquals(System.getProperty(FrameworkConstants.WEB_DRIVER_CHROME), "");
-    }
-
-    @Test
-    public void setDriverExecutableHeadlessChromeMacDriverTest() {
-        System.setProperty(FrameworkConstants.SYSTEM_OS_NAME, "");
-        System.setProperty(FrameworkConstants.MAC_SYSTEM_OS_NAME, "Mac OSX");
-        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.HEADLESS_CHROME_BROWSER_MODE);
-        webEventController.setDriverExecutable();
-        Assert.assertEquals(System.getProperty(FrameworkConstants.WEB_DRIVER_CHROME), "");
-    }
-
-    @Test
-    public void setDriverExecutableHeadlessChromeLinuxDriverTest() {
-        System.setProperty(FrameworkConstants.SYSTEM_OS_NAME, "");
-        System.setProperty(FrameworkConstants.MAC_SYSTEM_OS_NAME, "");
-        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.HEADLESS_CHROME_BROWSER_MODE);
-        webEventController.setDriverExecutable();
-        Assert.assertEquals(System.getProperty(FrameworkConstants.WEB_DRIVER_CHROME), "");
-    }
-
-    @Test
-    public void setDriverExecutableInternetExplorerDriverTest() {
-        System.setProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY, FrameworkConstants.INTERNET_EXPLORER_BROWSER_MODE);
-        webEventController.setDriverExecutable();
-        Assert.assertEquals(System.getProperty(FrameworkConstants.WEB_DRIVER_IE), "");
     }
 
     @Test()
@@ -333,7 +194,7 @@ public class WebEventControllerTest {
         webEventController.setRemoteWebDriver(mockWebDriverService);
         webEventController.setGridEnabled(true);
         webEventController.setGridUrl(GRID_URL);
-        MicroserviceWebDriver result = webEventController.getEdgeBrowser();
+        WebDriver result = webEventController.getEdgeBrowser();
         Assert.assertNull(result);
     }
 
@@ -342,7 +203,7 @@ public class WebEventControllerTest {
         webEventController.setRemoteWebDriver(mockWebDriverService);
         webEventController.setGridEnabled(true);
         webEventController.setGridUrl(GRID_URL);
-        MicroserviceWebDriver result = webEventController.getSafariBrowser();
+        WebDriver result = webEventController.getSafariBrowser();
         Assert.assertNull(result);
     }
 
@@ -352,7 +213,7 @@ public class WebEventControllerTest {
         webEventController.setGridEnabled(false);
         webEventController.setGridUrl(GRID_URL);
         webEventController.getSafariBrowser();
-        MicroserviceWebDriver result = webEventController.getSafariBrowser();
+        WebDriver result = webEventController.getSafariBrowser();
         Assert.assertNull(result);
     }
 
@@ -361,7 +222,7 @@ public class WebEventControllerTest {
         webEventController.setRemoteWebDriver(mockWebDriverService);
         webEventController.setGridEnabled(true);
         webEventController.setGridUrl(GRID_URL);
-        MicroserviceWebDriver result = webEventController.getInternetExplorerBrowser();
+        WebDriver result = webEventController.getInternetExplorerBrowser();
         Assert.assertNull(result);
     }
 
@@ -370,7 +231,7 @@ public class WebEventControllerTest {
         webEventController.setRemoteWebDriver(mockWebDriverService);
         webEventController.setGridEnabled(false);
         webEventController.setGridUrl(GRID_URL);
-        MicroserviceWebDriver result = webEventController.getInternetExplorerBrowser();
+        WebDriver result = webEventController.getInternetExplorerBrowser();
         Assert.assertNull(result);
     }
 

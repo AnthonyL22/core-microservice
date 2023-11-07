@@ -91,14 +91,14 @@ public class WebEventService extends WebEventController {
     private String url;
     private String siteMinderRedirectUrl;
     private Credentials credentials;
-    private MicroserviceWebDriver microserviceWebDriver;
+    private WebDriver microserviceWebDriver;
     private CloseableHttpClient customHttpClient;
     private BasicCookieStore cookieStore;
 
     public WebEventService() {
     }
 
-    public WebEventService(MicroserviceWebDriver driver) {
+    public WebEventService(WebDriver driver) {
         this.microserviceWebDriver = driver;
     }
 
@@ -626,11 +626,6 @@ public class WebEventService extends WebEventController {
             microserviceWebDriver.get(currentUrl);
             sw.stop();
 
-            if (!StringUtils.equalsIgnoreCase(microserviceWebDriver.getCapabilities().getBrowserName(), "android")
-                            && StringUtils.isEmpty(System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_RESOLUTION_PROPERTY))) {
-                microserviceWebDriver.manage().window().maximize();
-            }
-
             record();
 
         } catch (WebDriverException e) {
@@ -732,7 +727,8 @@ public class WebEventService extends WebEventController {
     public Object executeJavascript(String javaScript) {
 
         try {
-            return this.microserviceWebDriver.executeScript(javaScript);
+            JavascriptExecutor js = (JavascriptExecutor) this.microserviceWebDriver;
+            return js.executeScript(javaScript);
         } catch (Exception e) {
             e.getMessage();
         }
@@ -1760,7 +1756,7 @@ public class WebEventService extends WebEventController {
     }
 
     /**
-     * Take a screen shot of currently executing test to eventually use for video playback.
+     * Take a screenshot of currently executing test to eventually use for video playback.
      */
     private void record() {
 
@@ -1769,7 +1765,7 @@ public class WebEventService extends WebEventController {
         }
     }
 
-    public MicroserviceWebDriver getMicroserviceWebDriver() {
+    public WebDriver getMicroserviceWebDriver() {
         return this.microserviceWebDriver;
     }
 

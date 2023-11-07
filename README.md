@@ -360,22 +360,22 @@ system configurations.
 
 Simply define the following at runtime via **-D** system variables:
 
-| User Defined Command  | Options                                                                                           | Default     | Example                      |
-| ----------------------|---------------------------------------------------------------------------------------------------|-------------|------------------------------|
-| -Dbrowser             | chrome, headless_ch, firefox, headless_ff, ie, safari, edge, headless_edge                        | Chrome      | -Dbrowser=ff                 |
-| -Dversion             | any available                                                                                     | latest      | -Dversion=38.0               |
-| -Dbrowser.resolution  | 800x600, 1024x768, 1152x864, 1280x800, 1280x960, 1280x1024, all mobile resolutions in Chrome      | 1024x768    | -Dbrowser.resolution=360x640 |
-| -DplatformName        | macOS, osx, linux, windows, windows 10, windows 8, windows 8.1, windows 7, windows xp, xp         | Windows     | -Dplatform=xp                |
-| -Dtime.zone           | Los Angeles, Honolulu, New_York                                                                   | Los Angeles | -Dtime.zone=Los Angeles      |
+| User Defined Command | Options                                                                                      | Default     | Example                      |
+|----------------------|----------------------------------------------------------------------------------------------|-------------|------------------------------|
+| -Dbrowser            | chrome, headless_ch, firefox, headless_ff, ie, safari, edge, headless_edge                   | Chrome      | -Dbrowser=ff                 |
+| -Dversion            | any available                                                                                | latest      | -Dversion=38.0               |
+| -Dbrowser.resolution | 800x600, 1024x768, 1152x864, 1280x800, 1280x960, 1280x1024, all mobile resolutions in Chrome | 1024x768    | -Dbrowser.resolution=360x640 |
+| -DplatformName       | macOS, osx, linux, windows, windows 10, windows 8, windows 8.1, windows 7, windows xp, xp    | Windows     | -Dplatform=xp                |
+| -Dtime.zone          | Los Angeles, Honolulu, New_York                                                              | Los Angeles | -Dtime.zone=Los Angeles      |
 
 **IMPORTANT:**
 Defining any of the following variables will result in your test being executed using default Sauce Labs settings:
 
-| User Defined Command        | Conversion                            |
-| ----------------------------|---------------------------------------|
-| -DplatformName=macOS 11.00      | -Dplatform=OS X 11.0              |
-| -DplatformName=osx              | -Dplatform=OS X 10.11             |
-| -Dbrowser=ch -DplatformName=xp  | -Dbrowser=ch -DplatformName=linux |
+| User Defined Command           | Conversion                        |
+|--------------------------------|-----------------------------------|
+| -DplatformName=macOS 11.00     | -Dplatform=OS X 11.0              |
+| -DplatformName=osx             | -Dplatform=OS X 10.11             |
+| -Dbrowser=ch -DplatformName=xp | -Dbrowser=ch -DplatformName=linux |
 
 ### Default Runtime Settings - Sauce Labs
 If you choose not to override ANY of the settings above the following runtime settings are used by default in Sauce Labs:
@@ -405,23 +405,23 @@ testing environment.  Full list of options can be found in the
 
 Simply define the following at runtime via **-D** system variables.  Use double quotes around properties that contain spaces.
 
-| User Defined Command      | Options                                                                                 | Default         | Mandatory | Example                      |
-| --------------------------|-----------------------------------------------------------------------------------------|-----------------|-----------|------------------------------|
-| -Dos                      | Windows, OS X                                                                           | Windows         | No        | -Dos="OS X"                  |
-| -Dos                      | Windows, OS X                                                                           | Windows         | No        | -Dos="OS X"                  |
-| -Dos_version              | 10, 8.1, 8, 7, XP, Mojave, Lion, etc...                                                 | latest Windows  | No        | -Dos_version=xp              |
-| -Dbrowser                 | Chrome, Firefox, Safari, Opera, Edge                                                    | Chrome          | No        | -Dbrowser=Firefox            |
-| -Dbrowser_version         | 72.0, 64.0, etc...                                                                      | latest version  | No        | -Dbrowser_version=71.0       |
-| -Dresolution              | 1024x768, 1280x960, 1280x1024, 1600x1200, 1920x1080                                     | 1024x768        | No        | -Dresolution=1920x1080       |
-| -Dproject                 | Specify a name for a logical group of builds                                            | BLANK           | No        | -Dproject="RC Testing"       |
-| -Dbuild                   | Specify a name for a logical group of tests                                             | BLANK           | No        | -Dbuild="API Tests"          |
-| -Dname                    | Specify an identifier for the test run                                                  | BLANK           | No        | -Dname="Smoke Tests"         |
-| -Dbrowserstack.local      | Test localhost / internal servers in your network                                       | false           | No        | -Dbrowserstack.local=false   |
-| -Dbrowserstack.timezone   | Configure tests to run on a custom time zone                                            | UTC             | No        | -Dbrowserstack.timezone=PCT  |
-| -DcommandTimeout          | Sauce Labs sets command timeout in seconds                                              | 300             | No        | -DcommandTimeout=600         |
-| -DidleTimeout             | Sauce Labs sets idle test timeout in seconds. Prevent tests from running too long       | 90              | No        | -DidleTimeout=600            |
-| -DrecordVideo             | Sauce Labs use this to disable video recording                                          | false           | No        | -DrecordVideo=false          |
-| -DrecordScreenshots       | Sauce Labs use this to disable screen shot recording                                    | false           | No        | -DrecordScreenshots=false    |
+| User Defined Command    | Options                                                                           | Default        | Mandatory | Example                     |
+|-------------------------|-----------------------------------------------------------------------------------|----------------|-----------|-----------------------------|
+| -Dos                    | Windows, OS X                                                                     | Windows        | No        | -Dos="OS X"                 |
+| -Dos                    | Windows, OS X                                                                     | Windows        | No        | -Dos="OS X"                 |
+| -Dos_version            | 10, 8.1, 8, 7, XP, Mojave, Lion, etc...                                           | latest Windows | No        | -Dos_version=xp             |
+| -Dbrowser               | Chrome, Firefox, Safari, Opera, Edge                                              | Chrome         | No        | -Dbrowser=Firefox           |
+| -Dbrowser_version       | 72.0, 64.0, etc...                                                                | latest version | No        | -Dbrowser_version=71.0      |
+| -Dresolution            | 1024x768, 1280x960, 1280x1024, 1600x1200, 1920x1080                               | 1024x768       | No        | -Dresolution=1920x1080      |
+| -Dproject               | Specify a name for a logical group of builds                                      | BLANK          | No        | -Dproject="RC Testing"      |
+| -Dbuild                 | Specify a name for a logical group of tests                                       | BLANK          | No        | -Dbuild="API Tests"         |
+| -Dname                  | Specify an identifier for the test run                                            | BLANK          | No        | -Dname="Smoke Tests"        |
+| -Dbrowserstack.local    | Test localhost / internal servers in your network                                 | false          | No        | -Dbrowserstack.local=false  |
+| -Dbrowserstack.timezone | Configure tests to run on a custom time zone                                      | UTC            | No        | -Dbrowserstack.timezone=PCT |
+| -DcommandTimeout        | Sauce Labs sets command timeout in seconds                                        | 300            | No        | -DcommandTimeout=600        |
+| -DidleTimeout           | Sauce Labs sets idle test timeout in seconds. Prevent tests from running too long | 90             | No        | -DidleTimeout=600           |
+| -DrecordVideo           | Sauce Labs use this to disable video recording                                    | false          | No        | -DrecordVideo=false         |
+| -DrecordScreenshots     | Sauce Labs use this to disable screen shot recording                              | false          | No        | -DrecordScreenshots=false   |
 
 ### BrowserStack Jenkins Integration
 In order to execute tests from a Jenkins system to the BrowserStack service you normally should create a unique tunnel
@@ -471,30 +471,30 @@ browserstack.local=false
 
 Settings:
 
-| Property                      | Default Value    | Description                                    |
-| ------------------------------|------------------|------------------------------------------------|
-| web.url                       |                  | website url to test                            |
-| web.services.url              |                  | web service url if available                   |
-| web.services.user             |                  | web service credentials                        |
-| web.services.password         |                  | web service credentials                        |
-| enable.hard.assert            | false            | boolean: fail on first failure                 |
-| default.wait.for.sleep.millis | 1000             | driver wait for element retry (ms)             |
-| element.wait.timeout.seconds  | 180              | driver timeout waiting for element (sec)       |
-| browser.wait.timeout.seconds  | 10               | browser timeout wait (sec)                     |
-| enable.ajax.requests.waiting  | true             | boolean: enable active ajax req's waiting      |
-| enable.siteMinder             | false            | boolean: enable Site Minder auth               |
-| siteminder.open.url           |                  | Site Minder auth URL                           |
-| saucelabs.username            |                  | Sauce Labs username                            |
-| saucelabs.accesskey           |                  | Sauce Labs key                                 |
-| browserstack.username         |                  | BrowserStack username                          |
-| browserstack.accesskey        |                  | BrowserStack key                               |
-| browserstack.local            | false            | Connect to BrowserStack locally?               |
-| capture.video                 | false            | record test execution video                    |
-| jira.zapi.enabled             | false            | Jira Zapi Enabled                              |
-| jira.zapi.url                 |                  | Jira Zapi url                                  |
-| jira.zapi.username            |                  | Jira Zapi api username                         |
-| jira.zapi.password            |                  | Jira Zapi api password                         |
-| jira.zapi.cycle.name          |                  | Jira Zapi cycle name                           |
+| Property                      | Default Value | Description                               |
+|-------------------------------|---------------|-------------------------------------------|
+| web.url                       |               | website url to test                       |
+| web.services.url              |               | web service url if available              |
+| web.services.user             |               | web service credentials                   |
+| web.services.password         |               | web service credentials                   |
+| enable.hard.assert            | false         | boolean: fail on first failure            |
+| default.wait.for.sleep.millis | 1000          | driver wait for element retry (ms)        |
+| element.wait.timeout.seconds  | 180           | driver timeout waiting for element (sec)  |
+| browser.wait.timeout.seconds  | 10            | browser timeout wait (sec)                |
+| enable.ajax.requests.waiting  | true          | boolean: enable active ajax req's waiting |
+| enable.siteMinder             | false         | boolean: enable Site Minder auth          |
+| siteminder.open.url           |               | Site Minder auth URL                      |
+| saucelabs.username            |               | Sauce Labs username                       |
+| saucelabs.accesskey           |               | Sauce Labs key                            |
+| browserstack.username         |               | BrowserStack username                     |
+| browserstack.accesskey        |               | BrowserStack key                          |
+| browserstack.local            | false         | Connect to BrowserStack locally?          |
+| capture.video                 | false         | record test execution video               |
+| jira.zapi.enabled             | false         | Jira Zapi Enabled                         |
+| jira.zapi.url                 |               | Jira Zapi url                             |
+| jira.zapi.username            |               | Jira Zapi api username                    |
+| jira.zapi.password            |               | Jira Zapi api password                    |
+| jira.zapi.cycle.name          |               | Jira Zapi cycle name                      |
 
 ### database.properties
 Properties used for connections to the database under test. 
@@ -523,10 +523,10 @@ grid.hub.url=http://${saucelabs.username}:${saucelabs.accesskey}@ondemand.saucel
 
 Settings:
 
-| Property          | Default Value    | Description                                |
-| ------------------|------------------|--------------------------------------------|
-| grid.enabled      | true             | boolean: GRID enabled mode                 |
-| grid.hub.url      |                  | url to runtime GRID                        |
+| Property     | Default Value | Description                |
+|--------------|---------------|----------------------------|
+| grid.enabled | true          | boolean: GRID enabled mode |
+| grid.hub.url |               | url to runtime GRID        |
 
 
 # Runtime
@@ -545,15 +545,6 @@ OR
 
 ## IDE
 Simply leveraging the TestNG plugin in your IDE of choice you are able to run any test from IntelliJ or Eclipse
-
-## Local GRID
-Including the [Runtime Microservice Components](https://github.com/AnthonyL22/runtime-microservice) in your 
-Maven project will give you all the necessary Selenium GRID components needed to build a local GRID environment.  
-Once you have included the Maven dependency in your project and have done a **mvn clean install** you will see a 
-directory labeled 'grid' in your project **.../target/test-classes**.  Be sure to define the **grid.hub.url** 
-in your grid.properties file.
-
-See the [Selenium GRID instructions](https://github.com/AnthonyL22/runtime-microservice) for more details.
  
 ## Shared GRID
 If you have a shared machine with a potentially static IP address follow the same instructions as the previous section
@@ -608,11 +599,6 @@ To execute your tests from your local environment to Sauce Labs you will need to
 **IMPORTANT**: The automation.properties 'saucelabs.username' value must match the Jenkins Sauce Connect account used in the Jenkins pipeline.
 
 # External Dependencies
-
-## Runtime Microservice
-This is an optional dependency that you could include in your project if using the Core Automation Microservice.  
-
-[Runtime Binary Components](https://github.com/AnthonyL22/runtime-microservice)
 
 ## Logging Microservice
 Gherkin-Style logger used for automated testing of TestNG-based automation solutions.

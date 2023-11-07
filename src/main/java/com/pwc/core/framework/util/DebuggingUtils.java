@@ -7,6 +7,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
 import org.testng.Reporter;
 
 import java.io.File;
@@ -36,7 +37,7 @@ public class DebuggingUtils {
      *
      * @param webDriver active WebDriver to take screenshot of
      */
-    public static void takeScreenShot(MicroserviceWebDriver webDriver) {
+    public static void takeScreenShot(WebDriver webDriver) {
 
         try {
 
@@ -115,7 +116,7 @@ public class DebuggingUtils {
      * @param webDriver WebDriver to get debugging information from
      * @return formatted debug message including the page title of failure
      */
-    public static String getDebugInfo(MicroserviceWebDriver webDriver) {
+    public static String getDebugInfo(WebDriver webDriver) {
         return String.format(" {Page Title: '%s'}", webDriver.getTitle());
     }
 
