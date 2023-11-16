@@ -34,6 +34,7 @@ public final class FrameworkConstants {
     public static final String TUNNEL_IDENTIFIER_CAPABILITY = "tunnelIdentifier";
     public static final String SAUCE_LABS_OPTIONS_PROPERTY = "sauce:options";
     public static final String SAUCE_LABS_BROWSER_PROPERTY = "SELENIUM_BROWSER";
+    public static final String BROWSER_NAME_PROPERTY = "browserName";
 
     public static final String BROWSER_STACK_BROWSER_NAME_PROPERTY = "browserName";
     public static final String BROWSER_STACK_BROWSER_VERSION_PROPERTY = "browserVersion";

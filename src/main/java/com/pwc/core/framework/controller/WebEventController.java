@@ -344,7 +344,7 @@ public class WebEventController {
                 abstractDriverOptions.setCapability(FrameworkConstants.EXPERITEST_ACCESS_KEY_PROPERTY, experitestAccesskey);
                 abstractDriverOptions.setCapability(FrameworkConstants.EXPERITEST_TEST_NAME_PROPERTY, this.currentTestName);
 
-                LOG(true, "Initiating Digital.ai test execution with browser='%s'", StringUtils.trim(System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY)));
+                LOG(true, "Initiating Digital.ai test execution with browser='%s'", abstractDriverOptions.getCapability(FrameworkConstants.BROWSER_NAME_PROPERTY));
 
             } else if (isSauceLabsEnabled()) {
 
@@ -382,7 +382,7 @@ public class WebEventController {
                 abstractDriverOptions.setCapability(FrameworkConstants.SAUCE_LABS_OPTIONS_PROPERTY, sauceOptions);
                 abstractDriverOptions.setBrowserVersion(StringUtils.defaultIfBlank(System.getProperty(FrameworkConstants.BROWSER_VERSION_PROPERTY), "latest"));
 
-                LOG(true, "Initiating Sauce Labs test execution with browser='%s'", System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY));
+                LOG(true, "Initiating Sauce Labs test execution with browser='%s'", abstractDriverOptions.getCapability(FrameworkConstants.BROWSER_NAME_PROPERTY));
 
             } else if (isBrowserStackEnabled()) {
 
@@ -405,10 +405,10 @@ public class WebEventController {
 
                 abstractDriverOptions.setCapability(FrameworkConstants.BROWSER_STACK_OPTIONS_PROPERTY, browserstackOptions);
 
-                LOG(true, "Initiating BrowserStack test execution with browser='%s'", StringUtils.trim(System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY)));
+                LOG(true, "Initiating BrowserStack test execution with browser='%s'", abstractDriverOptions.getCapability(FrameworkConstants.BROWSER_NAME_PROPERTY));
 
             } else {
-                LOG(true, "Initiating Local test execution with browser='%s'", StringUtils.trim(System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_PROPERTY)));
+                LOG(true, "Initiating Local test execution with browser='%s'", abstractDriverOptions.getCapability(FrameworkConstants.BROWSER_NAME_PROPERTY));
                 GridUtils.initBrowserType();
             }
 
