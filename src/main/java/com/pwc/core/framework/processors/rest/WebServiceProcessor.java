@@ -6,8 +6,6 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
-import com.jayway.restassured.path.json.JsonPath;
-import com.jayway.restassured.path.json.config.JsonPathConfig;
 import com.pwc.core.framework.FrameworkConstants;
 import com.pwc.core.framework.command.WebServiceCommand;
 import com.pwc.core.framework.data.HeaderKeysMap;
@@ -44,6 +42,7 @@ import org.apache.http.impl.client.LaxRedirectStrategy;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONObject;
 import org.springframework.util.StopWatch;
 import org.testng.Assert;
 
@@ -1299,7 +1298,7 @@ public class WebServiceProcessor {
 
         String wsResponse = convertHttpResponseToJson(response, httpEntity, stopWatch);
         if (isValidJson(wsResponse)) {
-            return new JsonPath(wsResponse).using(new JsonPathConfig("UTF-8"));
+            return new JSONObject(wsResponse);
         }
         return wsResponse;
     }

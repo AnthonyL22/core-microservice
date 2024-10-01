@@ -1,11 +1,11 @@
 package com.pwc.core.framework.controller;
 
-import com.jayway.restassured.path.json.JsonPath;
 import com.pwc.core.framework.FrameworkConstants;
 import com.pwc.core.framework.data.TestCycle;
 import com.pwc.core.framework.data.TestExecute;
 import com.pwc.core.framework.processors.rest.JiraProcessor;
 import com.pwc.core.framework.util.JsonUtils;
+import io.restassured.path.json.JsonPath;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;

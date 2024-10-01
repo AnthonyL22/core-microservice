@@ -2,13 +2,13 @@ package com.pwc.core.framework.processors.rest;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
-import com.jayway.restassured.path.json.JsonPath;
 import com.pwc.core.framework.FrameworkConstants;
 import com.pwc.core.framework.command.WebServiceCommand;
 import com.pwc.core.framework.data.HeaderKeysMap;
 import com.pwc.core.framework.data.OAuthKey;
 import com.pwc.core.framework.data.SmSessionKey;
 import com.pwc.core.framework.util.RandomStringUtils;
+import io.restassured.path.json.JsonPath;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;

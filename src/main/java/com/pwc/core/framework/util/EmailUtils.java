@@ -1,12 +1,12 @@
 package com.pwc.core.framework.util;
 
-import com.jayway.restassured.path.json.JsonPath;
 import com.pwc.core.framework.FrameworkConstants;
 import com.pwc.core.framework.controller.WebServiceController;
 import com.pwc.core.framework.data.CommonField;
 import com.pwc.core.framework.processors.rest.WebServiceProcessor;
 import com.pwc.core.framework.type.GetNadaEmail;
 import com.pwc.core.framework.type.MailSacEmail;
+import io.restassured.path.json.JsonPath;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;

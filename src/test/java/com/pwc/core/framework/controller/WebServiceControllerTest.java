@@ -1,11 +1,11 @@
 package com.pwc.core.framework.controller;
 
-import com.jayway.restassured.path.json.JsonPath;
 import com.pwc.core.framework.FrameworkConstants;
 import com.pwc.core.framework.command.WebServiceCommand;
 import com.pwc.core.framework.data.Credentials;
 import com.pwc.core.framework.data.OAuthKey;
 import com.pwc.core.framework.data.SmSessionKey;
+import io.restassured.path.json.JsonPath;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

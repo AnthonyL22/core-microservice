@@ -1,6 +1,5 @@
 package com.pwc.core.framework.controller;
 
-import com.jayway.restassured.path.json.JsonPath;
 import com.pwc.core.framework.FrameworkConstants;
 import com.pwc.core.framework.command.WebServiceCommand;
 import com.pwc.core.framework.data.Credentials;
@@ -8,6 +7,7 @@ import com.pwc.core.framework.data.HeaderKeysMap;
 import com.pwc.core.framework.data.OAuthKey;
 import com.pwc.core.framework.data.SmSessionKey;
 import com.pwc.core.framework.processors.rest.WebServiceProcessor;
+import io.restassured.path.json.JsonPath;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
