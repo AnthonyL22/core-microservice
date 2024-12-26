@@ -105,7 +105,7 @@ jira.zapi.password=pass1234
 jira.zapi.cycle.name=MyProject-1.0.0
 ```
 
-## Issue Annotation
+## Issue Annotation(s)
 The @Issue annotation is a customized annotation for automatically adding logging information which identify the 
 issue or story numbers relevant to your test.  Very useful for Jira integration.  
 
