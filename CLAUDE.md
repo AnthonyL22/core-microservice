@@ -42,6 +42,9 @@ mvn test -DplatformName="OS X"
 
 # Generate manual test case report
 mvn clean install -PoutputManualTestCaseReport
+
+# Deploy snapshots (requires proper permissions)
+mvn clean install deploy -DskipTests=true
 ```
 
 **Build Issues Fixed:**
@@ -50,6 +53,12 @@ mvn clean install -PoutputManualTestCaseReport
 - Updated Maven checkstyle plugin from 2.17 to 3.5.0 with checkstyle core 10.18.2 for Java 21 compatibility
 - Updated checkstyle configuration parameters for newer plugin version (`sourceDirectories` vs `sourceDirectory`)
 - Removed deprecated checkstyle properties (`scope`, `maxLineLength`, `allowMissingJavadoc`, etc.)
+
+**Deployment Configuration:**
+- Configured for Central Portal publishing with credentials in `~/.m2/settings.xml`
+- Server ID: `central` with username `QQ2WRU` and token-based authentication
+- SNAPSHOT repository: `https://central.sonatype.com/repository/maven-snapshots/`
+- **Note**: Currently getting 403 Forbidden on deployment - may require repository permissions review or alternative deployment approach
 
 ## Project Architecture
 
