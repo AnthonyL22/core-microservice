@@ -77,7 +77,7 @@
     <selenium-devtools.artifactId>v127</selenium-devtools.artifactId>
     <selenium.version>4.24.0</selenium.version>
     <skip.plugins>false</skip.plugins>
-    <skip.sign>true</skip.sign>
+    <skip.sign>false</skip.sign>
     <skip.tests>false</skip.tests>
     <sortpom-maven-plugin.version>2.6.0</sortpom-maven-plugin.version>
     <spring-mongodb.version>1.2.0.RELEASE</spring-mongodb.version>
@@ -444,6 +444,13 @@
         <version>${maven-gpg-plugin.version}</version>
         <configuration>
           <skip>${skip.sign}</skip>
+          <keyname>9BF28DC852F97E38</keyname>
+          <gpgArguments>
+            <arg>--pinentry-mode</arg>
+            <arg>loopback</arg>
+            <arg>--batch</arg>
+            <arg>--yes</arg>
+          </gpgArguments>
         </configuration>
         <executions>
           <execution>

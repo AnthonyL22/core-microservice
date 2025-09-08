@@ -60,6 +60,12 @@ mvn clean install deploy -DskipTests=true
 - SNAPSHOT repository: `https://central.sonatype.com/repository/maven-snapshots/`
 - **Note**: Currently getting 403 Forbidden on deployment - may require repository permissions review or alternative deployment approach
 
+**GPG Signing Configuration:**
+- GPG signing enabled for Maven releases (`<skip.sign>false</skip.sign>`)
+- Uses GPG key `9BF28DC852F97E38` (Anthony Lombardo Maven) with no passphrase for automated builds
+- GPG plugin configured with `--pinentry-mode loopback --batch --yes` arguments
+- All Maven artifacts (JAR, sources, javadoc, POM) are now properly signed for Central Portal publishing
+
 ## Project Architecture
 
 ### Core Test Base Classes
