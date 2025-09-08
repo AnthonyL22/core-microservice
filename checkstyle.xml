@@ -21,6 +21,11 @@
         <property name="fileExtensions" value="java"/>
     </module>
 
+    <module name="LineLength">
+        <property name="max" value="200"/>
+        <property name="ignorePattern" value="^package.*|^import.*|a href|href|http://|https://|ftp://"/>
+    </module>
+
     <module name="TreeWalker">
 
         <module name="OuterTypeFilename"/>
@@ -35,11 +40,6 @@
             <property name="allowEscapesForControlCharacters" value="true"/>
             <property name="allowByTailComment" value="true"/>
             <property name="allowNonPrintableEscapes" value="true"/>
-        </module>
-
-        <module name="LineLength">
-            <property name="max" value="200"/>
-            <property name="ignorePattern" value="^package.*|^import.*|a href|href|http://|https://|ftp://"/>
         </module>
 
         <!-- Checks for imports                            -->
@@ -62,9 +62,7 @@
 
         <module name="NeedBraces"/>
 
-        <module name="LeftCurly">
-            <property name="maxLineLength" value="100"/>
-        </module>
+        <module name="LeftCurly"/>
 
         <module name="RightCurly">
             <property name="id" value="RightCurlySame"/>
@@ -235,16 +233,7 @@
             <property name="target" value="CLASS_DEF, INTERFACE_DEF, ENUM_DEF, METHOD_DEF, CTOR_DEF, VARIABLE_DEF"/>
         </module>
 
-        <module name="JavadocMethod">
-            <property name="scope" value="public"/>
-            <property name="allowMissingJavadoc" value="true"/>
-            <property name="allowMissingParamTags" value="true"/>
-            <property name="allowMissingThrowsTags" value="true"/>
-            <property name="allowMissingReturnTag" value="true"/>
-            <property name="minLineCount" value="2"/>
-            <property name="allowedAnnotations" value="Override, Test"/>
-            <property name="allowThrowsTagsForSubclasses" value="true"/>
-        </module>
+        <module name="JavadocMethod"/>
 
         <module name="MethodName">
             <property name="format" value="^[a-z][a-z0-9][a-zA-Z0-9_]*$"/>

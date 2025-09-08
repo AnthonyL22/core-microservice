@@ -226,62 +226,66 @@ public class GridUtils {
      */
     public static String initBrowserResolution() {
 
-        String property = StringUtils.remove(StringUtils.trim(StringUtils.lowerCase(System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_RESOLUTION_PROPERTY))), " ");
-        if (StringUtils.isEmpty(property)) {
+        String currentResolution = StringUtils.remove(StringUtils.trim(StringUtils.lowerCase(System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_RESOLUTION_PROPERTY))), " ");
+        if (StringUtils.isEmpty(currentResolution)) {
             return FrameworkConstants.BROWSER_RESOLUTION_DEFAULT;
         }
 
-        switch (property) {
-            case (FrameworkConstants.GALAXY_S5_RESOLUTION): {
+        switch (currentResolution) {
+            case (FrameworkConstants.GALAXY_S5_RESOLUTION) -> {
                 return FrameworkConstants.GALAXY_S5_RESOLUTION;
             }
-            case (FrameworkConstants.PIXEL_2_RESOLUTION): {
+            case (FrameworkConstants.PIXEL_2_RESOLUTION) -> {
                 return FrameworkConstants.PIXEL_2_RESOLUTION;
             }
-            case (FrameworkConstants.PIXEL_2_XL_RESOLUTION): {
+            case (FrameworkConstants.PIXEL_2_XL_RESOLUTION) -> {
                 return FrameworkConstants.PIXEL_2_XL_RESOLUTION;
             }
-            case (FrameworkConstants.IPHONE_5_SE_RESOLUTION): {
+            case (FrameworkConstants.IPHONE_5_SE_RESOLUTION) -> {
                 return FrameworkConstants.IPHONE_5_SE_RESOLUTION;
             }
-            case (FrameworkConstants.IPHONE_6_7_8_RESOLUTION): {
+            case (FrameworkConstants.IPHONE_6_7_8_RESOLUTION) -> {
                 return FrameworkConstants.IPHONE_6_7_8_RESOLUTION;
             }
-            case (FrameworkConstants.IPHONE_6_7_8_PLUS_RESOLUTION): {
+            case (FrameworkConstants.IPHONE_6_7_8_PLUS_RESOLUTION) -> {
                 return FrameworkConstants.IPHONE_6_7_8_PLUS_RESOLUTION;
             }
-            case (FrameworkConstants.IPHONE_X_RESOLUTION): {
+            case (FrameworkConstants.IPHONE_X_RESOLUTION) -> {
                 return FrameworkConstants.IPHONE_X_RESOLUTION;
             }
-            case (FrameworkConstants.IPAD_RESOLUTION): {
+            case (FrameworkConstants.IPAD_RESOLUTION) -> {
                 return FrameworkConstants.IPAD_RESOLUTION;
             }
-            case (FrameworkConstants.IPAD_PRO_RESOLUTION): {
+            case (FrameworkConstants.IPAD_PRO_RESOLUTION) -> {
                 return FrameworkConstants.IPAD_PRO_RESOLUTION;
             }
-            case (FrameworkConstants.BROWSER_RESOLUTION_800X600): {
+            case (FrameworkConstants.BROWSER_RESOLUTION_800X600) -> {
                 return FrameworkConstants.BROWSER_RESOLUTION_800X600;
             }
-            case (FrameworkConstants.BROWSER_RESOLUTION_1024X768): {
+            case (FrameworkConstants.BROWSER_RESOLUTION_1024X768) -> {
                 return FrameworkConstants.BROWSER_RESOLUTION_1024X768;
             }
-            case (FrameworkConstants.BROWSER_RESOLUTION_1152X864): {
+            case (FrameworkConstants.BROWSER_RESOLUTION_1152X864) -> {
                 return FrameworkConstants.BROWSER_RESOLUTION_1152X864;
             }
-            case (FrameworkConstants.BROWSER_RESOLUTION_1280X800): {
+            case (FrameworkConstants.BROWSER_RESOLUTION_1280X800) -> {
                 return FrameworkConstants.BROWSER_RESOLUTION_1280X800;
             }
-            case (FrameworkConstants.BROWSER_RESOLUTION_1280X960): {
+            case (FrameworkConstants.BROWSER_RESOLUTION_1280X960) -> {
                 return FrameworkConstants.BROWSER_RESOLUTION_1280X960;
             }
-            case (FrameworkConstants.BROWSER_RESOLUTION_1280X1024): {
+            case (FrameworkConstants.BROWSER_RESOLUTION_1280X1024) -> {
                 return FrameworkConstants.BROWSER_RESOLUTION_1280X1024;
             }
-            case (FrameworkConstants.BROWSER_RESOLUTION_NONE): {
+            case (FrameworkConstants.BROWSER_RESOLUTION_NONE) -> {
                 return "";
             }
-            default: {
-                return FrameworkConstants.BROWSER_RESOLUTION_DEFAULT;
+            default -> {
+                if (!StringUtils.isEmpty(currentResolution)) {
+                    return currentResolution;
+                } else {
+                    return FrameworkConstants.BROWSER_RESOLUTION_DEFAULT;
+                }
             }
         }
     }
