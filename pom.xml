@@ -437,6 +437,23 @@
         <extensions>true</extensions>
         <configuration>
           <publishingServerId>central</publishingServerId>
+          <autoPublish>true</autoPublish>
+        </configuration>
+        <executions>
+          <execution>
+            <id>publish</id>
+            <goals>
+              <goal>publish</goal>
+            </goals>
+            <phase>deploy</phase>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <configuration>
+          <skip>true</skip>
         </configuration>
       </plugin>
       <plugin>
@@ -474,7 +491,7 @@
             <goals>
               <goal>jar-no-fork</goal>
             </goals>
-            <phase>post-integration-test</phase>
+            <phase>package</phase>
           </execution>
         </executions>
       </plugin>
