@@ -8,6 +8,8 @@ public final class FrameworkConstants {
     public static final String AUTOMATION_BROWSER_PROPERTY = "browser";
     public static final String AUTOMATION_BROWSER_VERSION_PROPERTY = "browser.version";
     public static final String AUTOMATION_BROWSER_RESOLUTION_PROPERTY = "browser.resolution";
+    public static final String AUTOMATION_SCREEN_RESOLUTION_PROPERTY = "screen.resolution";
+    public static final String AUTOMATION_BROWSER_INCOGNITO_PROPERTY = "browser.incognito";
     public static final String AUTOMATION_PLATFORM_PROPERTY = "platform";
     public static final String AUTOMATION_LONG_VERSION_PROPERTY = "longVersion";
     public static final String AUTOMATION_DEVICE_NAME_PROPERTY = "deviceName";
@@ -35,6 +37,7 @@ public final class FrameworkConstants {
     public static final String SAUCE_LABS_OPTIONS_PROPERTY = "sauce:options";
     public static final String SAUCE_LABS_BROWSER_PROPERTY = "SELENIUM_BROWSER";
     public static final String BROWSER_NAME_PROPERTY = "browserName";
+    public static final String SAUCE_LABS_VM_SCREEN_RESOLUTION = "screenResolution";
 
     public static final String BROWSER_STACK_BROWSER_NAME_PROPERTY = "browserName";
     public static final String BROWSER_STACK_BROWSER_VERSION_PROPERTY = "browserVersion";

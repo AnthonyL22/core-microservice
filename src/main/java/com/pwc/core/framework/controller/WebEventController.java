@@ -378,6 +378,8 @@ public class WebEventController {
                     sauceOptions.put(FrameworkConstants.TUNNEL_IDENTIFIER_CAPABILITY, System.getProperty(FrameworkConstants.TUNNEL_IDENTIFIER_CAPABILITY));
                 } else if (StringUtils.isNotEmpty(System.getenv(FrameworkConstants.TUNNEL_IDENTIFIER_CAPABILITY))) {
                     sauceOptions.put(FrameworkConstants.TUNNEL_IDENTIFIER_CAPABILITY, System.getenv(FrameworkConstants.TUNNEL_IDENTIFIER_CAPABILITY));
+                } else if (StringUtils.isNotEmpty(System.getProperty(FrameworkConstants.AUTOMATION_SCREEN_RESOLUTION_PROPERTY))) {
+                    sauceOptions.put(FrameworkConstants.SAUCE_LABS_VM_SCREEN_RESOLUTION, System.getProperty(FrameworkConstants.AUTOMATION_SCREEN_RESOLUTION_PROPERTY));
                 }
                 abstractDriverOptions.setCapability(FrameworkConstants.SAUCE_LABS_OPTIONS_PROPERTY, sauceOptions);
                 abstractDriverOptions.setBrowserVersion(StringUtils.defaultIfBlank(System.getProperty(FrameworkConstants.BROWSER_VERSION_PROPERTY), "latest"));
@@ -442,6 +444,9 @@ public class WebEventController {
         browserOptions.addArguments(SeleniumArgument.IGNORE_CERTIFICATE_ERRORS.getValue());
         browserOptions.addArguments(SeleniumArgument.ALLOW_INSECURE_CONTENT.getValue());
         browserOptions.addArguments(SeleniumArgument.REMOTE_ALLOW_ORIGINS.getValue());
+        if (StringUtils.isNotEmpty(System.getProperty(FrameworkConstants.AUTOMATION_BROWSER_INCOGNITO_PROPERTY))) {
+            browserOptions.addArguments(SeleniumArgument.INCOGNITO_MODE.getValue());
+        }
 
         MicroserviceRemoteWebDriver microserviceRemoteWebDriver = null;
         try {
