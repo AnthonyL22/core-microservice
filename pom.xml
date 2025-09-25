@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.pacificwebconsulting.core</groupId>
   <artifactId>core-microservice</artifactId>
-  <version>3.0.10</version>
+  <version>3.0.11-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>Core Automation Microservice</name>
   <description>Central automated test execution framework</description>
