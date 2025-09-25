@@ -32,6 +32,16 @@
     <tag>HEAD</tag>
     <url>scm:git:https://github.com/AnthonyL22/core-microservice</url>
   </scm>
+  <distributionManagement>
+    <repository>
+      <id>central</id>
+      <url>https://central.sonatype.com/</url>
+    </repository>
+    <snapshotRepository>
+      <id>central</id>
+      <url>https://central.sonatype.com/</url>
+    </snapshotRepository>
+  </distributionManagement>
   <properties>
     <appium.version>8.5.1</appium.version>
     <assertion-microservice.version>1.0.5</assertion-microservice.version>
